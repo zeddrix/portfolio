@@ -8,13 +8,22 @@ Build a portfolio website with outstanding UI/UX design inspired by Squarespace.
 
 ### Tech Stack
 
+**Portfolio Website:**
+
 - **Framework**: SvelteKit with Svelte 4 (stable, AI-friendly)
 - **Language**: TypeScript (strict mode)
 - **Package Manager**: pnpm (fast, disk-efficient)
-- **Styling**: Tailwind CSS with custom design tokens
+- **Styling**: Tailwind CSS 4 with custom design tokens
 - **Code Quality**: Prettier for formatting, ESLint for linting
-- **Analysis Tool**: Playwright for design pattern extraction
 - **Animation**: Svelte transitions and native CSS animations
+
+**Scraping Tool (separate):**
+
+- **Language**: Python 3.x
+- **Automation**: Playwright for Python
+- **Parsing**: Beautiful Soup 4
+- **Color Analysis**: ColorThief, Pillow
+- **Output**: JSON files (consumed by TypeScript app)
 
 ### Core Principles
 
@@ -73,13 +82,14 @@ Build a portfolio website with outstanding UI/UX design inspired by Squarespace.
 - Verify Tailwind classes work in components
 - Configure Tailwind theme structure for custom tokens
 
-### 1.6 Playwright Setup
+### 1.6 Python Scraper Setup
 
-- Install Playwright with TypeScript support
-- Initialize Playwright configuration
+- Verify Python 3.x installation
 - Create scraper directory for analysis scripts
-- Install type definitions for Playwright
-- Configure browser launch options
+- Set up Python virtual environment in scraper directory
+- Create requirements.txt with dependencies (Playwright, Beautiful Soup, ColorThief, Pillow)
+- Install Python packages in virtual environment
+- Install Playwright browsers (Chromium)
 - Set up screenshot output directory
 
 ### 1.7 Directory Structure
@@ -87,7 +97,7 @@ Build a portfolio website with outstanding UI/UX design inspired by Squarespace.
 - Create src/lib/components directory for reusable components
 - Create src/lib/styles directory for design tokens
 - Create src/routes directory for pages
-- Create scraper directory for Playwright scripts
+- Create scraper directory for Python scripts
 - Create scraper/output directory for extracted data
 - Create scraper/screenshots directory for reference images
 - Create docs directory for documentation
@@ -98,12 +108,13 @@ Build a portfolio website with outstanding UI/UX design inspired by Squarespace.
 
 ### 2.1 Scraper Architecture Setup
 
-- Create main Playwright scraper TypeScript file
-- Define interfaces for extracted design token types
+- Create main Python scraper file with Playwright
+- Define data classes/dictionaries for extracted design token types
 - Create utility functions for style extraction
-- Set up browser context and page navigation
+- Set up browser context and page navigation with Playwright
 - Implement error handling and retry logic
 - Configure viewport sizes for responsive analysis
+- Set up JSON output formatting
 
 ### 2.2 Color Extraction
 

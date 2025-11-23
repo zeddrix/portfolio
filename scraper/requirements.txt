@@ -1,0 +1,16 @@
+# Web scraping and automation
+playwright==1.48.0
+
+# HTML parsing
+beautifulsoup4==4.12.3
+
+# HTTP requests (backup/alternative)
+requests==2.31.0
+
+# Data processing
+Pillow==10.4.0
+
+# Color analysis
+colorthief==0.2.1
+
+# JSON handling is built-in to Python
