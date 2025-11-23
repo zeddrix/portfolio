@@ -1,0 +1,79 @@
+{
+  "fontFamilies": [
+    "sans-serif",
+    "Clarkson, Helvetica, sans-serif",
+    "\"Clarkson Serif\", Helvetica, sans-serif"
+  ],
+  "fontSizes": [
+    "106px",
+    "10px",
+    "12px",
+    "13px",
+    "14px",
+    "15px",
+    "16px",
+    "24px",
+    "26px",
+    "34px",
+    "50px",
+    "72px",
+    "74px"
+  ],
+  "fontWeights": [
+    "300",
+    "400",
+    "500"
+  ],
+  "lineHeights": [
+    "normal",
+    "14px",
+    "16.8px",
+    "50px",
+    "12px",
+    "21px",
+    "66.96px",
+    "34px",
+    "28.8px",
+    "98.58px",
+    "31.2px",
+    "74px",
+    "18.2px"
+  ],
+  "letterSpacings": [
+    "normal",
+    "-2px",
+    "-0.015px",
+    "-4.32px",
+    "-0.68px",
+    "-0.24px",
+    "-5.3px",
+    "-0.026px",
+    "-2.96px"
+  ],
+  "headings": {
+    "h1": {
+      "fontSize": "72px",
+      "fontWeight": "300",
+      "lineHeight": "66.96px",
+      "letterSpacing": "-4.32px",
+      "fontFamily": "Clarkson, Helvetica, sans-serif"
+    },
+    "h2": {
+      "fontSize": "50px",
+      "fontWeight": "400",
+      "lineHeight": "50px",
+      "letterSpacing": "-2px",
+      "fontFamily": "Clarkson, Helvetica, sans-serif"
+    },
+    "h3": {
+      "fontSize": "34px",
+      "fontWeight": "400",
+      "lineHeight": "34px",
+      "letterSpacing": "-0.68px",
+      "fontFamily": "\"Clarkson Serif\", Helvetica, sans-serif"
+    },
+    "h4": [],
+    "h5": [],
+    "h6": []
+  }
+}
