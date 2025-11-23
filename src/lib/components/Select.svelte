@@ -1,3 +1,10 @@
+<script lang="ts" context="module">
+	export interface SelectOption {
+		value: string | number;
+		label: string;
+	}
+</script>
+
 <script lang="ts">
 	/**
 	 * Select Component
@@ -5,11 +12,6 @@
 	 * A select dropdown with label, error states, and validation support.
 	 * Two-way binding for selected value.
 	 */
-
-	export interface SelectOption {
-		value: string | number;
-		label: string;
-	}
 
 	export let options: SelectOption[] = [];
 	export let value: string | number = '';

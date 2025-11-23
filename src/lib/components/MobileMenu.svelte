@@ -1,3 +1,11 @@
+<script lang="ts" context="module">
+	export interface MenuItem {
+		label: string;
+		href: string;
+		active?: boolean;
+	}
+</script>
+
 <script lang="ts">
 	/**
 	 * MobileMenu Component
@@ -8,12 +16,6 @@
 
 	import { onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
-
-	export interface MenuItem {
-		label: string;
-		href: string;
-		active?: boolean;
-	}
 
 	export let open: boolean = false;
 	export let items: MenuItem[] = [];

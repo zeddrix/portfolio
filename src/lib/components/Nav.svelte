@@ -1,3 +1,11 @@
+<script lang="ts" context="module">
+	export interface NavItem {
+		label: string;
+		href: string;
+		active?: boolean;
+	}
+</script>
+
 <script lang="ts">
 	/**
 	 * Nav Component
@@ -5,12 +13,6 @@
 	 * A horizontal navigation menu for desktop layouts.
 	 * Highlights the active route and supports hover effects.
 	 */
-
-	export interface NavItem {
-		label: string;
-		href: string;
-		active?: boolean;
-	}
 
 	export let items: NavItem[] = [];
 	export let activeRoute: string = '';
