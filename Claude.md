@@ -1,69 +1,39 @@
 # Claude AI Agent Guide - Zeddrix Portfolio
 
-## Project Summary
+## Project Goal
 
-This is a **personal portfolio website** built with SvelteKit, inspired by the UI/UX quality of Squarespace.com. We extract design inspiration and tokens (not actual code) from Squarespace to inform our own custom-built components.
+Build a **Squarespace-quality portfolio website** using SvelteKit. We extract design tokens (colors, spacing, typography, animations) and visual references from Squarespace, then build clean, maintainable components that achieve identical visual results.
 
-## Critical Understanding
+**The Approach:**
 
-**We are NOT cloning Squarespace.** We are:
-
-- Extracting design values (colors, spacing, timing) for inspiration
-- Taking screenshots for visual reference
-- Building our own clean, maintainable Svelte components from scratch
-- Achieving similar quality level with our own implementation
+- Extract design values via Python scraper → Get colors, spacing, typography, animation timings
+- Take screenshots for visual reference → See what to build
+- Build clean Svelte components from scratch → Match the quality, own the code
+- **Result:** Visually identical to Squarespace, but with maintainable code you control
 
 ## Tech Stack
 
-### Portfolio Website
-
-- **Framework**: SvelteKit with Svelte 4 (NOT Svelte 5)
-- **Language**: TypeScript (strict mode)
-- **Package Manager**: pnpm
-- **Styling**: Tailwind CSS 4 with custom design tokens
-- **Code Quality**: Prettier, ESLint
-
-### Design Analysis Tool (Separate)
-
-- **Language**: Python 3.x
-- **Automation**: Playwright for Python
-- **Parsing**: Beautiful Soup 4
-- **Output**: JSON files → consumed by TypeScript
+**Portfolio:** SvelteKit + Svelte 4 + TypeScript + Tailwind CSS 4 + pnpm
+**Scraper:** Python 3 + Playwright + Beautiful Soup + ColorThief
 
 ## Project Structure
 
 ```
-zeddrix-portfolio/
-├── src/
-│   ├── lib/
-│   │   ├── components/     # Reusable Svelte components
-│   │   └── styles/         # Design tokens (colors, typography, spacing)
-│   ├── routes/             # SvelteKit pages
-│   └── app.css             # Global styles
-├── scraper/                # Python scripts for design analysis
-│   ├── output/             # Extracted JSON design tokens
-│   ├── screenshots/        # Reference images
-│   └── requirements.txt    # Python dependencies
-├── static/                 # Static assets
-├── IMPLEMENTATION_PLAN.md  # Detailed phase-by-phase plan
-└── package.json
+src/
+├── lib/
+│   ├── components/  # Svelte components
+│   └── styles/      # Design tokens
+└── routes/          # Pages
+
+scraper/
+├── output/          # Extracted JSON tokens
+└── screenshots/     # Visual references
 ```
 
 ## Current Status
 
-**Phase 1: COMPLETE** ✅
-
-- SvelteKit project initialized
-- TypeScript, Prettier, ESLint configured
-- Tailwind CSS 4 integrated
-- Playwright installed (Python environment set up)
-- Directory structure created
-
-**Phase 2: NOT STARTED**
-
-- No scraping scripts written yet
-- No design tokens extracted yet
-- No components built yet
+✅ **Phase 1 Complete:** Environment setup done
+🚧 **Phase 2 Next:** Build scraper, extract design tokens, start building components
 
 ## Key Commands
 
@@ -71,178 +41,101 @@ zeddrix-portfolio/
 # Development
 pnpm dev                    # Start dev server
 pnpm build                  # Production build
-pnpm preview                # Preview production build
 
 # Code Quality
 pnpm format                 # Format with Prettier
-pnpm format:check           # Check formatting
 pnpm lint                   # Lint with ESLint
-pnpm lint:fix               # Fix linting issues
-pnpm check                  # TypeScript + Svelte type checking
+pnpm check                  # TypeScript type checking
 
-# Scraper (Python)
+# Scraper
 cd scraper
-source venv/bin/activate    # Activate Python virtual environment
-python scraper_script.py    # Run scraper (when created)
+source venv/bin/activate
+python scraper_script.py
 ```
 
-## Important Files
+## Core Workflow
 
-- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) - Complete phase-by-phase implementation guide
-- [package.json](package.json) - Dependencies and scripts
-- [tailwind.config.js](tailwind.config.js) - Tailwind configuration
-- [tsconfig.json](tsconfig.json) - TypeScript configuration
-- [scraper/requirements.txt](scraper/requirements.txt) - Python dependencies
+### Phase 2: Extract Design Tokens
 
-## Design Philosophy
+1. Build Python scraper with Playwright
+2. Navigate to Squarespace.com
+3. Extract: colors, typography, spacing, borders, shadows, animations
+4. Take screenshots of components
+5. Save tokens to JSON in `scraper/output/`
 
-### Component Development
+### Phase 3: Create Design System
 
-1. **Read before writing** - Always read existing files before modifying
-2. **Prefer editing over creating** - Extend existing components when possible
-3. **TypeScript interfaces required** - All component props must be typed
-4. **Svelte 4 syntax only** - Do NOT use Svelte 5 features
-5. **Test in demo routes** - Create `/routes/components/*` pages to test components in isolation
+1. Create token modules in `src/lib/styles/` (colors.ts, typography.ts, etc.)
+2. Extend Tailwind config with extracted values
+3. Set up CSS custom properties
 
-### Code Quality Standards
+### Phase 4: Build Components
 
-- All code must pass Prettier formatting
-- All code must pass ESLint validation
-- All TypeScript must compile without errors (strict mode)
-- No implicit `any` types allowed
-- Keep components simple and focused
+For each component (using screenshots + extracted tokens):
 
-### Styling Approach
+1. Build in `src/lib/components/`
+2. Create demo route in `src/routes/components/` for testing
+3. Apply design tokens
+4. Test responsiveness
+5. Run quality checks (format, lint, type-check)
 
-- Use Tailwind CSS classes primarily
-- Define design tokens in `src/lib/styles/`
-- Extend Tailwind theme in `tailwind.config.js`
-- Use CSS custom properties for runtime dynamic values
-- Follow mobile-first responsive design
+### Phase 5: Build Portfolio Pages
 
-## Implementation Workflow
+Compose components into pages: Home, About, Projects, Contact
 
-When building new features, follow this order:
+## What the Scraper Extracts
 
-1. **Extract design tokens** (if needed via scraper)
-2. **Create design token modules** in `src/lib/styles/`
-3. **Update Tailwind config** with tokens
-4. **Build components** in `src/lib/components/`
-5. **Create demo routes** in `src/routes/components/` for testing
-6. **Test responsiveness** at all breakpoints
-7. **Run code quality checks** (format, lint, type-check)
-8. **Integrate into portfolio pages**
+```python
+# CSS values only, not code:
+colors = {"primary": "#0073E6", "secondary": "#00D4AA"}
+typography = {"h1": {"size": "48px", "weight": 700}}
+spacing = {"sm": "8px", "md": "16px", "lg": "32px"}
+animations = {"duration": "300ms", "easing": "cubic-bezier(...)"}
+borders = {"radius": "8px"}
+shadows = {"card": "0 2px 8px rgba(0,0,0,0.1)"}
+```
 
-## Scraper Usage (Phase 2)
+## Component Priority
 
-When creating scraper scripts:
+**P1 Foundation:** Button, Card, Container, Grid
+**P2 Navigation:** Header, Nav, MobileMenu
+**P3 Content:** Hero, Section, Feature, Carousel
+**P4 Forms:** Input, Textarea, Select, Checkbox, Form
+**P5 Feedback:** Modal, Toast, Loading
 
-1. **Navigate to Squarespace.com** with Playwright
-2. **Extract computed styles** - Not source code, just CSS values
-3. **Save design tokens** to JSON in `scraper/output/`
-4. **Take screenshots** for visual reference in `scraper/screenshots/`
-5. **Document patterns** in markdown
+## Code Standards
 
-Extract these types of values:
+**Required:**
 
-- Colors: Hex, RGB, HSL values
-- Typography: Font families, sizes, weights, line heights
-- Spacing: Padding, margin, gap values (build a scale)
-- Borders: Radius values, widths
-- Shadows: Box shadow definitions
-- Animations: Transition durations, easing functions, keyframe specs
+- TypeScript strict mode, no implicit `any`
+- All component props typed
+- Prettier formatted, ESLint clean
+- Svelte 4 syntax only (NOT Svelte 5)
+- Read files before editing
+- Test in demo routes before integrating
 
-## Component Architecture
+**Styling:**
 
-### Foundation Components (Priority 1)
+- Tailwind CSS classes primarily
+- Design tokens in `src/lib/styles/`
+- Mobile-first responsive design
 
-- Button (variants: primary, secondary, outline, ghost)
-- Card (with header, body, footer slots)
-- Container (responsive max-widths)
-- Grid (responsive columns)
+## Success = Squarespace Quality
 
-### Navigation Components (Priority 2)
+**Visually:** Identical look - same colors, spacing, animations, polish
+**Technically:** Clean code, fully typed, maintainable, no errors
+**Legally:** 100% your code, no copyright issues
 
-- Header (sticky, scroll behavior)
-- Nav (desktop horizontal menu)
-- MobileMenu (slide-in mobile navigation)
+## Quick Start for New Session
 
-### Content Components (Priority 3)
+1. Read this file
+2. Check [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for detailed steps
+3. Review recent commits
+4. Run `pnpm check` to verify
+5. Continue with current phase
 
-- Hero (full-width sections with CTAs)
-- Section (consistent vertical spacing)
-- Feature (icon + title + description)
-- Carousel (image slider with controls)
+---
 
-### Form Components (Priority 4)
-
-- Input, Textarea, Select, Checkbox
-- Form (wrapper with validation)
-
-### Feedback Components (Priority 5)
-
-- Modal (overlay with focus trap)
-- Toast (notification system)
-- Loading (spinner/indicator)
-
-## Portfolio Pages
-
-After components are built:
-
-1. **Home** (`/`) - Hero, featured work, about preview
-2. **About** (`/about`) - Introduction, skills, experience
-3. **Projects** (`/projects`) - Project grid/list
-4. **Contact** (`/contact`) - Contact form and info
-
-## Git Workflow
-
-- Main branch: `main`
-- Currently on: `main`
-- Commit after each major phase completion
-- Use descriptive commit messages
-
-## Anti-Patterns to Avoid
-
-❌ **Don't** try to copy Squarespace's minified production code
-❌ **Don't** use Svelte 5 syntax (runes, etc.)
-❌ **Don't** create files without reading similar files first
-❌ **Don't** skip TypeScript types
-❌ **Don't** over-engineer simple solutions
-❌ **Don't** add features not explicitly requested
-❌ **Don't** commit without running format/lint checks
-
-## Success Criteria
-
-### Technical
-
-- TypeScript compiles without errors
-- ESLint passes with no warnings
-- Prettier formatting consistent
-- Build completes successfully
-
-### Design
-
-- Professional, polished UI
-- Smooth animations
-- Responsive across devices
-- Consistent visual language
-
-### Code Quality
-
-- Components are reusable
-- Code is readable and maintainable
-- Proper separation of concerns
-- Clear documentation
-
-## Quick Start for New Claude Session
-
-1. Read this file (Claude.md)
-2. Check [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for current phase
-3. Review recent commits to understand progress
-4. Check `package.json` for available scripts
-5. Run `pnpm check` to verify everything compiles
-6. Proceed with next phase tasks
-
-## Contact & Portfolio Context
-
-This portfolio is for **Zeddrix** - update content and personal information accordingly when implementing portfolio pages.
+**Portfolio Owner:** Zeddrix
+**Main Branch:** `main`
+**Commit:** After each phase completion
