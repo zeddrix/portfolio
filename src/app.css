@@ -18,3 +18,222 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
+/**
+ * Color Palette System
+ * 7 palettes × 2 themes = 14 combinations
+ * RGB format for Tailwind alpha channel support
+ */
+
+/* === 1. Cyber Blue (Default) === */
+[data-theme='dark'][data-palette='cyber_blue'] {
+	--color-primary: 0 217 255;
+	--color-secondary: 123 97 255;
+	--color-accent: 255 0 110;
+	--color-background: 10 14 39;
+	--color-surface: 21 27 59;
+	--color-text-primary: 224 231 255;
+	--color-text-secondary: 148 163 184;
+	--color-border: 51 65 85;
+	--color-success: 34 197 94;
+	--color-warning: 234 179 8;
+	--color-error: 239 68 68;
+}
+
+[data-theme='light'][data-palette='cyber_blue'] {
+	--color-primary: 8 145 178;
+	--color-secondary: 124 58 237;
+	--color-accent: 219 39 119;
+	--color-background: 248 250 252;
+	--color-surface: 255 255 255;
+	--color-text-primary: 30 41 59;
+	--color-text-secondary: 100 116 139;
+	--color-border: 226 232 240;
+	--color-success: 22 163 74;
+	--color-warning: 202 138 4;
+	--color-error: 220 38 38;
+}
+
+/* === 2. Neon Nights === */
+[data-theme='dark'][data-palette='neon_nights'] {
+	--color-primary: 0 255 163;
+	--color-secondary: 255 0 255;
+	--color-accent: 0 255 255;
+	--color-background: 13 13 13;
+	--color-surface: 26 26 26;
+	--color-text-primary: 240 240 240;
+	--color-text-secondary: 163 163 163;
+	--color-border: 64 64 64;
+	--color-success: 0 255 163;
+	--color-warning: 255 215 0;
+	--color-error: 255 0 110;
+}
+
+[data-theme='light'][data-palette='neon_nights'] {
+	--color-primary: 16 185 129;
+	--color-secondary: 236 72 153;
+	--color-accent: 6 182 212;
+	--color-background: 250 250 250;
+	--color-surface: 255 255 255;
+	--color-text-primary: 10 10 10;
+	--color-text-secondary: 115 115 115;
+	--color-border: 229 229 229;
+	--color-success: 16 185 129;
+	--color-warning: 245 158 11;
+	--color-error: 239 68 68;
+}
+
+/* === 3. Sunset Ember === */
+[data-theme='dark'][data-palette='sunset_ember'] {
+	--color-primary: 255 107 53;
+	--color-secondary: 247 147 30;
+	--color-accent: 255 210 63;
+	--color-background: 28 25 23;
+	--color-surface: 45 42 39;
+	--color-text-primary: 254 243 226;
+	--color-text-secondary: 214 211 209;
+	--color-border: 68 64 60;
+	--color-success: 132 204 22;
+	--color-warning: 255 210 63;
+	--color-error: 239 68 68;
+}
+
+[data-theme='light'][data-palette='sunset_ember'] {
+	--color-primary: 234 88 12;
+	--color-secondary: 217 119 6;
+	--color-accent: 202 138 4;
+	--color-background: 255 251 235;
+	--color-surface: 255 255 255;
+	--color-text-primary: 41 37 36;
+	--color-text-secondary: 120 113 108;
+	--color-border: 254 243 199;
+	--color-success: 101 163 13;
+	--color-warning: 202 138 4;
+	--color-error: 220 38 38;
+}
+
+/* === 4. Forest Zen === */
+[data-theme='dark'][data-palette='forest_zen'] {
+	--color-primary: 16 185 129;
+	--color-secondary: 5 150 105;
+	--color-accent: 110 231 183;
+	--color-background: 15 27 19;
+	--color-surface: 26 41 32;
+	--color-text-primary: 209 250 229;
+	--color-text-secondary: 167 243 208;
+	--color-border: 6 78 59;
+	--color-success: 16 185 129;
+	--color-warning: 251 191 36;
+	--color-error: 239 68 68;
+}
+
+[data-theme='light'][data-palette='forest_zen'] {
+	--color-primary: 5 150 105;
+	--color-secondary: 13 148 136;
+	--color-accent: 20 184 166;
+	--color-background: 240 253 244;
+	--color-surface: 255 255 255;
+	--color-text-primary: 6 78 59;
+	--color-text-secondary: 4 120 87;
+	--color-border: 209 250 229;
+	--color-success: 5 150 105;
+	--color-warning: 217 119 6;
+	--color-error: 220 38 38;
+}
+
+/* === 5. Monochrome Pro === */
+[data-theme='dark'][data-palette='monochrome_pro'] {
+	--color-primary: 255 255 255;
+	--color-secondary: 163 163 163;
+	--color-accent: 82 82 82;
+	--color-background: 0 0 0;
+	--color-surface: 23 23 23;
+	--color-text-primary: 250 250 250;
+	--color-text-secondary: 163 163 163;
+	--color-border: 64 64 64;
+	--color-success: 163 163 163;
+	--color-warning: 212 212 212;
+	--color-error: 115 115 115;
+}
+
+[data-theme='light'][data-palette='monochrome_pro'] {
+	--color-primary: 0 0 0;
+	--color-secondary: 82 82 82;
+	--color-accent: 115 115 115;
+	--color-background: 255 255 255;
+	--color-surface: 245 245 245;
+	--color-text-primary: 10 10 10;
+	--color-text-secondary: 115 115 115;
+	--color-border: 212 212 212;
+	--color-success: 82 82 82;
+	--color-warning: 115 115 115;
+	--color-error: 64 64 64;
+}
+
+/* === 6. Purple Haze === */
+[data-theme='dark'][data-palette='purple_haze'] {
+	--color-primary: 167 139 250;
+	--color-secondary: 192 132 252;
+	--color-accent: 232 121 249;
+	--color-background: 30 27 46;
+	--color-surface: 45 38 64;
+	--color-text-primary: 243 232 255;
+	--color-text-secondary: 196 181 253;
+	--color-border: 76 29 149;
+	--color-success: 34 197 94;
+	--color-warning: 234 179 8;
+	--color-error: 239 68 68;
+}
+
+[data-theme='light'][data-palette='purple_haze'] {
+	--color-primary: 124 58 237;
+	--color-secondary: 147 51 234;
+	--color-accent: 192 38 211;
+	--color-background: 250 245 255;
+	--color-surface: 255 255 255;
+	--color-text-primary: 76 29 149;
+	--color-text-secondary: 109 40 217;
+	--color-border: 233 213 255;
+	--color-success: 22 163 74;
+	--color-warning: 202 138 4;
+	--color-error: 220 38 38;
+}
+
+/* === 7. Ocean Deep === */
+[data-theme='dark'][data-palette='ocean_deep'] {
+	--color-primary: 6 182 212;
+	--color-secondary: 14 165 233;
+	--color-accent: 59 130 246;
+	--color-background: 12 24 33;
+	--color-surface: 26 47 58;
+	--color-text-primary: 224 242 254;
+	--color-text-secondary: 125 211 252;
+	--color-border: 8 47 73;
+	--color-success: 34 197 94;
+	--color-warning: 234 179 8;
+	--color-error: 239 68 68;
+}
+
+[data-theme='light'][data-palette='ocean_deep'] {
+	--color-primary: 2 132 199;
+	--color-secondary: 3 105 161;
+	--color-accent: 37 99 235;
+	--color-background: 240 249 255;
+	--color-surface: 255 255 255;
+	--color-text-primary: 8 47 73;
+	--color-text-secondary: 7 89 133;
+	--color-border: 224 242 254;
+	--color-success: 22 163 74;
+	--color-warning: 202 138 4;
+	--color-error: 220 38 38;
+}
+
+/**
+ * Smooth color transitions when switching palettes
+ */
+* {
+	transition:
+		background-color 300ms ease,
+		border-color 300ms ease,
+		color 300ms ease;
+}

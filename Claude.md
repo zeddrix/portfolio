@@ -97,6 +97,22 @@ A pre-commit hook is configured at `.husky/pre-commit` that automatically:
 
 3. **ALWAYS run `pnpm quality` after AI agent work and before committing**
 
+### Critical Enforcement
+
+**The codebase must be 100% free of:**
+
+- ❌ ANY `any` types (use proper types, generics, or unknown)
+- ❌ ANY eslint-disable comments (fix the underlying issue instead)
+- ❌ Type assertions without proper justification
+- ❌ Implicit any types (strict mode enforces this)
+
+**If you find `any` or eslint-disable:**
+
+1. Stop immediately
+2. Fix it with proper types
+3. Run `pnpm quality` to verify
+4. Never commit code with these violations
+
 ### Type Safety Standards
 
 **Required:**
@@ -104,6 +120,7 @@ A pre-commit hook is configured at `.husky/pre-commit` that automatically:
 - TypeScript strict mode enabled (no implicit `any`)
 - All component props must be explicitly typed
 - All function parameters and returns must be typed
+- All event handlers must have proper event types (MouseEvent, KeyboardEvent, etc.)
 - Use proper types for browser APIs:
 
   ```typescript
@@ -126,15 +143,34 @@ A pre-commit hook is configured at `.husky/pre-commit` that automatically:
 </script>
 ```
 
+**Common Type Patterns:**
+
+```typescript
+// ✅ Event handlers
+function handleClick(event: MouseEvent) {}
+function handleKeydown(event: KeyboardEvent) {}
+function handleSubmit(event: SubmitEvent) {}
+
+// ✅ Form elements
+const input: HTMLInputElement | null = null;
+const form: HTMLFormElement | null = null;
+
+// ✅ Unknown instead of any
+function parseJson(str: string): unknown {
+	return JSON.parse(str);
+}
+// Then use type guards to narrow
+```
+
 ### Code Standards
 
 **Required:**
 
-- Prettier formatted, ESLint clean, type-check passing
+- Prettier formatted, ESLint clean, type-check passing (zero errors, zero warnings)
 - Svelte 4 syntax only (NOT Svelte 5)
-- Read files before editing
+- Read files before editing to understand context
 - Fix all accessibility warnings from svelte-check
-- All event handlers must be typed (MouseEvent, KeyboardEvent, etc.)
+- No `any` types or eslint-disable comments anywhere
 
 **Styling:**
 
