@@ -1,9 +1,41 @@
 /**
  * Animation Utilities using Motion One
  * Provides scroll-triggered animations, transitions, and performance-optimized effects
+ * Mobile-optimized with reduced motion detection
  */
 
 import { animate, stagger } from 'motion';
+
+/**
+ * Check if user prefers reduced motion
+ */
+export function prefersReducedMotion(): boolean {
+	if (typeof window === 'undefined') return false;
+	return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/**
+ * Check if device is mobile
+ */
+export function isMobileDevice(): boolean {
+	if (typeof window === 'undefined') return false;
+	return window.innerWidth < 768 || 'ontouchstart' in window;
+}
+
+/**
+ * Get animation config based on device and user preferences
+ */
+export function getAnimationConfig() {
+	const reducedMotion = prefersReducedMotion();
+	const isMobile = isMobileDevice();
+
+	return {
+		shouldAnimate: !reducedMotion,
+		duration: reducedMotion ? 0 : isMobile ? 0.3 : 0.5,
+		reduceDuration: isMobile ? 0.6 : 1,
+		reduceComplexity: isMobile || reducedMotion
+	};
+}
 
 /**
  * Intersection Observer configuration for scroll animations

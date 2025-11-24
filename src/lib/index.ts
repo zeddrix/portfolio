@@ -4,6 +4,10 @@
 export * from './utils/cloudinary';
 export * from './utils/animations';
 export * from './utils/slug';
+export * from './utils/responsive';
+
+// Export actions
+export * from './actions/touch';
 
 // Export stores
 export * from './stores/auth';

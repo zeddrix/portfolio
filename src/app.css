@@ -238,3 +238,138 @@ body {
 		border-color 300ms ease,
 		color 300ms ease;
 }
+
+/**
+ * Mobile-Specific Optimizations
+ */
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+	/* Prevent text size adjustment on orientation change */
+	html {
+		-webkit-text-size-adjust: 100%;
+	}
+
+	/* Better tap highlighting */
+	* {
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+	}
+
+	/* Prevent pull-to-refresh overscroll on iOS */
+	body {
+		overscroll-behavior-y: none;
+	}
+}
+
+/* Android specific fixes */
+@media (hover: none) and (pointer: coarse) {
+	/* Larger touch targets for mobile */
+	button,
+	a,
+	input,
+	select,
+	textarea {
+		min-height: 44px; /* Apple's recommended minimum touch target */
+		min-width: 44px;
+	}
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) {
+	/* Remove hover effects on touch devices */
+	.hover-only {
+		display: none;
+	}
+
+	/* Add active state feedback for touch */
+	button:active,
+	a:active,
+	[role='button']:active {
+		opacity: 0.7;
+		transform: scale(0.98);
+	}
+}
+
+/* Viewport-based responsive typography */
+@media (max-width: 768px) {
+	html {
+		font-size: 14px; /* Slightly smaller base font on mobile */
+	}
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+	html {
+		font-size: 15px; /* Medium screens */
+	}
+}
+
+@media (min-width: 1025px) {
+	html {
+		font-size: 16px; /* Desktop */
+	}
+}
+
+/* Safe area insets for notched devices (iPhone X+) */
+@supports (padding: env(safe-area-inset-top)) {
+	.safe-top {
+		padding-top: env(safe-area-inset-top);
+	}
+
+	.safe-bottom {
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+
+	.safe-left {
+		padding-left: env(safe-area-inset-left);
+	}
+
+	.safe-right {
+		padding-right: env(safe-area-inset-right);
+	}
+}
+
+/* Prevent layout shift on scroll */
+html {
+	overflow-y: scroll;
+	scrollbar-gutter: stable;
+}
+
+/* Smooth scrolling with reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Better focus visibility for keyboard navigation */
+@media (hover: hover) {
+	*:focus-visible {
+		outline: 2px solid rgb(var(--color-primary));
+		outline-offset: 2px;
+	}
+}
+
+/* Optimize text rendering for mobile */
+@media (max-width: 768px) {
+	body {
+		text-rendering: optimizeSpeed;
+		-webkit-font-smoothing: subpixel-antialiased;
+	}
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	* {
+		border-width: 2px;
+	}
+
+	button,
+	a {
+		font-weight: 600;
+	}
+}
