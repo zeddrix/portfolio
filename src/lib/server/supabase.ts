@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import { PUBLIC_SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
 
 /**
  * Creates a Supabase client for server-side use with the anon key.
@@ -25,3 +26,15 @@ export const createServerClient = (accessToken?: string) => {
 
 	return client;
 };
+
+/**
+ * Supabase admin client with service role key.
+ * Bypasses Row Level Security (RLS) policies.
+ * Use with caution - only in server-side code.
+ */
+export const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_SERVICE_ROLE_KEY, {
+	auth: {
+		autoRefreshToken: false,
+		persistSession: false
+	}
+});
