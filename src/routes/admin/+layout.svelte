@@ -73,23 +73,23 @@
 <svelte:window on:click={handleClickOutside} />
 
 {#if checkingAuth}
-	<div class="min-h-screen flex items-center justify-center bg-gray-100">
+	<div class="min-h-screen flex items-center justify-center bg-background">
 		<div class="text-center">
 			<div
-				class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"
+				class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"
 			></div>
-			<p class="mt-4 text-gray-600">Loading...</p>
+			<p class="mt-4 text-text-secondary">Loading...</p>
 		</div>
 	</div>
 {:else}
-	<div class="min-h-screen bg-gray-100">
+	<div class="min-h-screen bg-background">
 		<!-- Mobile menu button -->
-		<div class="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200">
+		<div class="lg:hidden fixed top-0 left-0 right-0 z-40 bg-surface border-b border-border">
 			<div class="flex items-center justify-between px-4 py-3">
-				<h1 class="text-lg font-semibold text-gray-900">Admin Panel</h1>
+				<h1 class="text-lg font-semibold text-text-primary">Admin Panel</h1>
 				<button
 					on:click={() => (mobileMenuOpen = !mobileMenuOpen)}
-					class="rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+					class="rounded-md p-2 text-text-secondary hover:bg-background hover:text-text-primary"
 					aria-label="Toggle menu"
 				>
 					<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -116,10 +116,10 @@
 		<!-- Sidebar for desktop -->
 		<aside class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
 			<div
-				class="flex flex-col flex-grow bg-white border-r border-gray-200 pt-5 pb-4 overflow-y-auto"
+				class="flex flex-col flex-grow bg-surface border-r border-border pt-5 pb-4 overflow-y-auto"
 			>
 				<div class="flex items-center flex-shrink-0 px-4">
-					<h1 class="text-xl font-bold text-gray-900">Admin Panel</h1>
+					<h1 class="text-xl font-bold text-text-primary">Admin Panel</h1>
 				</div>
 				<nav class="mt-8 flex-1 px-2 space-y-1">
 					{#each navItems as item}
@@ -128,8 +128,8 @@
 							class="group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors {isActive(
 								item.href
 							)
-								? 'bg-gray-900 text-white'
-								: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+								? 'bg-primary text-white'
+								: 'text-text-secondary hover:bg-background hover:text-text-primary'}"
 						>
 							<span class="material-icons mr-3 text-xl">{item.icon}</span>
 							{item.label}
@@ -142,7 +142,7 @@
 		<!-- Mobile sidebar -->
 		{#if mobileMenuOpen}
 			<div
-				class="lg:hidden fixed inset-0 z-30 bg-gray-600 bg-opacity-75"
+				class="lg:hidden fixed inset-0 z-30 bg-text-primary bg-opacity-75"
 				role="button"
 				tabindex="0"
 				on:click={closeMobileMenu}
@@ -150,7 +150,7 @@
 				aria-label="Close menu"
 			></div>
 			<aside
-				class="lg:hidden fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 pt-16"
+				class="lg:hidden fixed inset-y-0 left-0 z-40 w-64 bg-surface border-r border-border pt-16"
 			>
 				<nav class="mt-5 px-2 space-y-1">
 					{#each navItems as item}
@@ -160,8 +160,8 @@
 							class="group flex items-center px-2 py-2 text-base font-medium rounded-md transition-colors {isActive(
 								item.href
 							)
-								? 'bg-gray-900 text-white'
-								: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}"
+								? 'bg-primary text-white'
+								: 'text-text-secondary hover:bg-background hover:text-text-primary'}"
 						>
 							<span class="material-icons mr-3 text-xl">{item.icon}</span>
 							{item.label}
@@ -174,7 +174,7 @@
 		<!-- Main content -->
 		<div class="lg:pl-64 flex flex-col flex-1">
 			<!-- Top bar -->
-			<div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+			<div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-surface shadow">
 				<div class="flex-1 px-4 flex justify-between sm:px-6 lg:px-8">
 					<div class="flex-1 flex"></div>
 					<div class="ml-4 flex items-center md:ml-6">
@@ -184,13 +184,13 @@
 								<button
 									type="button"
 									on:click={toggleProfileDropdown}
-									class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+									class="max-w-xs bg-surface flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
 									aria-expanded={profileDropdownOpen}
 									aria-haspopup="true"
 								>
 									<span class="sr-only">Open user menu</span>
 									<div
-										class="h-8 w-8 rounded-full bg-gray-900 flex items-center justify-center text-white font-semibold"
+										class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold"
 									>
 										{$auth.user?.email?.[0].toUpperCase() || 'A'}
 									</div>
