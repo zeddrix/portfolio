@@ -177,6 +177,7 @@
 
 <div class="media-uploader">
 	{#if label}
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="block text-sm font-semibold text-text-primary mb-2">
 			{label}
 		</label>

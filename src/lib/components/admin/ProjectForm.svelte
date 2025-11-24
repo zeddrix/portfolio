@@ -132,11 +132,13 @@
 		<h2 class="text-xl font-bold text-text-primary mb-4">Challenge & Solution</h2>
 		<div class="space-y-4">
 			<div>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label class="block text-sm font-semibold text-text-primary mb-2">Challenge</label>
 				<input type="hidden" name="challenge" value={challenge} />
 				<RichTextEditor bind:value={challenge} minHeight="200px" />
 			</div>
 			<div>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label class="block text-sm font-semibold text-text-primary mb-2">Solution</label>
 				<input type="hidden" name="solution" value={solution} />
 				<RichTextEditor bind:value={solution} minHeight="200px" />
@@ -198,10 +200,11 @@
 		<h2 class="text-xl font-bold text-text-primary mb-4">Media</h2>
 		<div class="space-y-4">
 			<div>
-				<label class="block text-sm font-semibold text-text-primary mb-2">
+				<label for="featured_image_url" class="block text-sm font-semibold text-text-primary mb-2">
 					Featured Image <span class="text-error">*</span>
 				</label>
 				<input
+					id="featured_image_url"
 					type="url"
 					bind:value={featuredImageUrl}
 					placeholder="Cloudinary URL or upload image"

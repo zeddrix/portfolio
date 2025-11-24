@@ -96,6 +96,7 @@
 </script>
 
 <div class="space-y-2">
+	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label class="block text-sm font-medium text-gray-700">
 		{label}
 	</label>
@@ -107,6 +108,7 @@
 		class="hidden"
 		bind:this={fileInput}
 		on:change={handleFileChange}
+		aria-label={label}
 	/>
 
 	<!-- Drop zone / Preview -->

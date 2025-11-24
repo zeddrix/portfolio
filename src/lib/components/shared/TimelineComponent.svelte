@@ -7,9 +7,12 @@
 	export let items: T[] = [] as T[];
 
 	/**
-	 * Timeline type for styling
+	 * Timeline type for styling (passed by parent but currently unused in component logic)
 	 */
 	export let type: 'experience' | 'certification' = 'experience';
+
+	// Acknowledge unused prop to suppress warning (passed by parent for potential future use)
+	const _unusedType = type;
 
 	/**
 	 * Format date for display

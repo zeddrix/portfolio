@@ -94,7 +94,7 @@ export const actions: Actions = {
 				.update({
 					published: !currentStatus,
 					updated_at: new Date().toISOString()
-				})
+				} as never)
 				.eq('id', projectId);
 
 			if (error) {
@@ -127,7 +127,7 @@ export const actions: Actions = {
 				.update({
 					is_featured: !currentStatus,
 					updated_at: new Date().toISOString()
-				})
+				} as never)
 				.eq('id', projectId);
 
 			if (error) {
@@ -162,7 +162,7 @@ export const actions: Actions = {
 				.update({
 					display_order: validated.newOrder,
 					updated_at: new Date().toISOString()
-				})
+				} as never)
 				.eq('id', validated.projectId);
 
 			if (error) {
@@ -204,6 +204,11 @@ export const actions: Actions = {
 				return fail(500, { error: 'Failed to fetch project data' });
 			}
 
+			const typedProject = project as Pick<
+				Project,
+				'featured_image_cloudinary_id' | 'gallery_images' | 'demo_video_cloudinary_id'
+			> | null;
+
 			// Delete project from database
 			const { error: deleteError } = await getSupabaseAdmin()
 				.from('projects')
@@ -216,23 +221,25 @@ export const actions: Actions = {
 			}
 
 			// Delete associated media from Cloudinary (in background, don't block response)
-			if (project) {
+			if (typedProject) {
 				// Delete featured image
-				if (project.featured_image_cloudinary_id) {
-					deleteMedia(project.featured_image_cloudinary_id, 'image').catch(console.error);
+				if (typedProject.featured_image_cloudinary_id) {
+					deleteMedia(typedProject.featured_image_cloudinary_id, 'image').catch(console.error);
 				}
 
 				// Delete demo video
-				if (project.demo_video_cloudinary_id) {
-					deleteMedia(project.demo_video_cloudinary_id, 'video').catch(console.error);
+				if (typedProject.demo_video_cloudinary_id) {
+					deleteMedia(typedProject.demo_video_cloudinary_id, 'video').catch(console.error);
 				}
 
 				// Delete gallery images/videos
-				if (project.gallery_images && Array.isArray(project.gallery_images)) {
-					project.gallery_images.forEach((media: { cloudinary_id: string; media_type: string }) => {
-						const resourceType = media.media_type === 'video' ? 'video' : 'image';
-						deleteMedia(media.cloudinary_id, resourceType).catch(console.error);
-					});
+				if (typedProject.gallery_images && Array.isArray(typedProject.gallery_images)) {
+					typedProject.gallery_images.forEach(
+						(media: { cloudinary_id: string; media_type: string }) => {
+							const resourceType = media.media_type === 'video' ? 'video' : 'image';
+							deleteMedia(media.cloudinary_id, resourceType).catch(console.error);
+						}
+					);
 				}
 			}
 

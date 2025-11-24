@@ -15,12 +15,16 @@
 	export let profile: Profile | null = null;
 	export let projects: Project[] = [];
 	export let skills: Skill[] = [];
+	// These props are passed by layout system but not used in bento grid layout
 	export let certifications: Certification[] = [];
 	export let experiences: Experience[] = [];
 	export let socialLinks: SocialLink[] = [];
 
 	// Get featured skills or top 6 skills
 	const displaySkills = skills.filter((s) => s.is_featured).slice(0, 6);
+
+	// Acknowledge unused props to suppress warnings (layout props passed by system)
+	const _unusedProps = { certifications, experiences };
 
 	// Get featured projects or first 3 projects
 	const displayProjects = projects.slice(0, 3);

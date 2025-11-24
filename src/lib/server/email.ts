@@ -1,4 +1,4 @@
-import { PUBLIC_SUPABASE_URL } from '$env/static/public';
+import { Resend } from 'resend';
 import { env } from '$env/dynamic/private';
 
 /**
@@ -13,18 +13,24 @@ interface ContactEmailData {
 }
 
 /**
- * Send contact form email notification
+ * Initialize Resend client
+ */
+function getResendClient(): Resend | null {
+	const apiKey = env.RESEND_API_KEY;
+	if (!apiKey) {
+		console.warn('RESEND_API_KEY not configured - emails will be logged to console only');
+		return null;
+	}
+	return new Resend(apiKey);
+}
+
+/**
+ * Send contact form email notification using Resend
  *
- * This function sends an email notification when someone submits the contact form.
- * You can implement this using:
- * 1. Supabase Edge Functions (recommended)
- * 2. Resend API
- * 3. SendGrid API
- * 4. Mailgun API
- * 5. Nodemailer with SMTP
- *
- * For now, this is a placeholder that logs the message.
- * Replace this with your preferred email service.
+ * Environment variables required:
+ * - RESEND_API_KEY: Your Resend API key
+ * - CONTACT_EMAIL_FROM: Email address to send from (must be verified in Resend)
+ * - CONTACT_EMAIL_TO: Your email address to receive contact form submissions
  */
 export async function sendContactEmail(data: ContactEmailData): Promise<void> {
 	const { name, email, message, timestamp, clientIp } = data;
@@ -46,97 +52,42 @@ ${message}
 Sent from zeddrix.com portfolio contact form
 	`.trim();
 
-	// Option 1: Log to console (development/testing)
-	console.log('=== Contact Form Email ===');
-	console.log('Subject:', emailSubject);
-	console.log('Body:', emailBody);
-	console.log('========================');
+	// Try to send via Resend if configured
+	const resend = getResendClient();
 
-	// Option 2: Use Supabase Edge Functions (uncomment when ready)
-	/*
-	try {
-		const response = await fetch(`${PUBLIC_SUPABASE_URL}/functions/v1/send-contact-email`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`
-			},
-			body: JSON.stringify({
-				to: process.env.CONTACT_EMAIL_TO || 'your-email@example.com',
-				subject: emailSubject,
-				body: emailBody,
-				replyTo: email
-			})
-		});
+	if (resend) {
+		const fromEmail = env.CONTACT_EMAIL_FROM || 'onboarding@resend.dev';
+		const toEmail = env.CONTACT_EMAIL_TO;
 
-		if (!response.ok) {
-			throw new Error(`Email function failed: ${response.statusText}`);
+		if (!toEmail) {
+			console.error('CONTACT_EMAIL_TO is not set - cannot send email');
+			throw new Error('Email service not properly configured');
 		}
 
-		const result = await response.json();
-		console.log('Email sent successfully:', result);
-	} catch (error) {
-		console.error('Failed to send email via Supabase:', error);
-		throw error;
-	}
-	*/
-
-	// Option 3: Use Resend API (uncomment when ready)
-	/*
-	const RESEND_API_KEY = process.env.RESEND_API_KEY;
-	if (!RESEND_API_KEY) {
-		throw new Error('RESEND_API_KEY is not set');
-	}
-
-	try {
-		const response = await fetch('https://api.resend.com/emails', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${RESEND_API_KEY}`
-			},
-			body: JSON.stringify({
-				from: 'Portfolio Contact Form <noreply@zeddrix.com>',
-				to: process.env.CONTACT_EMAIL_TO || 'your-email@example.com',
-				reply_to: email,
+		try {
+			const result = await resend.emails.send({
+				from: fromEmail,
+				to: toEmail,
+				replyTo: email,
 				subject: emailSubject,
 				text: emailBody
-			})
-		});
+			});
 
-		if (!response.ok) {
-			const error = await response.json();
-			throw new Error(`Resend API error: ${JSON.stringify(error)}`);
+			console.log('Email sent successfully via Resend:', result);
+			return;
+		} catch (error) {
+			console.error('Failed to send email via Resend:', error);
+			throw error;
 		}
-
-		const result = await response.json();
-		console.log('Email sent successfully via Resend:', result);
-	} catch (error) {
-		console.error('Failed to send email via Resend:', error);
-		throw error;
 	}
-	*/
 
-	// Option 4: Save to database as fallback (always recommended)
-	/*
-	try {
-		const { error: dbError } = await supabase.from('contact_submissions').insert({
-			name,
-			email,
-			message,
-			ip_address: clientIp,
-			created_at: timestamp
-		});
+	// Fallback: Log to console if Resend is not configured
+	console.log('=== Contact Form Email (Console Only) ===');
+	console.log('Subject:', emailSubject);
+	console.log('Body:', emailBody);
+	console.log('=========================================');
 
-		if (dbError) {
-			console.error('Failed to save contact submission to database:', dbError);
-		}
-	} catch (error) {
-		console.error('Database error:', error);
-	}
-	*/
-
-	// For now, just resolve successfully (logging only)
+	// In development/testing without Resend configured, just resolve successfully
 	return Promise.resolve();
 }
 
@@ -149,15 +100,19 @@ export function checkEmailConfiguration(): {
 	error: string | null;
 } {
 	// Check for Resend API key
-	const resendKey = process.env.RESEND_API_KEY;
-	if (resendKey) {
+	const resendKey = env.RESEND_API_KEY;
+	const toEmail = env.CONTACT_EMAIL_TO;
+
+	if (resendKey && toEmail) {
 		return { configured: true, service: 'Resend', error: null };
 	}
 
-	// Check for Supabase Edge Functions
-	const supabaseServiceKey = env.SUPABASE_SERVICE_ROLE_KEY;
-	if (PUBLIC_SUPABASE_URL && supabaseServiceKey) {
-		return { configured: true, service: 'Supabase Edge Functions', error: null };
+	if (resendKey && !toEmail) {
+		return {
+			configured: false,
+			service: null,
+			error: 'RESEND_API_KEY is set but CONTACT_EMAIL_TO is missing'
+		};
 	}
 
 	// No email service configured

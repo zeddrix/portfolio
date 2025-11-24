@@ -7,6 +7,10 @@ import type { PageServerLoad, Actions } from './$types';
 import { createServerClient } from '$lib/server/supabase';
 import { profileSchema, socialLinkSchema, socialLinksReorderSchema } from '$lib/schemas/profile';
 import { uploadProfileImage, deleteImage } from '$lib/server/cloudinary';
+import type { Database } from '$lib/types/database';
+
+type Profile = Database['public']['Tables']['profile']['Row'];
+type SocialLink = Database['public']['Tables']['social_links']['Row'];
 
 /**
  * Load profile and social links data
@@ -35,8 +39,8 @@ export const load: PageServerLoad = async () => {
 	}
 
 	return {
-		profile: profile || null,
-		socialLinks: socialLinks || []
+		profile: (profile || null) as Profile | null,
+		socialLinks: (socialLinks || []) as SocialLink[]
 	};
 };
 
@@ -81,7 +85,8 @@ export const actions: Actions = {
 				}
 
 				// Upload new image
-				const uploadResult = await uploadProfileImage(imageDataUrl, currentProfile.id);
+				const typedProfile = currentProfile as Pick<Profile, 'id'> | null;
+				const uploadResult = await uploadProfileImage(imageDataUrl, typedProfile?.id || '');
 
 				// Delete old image if it exists
 				if (oldCloudinaryId) {
@@ -107,14 +112,18 @@ export const actions: Actions = {
 			});
 		}
 
+		// Get profile ID
+		const { data: currentProfile } = await supabase.from('profile').select('id').single();
+		const typedCurrentProfile = currentProfile as Pick<Profile, 'id'> | null;
+
 		// Update profile in database
 		const { error } = await supabase
 			.from('profile')
 			.update({
 				...validation.data,
 				updated_at: new Date().toISOString()
-			})
-			.eq('id', (await supabase.from('profile').select('id').single()).data?.id || '');
+			} as never)
+			.eq('id', typedCurrentProfile?.id || '');
 
 		if (error) {
 			console.error('Error updating profile:', error);
@@ -155,14 +164,17 @@ export const actions: Actions = {
 			.order('display_order', { ascending: false })
 			.limit(1);
 
+		const typedExistingLinks = existingLinks as Pick<SocialLink, 'display_order'>[] | null;
 		const nextOrder =
-			existingLinks && existingLinks.length > 0 ? existingLinks[0].display_order + 1 : 0;
+			typedExistingLinks && typedExistingLinks.length > 0
+				? typedExistingLinks[0].display_order + 1
+				: 0;
 
 		// Insert new social link
 		const { error } = await supabase.from('social_links').insert({
 			...validation.data,
 			display_order: nextOrder
-		});
+		} as never);
 
 		if (error) {
 			console.error('Error creating social link:', error);
@@ -198,7 +210,10 @@ export const actions: Actions = {
 		}
 
 		// Update social link
-		const { error } = await supabase.from('social_links').update(validation.data).eq('id', linkId);
+		const { error } = await supabase
+			.from('social_links')
+			.update(validation.data as never)
+			.eq('id', linkId);
 
 		if (error) {
 			console.error('Error updating social link:', error);
@@ -251,7 +266,7 @@ export const actions: Actions = {
 			const updates = validation.data.links.map((link) =>
 				supabase
 					.from('social_links')
-					.update({ display_order: link.display_order })
+					.update({ display_order: link.display_order } as never)
 					.eq('id', link.id)
 			);
 

@@ -67,6 +67,14 @@ A pre-commit hook is configured at `.husky/pre-commit` that automatically:
 - Runs full type checking on the entire codebase
 - **Blocks commits if any errors are found**
 
+### Best Practices
+
+**To prevent type errors and ensure code quality:**
+
+1. **Always run `pnpm quality` before committing** - This is your safety net
+2. **Never use `--no-verify` flag** - Bypasses critical checks
+3. **Test after adding new dependencies** - Especially type-dependent packages like Supabase
+
 ## Code Quality Standards
 
 ### Mandatory Rules (Zero Tolerance)
@@ -278,6 +286,11 @@ CLOUDINARY_API_KEY=           # API key
 CLOUDINARY_API_SECRET=        # API secret (keep private!)
 PUBLIC_CLOUDINARY_CLOUD_NAME= # Public cloud name (for frontend)
 CLOUDINARY_URL=               # Full Cloudinary URL
+
+# Resend (Email Service)
+RESEND_API_KEY=               # Your Resend API key (get from resend.com)
+CONTACT_EMAIL_FROM=           # Email to send from (must be verified in Resend)
+CONTACT_EMAIL_TO=             # Your email to receive contact form submissions
 ```
 
 ### After Initial Migration

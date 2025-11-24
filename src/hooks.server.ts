@@ -1,6 +1,7 @@
 import { redirect, type Handle } from '@sveltejs/kit';
 import { createServerClient } from '$lib/server/supabase';
 import { getSession } from '$lib/server/session';
+import type { Database } from '$lib/types/database';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// Create Supabase client for this request
@@ -36,8 +37,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 				.single();
 
 			// Redirect to maintenance page if maintenance mode is enabled
-			if (settings?.maintenance_mode === true) {
-				throw redirect(303, '/maintenance');
+			if (settings && 'maintenance_mode' in settings) {
+				const typedSettings = settings as Database['public']['Tables']['site_settings']['Row'];
+				if (typedSettings.maintenance_mode === true) {
+					throw redirect(303, '/maintenance');
+				}
 			}
 		} catch (error) {
 			// If error is not a redirect, log it and continue

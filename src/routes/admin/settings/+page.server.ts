@@ -1,6 +1,9 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { createServerClient } from '$lib/server/supabase';
+import type { Database } from '$lib/types/database';
+
+type SiteSettings = Database['public']['Tables']['site_settings']['Row'];
 
 export const load: PageServerLoad = async () => {
 	const supabase = createServerClient();
@@ -17,7 +20,7 @@ export const load: PageServerLoad = async () => {
 	}
 
 	return {
-		settings
+		settings: settings as SiteSettings
 	};
 };
 
@@ -31,10 +34,13 @@ export const actions = {
 			return fail(400, { error: 'Invalid layout value' });
 		}
 
+		const { data: settings } = await supabase.from('site_settings').select('id').single();
+		const typedSettings = settings as Pick<SiteSettings, 'id'> | null;
+
 		const { error: updateError } = await supabase
 			.from('site_settings')
-			.update({ active_layout: layout, updated_at: new Date().toISOString() })
-			.eq('id', (await supabase.from('site_settings').select('id').single()).data?.id);
+			.update({ active_layout: layout, updated_at: new Date().toISOString() } as never)
+			.eq('id', typedSettings?.id || '');
 
 		if (updateError) {
 			console.error('Error updating layout:', updateError);
@@ -63,10 +69,13 @@ export const actions = {
 			return fail(400, { error: 'Invalid palette value' });
 		}
 
+		const { data: settings } = await supabase.from('site_settings').select('id').single();
+		const typedSettings = settings as Pick<SiteSettings, 'id'> | null;
+
 		const { error: updateError } = await supabase
 			.from('site_settings')
-			.update({ active_palette: palette, updated_at: new Date().toISOString() })
-			.eq('id', (await supabase.from('site_settings').select('id').single()).data?.id);
+			.update({ active_palette: palette, updated_at: new Date().toISOString() } as never)
+			.eq('id', typedSettings?.id || '');
 
 		if (updateError) {
 			console.error('Error updating palette:', updateError);
@@ -85,10 +94,13 @@ export const actions = {
 			return fail(400, { error: 'Invalid theme value' });
 		}
 
+		const { data: settings } = await supabase.from('site_settings').select('id').single();
+		const typedSettings = settings as Pick<SiteSettings, 'id'> | null;
+
 		const { error: updateError } = await supabase
 			.from('site_settings')
-			.update({ theme_mode: theme, updated_at: new Date().toISOString() })
-			.eq('id', (await supabase.from('site_settings').select('id').single()).data?.id);
+			.update({ theme_mode: theme, updated_at: new Date().toISOString() } as never)
+			.eq('id', typedSettings?.id || '');
 
 		if (updateError) {
 			console.error('Error updating theme:', updateError);
@@ -103,10 +115,13 @@ export const actions = {
 		const formData = await request.formData();
 		const maintenanceMode = formData.get('maintenance_mode') === 'true';
 
+		const { data: settings } = await supabase.from('site_settings').select('id').single();
+		const typedSettings = settings as Pick<SiteSettings, 'id'> | null;
+
 		const { error: updateError } = await supabase
 			.from('site_settings')
-			.update({ maintenance_mode: maintenanceMode, updated_at: new Date().toISOString() })
-			.eq('id', (await supabase.from('site_settings').select('id').single()).data?.id);
+			.update({ maintenance_mode: maintenanceMode, updated_at: new Date().toISOString() } as never)
+			.eq('id', typedSettings?.id || '');
 
 		if (updateError) {
 			console.error('Error updating maintenance mode:', updateError);

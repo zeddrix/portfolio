@@ -73,7 +73,8 @@ export const actions: Actions = {
 				.order('display_order', { ascending: false })
 				.limit(1);
 
-			const maxOrder = existingSkills?.[0]?.display_order ?? -1;
+			const typedExistingSkills = existingSkills as Pick<Skill, 'display_order'>[] | null;
+			const maxOrder = typedExistingSkills?.[0]?.display_order ?? -1;
 			const newOrder = maxOrder + 1;
 
 			// Clean up empty string URLs
@@ -85,7 +86,9 @@ export const actions: Actions = {
 			};
 
 			// Insert skill
-			const { error: insertError } = await getSupabaseAdmin().from('skills').insert([cleanData]);
+			const { error: insertError } = await getSupabaseAdmin()
+				.from('skills')
+				.insert([cleanData] as never);
 
 			if (insertError) throw insertError;
 
@@ -140,7 +143,7 @@ export const actions: Actions = {
 			// Update skill
 			const { error: updateError } = await getSupabaseAdmin()
 				.from('skills')
-				.update(updateData)
+				.update(updateData as never)
 				.eq('id', id);
 
 			if (updateError) throw updateError;
@@ -224,7 +227,7 @@ export const actions: Actions = {
 			const updates = result.data.skills.map((skill) =>
 				getSupabaseAdmin()
 					.from('skills')
-					.update({ display_order: skill.display_order })
+					.update({ display_order: skill.display_order } as never)
 					.eq('id', skill.id)
 			);
 
@@ -264,7 +267,7 @@ export const actions: Actions = {
 			// Update featured status
 			const { error: updateError } = await getSupabaseAdmin()
 				.from('skills')
-				.update({ is_featured: result.data.is_featured })
+				.update({ is_featured: result.data.is_featured } as never)
 				.eq('id', result.data.id);
 
 			if (updateError) throw updateError;

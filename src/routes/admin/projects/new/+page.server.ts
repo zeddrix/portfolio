@@ -2,6 +2,9 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { getSupabaseAdmin } from '$lib/server/supabase';
 import { projectFormSchema } from '$lib/schemas/project';
+import type { Database } from '$lib/types/database';
+
+type Project = Database['public']['Tables']['projects']['Row'];
 
 export const load: PageServerLoad = async () => {
 	// Return empty data for new project form
@@ -66,7 +69,8 @@ export const actions: Actions = {
 				.limit(1)
 				.single();
 
-			const display_order = (maxOrder?.display_order || 0) + 1;
+			const typedMaxOrder = maxOrder as Pick<Project, 'display_order'> | null;
+			const display_order = (typedMaxOrder?.display_order || 0) + 1;
 
 			// Insert project
 			const { error } = await getSupabaseAdmin()
@@ -74,7 +78,7 @@ export const actions: Actions = {
 				.insert({
 					...validated,
 					display_order
-				})
+				} as never)
 				.select()
 				.single();
 

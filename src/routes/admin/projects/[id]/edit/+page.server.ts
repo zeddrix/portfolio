@@ -47,6 +47,11 @@ export const actions: Actions = {
 				.eq('id', params.id)
 				.single();
 
+			const typedOldProject = oldProject as Pick<
+				Project,
+				'featured_image_cloudinary_id' | 'gallery_images' | 'demo_video_cloudinary_id'
+			> | null;
+
 			// Build update data
 			const projectData = {
 				title: formData.get('title')?.toString() || '',
@@ -78,7 +83,7 @@ export const actions: Actions = {
 				.update({
 					...validated,
 					updated_at: new Date().toISOString()
-				})
+				} as never)
 				.eq('id', params.id);
 
 			if (error) {
@@ -87,21 +92,23 @@ export const actions: Actions = {
 			}
 
 			// Delete old media if changed
-			if (oldProject) {
-				if (oldProject.featured_image_cloudinary_id !== validated.featured_image_cloudinary_id) {
-					deleteMedia(oldProject.featured_image_cloudinary_id, 'image').catch(console.error);
+			if (typedOldProject) {
+				if (
+					typedOldProject.featured_image_cloudinary_id !== validated.featured_image_cloudinary_id
+				) {
+					deleteMedia(typedOldProject.featured_image_cloudinary_id, 'image').catch(console.error);
 				}
 
 				if (
-					oldProject.demo_video_cloudinary_id &&
-					oldProject.demo_video_cloudinary_id !== validated.demo_video_cloudinary_id
+					typedOldProject.demo_video_cloudinary_id &&
+					typedOldProject.demo_video_cloudinary_id !== validated.demo_video_cloudinary_id
 				) {
-					deleteMedia(oldProject.demo_video_cloudinary_id, 'video').catch(console.error);
+					deleteMedia(typedOldProject.demo_video_cloudinary_id, 'video').catch(console.error);
 				}
 
 				// Delete removed gallery items
-				if (oldProject.gallery_images && Array.isArray(oldProject.gallery_images)) {
-					oldProject.gallery_images.forEach(
+				if (typedOldProject.gallery_images && Array.isArray(typedOldProject.gallery_images)) {
+					typedOldProject.gallery_images.forEach(
 						(oldMedia: { cloudinary_id: string; media_type: string }) => {
 							const stillExists = validated.gallery_images.some(
 								(newMedia) => newMedia.cloudinary_id === oldMedia.cloudinary_id

@@ -112,12 +112,12 @@
 
 <!-- Confirmation Dialog -->
 {#if showConfirmDialog}
+	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<div
 		class="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
 		on:click={cancelChange}
 		on:keydown={(e) => e.key === 'Escape' && cancelChange()}
-		role="button"
-		tabindex="-1"
+		role="presentation"
 	>
 		<div
 			class="bg-surface border border-border rounded-lg p-6 max-w-md w-full shadow-xl"

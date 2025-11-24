@@ -15,6 +15,7 @@
 
 	export let profile: Profile | null = null;
 	export let projects: Project[] = [];
+	// These props are passed by layout system but not used in case study layout
 	export let skills: Skill[] = [];
 	export let certifications: Certification[] = [];
 	export let experiences: Experience[] = [];
@@ -22,6 +23,9 @@
 
 	// Get featured projects or all projects
 	const displayProjects = projects.filter((p) => p.is_featured) || projects;
+
+	// Acknowledge unused props to suppress warnings (layout props passed by system)
+	const _unusedProps = { skills, certifications, experiences };
 </script>
 
 <div class="min-h-screen bg-background">

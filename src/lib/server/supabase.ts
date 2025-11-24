@@ -1,6 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 import { env } from '$env/dynamic/private';
+import type { Database } from '$lib/types/database';
 
 /**
  * Creates a Supabase client for server-side use with the anon key.
@@ -8,8 +9,8 @@ import { env } from '$env/dynamic/private';
  *
  * @param accessToken - Optional access token for authenticated requests
  */
-export const createServerClient = (accessToken?: string) => {
-	const client = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+export const createServerClient = (accessToken?: string): SupabaseClient<Database> => {
+	const client = createClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
 			autoRefreshToken: false,
 			persistSession: false,
@@ -21,6 +22,9 @@ export const createServerClient = (accessToken?: string) => {
 						Authorization: `Bearer ${accessToken}`
 					}
 				: {}
+		},
+		db: {
+			schema: 'public'
 		}
 	});
 
@@ -34,18 +38,21 @@ export const createServerClient = (accessToken?: string) => {
  *
  * Note: This is a function to allow lazy initialization with dynamic env variables.
  */
-let _supabaseAdmin: ReturnType<typeof createClient> | null = null;
+let _supabaseAdmin: SupabaseClient<Database> | null = null;
 
-export const getSupabaseAdmin = () => {
+export const getSupabaseAdmin = (): SupabaseClient<Database> => {
 	if (!_supabaseAdmin) {
 		const serviceKey = env.SUPABASE_SERVICE_ROLE_KEY;
 		if (!serviceKey) {
 			throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set');
 		}
-		_supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, serviceKey, {
+		_supabaseAdmin = createClient<Database>(PUBLIC_SUPABASE_URL, serviceKey, {
 			auth: {
 				autoRefreshToken: false,
 				persistSession: false
+			},
+			db: {
+				schema: 'public'
 			}
 		});
 	}

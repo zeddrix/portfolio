@@ -1,5 +1,9 @@
 import { createServerClient } from '$lib/server/supabase';
 import type { PageServerLoad } from './$types';
+import type { Database } from '$lib/types/database';
+
+type SiteSettings = Database['public']['Tables']['site_settings']['Row'];
+type Project = Database['public']['Tables']['projects']['Row'];
 
 export const load: PageServerLoad = async () => {
 	const supabase = createServerClient();
@@ -25,13 +29,16 @@ export const load: PageServerLoad = async () => {
 		.limit(5);
 
 	return {
-		siteSettings,
+		siteSettings: (siteSettings || null) as SiteSettings | null,
 		stats: {
 			totalProjects: projectsResult.count || 0,
 			totalSkills: skillsResult.count || 0,
 			totalCertifications: certificationsResult.count || 0,
 			totalExperiences: experiencesResult.count || 0
 		},
-		recentProjects: recentProjects || []
+		recentProjects: (recentProjects || []) as Pick<
+			Project,
+			'id' | 'title' | 'slug' | 'updated_at' | 'published'
+		>[]
 	};
 };

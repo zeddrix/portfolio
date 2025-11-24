@@ -89,11 +89,12 @@ export const actions: Actions = {
 				.order('display_order', { ascending: false })
 				.limit(1);
 
-			const maxOrder = existing?.[0]?.display_order ?? -1;
+			const typedExisting = existing as Pick<Certification, 'display_order'>[] | null;
+			const maxOrder = typedExisting?.[0]?.display_order ?? -1;
 			const newOrder = maxOrder + 1;
 
 			// Clean up empty strings
-			const cleanData = {
+			const cleanData: Database['public']['Tables']['certifications']['Insert'] = {
 				...result.data,
 				expiry_date: result.data.expiry_date || null,
 				credential_url: result.data.credential_url || null,
@@ -102,9 +103,10 @@ export const actions: Actions = {
 			};
 
 			// Insert certification
-			const { error: insertError } = await getSupabaseAdmin()
+			const supabase = getSupabaseAdmin();
+			const { error: insertError } = await supabase
 				.from('certifications')
-				.insert([cleanData]);
+				.insert([cleanData] as never);
 
 			if (insertError) throw insertError;
 
@@ -157,10 +159,13 @@ export const actions: Actions = {
 			// Remove id from update data
 			const { id, ...updateData } = cleanData;
 
+			// Remove id from update data and type it properly
+			const typedUpdateData: Database['public']['Tables']['certifications']['Update'] = updateData;
+
 			// Update certification
 			const { error: updateError } = await getSupabaseAdmin()
 				.from('certifications')
-				.update(updateData)
+				.update(typedUpdateData as never)
 				.eq('id', id);
 
 			if (updateError) throw updateError;
@@ -244,7 +249,7 @@ export const actions: Actions = {
 			const updates = result.data.certifications.map((cert) =>
 				getSupabaseAdmin()
 					.from('certifications')
-					.update({ display_order: cert.display_order })
+					.update({ display_order: cert.display_order } as never)
 					.eq('id', cert.id)
 			);
 
@@ -296,7 +301,8 @@ export const actions: Actions = {
 				.order('display_order', { ascending: false })
 				.limit(1);
 
-			const maxOrder = existing?.[0]?.display_order ?? -1;
+			const typedExisting = existing as Pick<Experience, 'display_order'>[] | null;
+			const maxOrder = typedExisting?.[0]?.display_order ?? -1;
 			const newOrder = maxOrder + 1;
 
 			// Clean up empty strings
@@ -310,7 +316,7 @@ export const actions: Actions = {
 			// Insert experience
 			const { error: insertError } = await getSupabaseAdmin()
 				.from('experiences')
-				.insert([cleanData]);
+				.insert([cleanData] as never);
 
 			if (insertError) throw insertError;
 
@@ -366,7 +372,7 @@ export const actions: Actions = {
 			// Update experience
 			const { error: updateError } = await getSupabaseAdmin()
 				.from('experiences')
-				.update(updateData)
+				.update(updateData as never)
 				.eq('id', id);
 
 			if (updateError) throw updateError;
@@ -450,7 +456,7 @@ export const actions: Actions = {
 			const updates = result.data.experiences.map((exp) =>
 				getSupabaseAdmin()
 					.from('experiences')
-					.update({ display_order: exp.display_order })
+					.update({ display_order: exp.display_order } as never)
 					.eq('id', exp.id)
 			);
 

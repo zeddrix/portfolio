@@ -160,9 +160,12 @@
 			return;
 		}
 
+		// Type assertion for socialLinks
+		const typedSocialLinks = socialLinks as SocialLink[];
+
 		// Find indexes
-		const draggedIndex = socialLinks.findIndex((l) => l.id === draggedLinkId);
-		const targetIndex = socialLinks.findIndex((l) => l.id === targetLinkId);
+		const draggedIndex = typedSocialLinks.findIndex((l) => l.id === draggedLinkId);
+		const targetIndex = typedSocialLinks.findIndex((l) => l.id === targetLinkId);
 
 		if (draggedIndex === -1 || targetIndex === -1) {
 			draggedLinkId = null;
@@ -170,7 +173,7 @@
 		}
 
 		// Reorder array
-		const newLinks = [...socialLinks];
+		const newLinks = [...typedSocialLinks];
 		const [draggedLink] = newLinks.splice(draggedIndex, 1);
 		newLinks.splice(targetIndex, 0, draggedLink);
 
@@ -204,18 +207,20 @@
 	// Reactive updates when data changes
 	$: if (data.profile) {
 		profile = data.profile;
-		fullName = profile.full_name;
-		tagline = profile.tagline;
-		bio = profile.bio;
-		email = profile.email;
-		phone = profile.phone || '';
-		linkedinUrl = profile.linkedin_url || '';
-		githubUrl = profile.github_url || '';
-		websiteUrl = profile.website_url || '';
-		location = profile.location || '';
-		availableForWork = profile.available_for_work;
-		profileImageUrl = profile.profile_image_url;
-		profileImageCloudinaryId = profile.profile_image_cloudinary_id;
+		if (profile) {
+			fullName = profile.full_name;
+			tagline = profile.tagline;
+			bio = profile.bio;
+			email = profile.email;
+			phone = profile.phone || '';
+			linkedinUrl = profile.linkedin_url || '';
+			githubUrl = profile.github_url || '';
+			websiteUrl = profile.website_url || '';
+			location = profile.location || '';
+			availableForWork = profile.available_for_work;
+			profileImageUrl = profile.profile_image_url;
+			profileImageCloudinaryId = profile.profile_image_cloudinary_id;
+		}
 	}
 
 	$: if (data.socialLinks) {
