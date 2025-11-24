@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Database } from '$lib/types/database';
+	import { contactSchema } from '$lib/schemas/forms';
 
 	type Profile = Database['public']['Tables']['profile']['Row'];
 
@@ -25,28 +26,67 @@
 	let formData = {
 		name: '',
 		email: '',
-		message: ''
+		message: '',
+		website: ''
 	};
 
+	let formErrors: {
+		name?: string[];
+		email?: string[];
+		message?: string[];
+		website?: string[];
+	} = {};
+
 	let isSubmitting = false;
-	let submitStatus: 'idle' | 'success' | 'error' = 'idle';
+	let submitStatus: { type: 'success' | 'error'; message: string } | null = null;
 
 	/**
-	 * Handle form submission
+	 * Handle form submission with validation
 	 */
 	async function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
 		isSubmitting = true;
-		submitStatus = 'idle';
+		submitStatus = null;
+		formErrors = {};
+
+		// Validate with Zod
+		const validation = contactSchema.safeParse(formData);
+
+		if (!validation.success) {
+			formErrors = validation.error.flatten().fieldErrors;
+			isSubmitting = false;
+			return;
+		}
 
 		try {
-			// TODO: Implement contact form submission (Phase 15)
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			submitStatus = 'success';
-			formData = { name: '', email: '', message: '' };
+			const response = await fetch('/api/contact', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(validation.data)
+			});
+
+			const result = await response.json();
+
+			if (result.success) {
+				submitStatus = {
+					type: 'success',
+					message: result.message || 'Message sent successfully! I will get back to you soon.'
+				};
+				// Reset form
+				formData = { name: '', email: '', message: '', website: '' };
+			} else {
+				submitStatus = {
+					type: 'error',
+					message:
+						result.message || 'Failed to send message. Please try again or contact me directly.'
+				};
+			}
 		} catch (error) {
 			console.error('Form submission error:', error);
-			submitStatus = 'error';
+			submitStatus = {
+				type: 'error',
+				message: 'An unexpected error occurred. Please try again or contact me directly via email.'
+			};
 		} finally {
 			isSubmitting = false;
 		}
@@ -141,44 +181,81 @@
 				<form on:submit={handleSubmit} class="space-y-6">
 					<!-- Name -->
 					<div>
-						<label for="name" class="block text-sm font-medium text-text-primary mb-2">Name</label>
+						<label for="name" class="block text-sm font-medium text-text-primary mb-2">
+							Name <span class="text-error">*</span>
+						</label>
 						<input
 							type="text"
 							id="name"
+							name="name"
 							bind:value={formData.name}
+							aria-invalid={formErrors.name ? 'true' : undefined}
 							required
-							class="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+							class="w-full px-4 py-2 bg-background border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+							class:border-error={formErrors.name}
+							class:border-border={!formErrors.name}
 							placeholder="Your name"
 						/>
+						{#if formErrors.name}
+							<p class="mt-1 text-sm text-error">{formErrors.name[0]}</p>
+						{/if}
 					</div>
 
 					<!-- Email -->
 					<div>
-						<label for="email" class="block text-sm font-medium text-text-primary mb-2">Email</label
-						>
+						<label for="email" class="block text-sm font-medium text-text-primary mb-2">
+							Email <span class="text-error">*</span>
+						</label>
 						<input
 							type="email"
 							id="email"
+							name="email"
 							bind:value={formData.email}
+							aria-invalid={formErrors.email ? 'true' : undefined}
 							required
-							class="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+							class="w-full px-4 py-2 bg-background border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+							class:border-error={formErrors.email}
+							class:border-border={!formErrors.email}
 							placeholder="your.email@example.com"
 						/>
+						{#if formErrors.email}
+							<p class="mt-1 text-sm text-error">{formErrors.email[0]}</p>
+						{/if}
 					</div>
 
 					<!-- Message -->
 					<div>
-						<label for="message" class="block text-sm font-medium text-text-primary mb-2"
-							>Message</label
-						>
+						<label for="message" class="block text-sm font-medium text-text-primary mb-2">
+							Message <span class="text-error">*</span>
+						</label>
 						<textarea
 							id="message"
+							name="message"
 							bind:value={formData.message}
+							aria-invalid={formErrors.message ? 'true' : undefined}
 							required
 							rows="5"
-							class="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+							class="w-full px-4 py-2 bg-background border rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+							class:border-error={formErrors.message}
+							class:border-border={!formErrors.message}
 							placeholder="Your message..."
 						></textarea>
+						{#if formErrors.message}
+							<p class="mt-1 text-sm text-error">{formErrors.message[0]}</p>
+						{/if}
+					</div>
+
+					<!-- Honeypot field (hidden from users, catches bots) -->
+					<div class="hidden" aria-hidden="true">
+						<label for="website">Website</label>
+						<input
+							type="text"
+							id="website"
+							name="website"
+							bind:value={formData.website}
+							tabindex="-1"
+							autocomplete="off"
+						/>
 					</div>
 
 					<!-- Submit Button -->
@@ -186,29 +263,63 @@
 						type="submit"
 						disabled={isSubmitting}
 						class="w-full px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface disabled:opacity-50 disabled:cursor-not-allowed"
-						class:cursor-wait={isSubmitting}
 					>
 						{#if isSubmitting}
-							Sending...
+							<span class="flex items-center justify-center gap-2">
+								<svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
+									<circle
+										class="opacity-25"
+										cx="12"
+										cy="12"
+										r="10"
+										stroke="currentColor"
+										stroke-width="4"
+										fill="none"
+									/>
+									<path
+										class="opacity-75"
+										fill="currentColor"
+										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+									/>
+								</svg>
+								Sending...
+							</span>
 						{:else}
 							Send Message
 						{/if}
 					</button>
 
 					<!-- Status Messages -->
-					{#if submitStatus === 'success'}
-						<p
-							class="text-sm font-medium p-3 rounded-lg bg-success/10 text-success border border-success/30"
-						>
-							Message sent successfully! I'll get back to you soon.
-						</p>
-					{/if}
-					{#if submitStatus === 'error'}
-						<p
-							class="text-sm font-medium p-3 rounded-lg bg-error/10 text-error border border-error/30"
-						>
-							Failed to send message. Please try again or contact me directly.
-						</p>
+					{#if submitStatus}
+						{#if submitStatus.type === 'success'}
+							<div
+								class="flex items-start gap-2 text-sm font-medium p-3 rounded-lg bg-success/10 text-success border border-success/30"
+								role="alert"
+							>
+								<svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+									<path
+										fill-rule="evenodd"
+										d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+										clip-rule="evenodd"
+									/>
+								</svg>
+								<span>{submitStatus.message}</span>
+							</div>
+						{:else if submitStatus.type === 'error'}
+							<div
+								class="flex items-start gap-2 text-sm font-medium p-3 rounded-lg bg-error/10 text-error border border-error/30"
+								role="alert"
+							>
+								<svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+									<path
+										fill-rule="evenodd"
+										d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+										clip-rule="evenodd"
+									/>
+								</svg>
+								<span>{submitStatus.message}</span>
+							</div>
+						{/if}
 					{/if}
 				</form>
 			</div>
