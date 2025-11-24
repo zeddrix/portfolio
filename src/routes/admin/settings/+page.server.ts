@@ -1,12 +1,12 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { createServerClient } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import type { Database } from '$lib/types/database';
 
 type SiteSettings = Database['public']['Tables']['site_settings']['Row'];
 
 export const load: PageServerLoad = async () => {
-	const supabase = createServerClient();
+	const supabase = getSupabaseAdmin();
 
 	// Fetch current site settings
 	const { data: settings, error: settingsError } = await supabase
@@ -26,7 +26,7 @@ export const load: PageServerLoad = async () => {
 
 export const actions = {
 	updateLayout: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 		const layout = formData.get('layout') as string;
 
@@ -51,7 +51,7 @@ export const actions = {
 	},
 
 	updatePalette: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 		const palette = formData.get('palette') as string;
 
@@ -86,7 +86,7 @@ export const actions = {
 	},
 
 	updateTheme: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 		const theme = formData.get('theme') as string;
 
@@ -111,7 +111,7 @@ export const actions = {
 	},
 
 	updateMaintenanceMode: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 		const maintenanceMode = formData.get('maintenance_mode') === 'true';
 

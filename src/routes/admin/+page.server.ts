@@ -1,4 +1,4 @@
-import { createServerClient } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import type { PageServerLoad } from './$types';
 import type { Database } from '$lib/types/database';
 
@@ -6,7 +6,7 @@ type SiteSettings = Database['public']['Tables']['site_settings']['Row'];
 type Project = Database['public']['Tables']['projects']['Row'];
 
 export const load: PageServerLoad = async () => {
-	const supabase = createServerClient();
+	const supabase = getSupabaseAdmin();
 
 	// Fetch site settings
 	const { data: siteSettings } = await supabase.from('site_settings').select('*').single();

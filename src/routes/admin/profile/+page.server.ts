@@ -4,7 +4,7 @@
 
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { createServerClient } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import { profileSchema, socialLinkSchema, socialLinksReorderSchema } from '$lib/schemas/profile';
 import { uploadProfileImage, deleteImage } from '$lib/server/cloudinary';
 import type { Database } from '$lib/types/database';
@@ -16,7 +16,7 @@ type SocialLink = Database['public']['Tables']['social_links']['Row'];
  * Load profile and social links data
  */
 export const load: PageServerLoad = async () => {
-	const supabase = createServerClient();
+	const supabase = getSupabaseAdmin();
 
 	// Fetch profile
 	const { data: profile, error: profileError } = await supabase
@@ -52,7 +52,7 @@ export const actions: Actions = {
 	 * Update profile information
 	 */
 	updateProfile: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 
 		// Parse form data
@@ -137,7 +137,7 @@ export const actions: Actions = {
 	 * Create new social link
 	 */
 	createSocialLink: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 
 		const linkData = {
@@ -188,7 +188,7 @@ export const actions: Actions = {
 	 * Update existing social link
 	 */
 	updateSocialLink: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 
 		const linkId = formData.get('id') as string;
@@ -227,7 +227,7 @@ export const actions: Actions = {
 	 * Delete social link
 	 */
 	deleteSocialLink: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 		const linkId = formData.get('id') as string;
 
@@ -245,7 +245,7 @@ export const actions: Actions = {
 	 * Reorder social links
 	 */
 	reorderSocialLinks: async ({ request }) => {
-		const supabase = createServerClient();
+		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
 		const linksJson = formData.get('links') as string;
 
