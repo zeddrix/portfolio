@@ -48,7 +48,7 @@
 	];
 </script>
 
-<div class="single-page-layout">
+<div class="min-h-screen bg-background">
 	<Navigation />
 
 	<!-- Hero Section -->
@@ -56,11 +56,11 @@
 	<ScrollIndicator targetId="about" />
 
 	<!-- About Section -->
-	<section id="about" class="section">
+	<section id="about" class="py-20">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="section-title">About Me</h2>
+			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">About Me</h2>
 			<div class="max-w-3xl mx-auto">
-				<p class="about-text">
+				<p class="text-lg text-text-secondary leading-relaxed">
 					I'm a passionate full-stack developer with expertise in modern web technologies. I love
 					creating beautiful, functional, and user-friendly applications.
 				</p>
@@ -69,10 +69,10 @@
 	</section>
 
 	<!-- Projects Section -->
-	<section id="projects" class="section bg-surface">
+	<section id="projects" class="py-20 bg-surface">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="section-title">Projects</h2>
-			<div class="projects-grid">
+			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">Projects</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 				{#each mockProjects as project}
 					<ProjectCard
 						variant="grid"
@@ -89,10 +89,12 @@
 	</section>
 
 	<!-- Skills Section -->
-	<section id="skills" class="section">
+	<section id="skills" class="py-20">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="section-title">Skills & Technologies</h2>
-			<div class="skills-grid">
+			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">
+				Skills & Technologies
+			</h2>
+			<div class="flex flex-wrap justify-center gap-4">
 				{#each mockSkills as skill}
 					<SkillBadge
 						name={skill.name}
@@ -107,9 +109,9 @@
 	</section>
 
 	<!-- Experience Section -->
-	<section id="experience" class="section bg-surface">
+	<section id="experience" class="py-20 bg-surface">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="section-title">Experience</h2>
+			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">Experience</h2>
 			<div class="max-w-3xl mx-auto">
 				<TimelineComponent items={mockExperiences} type="experience" />
 			</div>
@@ -120,43 +122,11 @@
 	<ContactSection variant="full" />
 
 	<!-- Footer -->
-	<footer class="footer">
+	<footer class="py-8 border-t border-border">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<p class="footer-text">&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.</p>
+			<p class="text-center text-text-secondary text-sm">
+				&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.
+			</p>
 		</div>
 	</footer>
 </div>
-
-<style>
-	.single-page-layout {
-		@apply min-h-screen bg-background;
-	}
-
-	.section {
-		@apply py-20;
-	}
-
-	.section-title {
-		@apply text-3xl sm:text-4xl font-bold text-primary mb-12 text-center;
-	}
-
-	.about-text {
-		@apply text-lg text-text-secondary leading-relaxed;
-	}
-
-	.projects-grid {
-		@apply grid grid-cols-1 md:grid-cols-2 gap-8;
-	}
-
-	.skills-grid {
-		@apply flex flex-wrap justify-center gap-4;
-	}
-
-	.footer {
-		@apply py-8 border-t border-border;
-	}
-
-	.footer-text {
-		@apply text-center text-text-secondary text-sm;
-	}
-</style>

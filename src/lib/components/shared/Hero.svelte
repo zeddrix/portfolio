@@ -29,7 +29,7 @@
 	}
 </script>
 
-<section id="hero" class={`hero ${getVariantClasses()}`}>
+<section id="hero" class={`relative overflow-hidden ${getVariantClasses()}`}>
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
 		<div class="text-center">
 			{#if variant === 'case_study'}
@@ -87,14 +87,13 @@
 </section>
 
 <style>
-	.hero {
-		@apply relative overflow-hidden;
-	}
-
 	/* Optional: Add animated background gradient */
-	.hero::before {
+	section::before {
 		content: '';
-		@apply absolute inset-0 -z-10 opacity-20;
+		position: absolute;
+		inset: 0;
+		z-index: -10;
+		opacity: 0.2;
 		background: radial-gradient(
 			circle at 50% 50%,
 			rgb(var(--color-primary) / 0.3),

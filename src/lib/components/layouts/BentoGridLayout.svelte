@@ -12,14 +12,14 @@
 	];
 </script>
 
-<div class="bento-grid-layout">
+<div class="min-h-screen bg-background">
 	<Navigation />
 
 	<!-- Main Content -->
-	<div class="content-wrapper">
+	<div class="min-h-[calc(100vh-8rem)]">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 			<!-- Bento Grid Container -->
-			<div class="bento-grid">
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[200px] gap-4">
 				<!-- Hero Card (Large) -->
 				<BentoGridCard
 					cardType="hero"
@@ -135,31 +135,11 @@
 	</div>
 
 	<!-- Footer -->
-	<footer class="footer">
+	<footer class="py-8 border-t border-border">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<p class="footer-text">&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.</p>
+			<p class="text-center text-text-secondary text-sm">
+				&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.
+			</p>
 		</div>
 	</footer>
 </div>
-
-<style>
-	.bento-grid-layout {
-		@apply min-h-screen bg-background;
-	}
-
-	.content-wrapper {
-		@apply min-h-[calc(100vh-8rem)];
-	}
-
-	.bento-grid {
-		@apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[200px] gap-4;
-	}
-
-	.footer {
-		@apply py-8 border-t border-border;
-	}
-
-	.footer-text {
-		@apply text-center text-text-secondary text-sm;
-	}
-</style>

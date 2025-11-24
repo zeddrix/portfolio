@@ -20,21 +20,29 @@
 	}
 </script>
 
-<div class="timeline">
+<div class="relative space-y-8">
 	{#each items as item, index (item.id)}
-		<div class="timeline-item" class:last={index === items.length - 1}>
+		<div class="timeline-item relative flex gap-6" class:last={index === items.length - 1}>
 			<!-- Timeline Dot & Line -->
-			<div class="timeline-marker">
-				<div class="dot" class:current={item.isCurrent}></div>
+			<div class="relative flex flex-col items-center">
+				<div
+					class="w-4 h-4 rounded-full bg-border border-2 border-background flex-shrink-0 z-10 transition-all"
+					class:bg-primary={item.isCurrent}
+					class:border-primary={item.isCurrent}
+					class:scale-125={item.isCurrent}
+					class:animate-pulse={item.isCurrent}
+				></div>
 				{#if index !== items.length - 1}
-					<div class="line"></div>
+					<div
+						class="timeline-line w-0.5 h-full bg-border mt-2 absolute top-4 left-1/2 -translate-x-1/2"
+					></div>
 				{/if}
 			</div>
 
 			<!-- Content -->
-			<div class="timeline-content">
+			<div class="flex-1 pb-8">
 				<!-- Date Range -->
-				<div class="date-range">
+				<div class="text-sm text-text-secondary font-medium mb-2">
 					{formatDate(item.startDate)}
 					{#if item.isCurrent}
 						- Present
@@ -44,11 +52,16 @@
 				</div>
 
 				<!-- Title -->
-				<h3 class="item-title">
+				<h3 class="text-lg sm:text-xl font-bold text-text-primary mb-1">
 					{#if item.url}
-						<a href={item.url} target="_blank" rel="noopener noreferrer" class="title-link">
+						<a
+							href={item.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-flex items-center gap-1 hover:text-primary transition-colors no-underline"
+						>
 							{item.title}
-							<svg class="external-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									stroke-linecap="round"
 									stroke-linejoin="round"
@@ -63,14 +76,18 @@
 				</h3>
 
 				<!-- Subtitle -->
-				<p class="item-subtitle">{item.subtitle}</p>
+				<p class="text-sm sm:text-base text-primary font-medium mb-2">{item.subtitle}</p>
 
 				<!-- Description -->
-				<p class="item-description">{item.description}</p>
+				<p class="text-sm sm:text-base text-text-secondary leading-relaxed">{item.description}</p>
 
 				<!-- Current Badge -->
 				{#if item.isCurrent}
-					<span class="current-badge">Current</span>
+					<span
+						class="inline-block mt-3 px-3 py-1 text-xs font-semibold bg-primary/10 text-primary rounded-full border border-primary/30"
+					>
+						Current
+					</span>
 				{/if}
 			</div>
 		</div>
@@ -78,72 +95,14 @@
 </div>
 
 <style>
-	.timeline {
-		@apply relative space-y-8;
-	}
-
-	.timeline-item {
-		@apply relative flex gap-6;
-	}
-
-	.timeline-marker {
-		@apply relative flex flex-col items-center;
-	}
-
-	.dot {
-		@apply w-4 h-4 rounded-full bg-border border-2 border-background;
-		@apply flex-shrink-0 z-10;
-		@apply transition-all;
-	}
-
-	.dot.current {
-		@apply bg-primary border-primary scale-125 animate-pulse;
-	}
-
-	.line {
-		@apply w-0.5 h-full bg-border mt-2;
-		@apply absolute top-4 left-1/2 -translate-x-1/2;
-	}
-
-	.timeline-content {
-		@apply flex-1 pb-8;
-	}
-
-	.date-range {
-		@apply text-sm text-text-secondary font-medium mb-2;
-	}
-
-	.item-title {
-		@apply text-lg sm:text-xl font-bold text-text-primary mb-1;
-	}
-
-	.title-link {
-		@apply inline-flex items-center gap-1 hover:text-primary transition-colors no-underline;
-	}
-
-	.external-icon {
-		@apply w-4 h-4;
-	}
-
-	.item-subtitle {
-		@apply text-sm sm:text-base text-primary font-medium mb-2;
-	}
-
-	.item-description {
-		@apply text-sm sm:text-base text-text-secondary leading-relaxed;
-	}
-
-	.current-badge {
-		@apply inline-block mt-3 px-3 py-1 text-xs font-semibold;
-		@apply bg-primary/10 text-primary rounded-full border border-primary/30;
-	}
-
 	/* Hover Effects */
-	.timeline-item:hover .dot {
-		@apply bg-primary border-primary scale-110;
+	.timeline-item:hover .w-4 {
+		background-color: rgb(var(--color-primary));
+		border-color: rgb(var(--color-primary));
+		transform: scale(1.1);
 	}
 
-	.timeline-item:hover .line {
-		@apply bg-primary/50;
+	.timeline-item:hover .timeline-line {
+		background-color: rgb(var(--color-primary) / 0.5);
 	}
 </style>

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { layoutStore } from '$lib/stores/layout';
 	import LayoutSwitcher from './LayoutSwitcher.svelte';
+	import ThemeToggle from './ThemeToggle.svelte';
+	import ColorPaletteSwitcher from './ColorPaletteSwitcher.svelte';
 
 	/**
 	 * Mobile menu state
@@ -90,8 +92,16 @@
 					</a>
 				{/if}
 
-				<!-- Layout Switcher -->
-				<LayoutSwitcher />
+				<!-- Controls Group -->
+				<div class="flex items-center gap-2">
+					<!-- Layout Switcher -->
+					<LayoutSwitcher />
+					<!-- Theme & Palette Controls -->
+					<div class="flex items-center gap-2 pl-2 border-l border-border">
+						<ThemeToggle />
+						<ColorPaletteSwitcher />
+					</div>
+				</div>
 			</div>
 
 			<!-- Mobile Menu Button -->
@@ -179,9 +189,21 @@
 					</a>
 				{/if}
 
-				<!-- Mobile Layout Switcher -->
-				<div class="px-3 py-2">
-					<LayoutSwitcher />
+				<!-- Mobile Controls -->
+				<div class="px-3 py-2 space-y-3">
+					<!-- Layout Switcher -->
+					<div>
+						<p class="text-xs font-medium text-text-secondary mb-2">Layout</p>
+						<LayoutSwitcher />
+					</div>
+					<!-- Theme & Palette Controls -->
+					<div>
+						<p class="text-xs font-medium text-text-secondary mb-2">Appearance</p>
+						<div class="flex items-center gap-2">
+							<ThemeToggle />
+							<ColorPaletteSwitcher />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

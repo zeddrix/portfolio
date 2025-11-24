@@ -36,21 +36,29 @@
 	}
 </script>
 
-<div class={`skill-badge ${getCategoryColor()}`} class:featured={isFeatured}>
+<div
+	class={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-all hover:shadow-md hover:scale-105 ${getCategoryColor()}`}
+	class:ring-2={isFeatured}
+	class:ring-primary={isFeatured}
+	class:ring-offset-2={isFeatured}
+	class:ring-offset-background={isFeatured}
+>
 	<!-- Icon -->
 	{#if iconUrl}
-		<img src={iconUrl} alt={name} class="skill-icon" loading="lazy" />
+		<img src={iconUrl} alt={name} class="w-5 h-5 object-contain" loading="lazy" />
 	{/if}
 
 	<!-- Name -->
-	<span class="skill-name">{name}</span>
+	<span class="font-medium text-sm">{name}</span>
 
 	<!-- Proficiency Level -->
-	<div class="proficiency-stars" aria-label={`Proficiency: ${proficiencyLevel} out of 5`}>
+	<div
+		class="flex items-center gap-0.5 ml-auto"
+		aria-label={`Proficiency: ${proficiencyLevel} out of 5`}
+	>
 		{#each getProficiencyStars() as star}
 			<svg
-				class="star"
-				class:filled={star <= proficiencyLevel}
+				class={`w-3 h-3 ${star <= proficiencyLevel ? 'text-current' : 'text-text-secondary'}`}
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				aria-hidden="true"
@@ -62,34 +70,3 @@
 		{/each}
 	</div>
 </div>
-
-<style>
-	.skill-badge {
-		@apply inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-all;
-		@apply hover:shadow-md hover:scale-105;
-	}
-
-	.skill-badge.featured {
-		@apply ring-2 ring-primary ring-offset-2 ring-offset-background;
-	}
-
-	.skill-icon {
-		@apply w-5 h-5 object-contain;
-	}
-
-	.skill-name {
-		@apply font-medium text-sm;
-	}
-
-	.proficiency-stars {
-		@apply flex items-center gap-0.5 ml-auto;
-	}
-
-	.star {
-		@apply w-3 h-3 text-text-secondary;
-	}
-
-	.star.filled {
-		@apply text-current;
-	}
-</style>

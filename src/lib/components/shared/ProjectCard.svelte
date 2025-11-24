@@ -18,51 +18,86 @@
 	 * Get variant-specific classes
 	 */
 	function getCardClasses(): string {
+		const base =
+			'relative overflow-hidden rounded-lg bg-surface border border-border transition-all hover:shadow-lg hover:border-primary/50';
+
 		switch (variant) {
-			case 'grid':
-				return 'project-card-grid';
 			case 'list':
-				return 'project-card-list';
+				return `${base} flex flex-col sm:flex-row`;
 			case 'featured':
-				return 'project-card-featured';
+				return `${base} border-2 border-primary/30`;
 			default:
-				return 'project-card-grid';
+				return base;
 		}
+	}
+
+	function getImageClasses(): string {
+		const base = 'w-full object-cover transition-transform duration-300';
+
+		if (variant === 'list') {
+			return `${base} h-48 sm:h-full sm:w-1/3`;
+		} else if (variant === 'featured') {
+			return `${base} h-64`;
+		} else {
+			return `${base} h-48`;
+		}
+	}
+
+	function getTitleClasses(): string {
+		return variant === 'featured'
+			? 'text-2xl font-bold text-text-primary mb-2'
+			: 'text-xl font-bold text-text-primary mb-2';
+	}
+
+	function getContentClasses(): string {
+		return variant === 'list' ? 'p-6 sm:w-2/3' : 'p-6';
 	}
 </script>
 
-<article class={`project-card ${getCardClasses()}`}>
-	<a href={`/projects/${slug}`} class="card-link">
+<article class={getCardClasses()}>
+	<a href={`/projects/${slug}`} class="block w-full h-full no-underline group">
 		<!-- Image -->
-		<div class="image-wrapper">
-			<img src={featuredImageUrl} alt={title} class="project-image" loading="lazy" />
+		<div class="relative overflow-hidden">
+			<img src={featuredImageUrl} alt={title} class={getImageClasses()} loading="lazy" />
 			{#if isFeatured}
-				<span class="featured-badge">Featured</span>
+				<span
+					class="absolute top-2 right-2 bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full"
+				>
+					Featured
+				</span>
 			{/if}
 		</div>
 
 		<!-- Content -->
-		<div class="card-content">
-			<h3 class="project-title">{title}</h3>
-			<p class="project-description">{shortDescription}</p>
+		<div class={getContentClasses()}>
+			<h3 class={getTitleClasses()}>{title}</h3>
+			<p class="text-text-secondary mb-4 line-clamp-3">{shortDescription}</p>
 
 			<!-- Tech Stack -->
 			{#if techStack.length > 0}
-				<div class="tech-stack">
+				<div class="flex flex-wrap gap-2 mb-4">
 					{#each techStack.slice(0, 4) as tech}
-						<span class="tech-tag">{tech}</span>
+						<span
+							class="text-xs font-medium px-2 py-1 bg-background text-primary rounded border border-border"
+						>
+							{tech}
+						</span>
 					{/each}
 					{#if techStack.length > 4}
-						<span class="tech-tag">+{techStack.length - 4}</span>
+						<span
+							class="text-xs font-medium px-2 py-1 bg-background text-primary rounded border border-border"
+						>
+							+{techStack.length - 4}
+						</span>
 					{/if}
 				</div>
 			{/if}
 
 			<!-- Read More -->
-			<div class="read-more">
+			<div class="flex items-center text-primary font-medium">
 				<span>View Details</span>
 				<svg
-					class="arrow-icon"
+					class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -81,95 +116,8 @@
 </article>
 
 <style>
-	.project-card {
-		@apply relative overflow-hidden rounded-lg bg-surface border border-border transition-all;
-		@apply hover:shadow-lg hover:border-primary/50;
-	}
-
-	.card-link {
-		@apply block w-full h-full no-underline;
-	}
-
-	.image-wrapper {
-		@apply relative overflow-hidden;
-	}
-
-	.project-image {
-		@apply w-full h-48 object-cover transition-transform duration-300;
-	}
-
-	.project-card:hover .project-image {
-		@apply scale-105;
-	}
-
-	.featured-badge {
-		@apply absolute top-2 right-2 bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full;
-	}
-
-	.card-content {
-		@apply p-6;
-	}
-
-	.project-title {
-		@apply text-xl font-bold text-text-primary mb-2;
-	}
-
-	.project-description {
-		@apply text-text-secondary mb-4 line-clamp-3;
-	}
-
-	.tech-stack {
-		@apply flex flex-wrap gap-2 mb-4;
-	}
-
-	.tech-tag {
-		@apply text-xs font-medium px-2 py-1 bg-background text-primary rounded border border-border;
-	}
-
-	.read-more {
-		@apply flex items-center text-primary font-medium;
-	}
-
-	.arrow-icon {
-		@apply w-4 h-4 ml-2 transition-transform;
-	}
-
-	.project-card:hover .arrow-icon {
-		@apply translate-x-1;
-	}
-
-	/* Grid variant (default) */
-	.project-card-grid {
-		/* Default styles already applied */
-	}
-
-	/* List variant (for single-page layout) */
-	.project-card-list {
-		@apply flex flex-col sm:flex-row;
-	}
-
-	.project-card-list .image-wrapper {
-		@apply sm:w-1/3;
-	}
-
-	.project-card-list .project-image {
-		@apply sm:h-full;
-	}
-
-	.project-card-list .card-content {
-		@apply sm:w-2/3;
-	}
-
-	/* Featured variant (for case study layout) */
-	.project-card-featured {
-		@apply border-2 border-primary/30;
-	}
-
-	.project-card-featured .project-title {
-		@apply text-2xl;
-	}
-
-	.project-card-featured .project-image {
-		@apply h-64;
+	/* Hover effect for image scaling */
+	article:hover img {
+		transform: scale(1.05);
 	}
 </style>

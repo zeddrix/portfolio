@@ -1595,7 +1595,97 @@ Ready to build something impressive! 🚀
 - ✅ Reusable component architecture with variant support
 - ✅ Type-safe component props and stores
 
-### ⏳ Phase 5: Theme & Color Palette System - PENDING
+### ✅ Phase 5: Theme & Color Palette System - COMPLETE
+
+**Completion Date:** November 24, 2025
+
+**Implemented Components:**
+
+1. **Theme Store (Dark/Light Mode)**
+   - Theme store with localStorage persistence: `src/lib/stores/theme.ts`
+   - Support for 'dark' and 'light' themes
+   - Auto-initialization on page load
+   - Theme toggle functionality with persistence
+
+2. **Color Palette Store**
+   - Palette store with localStorage persistence: `src/lib/stores/palette.ts`
+   - Support for all 7 color palettes (Cyber Blue, Neon Nights, Sunset Ember, Forest Zen, Monochrome Pro, Purple Haze, Ocean Deep)
+   - Type-safe palette definitions with metadata
+   - Auto-initialization on page load
+   - Palette switching with persistence
+
+3. **CSS Custom Properties System**
+   - Complete color system in `src/app.css`
+   - All 7 palettes × 2 themes = 14 color combinations
+   - RGB format for alpha channel support
+   - Smooth color transitions (300ms ease)
+   - Variables: primary, secondary, accent, background, surface, text-primary, text-secondary, border, success, warning, error
+
+4. **Tailwind Configuration**
+   - Dynamic color system in `tailwind.config.js`
+   - All colors reference CSS custom properties
+   - Full alpha channel support via RGB format
+   - Custom colors: primary, secondary, accent, background, surface, text-primary, text-secondary, border, success, warning, error
+
+5. **UI Components**
+   - ThemeToggle component: `src/lib/components/shared/ThemeToggle.svelte`
+     - Sun/moon icons for dark/light mode
+     - Accessible with keyboard support
+     - Focus states and ARIA labels
+   - ColorPaletteSwitcher component: `src/lib/components/shared/ColorPaletteSwitcher.svelte`
+     - Dropdown with all 7 palette options
+     - Color preview circles
+     - Palette descriptions
+     - Active indicator
+     - Click-outside to close
+
+6. **Navigation Integration**
+   - Updated Navigation component: `src/lib/components/shared/Navigation.svelte`
+   - Desktop: Controls grouped in header (Layout | Theme + Palette)
+   - Mobile: Organized in hamburger menu with labels
+   - Visual separation with border between layout and theme controls
+
+7. **Root Layout Integration**
+   - Updated `src/routes/+layout.svelte`
+   - Auto-initialization of theme and palette stores
+   - Proper store synchronization on page load
+
+**Additional Improvements:**
+
+- **Fixed Tailwind CSS 4 @apply Issues** (from Phase 4)
+  - Removed all `@apply` directives from component `<style>` blocks
+  - Converted to inline Tailwind classes in all 12 affected components
+  - Minimal `<style>` blocks preserved only for keyframes and complex selectors
+  - Zero build errors, zero type errors, only 1 minor warning
+
+**Features Completed:**
+
+- ✅ Dark/light theme switching with localStorage persistence
+- ✅ 7 color palettes with smooth transitions
+- ✅ CSS custom properties for dynamic theming
+- ✅ Tailwind integration with alpha channel support
+- ✅ ThemeToggle component with icons
+- ✅ ColorPaletteSwitcher dropdown with previews
+- ✅ Navigation integration (desktop + mobile)
+- ✅ Auto-initialization on page load
+- ✅ Type-safe stores and components
+- ✅ Accessible UI controls
+- ✅ Quality checks passing (Prettier, ESLint, TypeScript)
+- ✅ Fixed all Tailwind CSS 4 @apply compatibility issues
+
+**Color Palettes Available:**
+
+1. **Cyber Blue** (Default) - Professional tech aesthetic
+2. **Neon Nights** - Vibrant and energetic
+3. **Sunset Ember** - Warm and creative
+4. **Forest Zen** - Calm and natural
+5. **Monochrome Pro** - High contrast, minimal
+6. **Purple Haze** - Modern and sophisticated
+7. **Ocean Deep** - Cool and professional
+
+**Quality Checks:** ✅ All passed (0 errors, 1 minor unused prop warning)
+
+**Next Steps:** Phase 6 - Animation System
 
 ### ⏳ Phase 6: Animation System - PENDING
 

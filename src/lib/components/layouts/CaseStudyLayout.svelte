@@ -26,21 +26,23 @@
 	];
 </script>
 
-<div class="case-study-layout">
+<div class="min-h-screen bg-background">
 	<Navigation />
 
 	<!-- Hero Section -->
 	<Hero variant="case_study" />
 
 	<!-- Projects Section -->
-	<section id="projects" class="projects-section">
+	<section id="projects" class="py-20">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="section-header">
-				<h2 class="section-title">Featured Projects</h2>
-				<p class="section-description">Detailed case studies of my recent work</p>
+			<div class="text-center mb-16">
+				<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-4">
+					Featured Projects
+				</h2>
+				<p class="text-lg text-text-secondary">Detailed case studies of my recent work</p>
 			</div>
 
-			<div class="projects-container">
+			<div class="space-y-20">
 				{#each mockProjects as project (project.id)}
 					<CaseStudyCard
 						title={project.title}
@@ -61,43 +63,11 @@
 	<ContactSection variant="full" />
 
 	<!-- Footer -->
-	<footer class="footer">
+	<footer class="py-8 border-t border-border">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<p class="footer-text">&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.</p>
+			<p class="text-center text-text-secondary text-sm">
+				&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.
+			</p>
 		</div>
 	</footer>
 </div>
-
-<style>
-	.case-study-layout {
-		@apply min-h-screen bg-background;
-	}
-
-	.projects-section {
-		@apply py-20;
-	}
-
-	.section-header {
-		@apply text-center mb-16;
-	}
-
-	.section-title {
-		@apply text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-4;
-	}
-
-	.section-description {
-		@apply text-lg text-text-secondary;
-	}
-
-	.projects-container {
-		@apply space-y-20;
-	}
-
-	.footer {
-		@apply py-8 border-t border-border;
-	}
-
-	.footer-text {
-		@apply text-center text-text-secondary text-sm;
-	}
-</style>

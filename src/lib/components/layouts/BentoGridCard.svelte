@@ -44,15 +44,15 @@
 	function getCardTypeClasses(): string {
 		switch (cardType) {
 			case 'hero':
-				return 'bento-hero';
+				return 'bg-gradient-to-br from-primary/20 to-secondary/20';
 			case 'project':
-				return 'bento-project';
+				return 'border-primary/30';
 			case 'skill':
-				return 'bento-skill';
+				return 'border-secondary/30';
 			case 'contact':
-				return 'bento-contact';
+				return 'border-accent/30';
 			case 'about':
-				return 'bento-about';
+				return 'bg-gradient-to-br from-surface to-background';
 			default:
 				return '';
 		}
@@ -60,37 +60,41 @@
 </script>
 
 <div
-	class={`bento-card ${getSizeClasses()} ${getCardTypeClasses()}`}
+	class={`relative overflow-hidden rounded-2xl bg-surface border border-border transition-all duration-300 hover:shadow-xl hover:border-primary/50 hover:scale-[1.02] ${getSizeClasses()} ${getCardTypeClasses()}`}
 	on:mouseenter={() => (isHovered = true)}
 	on:mouseleave={() => (isHovered = false)}
 	role="article"
 >
 	{#if link}
-		<a href={link} class="card-wrapper">
+		<a href={link} class="block w-full h-full min-h-[200px] no-underline">
 			<!-- Image Background (if provided) -->
 			{#if imageUrl}
-				<div class="image-background">
-					<img src={imageUrl} alt={title} loading="lazy" />
+				<div class="absolute inset-0 w-full h-full">
+					<img src={imageUrl} alt={title} class="w-full h-full object-cover" loading="lazy" />
 				</div>
 			{/if}
 
 			<!-- Glassmorphism Overlay -->
-			<div class="glass-overlay" class:hovered={isHovered}>
+			<div
+				class={`relative w-full h-full p-6 bg-surface/60 backdrop-blur-sm transition-all duration-300 ${isHovered ? 'bg-surface/80 backdrop-blur-md' : ''}`}
+			>
 				<!-- Content Slot -->
-				<div class="card-content">
+				<div class="relative z-10 h-full flex flex-col justify-center">
 					{#if title}
-						<h3 class="card-title">{title}</h3>
+						<h3 class="text-xl sm:text-2xl font-bold text-primary mb-2">{title}</h3>
 					{/if}
 					{#if description}
-						<p class="card-description">{description}</p>
+						<p class="text-text-secondary text-sm sm:text-base">{description}</p>
 					{/if}
 					<slot />
 				</div>
 
 				<!-- Hover Indicator -->
 				{#if isHovered}
-					<div class="hover-indicator">
-						<svg class="arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<div
+						class="absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center bg-primary rounded-full animate-bounce"
+					>
+						<svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path
 								stroke-linecap="round"
 								stroke-linejoin="round"
@@ -103,23 +107,25 @@
 			</div>
 		</a>
 	{:else}
-		<div class="card-wrapper">
+		<div class="block w-full h-full min-h-[200px] no-underline">
 			<!-- Image Background (if provided) -->
 			{#if imageUrl}
-				<div class="image-background">
-					<img src={imageUrl} alt={title} loading="lazy" />
+				<div class="absolute inset-0 w-full h-full">
+					<img src={imageUrl} alt={title} class="w-full h-full object-cover" loading="lazy" />
 				</div>
 			{/if}
 
 			<!-- Glassmorphism Overlay -->
-			<div class="glass-overlay">
+			<div
+				class="relative w-full h-full p-6 bg-surface/60 backdrop-blur-sm transition-all duration-300"
+			>
 				<!-- Content Slot -->
-				<div class="card-content">
+				<div class="relative z-10 h-full flex flex-col justify-center">
 					{#if title}
-						<h3 class="card-title">{title}</h3>
+						<h3 class="text-xl sm:text-2xl font-bold text-primary mb-2">{title}</h3>
 					{/if}
 					{#if description}
-						<p class="card-description">{description}</p>
+						<p class="text-text-secondary text-sm sm:text-base">{description}</p>
 					{/if}
 					<slot />
 				</div>
@@ -127,80 +133,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	.bento-card {
-		@apply relative overflow-hidden rounded-2xl;
-		@apply bg-surface border border-border;
-		@apply transition-all duration-300;
-	}
-
-	.bento-card:hover {
-		@apply shadow-xl border-primary/50 scale-[1.02];
-	}
-
-	.card-wrapper {
-		@apply block w-full h-full min-h-[200px] no-underline;
-	}
-
-	.image-background {
-		@apply absolute inset-0 w-full h-full;
-	}
-
-	.image-background img {
-		@apply w-full h-full object-cover;
-	}
-
-	.glass-overlay {
-		@apply relative w-full h-full p-6;
-		@apply bg-surface/60 backdrop-blur-sm;
-		@apply transition-all duration-300;
-	}
-
-	.glass-overlay.hovered {
-		@apply bg-surface/80 backdrop-blur-md;
-	}
-
-	.card-content {
-		@apply relative z-10 h-full flex flex-col justify-center;
-	}
-
-	.card-title {
-		@apply text-xl sm:text-2xl font-bold text-primary mb-2;
-	}
-
-	.card-description {
-		@apply text-text-secondary text-sm sm:text-base;
-	}
-
-	.hover-indicator {
-		@apply absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center;
-		@apply bg-primary rounded-full;
-		@apply animate-bounce;
-	}
-
-	.arrow {
-		@apply w-5 h-5 text-white;
-	}
-
-	/* Card Type Specific Styles */
-	.bento-hero {
-		@apply bg-gradient-to-br from-primary/20 to-secondary/20;
-	}
-
-	.bento-project {
-		@apply border-primary/30;
-	}
-
-	.bento-skill {
-		@apply border-secondary/30;
-	}
-
-	.bento-contact {
-		@apply border-accent/30;
-	}
-
-	.bento-about {
-		@apply bg-gradient-to-br from-surface to-background;
-	}
-</style>
