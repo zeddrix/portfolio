@@ -1,15 +1,10 @@
 <script lang="ts">
-	// Your portfolio starts here
+	import LayoutWrapper from '$lib/components/layouts/LayoutWrapper.svelte';
 </script>
 
 <svelte:head>
 	<title>Zeddrix - Portfolio</title>
-	<meta name="description" content="Portfolio website of Zeddrix" />
+	<meta name="description" content="Portfolio website of Zeddrix - Full Stack Developer" />
 </svelte:head>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50">
-	<div class="text-center space-y-4">
-		<h1 class="text-4xl font-bold text-gray-900">Welcome to Zeddrix Portfolio</h1>
-		<p class="text-xl text-gray-600">Clean slate. Ready to build.</p>
-	</div>
-</div>
+<LayoutWrapper />

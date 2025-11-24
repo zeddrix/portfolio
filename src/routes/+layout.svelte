@@ -10,9 +10,23 @@
 		auth.setSession(data.session);
 	}
 
-	// Initialize auth on mount
+	// Apply theme and palette attributes to HTML element
+	function applyThemeAttributes() {
+		if (typeof document !== 'undefined') {
+			const html = document.documentElement;
+
+			// Set default theme (dark mode)
+			html.setAttribute('data-theme', 'dark');
+
+			// Set default palette (cyber_blue)
+			html.setAttribute('data-palette', 'cyber_blue');
+		}
+	}
+
+	// Initialize on mount
 	onMount(() => {
 		auth.initialize();
+		applyThemeAttributes();
 	});
 </script>
 
