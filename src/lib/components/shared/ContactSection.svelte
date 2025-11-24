@@ -1,16 +1,23 @@
 <script lang="ts">
+	import type { Database } from '$lib/types/database';
+
+	type Profile = Database['public']['Tables']['profile']['Row'];
+
 	/**
 	 * Contact section variant
 	 */
 	export let variant: 'full' | 'compact' = 'full';
 
 	/**
-	 * Contact information
+	 * Profile data from database
 	 */
-	export let email = 'contact@example.com';
-	export let phone: string | null = null;
-	export let linkedinUrl: string | null = null;
-	export let githubUrl: string | null = null;
+	export let profile: Profile | null = null;
+
+	// Extract contact information
+	const email = profile?.email || 'contact@example.com';
+	const phone = profile?.phone || null;
+	const linkedinUrl = profile?.linkedin_url || null;
+	const githubUrl = profile?.github_url || null;
 
 	/**
 	 * Form state

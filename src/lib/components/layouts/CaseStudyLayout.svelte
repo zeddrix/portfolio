@@ -3,34 +3,32 @@
 	import Hero from '$lib/components/shared/Hero.svelte';
 	import CaseStudyCard from './CaseStudyCard.svelte';
 	import ContactSection from '$lib/components/shared/ContactSection.svelte';
+	import Footer from '$lib/components/shared/Footer.svelte';
+	import type { Database } from '$lib/types/database';
 
-	// TODO: Replace with actual data fetching in Phase 7
-	const mockProjects = [
-		{
-			id: '1',
-			title: 'Example Project',
-			slug: 'example-project',
-			shortDescription: 'A brief description of the project showcasing key features.',
-			challenge:
-				'The main challenge was to create a scalable architecture that could handle high traffic.',
-			solution:
-				'Implemented a microservices architecture with proper load balancing and caching strategies.',
-			techStack: ['SvelteKit', 'TypeScript', 'PostgreSQL', 'Docker'],
-			featuredImageUrl: 'https://via.placeholder.com/1200x600',
-			metrics: {
-				'Load Time': '< 1s',
-				'User Growth': '+150%',
-				Performance: '95/100'
-			}
-		}
-	];
+	type Profile = Database['public']['Tables']['profile']['Row'];
+	type Project = Database['public']['Tables']['projects']['Row'];
+	type Skill = Database['public']['Tables']['skills']['Row'];
+	type Certification = Database['public']['Tables']['certifications']['Row'];
+	type Experience = Database['public']['Tables']['experiences']['Row'];
+	type SocialLink = Database['public']['Tables']['social_links']['Row'];
+
+	export let profile: Profile | null = null;
+	export let projects: Project[] = [];
+	export let skills: Skill[] = [];
+	export let certifications: Certification[] = [];
+	export let experiences: Experience[] = [];
+	export let socialLinks: SocialLink[] = [];
+
+	// Get featured projects or all projects
+	const displayProjects = projects.filter((p) => p.is_featured) || projects;
 </script>
 
 <div class="min-h-screen bg-background">
 	<Navigation />
 
 	<!-- Hero Section -->
-	<Hero variant="case_study" />
+	<Hero variant="case_study" {profile} />
 
 	<!-- Projects Section -->
 	<section id="projects" class="py-20">
@@ -42,32 +40,32 @@
 				<p class="text-lg text-text-secondary">Detailed case studies of my recent work</p>
 			</div>
 
-			<div class="space-y-20">
-				{#each mockProjects as project (project.id)}
-					<CaseStudyCard
-						title={project.title}
-						slug={project.slug}
-						shortDescription={project.shortDescription}
-						challenge={project.challenge}
-						solution={project.solution}
-						techStack={project.techStack}
-						featuredImageUrl={project.featuredImageUrl}
-						metrics={project.metrics}
-					/>
-				{/each}
-			</div>
+			{#if displayProjects.length > 0}
+				<div class="space-y-20">
+					{#each displayProjects as project (project.id)}
+						<CaseStudyCard
+							title={project.title}
+							slug={project.slug}
+							shortDescription={project.short_description}
+							challenge={project.challenge || ''}
+							solution={project.solution || ''}
+							techStack={project.tech_stack}
+							featuredImageUrl={project.featured_image_url}
+							metrics={project.metrics}
+						/>
+					{/each}
+				</div>
+			{:else}
+				<div class="text-center py-20">
+					<p class="text-text-secondary text-lg">No projects available yet.</p>
+				</div>
+			{/if}
 		</div>
 	</section>
 
 	<!-- Contact Section -->
-	<ContactSection variant="full" />
+	<ContactSection variant="full" {profile} />
 
 	<!-- Footer -->
-	<footer class="py-8 border-t border-border">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<p class="text-center text-text-secondary text-sm">
-				&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.
-			</p>
-		</div>
-	</footer>
+	<Footer {socialLinks} {profile} />
 </div>

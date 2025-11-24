@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import { animate_on_scroll } from '$lib/actions/animate';
+	import type { Json } from '$lib/types/database';
 
 	/**
 	 * Project data for case study display
@@ -12,7 +13,7 @@
 	export let solution: string | null = null;
 	export let techStack: string[] = [];
 	export let featuredImageUrl: string;
-	export let metrics: Record<string, string> | null = null;
+	export let metrics: Json | null = null;
 
 	/**
 	 * Expanded state for read more functionality

@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { animate_on_scroll } from '$lib/actions/animate';
+	import type { Database } from '$lib/types/database';
+
+	type Project = Database['public']['Tables']['projects']['Row'];
 
 	/**
 	 * Card variant for different layouts
@@ -7,14 +10,17 @@
 	export let variant: 'grid' | 'list' | 'featured' = 'grid';
 
 	/**
-	 * Project data
+	 * Project data from database
 	 */
-	export let title: string;
-	export let slug: string;
-	export let shortDescription: string;
-	export let techStack: string[] = [];
-	export let featuredImageUrl: string;
-	export let isFeatured = false;
+	export let project: Project;
+
+	// Extract project data
+	const title = project.title;
+	const slug = project.slug;
+	const shortDescription = project.short_description;
+	const techStack = project.tech_stack;
+	const featuredImageUrl = project.featured_image_url;
+	const isFeatured = project.is_featured;
 
 	/**
 	 * Get variant-specific classes

@@ -7,53 +7,54 @@
 	import TimelineComponent from '$lib/components/shared/TimelineComponent.svelte';
 	import ContactSection from '$lib/components/shared/ContactSection.svelte';
 	import ScrollIndicator from '$lib/components/shared/ScrollIndicator.svelte';
+	import Footer from '$lib/components/shared/Footer.svelte';
 	import type { TimelineItem } from '$lib/types/timeline';
+	import type { Database } from '$lib/types/database';
 
-	// TODO: Replace with actual data fetching in Phase 7
-	const mockProjects = [
-		{
-			title: 'Example Project 1',
-			slug: 'example-project-1',
-			shortDescription: 'A brief description of the first project.',
-			techStack: ['SvelteKit', 'TypeScript', 'Tailwind'],
-			featuredImageUrl: 'https://via.placeholder.com/600x400',
-			isFeatured: true
-		},
-		{
-			title: 'Example Project 2',
-			slug: 'example-project-2',
-			shortDescription: 'A brief description of the second project.',
-			techStack: ['React', 'Node.js', 'PostgreSQL'],
-			featuredImageUrl: 'https://via.placeholder.com/600x400',
-			isFeatured: false
-		}
-	];
+	type Profile = Database['public']['Tables']['profile']['Row'];
+	type Project = Database['public']['Tables']['projects']['Row'];
+	type Skill = Database['public']['Tables']['skills']['Row'];
+	type Certification = Database['public']['Tables']['certifications']['Row'];
+	type Experience = Database['public']['Tables']['experiences']['Row'];
+	type SocialLink = Database['public']['Tables']['social_links']['Row'];
 
-	const mockSkills = [
-		{ name: 'TypeScript', category: 'programming' as const, proficiencyLevel: 5, isFeatured: true },
-		{ name: 'SvelteKit', category: 'frontend' as const, proficiencyLevel: 5, isFeatured: true },
-		{ name: 'Tailwind CSS', category: 'frontend' as const, proficiencyLevel: 5, isFeatured: false },
-		{ name: 'Node.js', category: 'backend' as const, proficiencyLevel: 4, isFeatured: false }
-	];
+	export let profile: Profile | null = null;
+	export let projects: Project[] = [];
+	export let skills: Skill[] = [];
+	export let certifications: Certification[] = [];
+	export let experiences: Experience[] = [];
+	export let socialLinks: SocialLink[] = [];
 
-	const mockExperiences: TimelineItem[] = [
-		{
-			id: '1',
-			title: 'Senior Developer',
-			subtitle: 'Company Name',
-			description: 'Leading development of web applications using modern technologies.',
-			startDate: '2022-01-01',
-			endDate: null,
-			isCurrent: true
-		}
-	];
+	// Convert experiences to timeline items
+	const experienceTimeline: TimelineItem[] = experiences.map((exp) => ({
+		id: exp.id,
+		title: exp.position,
+		subtitle: exp.company,
+		description: exp.description,
+		startDate: exp.start_date,
+		endDate: exp.end_date,
+		isCurrent: exp.is_current,
+		location: exp.location
+	}));
+
+	// Convert certifications to timeline items
+	const certificationTimeline: TimelineItem[] = certifications.map((cert) => ({
+		id: cert.id,
+		title: cert.title,
+		subtitle: cert.issuer,
+		description: cert.credential_id || '',
+		startDate: cert.issue_date,
+		endDate: cert.expiry_date,
+		isCurrent: false,
+		url: cert.credential_url
+	}));
 </script>
 
 <div class="min-h-screen bg-background">
 	<Navigation />
 
 	<!-- Hero Section -->
-	<Hero variant="single_page" />
+	<Hero variant="single_page" {profile} />
 	<ScrollIndicator targetId="about" />
 
 	<!-- About Section -->
@@ -67,11 +68,10 @@
 			</h2>
 			<div class="max-w-3xl mx-auto">
 				<p
-					use:animate_on_scroll={{ type: 'fadeInUp', delay: 0.2 }}
+					use:animate_on_scroll={{ type: 'fadeInUp', delay: 200 }}
 					class="text-lg text-text-secondary leading-relaxed"
 				>
-					I'm a passionate full-stack developer with expertise in modern web technologies. I love
-					creating beautiful, functional, and user-friendly applications.
+					{profile?.bio || 'Loading...'}
 				</p>
 			</div>
 		</div>
@@ -86,19 +86,17 @@
 			>
 				Projects
 			</h2>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-				{#each mockProjects as project}
-					<ProjectCard
-						variant="grid"
-						title={project.title}
-						slug={project.slug}
-						shortDescription={project.shortDescription}
-						techStack={project.techStack}
-						featuredImageUrl={project.featuredImageUrl}
-						isFeatured={project.isFeatured}
-					/>
-				{/each}
-			</div>
+			{#if projects.length > 0}
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					{#each projects as project}
+						<ProjectCard variant="grid" {project} />
+					{/each}
+				</div>
+			{:else}
+				<div class="text-center py-12">
+					<p class="text-text-secondary">No projects available yet.</p>
+				</div>
+			{/if}
 		</div>
 	</section>
 
@@ -111,44 +109,63 @@
 			>
 				Skills & Technologies
 			</h2>
-			<div class="flex flex-wrap justify-center gap-4">
-				{#each mockSkills as skill}
-					<SkillBadge
-						name={skill.name}
-						category={skill.category}
-						proficiencyLevel={skill.proficiencyLevel}
-						isFeatured={skill.isFeatured}
-						iconUrl={null}
-					/>
-				{/each}
-			</div>
+			{#if skills.length > 0}
+				<div class="flex flex-wrap justify-center gap-4">
+					{#each skills as skill}
+						<SkillBadge
+							name={skill.name}
+							category={skill.category}
+							proficiencyLevel={skill.proficiency_level}
+							isFeatured={skill.is_featured}
+							iconUrl={skill.icon_url}
+						/>
+					{/each}
+				</div>
+			{:else}
+				<div class="text-center py-12">
+					<p class="text-text-secondary">No skills listed yet.</p>
+				</div>
+			{/if}
 		</div>
 	</section>
 
 	<!-- Experience Section -->
-	<section id="experience" class="py-20 bg-surface">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2
-				use:animate_on_scroll={{ type: 'fadeInUp' }}
-				class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center"
-			>
-				Experience
-			</h2>
-			<div class="max-w-3xl mx-auto">
-				<TimelineComponent items={mockExperiences} type="experience" />
+	{#if experienceTimeline.length > 0}
+		<section id="experience" class="py-20 bg-surface">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<h2
+					use:animate_on_scroll={{ type: 'fadeInUp' }}
+					class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center"
+				>
+					Experience
+				</h2>
+				<div class="max-w-3xl mx-auto">
+					<TimelineComponent items={experienceTimeline} type="experience" />
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	{/if}
+
+	<!-- Certifications Section -->
+	{#if certificationTimeline.length > 0}
+		<section id="certifications" class="py-20">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<h2
+					use:animate_on_scroll={{ type: 'fadeInUp' }}
+					class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center"
+				>
+					Certifications
+				</h2>
+				<div class="max-w-3xl mx-auto">
+					<TimelineComponent items={certificationTimeline} type="certification" />
+				</div>
+			</div>
+		</section>
+	{/if}
 
 	<!-- Contact Section -->
-	<ContactSection variant="full" />
+	<ContactSection variant="full" {profile} />
 
 	<!-- Footer -->
-	<footer class="py-8 border-t border-border">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<p class="text-center text-text-secondary text-sm">
-				&copy; {new Date().getFullYear()} Zeddrix. All rights reserved.
-			</p>
-		</div>
-	</footer>
+	<Footer {socialLinks} {profile} />
 </div>

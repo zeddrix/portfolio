@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { animate_on_scroll, smooth_scroll } from '$lib/actions/animate';
+	import type { Database } from '$lib/types/database';
+
+	type Profile = Database['public']['Tables']['profile']['Row'];
 
 	/**
 	 * Hero variant for different layouts
@@ -7,11 +10,15 @@
 	export let variant: 'case_study' | 'single_page' | 'bento_grid' = 'single_page';
 
 	/**
-	 * Profile data
+	 * Profile data from database
 	 */
-	export let fullName = 'Zeddrix';
-	export let tagline = 'Full Stack Developer';
-	export let bio =
+	export let profile: Profile | null = null;
+
+	// Extract profile data with fallbacks
+	const fullName = profile?.full_name || 'Zeddrix';
+	const tagline = profile?.tagline || 'Full Stack Developer';
+	const bio =
+		profile?.bio ||
 		'Building modern web applications with cutting-edge technologies and creative solutions.';
 
 	/**
