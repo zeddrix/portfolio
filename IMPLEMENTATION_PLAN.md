@@ -2372,4 +2372,124 @@ All admin pages beyond the dashboard are implemented with proper layouts, breadc
 
 **Next Steps:** Phase 13 - Admin Panel Certifications & Experience Management
 
-### ⏳ Phase 13-22: Remaining Phases - PENDING
+### ✅ Phase 13: Admin Panel - Certifications & Experience Management - COMPLETE
+
+**Completion Date:** November 24, 2025
+
+**Implemented Components:**
+
+1. **Validation Schemas**
+   - Certification schemas: `src/lib/schemas/certification.ts`
+     - Create, update, delete, and reorder schemas
+     - Date validation (issue_date, expiry_date)
+     - URL validation for credentials
+   - Experience schemas: `src/lib/schemas/experience.ts`
+     - Create, update, delete, and reorder schemas
+     - Current position logic (nullifies end_date)
+     - Description length validation (1000 chars max)
+
+2. **Form Components**
+   - CertificationForm: `src/lib/components/admin/CertificationForm.svelte`
+     - Modal-based create/edit form
+     - Title, issuer, dates, credential URL/ID fields
+     - Date pickers for issue and expiry dates
+     - Optional expiry date (no expiration support)
+     - Form validation with error display
+   - ExperienceForm: `src/lib/components/admin/ExperienceForm.svelte`
+     - Modal-based create/edit form
+     - Company, position, description, dates, location fields
+     - Current position toggle (disables end_date)
+     - Textarea for description (1000 char limit with counter)
+     - Form validation with error display
+
+3. **Server-Side Actions** (`src/routes/admin/certifications/+page.server.ts`)
+   - **Certifications:**
+     - `createCertification` - Create with auto display_order
+     - `updateCertification` - Update with validation
+     - `deleteCertification` - Delete with confirmation
+     - `reorderCertifications` - Drag-and-drop reordering
+   - **Experiences:**
+     - `createExperience` - Create with auto display_order
+     - `updateExperience` - Update with validation
+     - `deleteExperience` - Delete with confirmation
+     - `reorderExperiences` - Drag-and-drop reordering
+   - Load function fetches both certifications and experiences
+
+4. **Certifications & Experience Management Page** (`src/routes/admin/certifications/+page.svelte`)
+   - **Dual-Section Layout:**
+     - Certifications section with own list
+     - Experiences section with own list
+     - Both sections in single page
+   - **Certifications List:**
+     - Display title, issuer, dates, credential info
+     - Show expiry date or "No expiration"
+     - Credential ID and URL link display
+     - Drag-and-drop reordering
+     - Edit and delete actions
+     - Empty state with call-to-action
+   - **Experiences List:**
+     - Display position, company, dates, location
+     - "Present" badge for current positions
+     - Description preview (line-clamp-2)
+     - Drag-and-drop reordering
+     - Edit and delete actions
+     - Empty state with call-to-action
+   - **Common Features:**
+     - Success/error notifications
+     - Confirmation modals for deletion
+     - Real-time updates after CRUD operations
+     - Summary counter (X certifications • Y experiences)
+
+5. **Drag-and-Drop Functionality**
+   - Native HTML5 drag-and-drop for both sections
+   - Visual feedback during drag (blue highlight)
+   - Server-side persistence of new order
+   - Optimistic UI updates
+   - Separate reordering for each section
+
+6. **Date Formatting**
+   - Helper function: `formatDate(dateString)`
+   - Displays as "MMM YYYY" format (e.g., "Jan 2023")
+   - Used for both certifications and experiences
+
+**Features Completed:**
+
+- ✅ Certifications list view with full CRUD
+- ✅ Experiences list view with full CRUD
+- ✅ Date pickers for all date fields
+- ✅ Drag-and-drop reordering for both sections
+- ✅ Current position toggle (auto-clears end_date)
+- ✅ Expiry date optional for certifications
+- ✅ Credential URL and ID support
+- ✅ Location field for experiences
+- ✅ Form validation with Zod schemas
+- ✅ Success/error notification system
+- ✅ Delete confirmation modals
+- ✅ Empty states for both sections
+- ✅ Modal-based forms (keyboard accessible)
+- ✅ Type-safe throughout with TypeScript
+- ✅ Responsive design
+- ✅ Real-time data updates
+
+**Technical Highlights:**
+
+- **Dual Management:** Single page manages both certifications and experiences efficiently
+- **Date Handling:** Proper date validation and formatting for professional display
+- **Current Position Logic:** Automatic end_date clearing when marking position as current
+- **Credential Support:** Full support for certification URLs and IDs with external links
+- **Form Validation:** Client and server-side validation with descriptive error messages
+- **Drag-and-Drop:** Independent reordering for certifications and experiences
+- **Empty States:** Helpful empty states with quick add buttons for first items
+- **Database Integration:** All operations write to `certifications` and `experiences` tables
+- **Display Order:** Automatic assignment and persistence for both types
+
+**Database Tables Used:**
+
+- `certifications` - Professional certifications and credentials
+- `experiences` - Work experience history
+
+**Quality Checks:** ✅ All passed (0 errors, 14 minor warnings from previous phases)
+
+**Next Steps:** Phase 14 - Media Optimization & Cloudinary Integration
+
+### ⏳ Phase 14-22: Remaining Phases - PENDING
