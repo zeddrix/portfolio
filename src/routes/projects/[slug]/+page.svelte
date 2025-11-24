@@ -1,20 +1,40 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { animate_on_scroll } from '$lib/actions/animate';
 	import ProjectCard from '$lib/components/shared/ProjectCard.svelte';
+	import SEO from '$lib/components/shared/SEO.svelte';
+	import { generateProjectStructuredData, generateKeywords, truncateText } from '$lib/utils/seo';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	const { project, relatedProjects } = data;
+
+	// Generate SEO data
+	$: keywords = generateKeywords(project.tech_stack, ['project', 'case study', 'portfolio']);
+	$: description = truncateText(project.short_description, 160);
+	$: projectStructuredData = generateProjectStructuredData(project, $page.url.origin);
 </script>
 
+<SEO
+	title={`${project.title} - Zeddrix Portfolio`}
+	{description}
+	{keywords}
+	image={project.featured_image_url}
+	type="article"
+	article={{
+		publishedTime: project.created_at,
+		modifiedTime: project.updated_at,
+		author: 'Zeddrix',
+		section: 'Projects',
+		tags: project.tech_stack
+	}}
+/>
+
 <svelte:head>
-	<title>{project.title} - Zeddrix Portfolio</title>
-	<meta name="description" content={project.short_description} />
-	<meta property="og:title" content={project.title} />
-	<meta property="og:description" content={project.short_description} />
-	<meta property="og:image" content={project.featured_image_url} />
-	<meta property="og:type" content="website" />
+	<!-- Project-specific structured data -->
+	<!-- svelte-ignore a11y-unknown-aria-attribute -->
+	{@html `<script type="application/ld+json">${JSON.stringify(projectStructuredData)}${'</'}script>`}
 </svelte:head>
 
 <div class="min-h-screen bg-background">
