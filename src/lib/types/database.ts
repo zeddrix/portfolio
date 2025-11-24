@@ -3,9 +3,13 @@
  * These types match the tables defined in scripts/db/migrations/001_initial_schema.sql
  */
 
+import type { LayoutType } from './layout';
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-export type LayoutType = 'case_study' | 'single_page' | 'bento_grid';
+// Re-export LayoutType for convenience
+export type { LayoutType };
+
 export type PaletteType =
 	| 'cyber_blue'
 	| 'neon_nights'

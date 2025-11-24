@@ -336,3 +336,180 @@ export function generateResponsiveImageUrls(
 
 	return urls;
 }
+
+/**
+ * Generate a responsive image srcset string for HTML img element
+ * @param publicId - The public_id of the image
+ * @param widths - Array of widths to generate (default: [400, 800, 1200, 1920])
+ * @returns Srcset string for use in img elements
+ */
+export function generateImageSrcset(publicId: string, widths = [400, 800, 1200, 1920]): string {
+	return widths
+		.map((width) => {
+			const url = cloudinary.url(publicId, {
+				secure: true,
+				width,
+				crop: 'limit',
+				quality: 'auto:good',
+				fetch_format: 'auto'
+			});
+			return `${url} ${width}w`;
+		})
+		.join(', ');
+}
+
+/**
+ * Generate a blur placeholder (LQIP - Low Quality Image Placeholder) for progressive loading
+ * @param publicId - The public_id of the image
+ * @returns Tiny blurred image URL for placeholder
+ */
+export function generateBlurPlaceholder(publicId: string): string {
+	return cloudinary.url(publicId, {
+		secure: true,
+		width: 40,
+		quality: 'auto:low',
+		fetch_format: 'auto',
+		effect: 'blur:1000'
+	});
+}
+
+/**
+ * Generate video thumbnail/poster image
+ * @param videoPublicId - The public_id of the video
+ * @param time - Time in seconds for the thumbnail (default: 0)
+ * @returns URL of the video thumbnail
+ */
+export function generateVideoThumbnail(videoPublicId: string, time = 0): string {
+	return cloudinary.url(videoPublicId, {
+		secure: true,
+		resource_type: 'video',
+		format: 'jpg',
+		start_offset: time,
+		quality: 'auto:good',
+		width: 1920,
+		crop: 'limit'
+	});
+}
+
+/**
+ * Generate video URL with optimizations (transcoding, format, quality)
+ * @param videoPublicId - The public_id of the video
+ * @param options - Video transformation options
+ * @returns Optimized video URL
+ */
+export function generateOptimizedVideoUrl(
+	videoPublicId: string,
+	options: {
+		width?: number;
+		height?: number;
+		quality?: 'auto' | 'auto:low' | 'auto:good' | 'auto:best';
+		format?: 'mp4' | 'webm' | 'auto';
+		bitRate?: string;
+	} = {}
+): string {
+	const { width, height, quality = 'auto', format = 'auto', bitRate } = options;
+
+	const transformation: Record<string, string | number | boolean> = {
+		secure: true,
+		resource_type: 'video',
+		quality,
+		fetch_format: format
+	};
+
+	if (width) transformation.width = width;
+	if (height) transformation.height = height;
+	if (width || height) transformation.crop = 'limit';
+	if (bitRate) transformation.bit_rate = bitRate;
+
+	return cloudinary.url(videoPublicId, transformation);
+}
+
+/**
+ * Generate adaptive bitrate streaming URLs (HLS/DASH) for video
+ * @param videoPublicId - The public_id of the video
+ * @returns Object with HLS and DASH streaming URLs
+ */
+export function generateStreamingUrls(videoPublicId: string): {
+	hls: string;
+	dash: string;
+} {
+	return {
+		hls: cloudinary.url(videoPublicId, {
+			secure: true,
+			resource_type: 'video',
+			format: 'm3u8',
+			streaming_profile: 'hd'
+		}),
+		dash: cloudinary.url(videoPublicId, {
+			secure: true,
+			resource_type: 'video',
+			format: 'mpd',
+			streaming_profile: 'hd'
+		})
+	};
+}
+
+/**
+ * Upload video with advanced optimizations (adaptive streaming, multiple formats)
+ * @param dataUrl - Base64 data URL of the video
+ * @param folder - Cloudinary folder to upload to
+ * @param publicId - Optional custom public ID
+ * @returns Upload result with URL and streaming URLs
+ */
+export async function uploadVideoAdvanced(
+	dataUrl: string,
+	folder = 'portfolio/videos',
+	publicId?: string
+): Promise<CloudinaryUploadResult & { streaming?: { hls: string; dash: string } }> {
+	try {
+		const uploadOptions: Record<string, string | number | boolean | object> = {
+			folder,
+			resource_type: 'video',
+			// Eager transformations for immediate availability
+			eager: [
+				{
+					streaming_profile: 'hd',
+					format: 'm3u8'
+				},
+				{
+					quality: 'auto',
+					format: 'mp4',
+					width: 1920,
+					crop: 'limit'
+				},
+				{
+					quality: 'auto',
+					format: 'webm',
+					width: 1920,
+					crop: 'limit'
+				}
+			],
+			eager_async: true
+		};
+
+		if (publicId) {
+			uploadOptions.public_id = publicId;
+		}
+
+		const result = await cloudinary.uploader.upload(dataUrl, uploadOptions);
+
+		const response: CloudinaryUploadResult & { streaming?: { hls: string; dash: string } } = {
+			url: result.secure_url,
+			public_id: result.public_id,
+			width: result.width || 0,
+			height: result.height || 0,
+			format: result.format,
+			resource_type: result.resource_type
+		};
+
+		// Add streaming URLs if available
+		if (result.resource_type === 'video') {
+			response.streaming = generateStreamingUrls(result.public_id);
+		}
+
+		return response;
+	} catch (error) {
+		console.error('Cloudinary advanced video upload error:', error);
+		throw new Error('Failed to upload video with advanced optimizations');
+	}
+}
