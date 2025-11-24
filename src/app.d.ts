@@ -18,4 +18,13 @@ declare global {
 	}
 }
 
+// Declare private environment variables
+declare module '$env/static/private' {
+	export const SUPABASE_SERVICE_ROLE_KEY: string;
+	export const SUPABASE_DB_PASSWORD: string;
+	export const POSTGRES_URL: string;
+	export const CLOUDINARY_API_SECRET: string;
+	export const CLOUDINARY_URL: string;
+}
+
 export {};
