@@ -4,6 +4,7 @@ import tsParser from '@typescript-eslint/parser';
 import svelte from 'eslint-plugin-svelte';
 import svelteParser from 'svelte-eslint-parser';
 import prettier from 'eslint-config-prettier';
+import globals from 'globals';
 
 export default [
 	js.configs.recommended,
@@ -16,6 +17,10 @@ export default [
 				sourceType: 'module',
 				project: './tsconfig.json',
 				extraFileExtensions: ['.svelte']
+			},
+			globals: {
+				...globals.browser,
+				...globals.es2021
 			}
 		},
 		plugins: {
@@ -37,6 +42,10 @@ export default [
 				parser: tsParser,
 				project: './tsconfig.json',
 				extraFileExtensions: ['.svelte']
+			},
+			globals: {
+				...globals.browser,
+				...globals.es2021
 			}
 		},
 		plugins: {

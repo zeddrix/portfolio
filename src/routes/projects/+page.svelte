@@ -97,24 +97,28 @@
 <!-- Header Section -->
 <Section background="white" padding="large">
 	<Container maxWidth="lg">
-		<div class="text-center space-y-6">
-			<h1 class="text-4xl md:text-5xl font-bold text-neutral-900">My Projects</h1>
-			<p class="text-xl text-neutral-600 max-w-3xl mx-auto">
+		<div class="text-center space-y-8">
+			<h1
+				class="text-5xl md:text-6xl lg:text-7xl font-light text-neutral-900 tracking-tight leading-tight"
+			>
+				My Projects
+			</h1>
+			<p class="text-xl md:text-2xl text-neutral-600 max-w-3xl mx-auto font-light leading-relaxed">
 				A collection of projects showcasing modern web development, thoughtful design, and technical
 				excellence. Each project represents a unique challenge and learning opportunity.
 			</p>
 		</div>
 
 		<!-- Filter Buttons -->
-		<div class="flex flex-wrap justify-center gap-3 mt-8">
+		<div class="flex flex-wrap justify-center gap-4 mt-12">
 			{#each categories as category}
 				<button
 					type="button"
 					on:click={() => (selectedCategory = category)}
-					class="px-6 py-2 rounded-full font-medium transition-all duration-150
+					class="px-8 py-3 rounded-full font-medium transition-all duration-200 text-base
 						{selectedCategory === category
-						? 'bg-primary-600 text-white'
-						: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}"
+						? 'bg-primary-600 text-white shadow-md'
+						: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:shadow-sm'}"
 				>
 					{category.charAt(0).toUpperCase() + category.slice(1)}
 				</button>
@@ -128,21 +132,30 @@
 	<Container maxWidth="lg">
 		<Grid cols={1} md={2} lg={3} gap="loose">
 			{#each filteredProjects as project}
-				<Card variant="elevated" padding="large" hover>
-					<div class="space-y-4">
+				<Card shadow="xl" padding="large" hover>
+					<div class="space-y-6">
 						<!-- Project Image Placeholder -->
-						<div class="w-full h-48 bg-gradient-to-br {project.gradient} rounded-lg" />
+						<div
+							class="w-full h-56 bg-gradient-to-br {project.gradient.replace(
+								'400',
+								'500'
+							)} shadow-md rounded-lg"
+						/>
 
 						<!-- Project Title -->
-						<h3 class="text-xl font-bold text-neutral-900">{project.title}</h3>
+						<h3 class="text-2xl font-semibold text-neutral-900">{project.title}</h3>
 
 						<!-- Project Description -->
-						<p class="text-neutral-600 line-clamp-3">{project.description}</p>
+						<p class="text-neutral-600 line-clamp-3 text-lg leading-relaxed">
+							{project.description}
+						</p>
 
 						<!-- Tags -->
 						<div class="flex flex-wrap gap-2">
 							{#each project.tags as tag}
-								<span class="px-3 py-1 bg-primary-100 text-primary-700 text-sm rounded-full">
+								<span
+									class="px-4 py-2 bg-primary-100 text-primary-700 text-sm font-medium rounded-full"
+								>
 									{tag}
 								</span>
 							{/each}
@@ -150,11 +163,11 @@
 
 						<!-- Action Button -->
 						{#if project.link}
-							<Button variant="outline" size="small" fullWidth href={project.link}>
+							<Button variant="outline" size="medium" fullWidth href={project.link}>
 								View Project
 							</Button>
 						{:else}
-							<Button variant="ghost" size="small" fullWidth disabled>Coming Soon</Button>
+							<Button variant="ghost" size="medium" fullWidth disabled>Coming Soon</Button>
 						{/if}
 					</div>
 				</Card>
@@ -162,8 +175,8 @@
 		</Grid>
 
 		{#if filteredProjects.length === 0}
-			<div class="text-center py-12">
-				<p class="text-lg text-neutral-600">No projects found in this category.</p>
+			<div class="text-center py-16">
+				<p class="text-xl text-neutral-600">No projects found in this category.</p>
 			</div>
 		{/if}
 	</Container>
@@ -172,9 +185,13 @@
 <!-- CTA Section -->
 <Section background="dark" padding="large">
 	<Container maxWidth="md">
-		<div class="text-center space-y-6">
-			<h2 class="text-3xl md:text-4xl font-bold text-white">Have a Project in Mind?</h2>
-			<p class="text-lg text-neutral-300">
+		<div class="text-center space-y-8">
+			<h2
+				class="text-4xl md:text-5xl lg:text-6xl font-light text-white tracking-tight leading-tight"
+			>
+				Have a Project in Mind?
+			</h2>
+			<p class="text-xl md:text-2xl text-neutral-300 font-light leading-relaxed">
 				I'm always interested in hearing about new opportunities and exciting projects.
 			</p>
 			<Button variant="primary" size="large" href="/contact">Let's Talk</Button>

@@ -43,8 +43,11 @@ pnpm dev                    # Start dev server
 pnpm build                  # Production build
 
 # Code Quality
+pnpm quality                # Run ALL checks (format + lint + type-check)
 pnpm format                 # Format with Prettier
+pnpm format:check           # Check formatting without modifying
 pnpm lint                   # Lint with ESLint
+pnpm lint:fix               # Lint and auto-fix issues
 pnpm check                  # TypeScript type checking
 
 # Scraper
@@ -103,22 +106,121 @@ shadows = {"card": "0 2px 8px rgba(0,0,0,0.1)"}
 **P4 Forms:** Input, Textarea, Select, Checkbox, Form
 **P5 Feedback:** Modal, Toast, Loading
 
-## Code Standards
+## Code Quality Standards
+
+### Mandatory Rules (Zero Tolerance)
+
+**CRITICAL - These rules are enforced by pre-commit hooks:**
+
+1. **NEVER use `any` type**
+
+   ```typescript
+   // ❌ WRONG - Never do this
+   export let items: any[] = [];
+
+   // ✅ CORRECT - Use generics or specific types
+   export let items: T[] = [];
+   export let items: string[] = [];
+   ```
+
+2. **NEVER use eslint-disable comments**
+
+   ```typescript
+   // ❌ WRONG - Never do this
+   // eslint-disable-next-line no-undef
+   window.setTimeout(() => {}, 1000);
+
+   // ✅ CORRECT - Fix the underlying issue
+   setTimeout(() => {}, 1000);
+   ```
+
+3. **ALWAYS run quality checks before commit**
+   ```bash
+   pnpm quality  # Runs format + lint + type-check
+   ```
+
+### Pre-Commit Hook
+
+A pre-commit hook is configured to automatically:
+
+- Format and lint staged files with Prettier and ESLint
+- Run full type checking on the entire codebase
+- **Block commits if any errors are found**
+
+Location: `.husky/pre-commit`
+
+### Type Safety Standards
 
 **Required:**
 
-- TypeScript strict mode, no implicit `any`
-- All component props typed
-- Prettier formatted, ESLint clean
+- TypeScript strict mode enabled (no implicit `any`)
+- All component props must be explicitly typed
+- All function parameters and returns must be typed
+- Use proper types for browser APIs:
+
+  ```typescript
+  // ✅ Timers
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  let intervalId: ReturnType<typeof setInterval> | undefined;
+
+  // ✅ Browser globals work automatically
+  window.addEventListener('scroll', handleScroll);
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {}, 1000);
+  ```
+
+**Generic Components:**
+
+```typescript
+// ✅ Use generics for reusable components
+<script lang="ts" generics="T">
+  export let items: T[] = [] as T[];
+</script>
+```
+
+### Code Standards
+
+**Required:**
+
+- Prettier formatted, ESLint clean, type-check passing
 - Svelte 4 syntax only (NOT Svelte 5)
 - Read files before editing
 - Test in demo routes before integrating
+- Fix all accessibility warnings from svelte-check
+- All event handlers must be typed (MouseEvent, KeyboardEvent, etc.)
 
 **Styling:**
 
 - Tailwind CSS classes primarily
-- Design tokens in `src/lib/styles/`
+- Design tokens from `src/lib/styles/` for consistency
 - Mobile-first responsive design
+- No inline styles except for dynamic values
+
+**Component Structure:**
+
+```svelte
+<script lang="ts">
+	// 1. Imports
+	import { onMount } from 'svelte';
+
+	// 2. Props (exports)
+	export let prop: string;
+
+	// 3. Internal state
+	let state: boolean = false;
+
+	// 4. Functions
+	function handler(event: MouseEvent) {}
+
+	// 5. Lifecycle
+	onMount(() => {});
+
+	// 6. Reactive statements
+	$: computed = prop + 'value';
+</script>
+
+<!-- 7. Template --><div>Content</div>
+```
 
 ## Success = Squarespace Quality
 

@@ -15,7 +15,7 @@
 	export let dismissible: boolean = true;
 	export let visible: boolean = true;
 
-	let timeoutId: number | undefined;
+	let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
 	function dismiss() {
 		visible = false;
@@ -23,15 +23,13 @@
 
 	onMount(() => {
 		if (duration > 0) {
-			// eslint-disable-next-line no-undef
-			timeoutId = window.setTimeout(() => {
+			timeoutId = setTimeout(() => {
 				dismiss();
 			}, duration);
 		}
 
 		return () => {
 			if (timeoutId) {
-				// eslint-disable-next-line no-undef
 				clearTimeout(timeoutId);
 			}
 		};

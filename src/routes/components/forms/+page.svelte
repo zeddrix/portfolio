@@ -29,7 +29,6 @@
 		formError = '';
 		formSuccess = '';
 
-		// eslint-disable-next-line no-undef
 		setTimeout(() => {
 			formLoading = false;
 			formSuccess = 'Form submitted successfully!';

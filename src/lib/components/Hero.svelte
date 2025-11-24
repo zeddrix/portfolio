@@ -4,6 +4,7 @@
 	 *
 	 * A full-width hero section with support for backgrounds, text overlay,
 	 * and call-to-action buttons. Responsive typography and entrance animations.
+	 * Enhanced with Squarespace-quality dramatic typography (72px headings) and rich overlays.
 	 */
 
 	import { fly } from 'svelte/transition';
@@ -20,7 +21,7 @@
 		white: 'bg-white',
 		gray: 'bg-neutral-50',
 		dark: 'bg-neutral-900 text-white',
-		gradient: 'bg-gradient-to-br from-primary-500 to-primary-700 text-white',
+		gradient: 'bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white',
 		image: 'bg-cover bg-center bg-no-repeat'
 	}[background];
 
@@ -31,9 +32,9 @@
 	}[alignment];
 
 	$: heightClasses = {
-		small: 'min-h-[400px]',
-		medium: 'min-h-[500px]',
-		large: 'min-h-[600px]',
+		small: 'min-h-[500px]',
+		medium: 'min-h-[600px]',
+		large: 'min-h-[700px]',
 		full: 'min-h-screen'
 	}[height];
 
@@ -47,15 +48,15 @@
 	{...$$restProps}
 >
 	{#if backgroundImage && background === 'image'}
-		<div class="absolute inset-0 bg-black/40" />
+		<div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/45 to-black/50" />
 	{/if}
 
-	<div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-		<div class="flex flex-col {alignmentClasses} gap-6 max-w-4xl mx-auto">
+	<div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+		<div class="flex flex-col {alignmentClasses} gap-8 max-w-5xl mx-auto">
 			{#if title}
 				<h1
-					class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
-					in:fly={animate ? { y: 20, duration: 600, delay: 100, opacity: 0 } : undefined}
+					class="text-5xl sm:text-6xl md:text-7xl lg:text-[80px] xl:text-[90px] font-light leading-[1.1] tracking-tight"
+					in:fly={animate ? { y: 30, duration: 700, delay: 100, opacity: 0 } : undefined}
 				>
 					{title}
 				</h1>
@@ -63,20 +64,20 @@
 
 			{#if subtitle}
 				<p
-					class="text-lg md:text-xl lg:text-2xl opacity-90 max-w-2xl"
-					in:fly={animate ? { y: 20, duration: 600, delay: 300, opacity: 0 } : undefined}
+					class="text-xl md:text-2xl lg:text-3xl opacity-95 max-w-3xl font-light leading-relaxed"
+					in:fly={animate ? { y: 30, duration: 700, delay: 300, opacity: 0 } : undefined}
 				>
 					{subtitle}
 				</p>
 			{/if}
 
 			<div
-				class="flex flex-wrap gap-4 {alignment === 'center'
+				class="flex flex-wrap gap-6 mt-4 {alignment === 'center'
 					? 'justify-center'
 					: alignment === 'right'
 						? 'justify-end'
 						: 'justify-start'}"
-				in:fly={animate ? { y: 20, duration: 600, delay: 500, opacity: 0 } : undefined}
+				in:fly={animate ? { y: 30, duration: 700, delay: 500, opacity: 0 } : undefined}
 			>
 				<slot name="cta" />
 			</div>

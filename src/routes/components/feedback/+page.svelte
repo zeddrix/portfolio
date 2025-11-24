@@ -27,7 +27,6 @@
 
 	function simulateLoading() {
 		showFullscreenLoading = true;
-		// eslint-disable-next-line no-undef
 		setTimeout(() => {
 			showFullscreenLoading = false;
 		}, 3000);

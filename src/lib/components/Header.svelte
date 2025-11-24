@@ -16,13 +16,10 @@
 
 	onMount(() => {
 		const handleScroll = () => {
-			// eslint-disable-next-line no-undef
 			scrolled = window.scrollY > 20;
 		};
 
-		// eslint-disable-next-line no-undef
 		window.addEventListener('scroll', handleScroll);
-		// eslint-disable-next-line no-undef
 		return () => window.removeEventListener('scroll', handleScroll);
 	});
 

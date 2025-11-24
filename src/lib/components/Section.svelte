@@ -4,6 +4,7 @@
 	 *
 	 * A semantic section wrapper with consistent vertical padding and
 	 * background variants for layout consistency.
+	 * Enhanced with Squarespace-quality generous spacing (up to 240px padding).
 	 */
 
 	export let background: 'white' | 'gray' | 'dark' | 'primary' = 'white';
@@ -18,9 +19,9 @@
 	}[background];
 
 	$: paddingClasses = {
-		small: 'py-12',
-		medium: 'py-16 md:py-20',
-		large: 'py-24 md:py-32'
+		small: 'py-16 md:py-20',
+		medium: 'py-20 md:py-28',
+		large: 'py-32 md:py-40 lg:py-48'
 	}[padding];
 </script>
 

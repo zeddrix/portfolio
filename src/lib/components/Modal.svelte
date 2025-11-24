@@ -34,15 +34,12 @@
 
 	onMount(() => {
 		return () => {
-			// eslint-disable-next-line no-undef
 			document.body.style.overflow = '';
 		};
 	});
 
 	$: {
-		// eslint-disable-next-line no-undef
 		if (typeof document !== 'undefined') {
-			// eslint-disable-next-line no-undef
 			document.body.style.overflow = open ? 'hidden' : '';
 		}
 	}

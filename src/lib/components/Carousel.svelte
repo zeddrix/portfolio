@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="T">
 	/**
 	 * Carousel Component
 	 *
@@ -8,15 +8,14 @@
 
 	import { onMount, onDestroy } from 'svelte';
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	export let items: any[] = [];
+	export let items: T[] = [] as T[];
 	export let autoplay: boolean = false;
 	export let interval: number = 5000;
 	export let showControls: boolean = true;
 	export let showDots: boolean = true;
 
 	let currentIndex = 0;
-	let autoplayInterval: number | undefined;
+	let autoplayInterval: ReturnType<typeof setInterval> | undefined;
 	let isPaused = false;
 
 	function next() {
@@ -33,14 +32,12 @@
 
 	function startAutoplay() {
 		if (autoplay && !isPaused) {
-			// eslint-disable-next-line no-undef
-			autoplayInterval = window.setInterval(next, interval);
+			autoplayInterval = setInterval(next, interval);
 		}
 	}
 
 	function stopAutoplay() {
 		if (autoplayInterval) {
-			// eslint-disable-next-line no-undef
 			clearInterval(autoplayInterval);
 			autoplayInterval = undefined;
 		}
