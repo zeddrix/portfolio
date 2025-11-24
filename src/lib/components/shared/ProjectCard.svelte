@@ -27,13 +27,13 @@
 	 */
 	function getCardClasses(): string {
 		const base =
-			'relative overflow-hidden rounded-lg bg-surface border border-border transition-all hover:shadow-lg hover:border-primary/50';
+			'relative overflow-hidden rounded-lg bg-surface border border-border transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 hover:border-accent/50 hover:-translate-y-1';
 
 		switch (variant) {
 			case 'list':
 				return `${base} flex flex-col sm:flex-row`;
 			case 'featured':
-				return `${base} border-2 border-primary/30`;
+				return `${base} border-2 border-primary/30 shadow-lg shadow-primary/10`;
 			default:
 				return base;
 		}
@@ -86,14 +86,14 @@
 				<div class="flex flex-wrap gap-2 mb-4">
 					{#each techStack.slice(0, 4) as tech}
 						<span
-							class="text-xs font-medium px-2 py-1 bg-background text-primary rounded border border-border"
+							class="text-xs font-semibold px-3 py-1.5 bg-gradient-to-r from-primary/10 to-secondary/10 text-primary rounded-full border border-primary/20 hover:border-primary/40 hover:from-primary/20 hover:to-secondary/20 transition-all"
 						>
 							{tech}
 						</span>
 					{/each}
 					{#if techStack.length > 4}
 						<span
-							class="text-xs font-medium px-2 py-1 bg-background text-primary rounded border border-border"
+							class="text-xs font-semibold px-3 py-1.5 bg-gradient-to-r from-primary/10 to-secondary/10 text-primary rounded-full border border-primary/20"
 						>
 							+{techStack.length - 4}
 						</span>
@@ -102,10 +102,12 @@
 			{/if}
 
 			<!-- Read More -->
-			<div class="flex items-center text-primary font-medium">
+			<div
+				class="flex items-center text-accent font-semibold group-hover:text-primary transition-colors"
+			>
 				<span>View Details</span>
 				<svg
-					class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+					class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import RichTextEditor from './RichTextEditor.svelte';
+	import MediaUploader from './MediaUploader.svelte';
 	import { generateSlug } from '$lib/utils/slug';
 	import type { GalleryMedia } from '$lib/schemas/project';
 
@@ -46,6 +47,12 @@
 
 	let autoGenerateSlug = !isEdit;
 
+	// Upload state
+	let uploadingFeaturedImage = false;
+	let uploadingGallery = false;
+	let uploadingDemoVideo = false;
+	let uploadError = '';
+
 	$: if (autoGenerateSlug && title) {
 		slug = generateSlug(title);
 	}
@@ -55,6 +62,136 @@
 		.split(',')
 		.map((t) => t.trim())
 		.filter(Boolean);
+
+	// Upload handlers
+	async function handleFeaturedImageUpload(event: CustomEvent) {
+		uploadError = '';
+		uploadingFeaturedImage = true;
+
+		try {
+			const { dataUrl, mediaType } = event.detail;
+
+			// Ensure slug exists for upload
+			if (!slug) {
+				slug = generateSlug(title || 'untitled');
+			}
+
+			const response = await fetch('/api/admin/upload', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					dataUrl,
+					mediaType,
+					projectSlug: slug,
+					uploadType: 'featured'
+				})
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.message || 'Upload failed');
+			}
+
+			const result = await response.json();
+			featuredImageUrl = result.url;
+			featuredImageCloudinaryId = result.cloudinaryId;
+		} catch (err) {
+			uploadError = err instanceof Error ? err.message : 'Failed to upload featured image';
+			console.error('Featured image upload error:', err);
+		} finally {
+			uploadingFeaturedImage = false;
+		}
+	}
+
+	async function handleGalleryUpload(event: CustomEvent) {
+		uploadError = '';
+		uploadingGallery = true;
+
+		try {
+			const { dataUrl, mediaType } = event.detail;
+
+			// Ensure slug exists for upload
+			if (!slug) {
+				slug = generateSlug(title || 'untitled');
+			}
+
+			const response = await fetch('/api/admin/upload', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					dataUrl,
+					mediaType,
+					projectSlug: slug,
+					uploadType: 'gallery'
+				})
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.message || 'Upload failed');
+			}
+
+			const result = await response.json();
+
+			// Add to gallery images array
+			const newMedia: GalleryMedia = {
+				url: result.url,
+				cloudinary_id: result.cloudinaryId,
+				media_type: mediaType,
+				order: galleryImages.length
+			};
+
+			galleryImages = [...galleryImages, newMedia];
+		} catch (err) {
+			uploadError = err instanceof Error ? err.message : 'Failed to upload gallery media';
+			console.error('Gallery upload error:', err);
+		} finally {
+			uploadingGallery = false;
+		}
+	}
+
+	async function handleDemoVideoUpload(event: CustomEvent) {
+		uploadError = '';
+		uploadingDemoVideo = true;
+
+		try {
+			const { dataUrl, mediaType } = event.detail;
+
+			// Ensure slug exists for upload
+			if (!slug) {
+				slug = generateSlug(title || 'untitled');
+			}
+
+			const response = await fetch('/api/admin/upload', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					dataUrl,
+					mediaType,
+					projectSlug: slug,
+					uploadType: 'demo'
+				})
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.message || 'Upload failed');
+			}
+
+			const result = await response.json();
+			demoVideoUrl = result.url;
+			demoVideoCloudinaryId = result.cloudinaryId;
+		} catch (err) {
+			uploadError = err instanceof Error ? err.message : 'Failed to upload demo video';
+			console.error('Demo video upload error:', err);
+		} finally {
+			uploadingDemoVideo = false;
+		}
+	}
+
+	function handleRemoveGalleryItem(index: number) {
+		galleryImages = galleryImages.filter((_, i) => i !== index);
+	}
 </script>
 
 <form method="POST" use:enhance class="space-y-8">
@@ -195,33 +332,118 @@
 		</div>
 	</div>
 
-	<!-- Media (simplified - featured image required, others optional) -->
+	<!-- Media -->
 	<div class="bg-surface border border-border rounded-lg p-6">
 		<h2 class="text-xl font-bold text-text-primary mb-4">Media</h2>
-		<div class="space-y-4">
+
+		<!-- Error message -->
+		{#if uploadError}
+			<div class="mb-4 p-3 bg-error/10 border border-error rounded-lg">
+				<p class="text-sm text-error flex items-center gap-2">
+					<span class="material-icons text-base">error</span>
+					{uploadError}
+				</p>
+			</div>
+		{/if}
+
+		<div class="space-y-6">
+			<!-- Featured Image -->
 			<div>
-				<label for="featured_image_url" class="block text-sm font-semibold text-text-primary mb-2">
-					Featured Image <span class="text-error">*</span>
-				</label>
-				<input
-					id="featured_image_url"
-					type="url"
+				<MediaUploader
+					mediaType="image"
+					multiple={false}
+					maxSizeMB={10}
+					preview={true}
 					bind:value={featuredImageUrl}
-					placeholder="Cloudinary URL or upload image"
-					class="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+					bind:cloudinaryId={featuredImageCloudinaryId}
+					label="Featured Image *"
+					helpText="Main project image displayed on the projects page"
+					on:upload={handleFeaturedImageUpload}
 				/>
+				{#if uploadingFeaturedImage}
+					<p class="text-sm text-primary mt-2 flex items-center gap-2">
+						<span class="material-icons text-base animate-spin">refresh</span>
+						Uploading featured image...
+					</p>
+				{/if}
 				<input type="hidden" name="featured_image_url" value={featuredImageUrl} />
 				<input
 					type="hidden"
 					name="featured_image_cloudinary_id"
 					value={featuredImageCloudinaryId}
 				/>
-				<p class="text-xs text-text-secondary mt-1">For now, upload to Cloudinary and paste URL</p>
+			</div>
+
+			<!-- Gallery Images -->
+			<div>
+				<MediaUploader
+					mediaType="all"
+					multiple={true}
+					maxSizeMB={20}
+					preview={true}
+					bind:galleryMedia={galleryImages}
+					label="Gallery Images"
+					helpText="Additional project images, videos, or GIFs (optional)"
+					on:upload={handleGalleryUpload}
+				/>
+				{#if uploadingGallery}
+					<p class="text-sm text-primary mt-2 flex items-center gap-2">
+						<span class="material-icons text-base animate-spin">refresh</span>
+						Uploading gallery media...
+					</p>
+				{/if}
+
+				<!-- Manual remove buttons for gallery items -->
+				{#if galleryImages.length > 0}
+					<div class="mt-4 space-y-2">
+						<p class="text-sm font-semibold text-text-primary">
+							Gallery Items ({galleryImages.length})
+						</p>
+						{#each galleryImages as item, index}
+							<div
+								class="flex items-center justify-between p-2 bg-background rounded border border-border"
+							>
+								<span class="text-sm text-text-secondary truncate flex-1">
+									{item.media_type} - {item.cloudinary_id}
+								</span>
+								<button
+									type="button"
+									on:click={() => handleRemoveGalleryItem(index)}
+									class="ml-2 p-1 text-error hover:bg-error/10 rounded"
+									title="Remove"
+								>
+									<span class="material-icons text-sm">delete</span>
+								</button>
+							</div>
+						{/each}
+					</div>
+				{/if}
+				<input type="hidden" name="gallery_images" value={JSON.stringify(galleryImages)} />
+			</div>
+
+			<!-- Demo Video -->
+			<div>
+				<MediaUploader
+					mediaType="video"
+					multiple={false}
+					maxSizeMB={50}
+					preview={true}
+					bind:value={demoVideoUrl}
+					bind:cloudinaryId={demoVideoCloudinaryId}
+					label="Demo Video"
+					helpText="Project demonstration video (optional)"
+					on:upload={handleDemoVideoUpload}
+				/>
+				{#if uploadingDemoVideo}
+					<p class="text-sm text-primary mt-2 flex items-center gap-2">
+						<span class="material-icons text-base animate-spin">refresh</span>
+						Uploading demo video...
+					</p>
+				{/if}
+				<input type="hidden" name="demo_video_url" value={demoVideoUrl} />
+				<input type="hidden" name="demo_video_cloudinary_id" value={demoVideoCloudinaryId} />
 			</div>
 		</div>
-		<input type="hidden" name="gallery_images" value={JSON.stringify(galleryImages)} />
-		<input type="hidden" name="demo_video_url" value={demoVideoUrl} />
-		<input type="hidden" name="demo_video_cloudinary_id" value={demoVideoCloudinaryId} />
 	</div>
 
 	<!-- Settings -->

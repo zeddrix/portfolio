@@ -11,22 +11,22 @@
 	export let isFeatured = false;
 
 	/**
-	 * Get category color classes
+	 * Get category color classes with gradients
 	 */
 	function getCategoryColor(): string {
 		switch (category) {
 			case 'programming':
-				return 'bg-primary/10 text-primary border-primary/30';
+				return 'bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border-primary/30 hover:from-primary/20 hover:to-secondary/20 hover:border-primary';
 			case 'frontend':
-				return 'bg-secondary/10 text-secondary border-secondary/30';
+				return 'bg-gradient-to-r from-secondary/10 to-accent/10 text-secondary border-secondary/30 hover:from-secondary/20 hover:to-accent/20 hover:border-secondary';
 			case 'backend':
-				return 'bg-accent/10 text-accent border-accent/30';
+				return 'bg-gradient-to-r from-accent/10 to-primary/10 text-accent border-accent/30 hover:from-accent/20 hover:to-primary/20 hover:border-accent';
 			case 'devops':
-				return 'bg-success/10 text-success border-success/30';
+				return 'bg-gradient-to-r from-success/10 to-primary/10 text-success border-success/30 hover:from-success/20 hover:to-primary/20 hover:border-success';
 			case 'tools':
-				return 'bg-text-secondary/10 text-text-secondary border-text-secondary/30';
+				return 'bg-gradient-to-r from-text-secondary/10 to-primary/10 text-text-secondary border-text-secondary/30 hover:from-text-secondary/20 hover:to-primary/20';
 			default:
-				return 'bg-primary/10 text-primary border-primary/30';
+				return 'bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border-primary/30 hover:from-primary/20 hover:to-secondary/20 hover:border-primary';
 		}
 	}
 
@@ -40,11 +40,7 @@
 
 <div
 	use:animate_on_scroll={{ type: 'scaleIn', duration: 0.5 }}
-	class={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-all hover:shadow-md hover:scale-105 ${getCategoryColor()}`}
-	class:ring-2={isFeatured}
-	class:ring-primary={isFeatured}
-	class:ring-offset-2={isFeatured}
-	class:ring-offset-background={isFeatured}
+	class={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-all hover:shadow-lg hover:scale-105 ${getCategoryColor()} ${isFeatured ? 'ring-2 ring-accent ring-offset-2 ring-offset-background shadow-md shadow-accent/30' : ''}`}
 >
 	<!-- Icon -->
 	{#if iconUrl}

@@ -111,14 +111,28 @@
 				<a
 					href="#projects"
 					use:smooth_scroll
-					class="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+					class="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-lg shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-accent/40 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-background"
 				>
 					View My Work
+					<svg
+						class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M17 8l4 4m0 0l-4 4m4-4H3"
+						/>
+					</svg>
 				</a>
 				<a
 					href="#contact"
 					use:smooth_scroll
-					class="inline-flex items-center px-6 py-3 bg-surface text-text-primary font-medium rounded-lg border border-border hover:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+					class="inline-flex items-center px-8 py-4 bg-surface text-text-primary font-semibold rounded-lg border-2 border-primary/30 hover:border-primary hover:bg-primary/10 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
 				>
 					Get In Touch
 				</a>
