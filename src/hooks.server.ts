@@ -14,6 +14,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Protected routes check
 	const isAdminRoute = event.url.pathname.startsWith('/admin');
 	const isLoginRoute = event.url.pathname === '/admin/login';
+	const isMaintenancePage = event.url.pathname === '/maintenance';
 
 	// Redirect to login if accessing admin routes without authentication
 	if (isAdminRoute && !isLoginRoute && !session) {
@@ -23,6 +24,31 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Redirect to admin dashboard if already logged in and trying to access login
 	if (isLoginRoute && session) {
 		throw redirect(303, '/admin');
+	}
+
+	// Maintenance mode check (only for public routes)
+	if (!isAdminRoute && !isMaintenancePage) {
+		try {
+			const supabase = createServerClient();
+			const { data: settings } = await supabase
+				.from('site_settings')
+				.select('maintenance_mode')
+				.single();
+
+			// Redirect to maintenance page if maintenance mode is enabled
+			if (settings?.maintenance_mode === true) {
+				throw redirect(303, '/maintenance');
+			}
+		} catch (error) {
+			// If error is not a redirect, log it and continue
+			// This prevents the site from breaking if database is unreachable
+			if (!(error instanceof Response)) {
+				console.error('Error checking maintenance mode:', error);
+			} else {
+				// Re-throw redirect
+				throw error;
+			}
+		}
 	}
 
 	const response = await resolve(event, {
