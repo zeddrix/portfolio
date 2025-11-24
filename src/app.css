@@ -13,11 +13,15 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	scroll-behavior: smooth;
+	background-color: rgb(var(--color-background));
+	color: rgb(var(--color-text-primary));
 }
 
 body {
 	margin: 0;
 	padding: 0;
+	background-color: rgb(var(--color-background));
+	color: rgb(var(--color-text-primary));
 }
 
 /**

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-palette="cyber_blue">
 	<head>
 		<meta charset="utf-8" />
 		<meta
@@ -9,6 +9,22 @@
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+		<!-- Theme initialization: Must run before page renders to prevent FOUC -->
+		<script>
+			(function () {
+				try {
+					const theme = localStorage.getItem('preferred_theme') || 'dark';
+					const palette = localStorage.getItem('preferred_palette') || 'cyber_blue';
+					document.documentElement.setAttribute('data-theme', theme);
+					document.documentElement.setAttribute('data-palette', palette);
+				} catch (e) {
+					// Fallback to defaults if localStorage is unavailable
+					document.documentElement.setAttribute('data-theme', 'dark');
+					document.documentElement.setAttribute('data-palette', 'cyber_blue');
+				}
+			})();
+		</script>
 
 		<!-- Performance: Resource hints for external services -->
 		<!-- Preconnect to Cloudinary for faster image loading -->
