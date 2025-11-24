@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
-import { supabaseAdmin } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import {
 	createCertificationSchema,
 	updateCertificationSchema,
@@ -24,7 +24,7 @@ type Experience = Database['public']['Tables']['experiences']['Row'];
 export const load: PageServerLoad = async () => {
 	try {
 		// Fetch all certifications ordered by display_order
-		const { data: certifications, error: certError } = await supabaseAdmin
+		const { data: certifications, error: certError } = await getSupabaseAdmin()
 			.from('certifications')
 			.select('*')
 			.order('display_order', { ascending: true });
@@ -32,7 +32,7 @@ export const load: PageServerLoad = async () => {
 		if (certError) throw certError;
 
 		// Fetch all experiences ordered by display_order
-		const { data: experiences, error: expError } = await supabaseAdmin
+		const { data: experiences, error: expError } = await getSupabaseAdmin()
 			.from('experiences')
 			.select('*')
 			.order('display_order', { ascending: true });
@@ -83,7 +83,7 @@ export const actions: Actions = {
 
 		try {
 			// Get the highest display_order
-			const { data: existing } = await supabaseAdmin
+			const { data: existing } = await getSupabaseAdmin()
 				.from('certifications')
 				.select('display_order')
 				.order('display_order', { ascending: false })
@@ -102,7 +102,9 @@ export const actions: Actions = {
 			};
 
 			// Insert certification
-			const { error: insertError } = await supabaseAdmin.from('certifications').insert([cleanData]);
+			const { error: insertError } = await getSupabaseAdmin()
+				.from('certifications')
+				.insert([cleanData]);
 
 			if (insertError) throw insertError;
 
@@ -156,7 +158,7 @@ export const actions: Actions = {
 			const { id, ...updateData } = cleanData;
 
 			// Update certification
-			const { error: updateError } = await supabaseAdmin
+			const { error: updateError } = await getSupabaseAdmin()
 				.from('certifications')
 				.update(updateData)
 				.eq('id', id);
@@ -195,7 +197,7 @@ export const actions: Actions = {
 
 		try {
 			// Delete certification
-			const { error: deleteError } = await supabaseAdmin
+			const { error: deleteError } = await getSupabaseAdmin()
 				.from('certifications')
 				.delete()
 				.eq('id', result.data.id);
@@ -240,7 +242,7 @@ export const actions: Actions = {
 		try {
 			// Update display_order for each certification
 			const updates = result.data.certifications.map((cert) =>
-				supabaseAdmin
+				getSupabaseAdmin()
 					.from('certifications')
 					.update({ display_order: cert.display_order })
 					.eq('id', cert.id)
@@ -288,7 +290,7 @@ export const actions: Actions = {
 
 		try {
 			// Get the highest display_order
-			const { data: existing } = await supabaseAdmin
+			const { data: existing } = await getSupabaseAdmin()
 				.from('experiences')
 				.select('display_order')
 				.order('display_order', { ascending: false })
@@ -306,7 +308,9 @@ export const actions: Actions = {
 			};
 
 			// Insert experience
-			const { error: insertError } = await supabaseAdmin.from('experiences').insert([cleanData]);
+			const { error: insertError } = await getSupabaseAdmin()
+				.from('experiences')
+				.insert([cleanData]);
 
 			if (insertError) throw insertError;
 
@@ -360,7 +364,7 @@ export const actions: Actions = {
 			const { id, ...updateData } = cleanData;
 
 			// Update experience
-			const { error: updateError } = await supabaseAdmin
+			const { error: updateError } = await getSupabaseAdmin()
 				.from('experiences')
 				.update(updateData)
 				.eq('id', id);
@@ -399,7 +403,7 @@ export const actions: Actions = {
 
 		try {
 			// Delete experience
-			const { error: deleteError } = await supabaseAdmin
+			const { error: deleteError } = await getSupabaseAdmin()
 				.from('experiences')
 				.delete()
 				.eq('id', result.data.id);
@@ -444,7 +448,7 @@ export const actions: Actions = {
 		try {
 			// Update display_order for each experience
 			const updates = result.data.experiences.map((exp) =>
-				supabaseAdmin
+				getSupabaseAdmin()
 					.from('experiences')
 					.update({ display_order: exp.display_order })
 					.eq('id', exp.id)

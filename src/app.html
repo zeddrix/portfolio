@@ -3,6 +3,21 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- Performance: Resource hints for external services -->
+		<!-- Preconnect to Cloudinary for faster image loading -->
+		<link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+		<link rel="dns-prefetch" href="https://res.cloudinary.com" />
+
+		<!-- Preconnect to Supabase for faster API calls -->
+		<link rel="preconnect" href="https://supabase.co" crossorigin />
+		<link rel="dns-prefetch" href="https://supabase.co" />
+
+		<!-- Preconnect to Google Fonts if used -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

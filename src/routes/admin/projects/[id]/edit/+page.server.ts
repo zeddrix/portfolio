@@ -1,12 +1,15 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { supabaseAdmin } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import { projectFormSchema } from '$lib/schemas/project';
 import { deleteMedia } from '$lib/server/cloudinary';
+import type { Database } from '$lib/types/database';
+
+type Project = Database['public']['Tables']['projects']['Row'];
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
-		const { data: project, error } = await supabaseAdmin
+		const { data: project, error } = await getSupabaseAdmin()
 			.from('projects')
 			.select('*')
 			.eq('id', params.id)
@@ -17,7 +20,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		}
 
 		return {
-			project
+			project: project as Project
 		};
 	} catch (error) {
 		if (error instanceof Response) throw error;
@@ -38,7 +41,7 @@ export const actions: Actions = {
 				: null;
 
 			// Get old project data for media cleanup
-			const { data: oldProject } = await supabaseAdmin
+			const { data: oldProject } = await getSupabaseAdmin()
 				.from('projects')
 				.select('featured_image_cloudinary_id, gallery_images, demo_video_cloudinary_id')
 				.eq('id', params.id)
@@ -70,7 +73,7 @@ export const actions: Actions = {
 			const validated = projectFormSchema.parse(projectData);
 
 			// Update project
-			const { error } = await supabaseAdmin
+			const { error } = await getSupabaseAdmin()
 				.from('projects')
 				.update({
 					...validated,

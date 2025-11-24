@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
-import { supabaseAdmin } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import {
 	createSkillSchema,
 	updateSkillSchema,
@@ -18,7 +18,7 @@ type Skill = Database['public']['Tables']['skills']['Row'];
 export const load: PageServerLoad = async () => {
 	try {
 		// Fetch all skills ordered by category and display_order
-		const { data: skills, error } = await supabaseAdmin
+		const { data: skills, error } = await getSupabaseAdmin()
 			.from('skills')
 			.select('*')
 			.order('category', { ascending: true })
@@ -66,7 +66,7 @@ export const actions: Actions = {
 
 		try {
 			// Get the highest display_order in this category
-			const { data: existingSkills } = await supabaseAdmin
+			const { data: existingSkills } = await getSupabaseAdmin()
 				.from('skills')
 				.select('display_order')
 				.eq('category', result.data.category)
@@ -85,7 +85,7 @@ export const actions: Actions = {
 			};
 
 			// Insert skill
-			const { error: insertError } = await supabaseAdmin.from('skills').insert([cleanData]);
+			const { error: insertError } = await getSupabaseAdmin().from('skills').insert([cleanData]);
 
 			if (insertError) throw insertError;
 
@@ -138,7 +138,7 @@ export const actions: Actions = {
 			const { id, ...updateData } = cleanData;
 
 			// Update skill
-			const { error: updateError } = await supabaseAdmin
+			const { error: updateError } = await getSupabaseAdmin()
 				.from('skills')
 				.update(updateData)
 				.eq('id', id);
@@ -177,7 +177,7 @@ export const actions: Actions = {
 
 		try {
 			// Delete skill
-			const { error: deleteError } = await supabaseAdmin
+			const { error: deleteError } = await getSupabaseAdmin()
 				.from('skills')
 				.delete()
 				.eq('id', result.data.id);
@@ -222,7 +222,7 @@ export const actions: Actions = {
 		try {
 			// Update display_order for each skill
 			const updates = result.data.skills.map((skill) =>
-				supabaseAdmin
+				getSupabaseAdmin()
 					.from('skills')
 					.update({ display_order: skill.display_order })
 					.eq('id', skill.id)
@@ -262,7 +262,7 @@ export const actions: Actions = {
 
 		try {
 			// Update featured status
-			const { error: updateError } = await supabaseAdmin
+			const { error: updateError } = await getSupabaseAdmin()
 				.from('skills')
 				.update({ is_featured: result.data.is_featured })
 				.eq('id', result.data.id);

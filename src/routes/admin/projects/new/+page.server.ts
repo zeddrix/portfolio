@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { supabaseAdmin } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import { projectFormSchema } from '$lib/schemas/project';
 
 export const load: PageServerLoad = async () => {
@@ -48,7 +48,7 @@ export const actions: Actions = {
 			const validated = projectFormSchema.parse(projectData);
 
 			// Check if slug already exists
-			const { data: existing } = await supabaseAdmin
+			const { data: existing } = await getSupabaseAdmin()
 				.from('projects')
 				.select('id')
 				.eq('slug', validated.slug)
@@ -59,7 +59,7 @@ export const actions: Actions = {
 			}
 
 			// Get next display_order
-			const { data: maxOrder } = await supabaseAdmin
+			const { data: maxOrder } = await getSupabaseAdmin()
 				.from('projects')
 				.select('display_order')
 				.order('display_order', { ascending: false })
@@ -69,7 +69,7 @@ export const actions: Actions = {
 			const display_order = (maxOrder?.display_order || 0) + 1;
 
 			// Insert project
-			const { error } = await supabaseAdmin
+			const { error } = await getSupabaseAdmin()
 				.from('projects')
 				.insert({
 					...validated,

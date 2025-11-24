@@ -57,5 +57,39 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	});
 
+	// Add caching headers based on route type
+	const path = event.url.pathname;
+
+	// Static assets: Long cache with immutable
+	if (path.startsWith('/_app/') || path.startsWith('/assets/')) {
+		response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+	}
+	// Admin routes: No cache
+	else if (isAdminRoute) {
+		response.headers.set(
+			'Cache-Control',
+			'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0'
+		);
+		response.headers.set('Pragma', 'no-cache');
+		response.headers.set('Expires', '0');
+	}
+	// API routes: Short cache with revalidation
+	else if (path.startsWith('/api/')) {
+		response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+	}
+	// Public pages: Moderate cache with stale-while-revalidate
+	else if (!isMaintenancePage) {
+		response.headers.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=600');
+	}
+	// Maintenance page: No cache
+	else {
+		response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+	}
+
+	// Security headers
+	response.headers.set('X-Content-Type-Options', 'nosniff');
+	response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+
 	return response;
 };

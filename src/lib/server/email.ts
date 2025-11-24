@@ -1,5 +1,5 @@
-import { SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
+import { env } from '$env/dynamic/private';
 
 /**
  * Email data for contact form submissions
@@ -155,7 +155,8 @@ export function checkEmailConfiguration(): {
 	}
 
 	// Check for Supabase Edge Functions
-	if (PUBLIC_SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+	const supabaseServiceKey = env.SUPABASE_SERVICE_ROLE_KEY;
+	if (PUBLIC_SUPABASE_URL && supabaseServiceKey) {
 		return { configured: true, service: 'Supabase Edge Functions', error: null };
 	}
 

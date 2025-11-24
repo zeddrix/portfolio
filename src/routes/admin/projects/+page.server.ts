@@ -1,8 +1,11 @@
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { supabaseAdmin } from '$lib/server/supabase';
+import { getSupabaseAdmin } from '$lib/server/supabase';
 import { deleteMedia } from '$lib/server/cloudinary';
 import { projectReorderSchema, projectDeleteSchema } from '$lib/schemas/project';
+import type { Database } from '$lib/types/database';
+
+type Project = Database['public']['Tables']['projects']['Row'];
 
 export const load: PageServerLoad = async ({ url }) => {
 	const search = url.searchParams.get('search') || '';
@@ -10,7 +13,8 @@ export const load: PageServerLoad = async ({ url }) => {
 	const sort = url.searchParams.get('sort') || 'updated_at'; // updated_at, created_at, title, display_order
 
 	try {
-		let query = supabaseAdmin.from('projects').select('*');
+		const supabase = getSupabaseAdmin();
+		let query = supabase.from('projects').select('*');
 
 		// Apply search filter
 		if (search) {
@@ -47,7 +51,7 @@ export const load: PageServerLoad = async ({ url }) => {
 		if (error) {
 			console.error('Error fetching projects:', error);
 			return {
-				projects: [],
+				projects: [] as Project[],
 				search,
 				filter,
 				sort,
@@ -56,7 +60,7 @@ export const load: PageServerLoad = async ({ url }) => {
 		}
 
 		return {
-			projects: projects || [],
+			projects: (projects || []) as Project[],
 			search,
 			filter,
 			sort
@@ -64,7 +68,7 @@ export const load: PageServerLoad = async ({ url }) => {
 	} catch (error) {
 		console.error('Unexpected error fetching projects:', error);
 		return {
-			projects: [],
+			projects: [] as Project[],
 			search,
 			filter,
 			sort,
@@ -84,7 +88,8 @@ export const actions: Actions = {
 				return fail(400, { error: 'Project ID is required' });
 			}
 
-			const { error } = await supabaseAdmin
+			const supabase = getSupabaseAdmin();
+			const { error } = await supabase
 				.from('projects')
 				.update({
 					published: !currentStatus,
@@ -117,7 +122,7 @@ export const actions: Actions = {
 				return fail(400, { error: 'Project ID is required' });
 			}
 
-			const { error } = await supabaseAdmin
+			const { error } = await getSupabaseAdmin()
 				.from('projects')
 				.update({
 					is_featured: !currentStatus,
@@ -152,7 +157,7 @@ export const actions: Actions = {
 			const data = JSON.parse(dataStr);
 			const validated = projectReorderSchema.parse(data);
 
-			const { error } = await supabaseAdmin
+			const { error } = await getSupabaseAdmin()
 				.from('projects')
 				.update({
 					display_order: validated.newOrder,
@@ -188,7 +193,7 @@ export const actions: Actions = {
 			const validated = projectDeleteSchema.parse(data);
 
 			// Fetch project to get media IDs before deletion
-			const { data: project, error: fetchError } = await supabaseAdmin
+			const { data: project, error: fetchError } = await getSupabaseAdmin()
 				.from('projects')
 				.select('featured_image_cloudinary_id, gallery_images, demo_video_cloudinary_id')
 				.eq('id', validated.id)
@@ -200,7 +205,7 @@ export const actions: Actions = {
 			}
 
 			// Delete project from database
-			const { error: deleteError } = await supabaseAdmin
+			const { error: deleteError } = await getSupabaseAdmin()
 				.from('projects')
 				.delete()
 				.eq('id', validated.id);
