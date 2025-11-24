@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import { layoutStore } from '$lib/stores/layout';
 	import CaseStudyLayout from './CaseStudyLayout.svelte';
 	import SinglePageLayout from './SinglePageLayout.svelte';
@@ -16,11 +17,17 @@
 
 <div class="layout-wrapper">
 	{#if currentLayout === 'case_study'}
-		<CaseStudyLayout />
+		<div in:fade={{ duration: 400, delay: 200 }} out:fade={{ duration: 200 }}>
+			<CaseStudyLayout />
+		</div>
 	{:else if currentLayout === 'single_page'}
-		<SinglePageLayout />
+		<div in:fade={{ duration: 400, delay: 200 }} out:fade={{ duration: 200 }}>
+			<SinglePageLayout />
+		</div>
 	{:else if currentLayout === 'bento_grid'}
-		<BentoGridLayout />
+		<div in:fade={{ duration: 400, delay: 200 }} out:fade={{ duration: 200 }}>
+			<BentoGridLayout />
+		</div>
 	{/if}
 </div>
 

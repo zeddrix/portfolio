@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { animate_on_scroll } from '$lib/actions/animate';
+
 	/**
 	 * Skill data
 	 */
@@ -37,6 +39,7 @@
 </script>
 
 <div
+	use:animate_on_scroll={{ type: 'scaleIn', duration: 0.5 }}
 	class={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition-all hover:shadow-md hover:scale-105 ${getCategoryColor()}`}
 	class:ring-2={isFeatured}
 	class:ring-primary={isFeatured}

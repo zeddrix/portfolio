@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { animate_on_scroll } from '$lib/actions/animate';
+
 	/**
 	 * Card type for different bento grid cells
 	 */
@@ -60,6 +62,7 @@
 </script>
 
 <div
+	use:animate_on_scroll={{ type: 'scaleIn', duration: 0.6 }}
 	class={`relative overflow-hidden rounded-2xl bg-surface border border-border transition-all duration-300 hover:shadow-xl hover:border-primary/50 hover:scale-[1.02] ${getSizeClasses()} ${getCardTypeClasses()}`}
 	on:mouseenter={() => (isHovered = true)}
 	on:mouseleave={() => (isHovered = false)}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { animate_on_scroll } from '$lib/actions/animate';
+
 	/**
 	 * Card variant for different layouts
 	 */
@@ -54,7 +56,7 @@
 	}
 </script>
 
-<article class={getCardClasses()}>
+<article use:animate_on_scroll={{ type: 'fadeInUp' }} class={getCardClasses()}>
 	<a href={`/projects/${slug}`} class="block w-full h-full no-underline group">
 		<!-- Image -->
 		<div class="relative overflow-hidden">

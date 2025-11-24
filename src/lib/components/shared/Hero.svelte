@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { animate_on_scroll, smooth_scroll } from '$lib/actions/animate';
+
 	/**
 	 * Hero variant for different layouts
 	 */
@@ -34,49 +36,81 @@
 		<div class="text-center">
 			{#if variant === 'case_study'}
 				<!-- Full-width hero for case study layout -->
-				<h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-primary mb-6">
+				<h1
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8 }}
+					class="text-5xl sm:text-6xl lg:text-7xl font-bold text-primary mb-6"
+				>
 					{fullName}
 				</h1>
-				<p class="text-2xl sm:text-3xl text-text-primary mb-8">
+				<p
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8, delay: 0.2 }}
+					class="text-2xl sm:text-3xl text-text-primary mb-8"
+				>
 					{tagline}
 				</p>
-				<p class="text-lg sm:text-xl text-text-secondary max-w-3xl mx-auto mb-12">
+				<p
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8, delay: 0.4 }}
+					class="text-lg sm:text-xl text-text-secondary max-w-3xl mx-auto mb-12"
+				>
 					{bio}
 				</p>
 			{:else if variant === 'single_page'}
 				<!-- Traditional single-page hero -->
-				<h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-4">
+				<h1
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8 }}
+					class="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary mb-4"
+				>
 					Hi, I'm {fullName}
 				</h1>
-				<p class="text-xl sm:text-2xl text-text-primary mb-6">
+				<p
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8, delay: 0.2 }}
+					class="text-xl sm:text-2xl text-text-primary mb-6"
+				>
 					{tagline}
 				</p>
-				<p class="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto mb-8">
+				<p
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8, delay: 0.4 }}
+					class="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto mb-8"
+				>
 					{bio}
 				</p>
 			{:else}
 				<!-- Compact hero for bento grid -->
-				<h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-3">
+				<h1
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8 }}
+					class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary mb-3"
+				>
 					{fullName}
 				</h1>
-				<p class="text-lg sm:text-xl text-text-primary mb-4">
+				<p
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8, delay: 0.2 }}
+					class="text-lg sm:text-xl text-text-primary mb-4"
+				>
 					{tagline}
 				</p>
-				<p class="text-sm sm:text-base text-text-secondary max-w-xl mx-auto">
+				<p
+					use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8, delay: 0.4 }}
+					class="text-sm sm:text-base text-text-secondary max-w-xl mx-auto"
+				>
 					{bio}
 				</p>
 			{/if}
 
 			<!-- CTA Buttons -->
-			<div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+			<div
+				use:animate_on_scroll={{ type: 'fadeInUp', duration: 0.8, delay: 0.6 }}
+				class="flex flex-col sm:flex-row gap-4 justify-center items-center"
+			>
 				<a
 					href="#projects"
+					use:smooth_scroll
 					class="inline-flex items-center px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
 				>
 					View My Work
 				</a>
 				<a
 					href="#contact"
+					use:smooth_scroll
 					class="inline-flex items-center px-6 py-3 bg-surface text-text-primary font-medium rounded-lg border border-border hover:bg-background transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
 				>
 					Get In Touch

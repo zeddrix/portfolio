@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { animate_on_scroll } from '$lib/actions/animate';
 	import Navigation from '$lib/components/shared/Navigation.svelte';
 	import Hero from '$lib/components/shared/Hero.svelte';
 	import ProjectCard from '$lib/components/shared/ProjectCard.svelte';
@@ -58,9 +59,17 @@
 	<!-- About Section -->
 	<section id="about" class="py-20">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">About Me</h2>
+			<h2
+				use:animate_on_scroll={{ type: 'fadeInUp' }}
+				class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center"
+			>
+				About Me
+			</h2>
 			<div class="max-w-3xl mx-auto">
-				<p class="text-lg text-text-secondary leading-relaxed">
+				<p
+					use:animate_on_scroll={{ type: 'fadeInUp', delay: 0.2 }}
+					class="text-lg text-text-secondary leading-relaxed"
+				>
 					I'm a passionate full-stack developer with expertise in modern web technologies. I love
 					creating beautiful, functional, and user-friendly applications.
 				</p>
@@ -71,7 +80,12 @@
 	<!-- Projects Section -->
 	<section id="projects" class="py-20 bg-surface">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">Projects</h2>
+			<h2
+				use:animate_on_scroll={{ type: 'fadeInUp' }}
+				class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center"
+			>
+				Projects
+			</h2>
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 				{#each mockProjects as project}
 					<ProjectCard
@@ -91,7 +105,10 @@
 	<!-- Skills Section -->
 	<section id="skills" class="py-20">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">
+			<h2
+				use:animate_on_scroll={{ type: 'fadeInUp' }}
+				class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center"
+			>
 				Skills & Technologies
 			</h2>
 			<div class="flex flex-wrap justify-center gap-4">
@@ -111,7 +128,12 @@
 	<!-- Experience Section -->
 	<section id="experience" class="py-20 bg-surface">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<h2 class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center">Experience</h2>
+			<h2
+				use:animate_on_scroll={{ type: 'fadeInUp' }}
+				class="text-3xl sm:text-4xl font-bold text-primary mb-12 text-center"
+			>
+				Experience
+			</h2>
 			<div class="max-w-3xl mx-auto">
 				<TimelineComponent items={mockExperiences} type="experience" />
 			</div>

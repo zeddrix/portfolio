@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
+	import { animate_on_scroll } from '$lib/actions/animate';
+
 	/**
 	 * Project data for case study display
 	 */
@@ -21,7 +24,7 @@
 	}
 </script>
 
-<article class="mb-20 overflow-hidden">
+<article use:animate_on_scroll={{ type: 'fadeInUp' }} class="mb-20 overflow-hidden">
 	<!-- Featured Image -->
 	<div class="w-full h-[400px] sm:h-[500px] lg:h-[600px] overflow-hidden rounded-lg mb-8">
 		<img src={featuredImageUrl} alt={title} class="w-full h-full object-cover" loading="lazy" />
@@ -51,7 +54,7 @@
 
 		<!-- Expandable Details -->
 		{#if isExpanded}
-			<div class="space-y-8 mb-8">
+			<div transition:slide={{ duration: 400 }} class="space-y-8 mb-8">
 				<!-- Challenge -->
 				{#if challenge}
 					<div class="space-y-3">
