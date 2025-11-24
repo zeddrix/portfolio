@@ -199,28 +199,30 @@
 
 							{#if profileDropdownOpen}
 								<div
-									class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+									class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-surface ring-1 ring-border focus:outline-none"
 								>
-									<div class="px-4 py-2 text-xs text-gray-500">Signed in as</div>
-									<div class="px-4 pb-2 text-sm font-medium text-gray-900 truncate">
+									<div class="px-4 py-2 text-xs text-text-secondary">Signed in as</div>
+									<div class="px-4 pb-2 text-sm font-medium text-text-primary truncate">
 										{$auth.user?.email || 'Unknown'}
 									</div>
-									<div class="border-t border-gray-100"></div>
+									<div class="border-t border-border"></div>
 									<a
 										href="/admin/profile"
 										on:click={closeProfileDropdown}
-										class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a
+										class="block px-4 py-2 text-sm text-text-secondary hover:bg-background hover:text-text-primary"
+										>Your Profile</a
 									>
 									<a
 										href="/admin/settings"
 										on:click={closeProfileDropdown}
-										class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a
+										class="block px-4 py-2 text-sm text-text-secondary hover:bg-background hover:text-text-primary"
+										>Settings</a
 									>
-									<div class="border-t border-gray-100"></div>
+									<div class="border-t border-border"></div>
 									<button
 										on:click={handleLogout}
 										disabled={loading}
-										class="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+										class="block w-full text-left px-4 py-2 text-sm text-error hover:bg-error/10 disabled:opacity-50 disabled:cursor-not-allowed"
 									>
 										{loading ? 'Signing out...' : 'Sign out'}
 									</button>
