@@ -52,6 +52,7 @@
 	let uploadingGallery = false;
 	let uploadingDemoVideo = false;
 	let uploadError = '';
+	let uploadSuccess = '';
 
 	$: if (autoGenerateSlug && title) {
 		slug = generateSlug(title);
@@ -63,22 +64,58 @@
 		.map((t) => t.trim())
 		.filter(Boolean);
 
+	// Helper function to get auth token from localStorage
+	function getAuthToken(): string | null {
+		if (typeof window === 'undefined') return null;
+
+		// Find the Supabase auth token in localStorage
+		for (let i = 0; i < localStorage.length; i++) {
+			const key = localStorage.key(i);
+			if (key && key.startsWith('sb-') && key.includes('auth-token')) {
+				const value = localStorage.getItem(key);
+				if (value) {
+					try {
+						const parsed = JSON.parse(value);
+						return parsed.access_token || null;
+					} catch {
+						return null;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	// Upload handlers
 	async function handleFeaturedImageUpload(event: CustomEvent) {
 		uploadError = '';
+		uploadSuccess = '';
 		uploadingFeaturedImage = true;
 
+		console.log('[ProjectForm] Starting featured image upload', event.detail);
+
 		try {
-			const { dataUrl, mediaType } = event.detail;
+			const { dataUrl, mediaType, fileName } = event.detail;
 
 			// Ensure slug exists for upload
 			if (!slug) {
 				slug = generateSlug(title || 'untitled');
 			}
 
+			// Get auth token from localStorage
+			const authToken = getAuthToken();
+			if (!authToken) {
+				throw new Error('Not authenticated - please log in again');
+			}
+
+			console.log(`[ProjectForm] Uploading featured image to API for project: ${slug}`);
+
 			const response = await fetch('/api/admin/upload', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${authToken}`
+				},
 				body: JSON.stringify({
 					dataUrl,
 					mediaType,
@@ -87,17 +124,28 @@
 				})
 			});
 
+			console.log(`[ProjectForm] API response status: ${response.status}`);
+
 			if (!response.ok) {
 				const errorData = await response.json();
+				console.error('[ProjectForm] API error response:', errorData);
 				throw new Error(errorData.message || 'Upload failed');
 			}
 
 			const result = await response.json();
+			console.log('[ProjectForm] Upload successful:', result);
+
 			featuredImageUrl = result.url;
 			featuredImageCloudinaryId = result.cloudinaryId;
+			uploadSuccess = `Featured image uploaded successfully! (${fileName})`;
+
+			console.log('[ProjectForm] Featured image state updated:', {
+				url: featuredImageUrl,
+				cloudinaryId: featuredImageCloudinaryId
+			});
 		} catch (err) {
 			uploadError = err instanceof Error ? err.message : 'Failed to upload featured image';
-			console.error('Featured image upload error:', err);
+			console.error('[ProjectForm] Featured image upload error:', err);
 		} finally {
 			uploadingFeaturedImage = false;
 		}
@@ -105,19 +153,33 @@
 
 	async function handleGalleryUpload(event: CustomEvent) {
 		uploadError = '';
+		uploadSuccess = '';
 		uploadingGallery = true;
 
+		console.log('[ProjectForm] Starting gallery upload', event.detail);
+
 		try {
-			const { dataUrl, mediaType } = event.detail;
+			const { dataUrl, mediaType, fileName } = event.detail;
 
 			// Ensure slug exists for upload
 			if (!slug) {
 				slug = generateSlug(title || 'untitled');
 			}
 
+			// Get auth token from localStorage
+			const authToken = getAuthToken();
+			if (!authToken) {
+				throw new Error('Not authenticated - please log in again');
+			}
+
+			console.log(`[ProjectForm] Uploading gallery media to API for project: ${slug}`);
+
 			const response = await fetch('/api/admin/upload', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${authToken}`
+				},
 				body: JSON.stringify({
 					dataUrl,
 					mediaType,
@@ -126,12 +188,16 @@
 				})
 			});
 
+			console.log(`[ProjectForm] API response status: ${response.status}`);
+
 			if (!response.ok) {
 				const errorData = await response.json();
+				console.error('[ProjectForm] API error response:', errorData);
 				throw new Error(errorData.message || 'Upload failed');
 			}
 
 			const result = await response.json();
+			console.log('[ProjectForm] Upload successful:', result);
 
 			// Add to gallery images array
 			const newMedia: GalleryMedia = {
@@ -142,9 +208,12 @@
 			};
 
 			galleryImages = [...galleryImages, newMedia];
+			uploadSuccess = `Gallery ${mediaType} uploaded successfully! (${fileName})`;
+
+			console.log('[ProjectForm] Gallery updated, now has', galleryImages.length, 'items');
 		} catch (err) {
 			uploadError = err instanceof Error ? err.message : 'Failed to upload gallery media';
-			console.error('Gallery upload error:', err);
+			console.error('[ProjectForm] Gallery upload error:', err);
 		} finally {
 			uploadingGallery = false;
 		}
@@ -152,19 +221,33 @@
 
 	async function handleDemoVideoUpload(event: CustomEvent) {
 		uploadError = '';
+		uploadSuccess = '';
 		uploadingDemoVideo = true;
 
+		console.log('[ProjectForm] Starting demo video upload', event.detail);
+
 		try {
-			const { dataUrl, mediaType } = event.detail;
+			const { dataUrl, mediaType, fileName } = event.detail;
 
 			// Ensure slug exists for upload
 			if (!slug) {
 				slug = generateSlug(title || 'untitled');
 			}
 
+			// Get auth token from localStorage
+			const authToken = getAuthToken();
+			if (!authToken) {
+				throw new Error('Not authenticated - please log in again');
+			}
+
+			console.log(`[ProjectForm] Uploading demo video to API for project: ${slug}`);
+
 			const response = await fetch('/api/admin/upload', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${authToken}`
+				},
 				body: JSON.stringify({
 					dataUrl,
 					mediaType,
@@ -173,17 +256,28 @@
 				})
 			});
 
+			console.log(`[ProjectForm] API response status: ${response.status}`);
+
 			if (!response.ok) {
 				const errorData = await response.json();
+				console.error('[ProjectForm] API error response:', errorData);
 				throw new Error(errorData.message || 'Upload failed');
 			}
 
 			const result = await response.json();
+			console.log('[ProjectForm] Upload successful:', result);
+
 			demoVideoUrl = result.url;
 			demoVideoCloudinaryId = result.cloudinaryId;
+			uploadSuccess = `Demo video uploaded successfully! (${fileName})`;
+
+			console.log('[ProjectForm] Demo video state updated:', {
+				url: demoVideoUrl,
+				cloudinaryId: demoVideoCloudinaryId
+			});
 		} catch (err) {
 			uploadError = err instanceof Error ? err.message : 'Failed to upload demo video';
-			console.error('Demo video upload error:', err);
+			console.error('[ProjectForm] Demo video upload error:', err);
 		} finally {
 			uploadingDemoVideo = false;
 		}
@@ -335,6 +429,16 @@
 	<!-- Media -->
 	<div class="bg-surface border border-border rounded-lg p-6">
 		<h2 class="text-xl font-bold text-text-primary mb-4">Media</h2>
+
+		<!-- Success message -->
+		{#if uploadSuccess}
+			<div class="mb-4 p-3 bg-success/10 border border-success rounded-lg">
+				<p class="text-sm text-success flex items-center gap-2">
+					<span class="material-icons text-base">check_circle</span>
+					{uploadSuccess}
+				</p>
+			</div>
+		{/if}
 
 		<!-- Error message -->
 		{#if uploadError}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type { GalleryMedia } from '$lib/schemas/project';
 
 	// Props
@@ -11,6 +12,8 @@
 	export let galleryMedia: GalleryMedia[] = []; // For multiple files mode
 	export let label: string = 'Upload Media';
 	export let helpText: string = '';
+
+	const dispatch = createEventDispatcher();
 
 	let isDragging = false;
 	let fileInput: HTMLInputElement;
@@ -63,10 +66,12 @@
 
 	async function handleFiles(files: FileList) {
 		errorMessage = '';
+		console.log(`[MediaUploader] Processing ${files.length} file(s)`);
 
 		// Validate file count
 		if (!multiple && files.length > 1) {
 			errorMessage = 'Only one file can be uploaded at a time';
+			console.error('[MediaUploader]', errorMessage);
 			return;
 		}
 
@@ -78,6 +83,7 @@
 			// Validate file type
 			if (!acceptedTypes.split(',').some((type) => file.type === type.trim())) {
 				errorMessage = `Invalid file type: ${file.type}`;
+				console.error('[MediaUploader]', errorMessage);
 				continue;
 			}
 
@@ -85,6 +91,7 @@
 			const maxSizeBytes = maxSizeMB * 1024 * 1024;
 			if (file.size > maxSizeBytes) {
 				errorMessage = `File size exceeds ${maxSizeMB}MB limit`;
+				console.error('[MediaUploader]', errorMessage);
 				continue;
 			}
 
@@ -92,8 +99,11 @@
 		}
 
 		if (validFiles.length === 0) {
+			console.warn('[MediaUploader] No valid files to process');
 			return;
 		}
+
+		console.log(`[MediaUploader] Processing ${validFiles.length} valid file(s)`);
 
 		// Convert files to base64 and emit event
 		for (const file of validFiles) {
@@ -107,11 +117,13 @@
 
 			reader.onloadstart = () => {
 				uploadProgress = 0;
+				console.log(`[MediaUploader] Starting to read file: ${file.name}`);
 			};
 
 			reader.onprogress = (event: ProgressEvent<FileReader>) => {
 				if (event.lengthComputable) {
 					uploadProgress = Math.round((event.loaded / event.total) * 100);
+					console.log(`[MediaUploader] Progress: ${uploadProgress}%`);
 				}
 			};
 
@@ -128,17 +140,23 @@
 					detectedMediaType = 'image';
 				}
 
-				// Dispatch event with file data
-				const event = new CustomEvent('upload', {
-					detail: {
-						dataUrl,
-						mediaType: detectedMediaType,
-						fileName: file.name,
-						fileSize: file.size,
-						fileType: file.type
-					}
+				console.log('[MediaUploader] File read successfully:', {
+					fileName: file.name,
+					fileSize: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+					fileType: file.type,
+					detectedMediaType
 				});
-				fileInput.dispatchEvent(event);
+
+				// Dispatch event using Svelte's event dispatcher
+				dispatch('upload', {
+					dataUrl,
+					mediaType: detectedMediaType,
+					fileName: file.name,
+					fileSize: file.size,
+					fileType: file.type
+				});
+
+				console.log('[MediaUploader] Upload event dispatched successfully');
 
 				uploadProgress = null;
 				resolve();
@@ -146,6 +164,7 @@
 
 			reader.onerror = () => {
 				errorMessage = 'Failed to read file';
+				console.error('[MediaUploader] FileReader error:', reader.error);
 				uploadProgress = null;
 				reject(new Error('Failed to read file'));
 			};

@@ -10,34 +10,78 @@ import {
 	uploadGalleryMedia,
 	uploadVideo
 } from '$lib/server/cloudinary';
+import { createServerClient } from '$lib/server/supabase';
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	// Check authentication
-	if (!locals.user) {
-		throw svelteKitError(401, 'Unauthorized');
+export const POST: RequestHandler = async ({ request }) => {
+	console.log('[API /admin/upload] Request received');
+
+	// Check authentication using Authorization header
+	const authHeader = request.headers.get('Authorization');
+	console.log('[API /admin/upload] Authorization header present:', !!authHeader);
+
+	if (!authHeader || !authHeader.startsWith('Bearer ')) {
+		console.error('[API /admin/upload] No Authorization header or invalid format');
+		throw svelteKitError(401, 'Unauthorized - Please log in');
 	}
+
+	const accessToken = authHeader.substring(7); // Remove 'Bearer ' prefix
+	console.log('[API /admin/upload] Access token extracted');
+
+	// Create Supabase client with the access token
+	const supabase = createServerClient(accessToken);
+
+	// Verify the token by getting the user
+	const {
+		data: { user },
+		error: userError
+	} = await supabase.auth.getUser();
+
+	if (userError || !user) {
+		console.error('[API /admin/upload] Invalid access token:', userError);
+		throw svelteKitError(401, 'Unauthorized - Please log in');
+	}
+
+	console.log('[API /admin/upload] User authenticated:', user.email);
 
 	try {
 		const body = await request.json();
 		const { dataUrl, mediaType, projectSlug, uploadType } = body;
 
+		console.log('[API /admin/upload] Request body parsed:', {
+			mediaType,
+			projectSlug,
+			uploadType,
+			dataUrlLength: dataUrl?.length || 0
+		});
+
 		// Validate required fields
 		if (!dataUrl || !mediaType || !projectSlug || !uploadType) {
-			throw svelteKitError(
-				400,
-				'Missing required fields: dataUrl, mediaType, projectSlug, uploadType'
-			);
+			const missing = [];
+			if (!dataUrl) missing.push('dataUrl');
+			if (!mediaType) missing.push('mediaType');
+			if (!projectSlug) missing.push('projectSlug');
+			if (!uploadType) missing.push('uploadType');
+
+			const errorMsg = `Missing required fields: ${missing.join(', ')}`;
+			console.error('[API /admin/upload]', errorMsg);
+			throw svelteKitError(400, errorMsg);
 		}
 
 		// Validate mediaType
 		if (!['image', 'video', 'gif'].includes(mediaType)) {
-			throw svelteKitError(400, 'Invalid mediaType. Must be: image, video, or gif');
+			const errorMsg = `Invalid mediaType '${mediaType}'. Must be: image, video, or gif`;
+			console.error('[API /admin/upload]', errorMsg);
+			throw svelteKitError(400, errorMsg);
 		}
 
 		// Validate uploadType
 		if (!['featured', 'gallery', 'demo'].includes(uploadType)) {
-			throw svelteKitError(400, 'Invalid uploadType. Must be: featured, gallery, or demo');
+			const errorMsg = `Invalid uploadType '${uploadType}'. Must be: featured, gallery, or demo`;
+			console.error('[API /admin/upload]', errorMsg);
+			throw svelteKitError(400, errorMsg);
 		}
+
+		console.log('[API /admin/upload] All validations passed, proceeding with upload');
 
 		let result;
 
@@ -45,18 +89,25 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		if (uploadType === 'featured') {
 			// Featured images are always images
 			if (mediaType !== 'image') {
-				throw svelteKitError(400, 'Featured image must be an image file');
+				const errorMsg = `Featured image must be an image file, got: ${mediaType}`;
+				console.error('[API /admin/upload]', errorMsg);
+				throw svelteKitError(400, errorMsg);
 			}
+			console.log(`[API /admin/upload] Uploading featured image for project: ${projectSlug}`);
 			result = await uploadProjectFeaturedImage(dataUrl, projectSlug);
 		} else if (uploadType === 'gallery') {
 			// Gallery can be image, video, or gif
+			console.log(`[API /admin/upload] Uploading gallery ${mediaType} for project: ${projectSlug}`);
 			result = await uploadGalleryMedia(dataUrl, projectSlug, mediaType);
 		} else {
 			// uploadType === 'demo'
 			// Demo videos
 			if (mediaType !== 'video') {
-				throw svelteKitError(400, 'Demo video must be a video file');
+				const errorMsg = `Demo video must be a video file, got: ${mediaType}`;
+				console.error('[API /admin/upload]', errorMsg);
+				throw svelteKitError(400, errorMsg);
 			}
+			console.log(`[API /admin/upload] Uploading demo video for project: ${projectSlug}`);
 			result = await uploadVideo(
 				dataUrl,
 				'portfolio/projects/demos',
@@ -64,8 +115,14 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			);
 		}
 
+		console.log('[API /admin/upload] Upload to Cloudinary successful:', {
+			publicId: result.public_id,
+			url: result.url,
+			resourceType: result.resource_type
+		});
+
 		// Return the upload result
-		return json({
+		const response = {
 			success: true,
 			url: result.url,
 			cloudinaryId: result.public_id,
@@ -73,16 +130,32 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			height: result.height,
 			format: result.format,
 			resourceType: result.resource_type
-		});
+		};
+
+		console.log('[API /admin/upload] Returning success response');
+		return json(response);
 	} catch (err) {
-		console.error('Upload error:', err);
+		console.error('[API /admin/upload] Error occurred:', err);
 
 		// If it's already a SvelteKit error, rethrow it
 		if (err && typeof err === 'object' && 'status' in err) {
+			console.error('[API /admin/upload] Rethrowing SvelteKit error with status:', err.status);
 			throw err;
 		}
 
+		// Extract detailed error message
+		let errorMessage = 'Failed to upload media';
+		if (err instanceof Error) {
+			errorMessage = err.message;
+			console.error('[API /admin/upload] Error details:', {
+				name: err.name,
+				message: err.message,
+				stack: err.stack
+			});
+		}
+
 		// Otherwise, return a 500 error
-		throw svelteKitError(500, err instanceof Error ? err.message : 'Failed to upload media');
+		console.error('[API /admin/upload] Returning 500 error:', errorMessage);
+		throw svelteKitError(500, errorMessage);
 	}
 };

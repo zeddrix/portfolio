@@ -42,20 +42,16 @@ export async function uploadImage(
 	publicId?: string
 ): Promise<CloudinaryUploadResult> {
 	try {
-		const uploadOptions: Record<string, string> = {
+		const uploadOptions: Record<string, unknown> = {
 			folder,
 			resource_type: 'image',
-			transformation: [
-				{
-					width: 1200,
-					height: 1200,
-					crop: 'limit',
-					quality: 'auto:good',
-					fetch_format: 'auto'
-				}
-			]
-				.map((t) => JSON.stringify(t))
-				.join(',')
+			transformation: {
+				width: 1200,
+				height: 1200,
+				crop: 'limit',
+				quality: 'auto:good',
+				fetch_format: 'auto'
+			}
 		};
 
 		if (publicId) {
@@ -137,7 +133,7 @@ export async function uploadVideo(
 	publicId?: string
 ): Promise<CloudinaryUploadResult> {
 	try {
-		const uploadOptions: Record<string, string | number | boolean> = {
+		const uploadOptions: Record<string, unknown> = {
 			folder,
 			resource_type: 'video',
 			eager: [
@@ -145,9 +141,7 @@ export async function uploadVideo(
 					quality: 'auto',
 					fetch_format: 'auto'
 				}
-			]
-				.map((t) => JSON.stringify(t))
-				.join(','),
+			],
 			eager_async: true
 		};
 
@@ -230,21 +224,17 @@ export async function uploadProjectFeaturedImage(
 	const publicId = `featured_${projectSlug}_${Date.now()}`;
 
 	try {
-		const uploadOptions: Record<string, string | number> = {
+		const uploadOptions = {
 			folder: 'portfolio/projects/featured',
-			resource_type: 'image',
+			resource_type: 'image' as const,
 			public_id: publicId,
-			transformation: [
-				{
-					width: 1920,
-					height: 1080,
-					crop: 'limit',
-					quality: 'auto:good',
-					fetch_format: 'auto'
-				}
-			]
-				.map((t) => JSON.stringify(t))
-				.join(',')
+			transformation: {
+				width: 1920,
+				height: 1080,
+				crop: 'limit',
+				quality: 'auto:good',
+				fetch_format: 'auto'
+			}
 		};
 
 		const result = await cloudinary.uploader.upload(dataUrl, uploadOptions);
