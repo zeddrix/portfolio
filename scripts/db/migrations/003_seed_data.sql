@@ -25,7 +25,6 @@ ON CONFLICT DO NOTHING;
 -- =============================================================================
 
 -- Insert initial profile data
--- NOTE: Replace these placeholder values with actual personal information
 INSERT INTO profile (
   full_name,
   tagline,
@@ -38,12 +37,12 @@ INSERT INTO profile (
   location,
   available_for_work
 ) VALUES (
-  'Zeddrix',
-  'Full Stack Developer & Software Engineer',
-  'Passionate software engineer with expertise in building modern web applications. Specialized in TypeScript, SvelteKit, and cloud technologies.',
-  'contact@zeddrix.com',
+  'Zeddrix Fabian',
+  'Software Engineer',
+  'Passionate Software Engineer with expertise in full-stack development, cloud technologies, and modern web frameworks. Committed to writing clean, efficient, and scalable code while solving complex technical challenges. Currently working at Codefrost, where we revolutionize software development through AI-powered solutions, custom SaaS products, and innovative AI integration strategies.',
+  'zeddrix.fabian@codefrost.com',
   NULL,
-  'https://linkedin.com/in/zeddrix',
+  'https://www.linkedin.com/in/zeddrix-fabian-30a18029a/',
   'https://github.com/zeddrix',
   'https://zeddrix.com',
   'Philippines',
@@ -52,40 +51,52 @@ INSERT INTO profile (
 ON CONFLICT DO NOTHING;
 
 -- =============================================================================
--- SECTION 3: Skills (Sample Technical Skills)
+-- SECTION 3: Skills (Technical Skills)
 -- =============================================================================
 
--- Frontend skills
+-- Programming Languages
 INSERT INTO skills (category, name, proficiency_level, display_order, is_featured) VALUES
-  ('frontend', 'TypeScript', 5, 1, true),
-  ('frontend', 'SvelteKit', 5, 2, true),
-  ('frontend', 'Tailwind CSS', 5, 3, true),
-  ('frontend', 'HTML5', 5, 4, false),
-  ('frontend', 'CSS3', 5, 5, false)
+  ('programming', 'JavaScript', 5, 1, true),
+  ('programming', 'TypeScript', 5, 2, true),
+  ('programming', 'Python', 4, 3, true)
 ON CONFLICT DO NOTHING;
 
--- Backend skills
+-- Frontend Development
 INSERT INTO skills (category, name, proficiency_level, display_order, is_featured) VALUES
-  ('backend', 'Node.js', 4, 6, true),
-  ('backend', 'PostgreSQL', 4, 7, true),
-  ('backend', 'Supabase', 4, 8, false),
-  ('backend', 'REST APIs', 5, 9, false)
+  ('frontend', 'React', 5, 4, true),
+  ('frontend', 'Next.js', 5, 5, true),
+  ('frontend', 'Angular', 4, 6, true),
+  ('frontend', 'Svelte', 4, 7, true),
+  ('frontend', 'SvelteKit', 5, 8, true),
+  ('frontend', 'CSS3', 5, 9, false),
+  ('frontend', 'Sass', 4, 10, false),
+  ('frontend', 'Tailwind CSS', 5, 11, true),
+  ('frontend', 'Material-UI', 4, 12, false),
+  ('frontend', 'Bootstrap', 4, 13, false),
+  ('frontend', 'Redux', 4, 14, false),
+  ('frontend', 'Jest', 4, 15, false),
+  ('frontend', 'Cypress', 4, 16, false),
+  ('frontend', 'Playwright', 4, 17, false)
 ON CONFLICT DO NOTHING;
 
--- Programming languages
+-- Backend Development
 INSERT INTO skills (category, name, proficiency_level, display_order, is_featured) VALUES
-  ('programming', 'JavaScript', 5, 10, true),
-  ('programming', 'TypeScript', 5, 11, true),
-  ('programming', 'Python', 3, 12, false)
+  ('backend', 'Node.js', 5, 18, true),
+  ('backend', 'Express', 5, 19, true),
+  ('backend', 'NestJS', 4, 20, true),
+  ('backend', 'Django', 4, 21, false),
+  ('backend', 'PostgreSQL', 5, 22, true),
+  ('backend', 'MongoDB', 4, 23, false),
+  ('backend', 'MySQL', 4, 24, false),
+  ('backend', 'Redis', 4, 25, false),
+  ('backend', 'Supabase', 5, 26, true)
 ON CONFLICT DO NOTHING;
 
 -- DevOps & Tools
 INSERT INTO skills (category, name, proficiency_level, display_order, is_featured) VALUES
-  ('devops', 'Git', 5, 13, false),
-  ('devops', 'Vercel', 4, 14, false),
-  ('devops', 'Docker', 3, 15, false),
-  ('tools', 'VS Code', 5, 16, false),
-  ('tools', 'Figma', 4, 17, false)
+  ('devops', 'Docker', 4, 27, true),
+  ('devops', 'Git', 5, 28, true),
+  ('devops', 'GitHub', 5, 29, false)
 ON CONFLICT DO NOTHING;
 
 -- =============================================================================
@@ -95,17 +106,16 @@ ON CONFLICT DO NOTHING;
 -- Insert social media links
 INSERT INTO social_links (platform, url, icon_name, display_order, is_visible) VALUES
   ('GitHub', 'https://github.com/zeddrix', 'github', 1, true),
-  ('LinkedIn', 'https://linkedin.com/in/zeddrix', 'linkedin', 2, true),
-  ('Twitter', 'https://twitter.com/zeddrix', 'twitter', 3, true),
-  ('Email', 'mailto:contact@zeddrix.com', 'mail', 4, true)
+  ('LinkedIn', 'https://www.linkedin.com/in/zeddrix-fabian-30a18029a/', 'linkedin', 2, true),
+  ('Email', 'mailto:zeddrix.fabian@codefrost.com', 'mail', 3, true),
+  ('Website', 'https://zeddrix.com', 'globe', 4, true)
 ON CONFLICT DO NOTHING;
 
 -- =============================================================================
--- SECTION 5: Sample Project (Optional - demonstrates structure)
+-- SECTION 5: Projects
 -- =============================================================================
 
--- Insert a sample project to demonstrate the structure
--- This can be deleted/replaced with actual projects later
+-- UseDelight Chrome Extension
 INSERT INTO projects (
   title,
   slug,
@@ -117,51 +127,142 @@ INSERT INTO projects (
   featured_image_url,
   featured_image_cloudinary_id,
   gallery_images,
+  project_url,
   is_featured,
   display_order,
   published
 ) VALUES (
-  'Portfolio Website',
-  'portfolio-website',
-  'Modern, dynamic portfolio with multiple layouts and color themes',
-  'Built a comprehensive portfolio system with SvelteKit featuring three switchable layouts, seven color palettes, and a custom admin panel for content management.',
-  'Create a portfolio that stands out while showcasing technical skills and providing a unique user experience.',
-  'Implemented a dynamic theming system with CSS custom properties, multiple layout options, and integrated Supabase for backend and Cloudinary for media optimization.',
-  ARRAY['SvelteKit', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Cloudinary'],
-  'https://placeholder.com/800x600',  -- Replace with actual Cloudinary URL
-  'sample_placeholder_id',             -- Replace with actual Cloudinary ID
-  '[]'::jsonb,                         -- Empty gallery for now
+  'UseDelight',
+  'usedelight-chrome-extension',
+  'Nature Wallpapers HD Video New Tab Background',
+  'Transform your new tab into a stunning, safe-for-work dashboard with UseDelight—perfect for classrooms, offices, and home users. Enjoy over 1,500 high-definition motion video backgrounds featuring breathtaking scenes from oceans, beaches, mountains, forests, waterfalls, deserts, and all four seasons. Each new tab brings you a fresh, immersive view of Earth''s natural wonders, helping you relax, focus, and stay inspired throughout your day.',
+  'Users needed a way to personalize their browser new tab experience with high-quality, professionally curated nature content that was appropriate for all environments.',
+  'Built a Chrome extension that provides access to 1,500+ HD motion video backgrounds featuring diverse natural scenes, creating an immersive and inspiring new tab experience for users worldwide.',
+  ARRAY['JavaScript', 'Chrome Extension API', 'HTML5', 'CSS3'],
+  'https://res.cloudinary.com/demo/image/upload/sample.jpg',
+  'placeholder-usedelight',
+  '[]'::jsonb,
+  'https://chromewebstore.google.com/detail/Nature%20Wallpapers%20HD%20video%20New%20Tab%20background/hehbgjdnbibkndghdlilefececadokpb',
   true,
   1,
-  false  -- Not published yet - will publish when project is complete
+  true
+)
+ON CONFLICT (slug) DO NOTHING;
+
+-- Bolt to GitHub Chrome Extension
+INSERT INTO projects (
+  title,
+  slug,
+  short_description,
+  full_description,
+  challenge,
+  solution,
+  tech_stack,
+  featured_image_url,
+  featured_image_cloudinary_id,
+  gallery_images,
+  project_url,
+  is_featured,
+  display_order,
+  published
+) VALUES (
+  'Bolt to GitHub',
+  'bolt-to-github',
+  'Productivity Chrome extension for GitHub workflow automation',
+  'Bolt-to-GitHub is a productivity Chrome extension that streamlines the workflow of creating and syncing GitHub issues and repositories directly from the browser. Quickly capture context, create issues with prefilled metadata, and push code snippets or repository setup tasks to GitHub without switching apps—saving time for engineers and product teams.',
+  'Developers needed a faster way to create GitHub issues and manage repositories without constantly switching between their browser and GitHub interface.',
+  'Created a Chrome extension that integrates directly with GitHub''s API, enabling users to create issues, sync repositories, and manage tasks seamlessly from their browser with prefilled metadata and context capture.',
+  ARRAY['JavaScript', 'TypeScript', 'Chrome Extension API', 'GitHub API'],
+  'https://res.cloudinary.com/demo/image/upload/sample.jpg',
+  'placeholder-bolt-to-github',
+  '[]'::jsonb,
+  'https://chromewebstore.google.com/detail/bolt-to-github/pikdepbilbnnpgdkdaaoeekgflljmame',
+  true,
+  2,
+  true
+)
+ON CONFLICT (slug) DO NOTHING;
+
+-- AnswerIQ Platform
+INSERT INTO projects (
+  title,
+  slug,
+  short_description,
+  full_description,
+  challenge,
+  solution,
+  tech_stack,
+  featured_image_url,
+  featured_image_cloudinary_id,
+  gallery_images,
+  project_url,
+  is_featured,
+  display_order,
+  published
+) VALUES (
+  'AnswerIQ',
+  'answeriq-platform',
+  'AI-Powered FAQ Generation Platform',
+  'Automatically create People Also Ask-based FAQ articles that boost your store''s SEO and help customers find answers faster. AnswerIQ uses artificial intelligence to generate relevant, well-structured FAQ content that improves search engine visibility and enhances customer experience.',
+  'E-commerce stores needed a way to improve SEO and provide quick answers to customer questions without manually creating extensive FAQ sections.',
+  'Developed an AI-powered platform that automatically generates People Also Ask-based FAQ articles, improving SEO rankings and helping customers find answers quickly, reducing support tickets and improving conversion rates.',
+  ARRAY['React', 'Node.js', 'AI/ML', 'PostgreSQL', 'TypeScript'],
+  'https://res.cloudinary.com/demo/image/upload/sample.jpg',
+  'placeholder-answeriq',
+  '[]'::jsonb,
+  NULL,
+  true,
+  3,
+  true
+)
+ON CONFLICT (slug) DO NOTHING;
+
+-- TrulyHappy App
+INSERT INTO projects (
+  title,
+  slug,
+  short_description,
+  full_description,
+  challenge,
+  solution,
+  tech_stack,
+  featured_image_url,
+  featured_image_cloudinary_id,
+  gallery_images,
+  project_url,
+  is_featured,
+  display_order,
+  published
+) VALUES (
+  'TrulyHappy',
+  'trulyhappy-app',
+  'Personalized Wellness and Happiness Guidance',
+  'TrulyHappy provides personalized guidance, adapting to your needs for a more fulfilling and joyful life. The app combines wellness tracking, personalized recommendations, and adaptive content to help users achieve their happiness and wellness goals.',
+  'People needed a personalized wellness platform that could adapt to their unique needs and provide actionable guidance for improving their mental and emotional wellbeing.',
+  'Built a comprehensive wellness platform that uses personalization algorithms to deliver tailored guidance, combining wellness tracking, adaptive recommendations, and evidence-based practices to help users achieve lasting happiness and fulfillment.',
+  ARRAY['React', 'Next.js', 'TypeScript', 'Node.js', 'PostgreSQL'],
+  'https://res.cloudinary.com/demo/image/upload/sample.jpg',
+  'placeholder-trulyhappy',
+  '[]'::jsonb,
+  'https://trulyhappy.app/',
+  true,
+  4,
+  true
 )
 ON CONFLICT (slug) DO NOTHING;
 
 -- =============================================================================
--- SECTION 6: Sample Certification (Optional)
+-- SECTION 6: Certifications
 -- =============================================================================
 
--- Insert a sample certification to demonstrate the structure
-INSERT INTO certifications (
-  title,
-  issuer,
-  issue_date,
-  credential_url,
-  display_order
-) VALUES (
-  'Full Stack Development Certification',
-  'Tech Academy',
-  '2024-01-15',
-  'https://example.com/cert/12345',
-  1
-)
-ON CONFLICT DO NOTHING;
+-- Note: Certifications are available on LinkedIn profile
+-- No seed data added here as certifications will be managed via admin panel
 
 -- =============================================================================
--- SECTION 7: Sample Experience (Optional)
+-- SECTION 7: Work Experience
 -- =============================================================================
 
--- Insert a sample work experience to demonstrate the structure
+-- Codefrost - Current position
 INSERT INTO experiences (
   company,
   position,
@@ -172,9 +273,9 @@ INSERT INTO experiences (
   location,
   display_order
 ) VALUES (
-  'Tech Company',
-  'Full Stack Developer',
-  'Developed and maintained web applications using modern technologies including SvelteKit, TypeScript, and PostgreSQL.',
+  'Codefrost',
+  'Software Engineer',
+  'Working on revolutionary software development solutions including AI-powered development tools and consulting, custom SaaS product development and white-labeling, innovative AI integration strategies, Progressive Web Apps (PWAs), and full-stack development services. Combining decades of experience with cutting-edge AI tools to deliver exceptional software solutions. Contributing to AI-Driven Coder to share expertise and empower developers worldwide.',
   '2023-01-01',
   NULL,
   true,

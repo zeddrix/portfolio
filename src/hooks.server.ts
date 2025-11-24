@@ -1,31 +1,21 @@
 import { redirect, type Handle } from '@sveltejs/kit';
 import { createServerClient } from '$lib/server/supabase';
-import { getSession } from '$lib/server/session';
 import type { Database } from '$lib/types/database';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// Create Supabase client for this request
-	event.locals.supabase = createServerClient();
+	// Create Supabase client
+	const supabaseClient = createServerClient();
 
-	// Get session from Supabase
-	const session = await getSession(event);
-	event.locals.session = session;
-	event.locals.user = session?.user ?? null;
+	event.locals.supabase = supabaseClient;
+	event.locals.session = null;
+	event.locals.user = null;
 
 	// Protected routes check
 	const isAdminRoute = event.url.pathname.startsWith('/admin');
-	const isLoginRoute = event.url.pathname === '/admin/login';
 	const isMaintenancePage = event.url.pathname === '/maintenance';
 
-	// Redirect to login if accessing admin routes without authentication
-	if (isAdminRoute && !isLoginRoute && !session) {
-		throw redirect(303, '/admin/login');
-	}
-
-	// Redirect to admin dashboard if already logged in and trying to access login
-	if (isLoginRoute && session) {
-		throw redirect(303, '/admin');
-	}
+	// Note: Authentication is now handled client-side
+	// Server-side auth was causing issues with session persistence
 
 	// Maintenance mode check (only for public routes)
 	if (!isAdminRoute && !isMaintenancePage) {

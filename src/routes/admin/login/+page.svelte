@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabase';
-	import { goto } from '$app/navigation';
 
 	let email = '';
 	let password = '';
@@ -20,17 +19,19 @@
 
 			if (signInError) {
 				error = signInError.message;
+				loading = false;
 				return;
 			}
 
 			if (data.session) {
-				// Redirect to admin dashboard
-				await goto('/admin');
+				// Wait a moment to ensure session is stored in localStorage
+				await new Promise((resolve) => setTimeout(resolve, 100));
+				// Force a full page reload to refresh authentication state
+				window.location.href = '/admin';
 			}
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'An error occurred during login';
 			console.error('Login error:', err);
-		} finally {
 			loading = false;
 		}
 	}
