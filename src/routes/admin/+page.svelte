@@ -25,16 +25,6 @@
 		};
 		return labels[palette] || palette;
 	}
-
-	// Helper to get layout label
-	function getLayoutLabel(layout: string): string {
-		const labels: Record<string, string> = {
-			case_study: 'Case Study',
-			single_page: 'Single Page',
-			bento_grid: 'Bento Grid'
-		};
-		return labels[layout] || layout;
-	}
 </script>
 
 <svelte:head>
@@ -156,17 +146,6 @@
 			</div>
 			<div class="px-6 py-5 space-y-4">
 				{#if data.siteSettings}
-					<div class="flex items-center justify-between">
-						<div class="flex items-center">
-							<span class="material-icons text-gray-400 mr-3">view_quilt</span>
-							<span class="text-sm font-medium text-gray-700">Default Layout</span>
-						</div>
-						<span
-							class="inline-flex items-center rounded-full bg-blue-100 px-3 py-0.5 text-sm font-medium text-blue-800"
-						>
-							{getLayoutLabel(data.siteSettings.active_layout)}
-						</span>
-					</div>
 					<div class="flex items-center justify-between">
 						<div class="flex items-center">
 							<span class="material-icons text-gray-400 mr-3">palette</span>

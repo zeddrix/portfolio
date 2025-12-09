@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
 	import Breadcrumb from '$lib/components/admin/Breadcrumb.svelte';
-	import LayoutSelector from '$lib/components/admin/LayoutSelector.svelte';
 	import ColorPaletteSelector from '$lib/components/admin/ColorPaletteSelector.svelte';
 	import ThemeSelector from '$lib/components/admin/ThemeSelector.svelte';
 	import MaintenanceModeToggle from '$lib/components/admin/MaintenanceModeToggle.svelte';
@@ -83,11 +82,6 @@
 	{/if}
 
 	<div class="space-y-8">
-		<!-- Layout Settings -->
-		<section class="bg-surface rounded-lg border border-border p-6">
-			<LayoutSelector currentLayout={data.settings.active_layout} showConfirmation={true} />
-		</section>
-
 		<!-- Color Palette Settings -->
 		<section class="bg-surface rounded-lg border border-border p-6">
 			<ColorPaletteSelector currentPalette={data.settings.active_palette} showConfirmation={true} />
@@ -113,17 +107,16 @@
 						<li class="flex items-start gap-2">
 							<span class="material-icons text-xs mt-0.5">arrow_right</span>
 							<span
-								><strong>Default Layout & Palette:</strong> These set the initial experience for new
-								visitors. Visitors can always switch to their preferred layout and colors using the switchers
-								on the site.</span
+								><strong>Default Palette:</strong> This sets the initial color scheme for new visitors.
+								Visitors can always switch to their preferred colors using the palette switcher on the
+								site.</span
 							>
 						</li>
 						<li class="flex items-start gap-2">
 							<span class="material-icons text-xs mt-0.5">arrow_right</span>
 							<span
-								><strong>Visitor Preferences:</strong> Once a visitor selects their preferred layout
-								or palette, their choice is saved locally and will override these defaults on future
-								visits.</span
+								><strong>Visitor Preferences:</strong> Once a visitor selects their preferred palette,
+								their choice is saved locally and will override these defaults on future visits.</span
 							>
 						</li>
 						<li class="flex items-start gap-2">

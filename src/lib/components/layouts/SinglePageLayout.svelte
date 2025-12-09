@@ -54,7 +54,7 @@
 	<Navigation />
 
 	<!-- Hero Section -->
-	<Hero variant="single_page" {profile} />
+	<Hero {profile} />
 	<ScrollIndicator targetId="about" />
 
 	<!-- About Section -->

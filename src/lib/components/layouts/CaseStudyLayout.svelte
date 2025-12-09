@@ -32,7 +32,7 @@
 	<Navigation />
 
 	<!-- Hero Section -->
-	<Hero variant="case_study" {profile} />
+	<Hero {profile} />
 
 	<!-- Projects Section -->
 	<section id="projects" class="py-20">

@@ -286,9 +286,65 @@
 	function handleRemoveGalleryItem(index: number) {
 		galleryImages = galleryImages.filter((_, i) => i !== index);
 	}
+
+	let formElement: HTMLFormElement;
+	let isSubmitting = false;
+
+	// Enhanced form submission with debugging - using before submit callback
+	function handleFormSubmit(event: Event) {
+		console.log('[ProjectForm] Form submit event triggered');
+
+		// Check form validity
+		if (!formElement.checkValidity()) {
+			console.error('[ProjectForm] Form validation failed');
+			formElement.reportValidity();
+			event.preventDefault();
+			return;
+		}
+
+		// Check required fields
+		const requiredFields = {
+			title,
+			slug,
+			shortDescription,
+			fullDescription,
+			featuredImageUrl,
+			featuredImageCloudinaryId,
+			techStackArray: techStackArray.length > 0
+		};
+
+		console.log('[ProjectForm] Required fields check:', requiredFields);
+
+		const missingFields = [];
+		if (!title) missingFields.push('title');
+		if (!slug) missingFields.push('slug');
+		if (!shortDescription) missingFields.push('short_description');
+		if (!fullDescription) missingFields.push('full_description');
+		if (!featuredImageUrl) missingFields.push('featured_image_url');
+		if (!featuredImageCloudinaryId) missingFields.push('featured_image_cloudinary_id');
+		if (techStackArray.length === 0) missingFields.push('tech_stack');
+
+		if (missingFields.length > 0) {
+			console.error('[ProjectForm] Missing required fields:', missingFields);
+			uploadError = `Missing required fields: ${missingFields.join(', ')}`;
+			event.preventDefault();
+			return;
+		}
+
+		isSubmitting = true;
+		uploadError = '';
+		uploadSuccess = '';
+		console.log('[ProjectForm] Form validation passed, submitting...');
+	}
 </script>
 
-<form method="POST" use:enhance class="space-y-8">
+<form
+	bind:this={formElement}
+	method="POST"
+	use:enhance
+	on:submit={handleFormSubmit}
+	class="space-y-8"
+>
 	<!-- Basic Info -->
 	<div class="bg-surface border border-border rounded-lg p-6">
 		<h2 class="text-xl font-bold text-text-primary mb-4">Basic Information</h2>
@@ -582,12 +638,34 @@
 	<div class="flex items-center justify-end gap-3">
 		<a
 			href="/admin/projects"
-			class="px-6 py-2 border border-border text-text-primary rounded-lg hover:bg-background"
+			class="px-6 py-2 border border-border text-text-primary rounded-lg hover:bg-background transition-colors"
 		>
 			Cancel
 		</a>
-		<button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">
-			{isEdit ? 'Update Project' : 'Create Project'}
+		<button
+			type="submit"
+			disabled={isSubmitting || uploadingFeaturedImage || uploadingGallery || uploadingDemoVideo}
+			class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+			on:click={() =>
+				console.log('[ProjectForm] Submit button clicked', {
+					isSubmitting,
+					uploadingFeaturedImage,
+					uploadingGallery,
+					uploadingDemoVideo,
+					featuredImageUrl,
+					featuredImageCloudinaryId
+				})}
+		>
+			{#if isSubmitting}
+				<span class="flex items-center gap-2">
+					<span
+						class="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-r-transparent"
+					></span>
+					Saving...
+				</span>
+			{:else}
+				{isEdit ? 'Update Project' : 'Create Project'}
+			{/if}
 		</button>
 	</div>
 </form>

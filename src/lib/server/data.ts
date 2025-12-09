@@ -4,19 +4,27 @@
  */
 
 import { createServerClient } from '$lib/server/supabase';
-import type { Database } from '$lib/types/database';
-
-// Type helpers
-type SiteSettings = Database['public']['Tables']['site_settings']['Row'];
-type Profile = Database['public']['Tables']['profile']['Row'];
-type Project = Database['public']['Tables']['projects']['Row'];
-type Skill = Database['public']['Tables']['skills']['Row'];
-type Certification = Database['public']['Tables']['certifications']['Row'];
-type Experience = Database['public']['Tables']['experiences']['Row'];
-type SocialLink = Database['public']['Tables']['social_links']['Row'];
+import type {
+	ColorPaletteRow,
+	ColorCombination,
+	ProjectCategory,
+	ButtonTextPreset,
+	StatsCounter,
+	DevelopmentProcessStep,
+	ProjectDeliverable,
+	AITool,
+	AIProductivityStat,
+	SiteSettings,
+	Profile,
+	Project,
+	Skill,
+	Certification,
+	Experience,
+	SocialLink
+} from '$lib/types/database';
 
 /**
- * Fetch site settings (layout, palette, theme)
+ * Fetch site settings (palette, theme, hero config, stats config)
  */
 export async function getSiteSettings(): Promise<SiteSettings | null> {
 	const supabase = createServerClient();
@@ -64,7 +72,7 @@ export async function getProjects(): Promise<Project[]> {
 		return [];
 	}
 
-	return data || [];
+	return (data as Project[]) || [];
 }
 
 /**
@@ -85,7 +93,28 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 		return [];
 	}
 
-	return data || [];
+	return (data as Project[]) || [];
+}
+
+/**
+ * Fetch projects for hero carousel
+ */
+export async function getHeroCarouselProjects(): Promise<Project[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('projects')
+		.select('*')
+		.eq('published', true)
+		.eq('show_in_hero_carousel', true)
+		.order('hero_display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching hero carousel projects:', error);
+		return [];
+	}
+
+	return (data as Project[]) || [];
 }
 
 /**
@@ -106,7 +135,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
 		return null;
 	}
 
-	return data;
+	return data as Project;
 }
 
 /**
@@ -207,28 +236,259 @@ export async function getSocialLinks(): Promise<SocialLink[]> {
 	return data || [];
 }
 
+// ============================================================================
+// NEW FUNCTIONS FROM UI OVERHAUL
+// ============================================================================
+
 /**
- * Fetch all data needed for the home page
+ * Fetch all active color palettes
+ */
+export async function getColorPalettes(): Promise<ColorPaletteRow[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('color_palettes')
+		.select('*')
+		.eq('is_active', true)
+		.order('name', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching color palettes:', error);
+		return [];
+	}
+
+	return (data as ColorPaletteRow[]) || [];
+}
+
+/**
+ * Fetch color combinations for a specific palette
+ */
+export async function getColorCombinations(paletteId: string): Promise<ColorCombination[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('color_combinations')
+		.select('*')
+		.eq('palette_id', paletteId)
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching color combinations:', error);
+		return [];
+	}
+
+	return (data as ColorCombination[]) || [];
+}
+
+/**
+ * Fetch default color combination for a palette
+ */
+export async function getDefaultColorCombination(
+	paletteId: string
+): Promise<ColorCombination | null> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('color_combinations')
+		.select('*')
+		.eq('palette_id', paletteId)
+		.eq('is_default', true)
+		.single();
+
+	if (error) {
+		console.error('Error fetching default color combination:', error);
+		return null;
+	}
+
+	return data as ColorCombination;
+}
+
+/**
+ * Fetch visible stats counters
+ */
+export async function getStatsCounters(): Promise<StatsCounter[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('stats_counters')
+		.select('*')
+		.eq('is_visible', true)
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching stats counters:', error);
+		return [];
+	}
+
+	return (data as StatsCounter[]) || [];
+}
+
+/**
+ * Fetch visible development process steps
+ */
+export async function getDevelopmentProcessSteps(): Promise<DevelopmentProcessStep[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('development_process_steps')
+		.select('*')
+		.eq('is_visible', true)
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching development process steps:', error);
+		return [];
+	}
+
+	return (data as DevelopmentProcessStep[]) || [];
+}
+
+/**
+ * Fetch visible project deliverables
+ */
+export async function getProjectDeliverables(): Promise<ProjectDeliverable[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('project_deliverables')
+		.select('*')
+		.eq('is_visible', true)
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching project deliverables:', error);
+		return [];
+	}
+
+	return (data as ProjectDeliverable[]) || [];
+}
+
+/**
+ * Fetch visible AI tools
+ */
+export async function getAITools(): Promise<AITool[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('ai_tools')
+		.select('*')
+		.eq('is_visible', true)
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching AI tools:', error);
+		return [];
+	}
+
+	return (data as AITool[]) || [];
+}
+
+/**
+ * Fetch visible AI productivity stats
+ */
+export async function getAIProductivityStats(): Promise<AIProductivityStat[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('ai_productivity_stats')
+		.select('*')
+		.eq('is_visible', true)
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching AI productivity stats:', error);
+		return [];
+	}
+
+	return (data as AIProductivityStat[]) || [];
+}
+
+/**
+ * Fetch active button text presets
+ */
+export async function getButtonTextPresets(): Promise<ButtonTextPreset[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('button_text_presets')
+		.select('*')
+		.eq('is_active', true)
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching button text presets:', error);
+		return [];
+	}
+
+	return (data as ButtonTextPreset[]) || [];
+}
+
+/**
+ * Fetch all project categories
+ */
+export async function getProjectCategories(): Promise<ProjectCategory[]> {
+	const supabase = createServerClient();
+
+	const { data, error } = await supabase
+		.from('project_categories')
+		.select('*')
+		.order('display_order', { ascending: true });
+
+	if (error) {
+		console.error('Error fetching project categories:', error);
+		return [];
+	}
+
+	return (data as ProjectCategory[]) || [];
+}
+
+/**
+ * Fetch all data needed for the home page (updated with new sections)
  */
 export async function getHomePageData() {
-	const [siteSettings, profile, projects, skills, certifications, experiences, socialLinks] =
-		await Promise.all([
-			getSiteSettings(),
-			getProfile(),
-			getProjects(),
-			getSkills(),
-			getCertifications(),
-			getExperiences(),
-			getSocialLinks()
-		]);
+	const [
+		siteSettings,
+		profile,
+		projects,
+		heroCarouselProjects,
+		skills,
+		certifications,
+		experiences,
+		socialLinks,
+		statsCounters,
+		developmentSteps,
+		deliverables,
+		aiTools,
+		aiProductivityStats
+	] = await Promise.all([
+		getSiteSettings(),
+		getProfile(),
+		getProjects(),
+		getHeroCarouselProjects(),
+		getSkills(),
+		getCertifications(),
+		getExperiences(),
+		getSocialLinks(),
+		getStatsCounters(),
+		getDevelopmentProcessSteps(),
+		getProjectDeliverables(),
+		getAITools(),
+		getAIProductivityStats()
+	]);
 
 	return {
 		siteSettings,
 		profile,
 		projects,
+		heroCarouselProjects,
 		skills,
 		certifications,
 		experiences,
-		socialLinks
+		socialLinks,
+		statsCounters,
+		developmentSteps,
+		deliverables,
+		aiTools,
+		aiProductivityStats
 	};
 }
