@@ -4,18 +4,74 @@
 
 	export let steps: DevelopmentProcessStep[] = [];
 
-	let activeStep = 0;
+	let activeTab = 0;
+	let carouselContainer: HTMLDivElement;
 	let sectionVisible = false;
 
-	// Icon mapping
-	const iconMap: Record<string, string> = {
-		search: 'M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z',
+	// Default placeholder images for steps if none provided
+	const defaultImages: Record<string, string> = {
+		search:
+			'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&auto=format',
 		palette:
-			'M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z',
-		code: 'M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5',
+			'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop&auto=format',
+		code: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop&auto=format',
 		rocket:
-			'M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z'
+			'https://images.unsplash.com/photo-1516849841032-87cbac4d88f7?w=800&h=600&fit=crop&auto=format'
 	};
+
+	function scrollToCard(index: number) {
+		activeTab = index;
+		if (carouselContainer) {
+			const cards = carouselContainer.querySelectorAll('.process-card');
+			if (cards[index]) {
+				const card = cards[index] as HTMLElement;
+				const containerWidth = carouselContainer.offsetWidth;
+				const cardWidth = card.offsetWidth;
+				const scrollPosition = card.offsetLeft - (containerWidth - cardWidth) / 2;
+				carouselContainer.scrollTo({
+					left: scrollPosition,
+					behavior: 'smooth'
+				});
+			}
+		}
+	}
+
+	function handleScroll() {
+		if (carouselContainer) {
+			const scrollLeft = carouselContainer.scrollLeft;
+			const containerWidth = carouselContainer.offsetWidth;
+			const cards = carouselContainer.querySelectorAll('.process-card');
+
+			cards.forEach((card, index) => {
+				const cardElement = card as HTMLElement;
+				const cardCenter = cardElement.offsetLeft + cardElement.offsetWidth / 2;
+				const viewportCenter = scrollLeft + containerWidth / 2;
+
+				if (Math.abs(cardCenter - viewportCenter) < cardElement.offsetWidth / 2) {
+					activeTab = index;
+				}
+			});
+		}
+	}
+
+	function nextCard() {
+		if (activeTab < steps.length - 1) {
+			scrollToCard(activeTab + 1);
+		}
+	}
+
+	function prevCard() {
+		if (activeTab > 0) {
+			scrollToCard(activeTab - 1);
+		}
+	}
+
+	function handleKeyDown(event: KeyboardEvent, index: number) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			scrollToCard(index);
+		}
+	}
 
 	onMount(() => {
 		const observer = new IntersectionObserver(
@@ -36,137 +92,176 @@
 
 		return () => observer.disconnect();
 	});
-
-	function handleKeyDown(event: KeyboardEvent, index: number) {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			activeStep = index;
-		}
-	}
 </script>
 
-<section id="development-process" class="py-20 bg-background">
+<section id="development-process" class="py-20 sm:py-28 bg-background">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<!-- Section Header -->
-		<div class="text-center mb-16">
-			<h2 class="text-3xl sm:text-4xl font-bold text-text-primary mb-4">Development Process</h2>
-			<p class="text-lg text-text-secondary max-w-2xl mx-auto">
-				A systematic approach to delivering high-quality solutions
+		<div
+			class="text-center mb-12 transition-all duration-700"
+			class:opacity-100={sectionVisible}
+			class:opacity-0={!sectionVisible}
+			class:translate-y-0={sectionVisible}
+			class:translate-y-8={!sectionVisible}
+		>
+			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary mb-4">
+				Development Process
+			</h2>
+			<p class="text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto">
+				A systematic approach to bringing your vision to life.
 			</p>
 		</div>
 
-		<!-- Desktop: Horizontal Timeline -->
-		<div class="hidden lg:block">
-			<div class="relative">
-				<!-- Connection Line -->
-				<div class="absolute top-12 left-0 right-0 h-1 bg-border">
-					<div
-						class="h-full bg-primary transition-all duration-500"
-						style="width: {((activeStep + 1) / steps.length) * 100}%"
-					/>
-				</div>
-
-				<!-- Steps -->
-				<div class="relative flex justify-between">
-					{#each steps as step, index}
-						<button
-							type="button"
-							class="flex flex-col items-center w-1/4 group focus:outline-none"
-							class:opacity-100={sectionVisible}
-							class:opacity-0={!sectionVisible}
-							style="transition-delay: {index * 150}ms"
-							on:click={() => (activeStep = index)}
-							on:keydown={(e) => handleKeyDown(e, index)}
-						>
-							<!-- Icon Circle -->
-							<div
-								class="w-24 h-24 rounded-full flex items-center justify-center transition-all duration-300 {activeStep >=
-								index
-									? 'bg-primary text-white shadow-lg shadow-primary/30'
-									: 'bg-surface text-text-secondary border-2 border-border group-hover:border-primary'}"
-							>
-								<svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="1.5"
-										d={iconMap[step.icon || 'code']}
-									/>
-								</svg>
-							</div>
-
-							<!-- Title -->
-							<h3
-								class="mt-4 text-lg font-semibold transition-colors {activeStep === index
-									? 'text-primary'
-									: 'text-text-primary'}"
-							>
-								{step.title}
-							</h3>
-
-							<!-- Description (shown when active) -->
-							<p
-								class="mt-2 text-sm text-text-secondary text-center max-w-[200px] transition-opacity {activeStep ===
-								index
-									? 'opacity-100'
-									: 'opacity-0'}"
-							>
-								{step.description}
-							</p>
-						</button>
-					{/each}
-				</div>
+		<!-- Horizontal Tab Bar -->
+		<div
+			class="flex justify-center mb-12 transition-all duration-700 delay-100"
+			class:opacity-100={sectionVisible}
+			class:opacity-0={!sectionVisible}
+		>
+			<div class="inline-flex flex-wrap justify-center gap-2 sm:gap-3">
+				{#each steps as step, index}
+					<button
+						type="button"
+						class="px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300
+							{activeTab === index
+							? 'bg-text-primary text-background shadow-lg'
+							: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-surface'}"
+						on:click={() => scrollToCard(index)}
+						on:keydown={(e) => handleKeyDown(e, index)}
+					>
+						{step.title}
+					</button>
+				{/each}
 			</div>
 		</div>
 
-		<!-- Mobile: Vertical Timeline -->
-		<div class="lg:hidden space-y-6">
-			{#each steps as step, index}
-				<div
-					class="flex gap-4 opacity-0 animate-fade-in"
-					style="animation-delay: {index * 150}ms; animation-fill-mode: forwards;"
-				>
-					<!-- Icon -->
-					<div
-						class="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center {activeStep >=
-						index
-							? 'bg-primary text-white'
-							: 'bg-surface text-text-secondary border-2 border-border'}"
-					>
-						<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d={iconMap[step.icon || 'code']}
-							/>
-						</svg>
-					</div>
+		<!-- Card Carousel -->
+		<div
+			class="relative transition-all duration-700 delay-200"
+			class:opacity-100={sectionVisible}
+			class:opacity-0={!sectionVisible}
+		>
+			<!-- Navigation Arrows -->
+			<button
+				type="button"
+				class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 rounded-full bg-background border border-border shadow-lg items-center justify-center text-text-primary hover:bg-surface transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+				on:click={prevCard}
+				disabled={activeTab === 0}
+				aria-label="Previous step"
+			>
+				<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M15 19l-7-7 7-7"
+					/>
+				</svg>
+			</button>
 
-					<!-- Content -->
-					<div class="flex-1 pb-6 border-l-2 border-border pl-4 -ml-7 pt-1">
-						<h3 class="text-lg font-semibold text-text-primary">{step.title}</h3>
-						<p class="mt-1 text-text-secondary">{step.description}</p>
+			<button
+				type="button"
+				class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 rounded-full bg-background border border-border shadow-lg items-center justify-center text-text-primary hover:bg-surface transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+				on:click={nextCard}
+				disabled={activeTab === steps.length - 1}
+				aria-label="Next step"
+			>
+				<svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+			</button>
+
+			<!-- Carousel Container -->
+			<div
+				bind:this={carouselContainer}
+				on:scroll={handleScroll}
+				class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 px-4 sm:px-12 -mx-4 sm:-mx-12 hide-scrollbar"
+			>
+				{#each steps as step, index}
+					<div
+						class="process-card flex-shrink-0 w-[85vw] sm:w-[600px] lg:w-[700px] snap-center"
+						role="article"
+					>
+						<div
+							class="relative h-[400px] sm:h-[450px] lg:h-[500px] rounded-2xl overflow-hidden group cursor-pointer"
+							on:click={() => scrollToCard(index)}
+							on:keydown={(e) => handleKeyDown(e, index)}
+							role="button"
+							tabindex="0"
+						>
+							<!-- Background Image -->
+							<img
+								src={defaultImages[step.icon || 'code']}
+								alt={step.title}
+								class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+							/>
+
+							<!-- Gradient Overlay -->
+							<div
+								class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+							/>
+
+							<!-- Content Overlay -->
+							<div class="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end">
+								<!-- Step Number -->
+								<span
+									class="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium mb-4 w-fit"
+								>
+									Step {step.display_order}
+								</span>
+
+								<!-- Title -->
+								<h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
+									{step.title}
+								</h3>
+
+								<!-- Description -->
+								<p class="text-base sm:text-lg text-white/90 max-w-lg leading-relaxed">
+									{step.description}
+								</p>
+
+								<!-- Arrow indicator -->
+								<div
+									class="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+								>
+									<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M9 5l7 7-7 7"
+										/>
+									</svg>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-			{/each}
+				{/each}
+			</div>
+
+			<!-- Dot Indicators -->
+			<div class="flex justify-center gap-2 mt-6">
+				{#each steps as _, index}
+					<button
+						type="button"
+						class="w-2 h-2 rounded-full transition-all duration-300 {activeTab === index
+							? 'bg-text-primary w-6'
+							: 'bg-border hover:bg-text-secondary'}"
+						on:click={() => scrollToCard(index)}
+						aria-label="Go to step {index + 1}"
+					/>
+				{/each}
+			</div>
 		</div>
 	</div>
 </section>
 
 <style>
-	@keyframes fade-in {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	.hide-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 	}
-
-	.animate-fade-in {
-		animation: fade-in 0.5s ease-out;
+	.hide-scrollbar::-webkit-scrollbar {
+		display: none;
 	}
 </style>

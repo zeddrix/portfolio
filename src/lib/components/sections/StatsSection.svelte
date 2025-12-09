@@ -25,7 +25,7 @@
 					}
 				});
 			},
-			{ threshold: 0.3 }
+			{ threshold: 0.2 }
 		);
 
 		const section = document.getElementById('stats-section');
@@ -60,7 +60,6 @@
 	}
 
 	function formatValue(value: number, originalValue: string): string {
-		// Preserve original format (e.g., "50" stays as is, not "50.00")
 		if (originalValue.includes('.')) {
 			return value.toFixed(originalValue.split('.')[1]?.length || 0);
 		}
@@ -68,25 +67,52 @@
 	}
 </script>
 
-<section id="stats-section" class="py-20 bg-surface">
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<!-- Stats Counters -->
-		{#if (displayMode === 'counters' || displayMode === 'hybrid') && countersEnabled && counters.length > 0}
-			<div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
-				{#each counters as counter, index}
-					<div class="text-center">
-						<div class="text-5xl sm:text-6xl lg:text-7xl font-bold text-primary mb-2">
-							{formatValue(animatedValues[index], counter.value)}{counter.suffix || ''}
-						</div>
-						<div class="text-lg text-text-secondary">{counter.label}</div>
-					</div>
-				{/each}
-			</div>
-		{/if}
+<!-- Stats Section - Squarespace Style -->
+<section id="stats-section" class="relative">
+	<!-- Dark Stats Banner -->
+	{#if (displayMode === 'counters' || displayMode === 'hybrid') && countersEnabled && counters.length > 0}
+		<div class="bg-black py-24 sm:py-32">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<!-- Headline -->
+				<p class="text-center text-text-secondary mb-16 text-lg sm:text-xl">
+					Delivering quality solutions for clients worldwide.
+				</p>
 
-		<!-- Tech Stack Grid -->
-		{#if (displayMode === 'icons' || displayMode === 'hybrid' || displayMode === 'categories') && iconsEnabled && skills.length > 0}
-			<TechStackGrid {skills} showCategories={displayMode === 'categories'} />
-		{/if}
-	</div>
+				<!-- Stats Grid - HUGE Numbers -->
+				<div class="grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-8">
+					{#each counters as counter, index}
+						<div class="text-center">
+							<div
+								class="stats-number text-7xl sm:text-8xl lg:text-9xl font-bold text-white mb-4 tracking-tight"
+							>
+								{formatValue(animatedValues[index], counter.value)}{counter.suffix || ''}
+							</div>
+							<div class="text-base sm:text-lg text-gray-400 uppercase tracking-wider">
+								{counter.label}
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Tech Stack Section -->
+	{#if (displayMode === 'icons' || displayMode === 'hybrid' || displayMode === 'categories') && iconsEnabled && skills.length > 0}
+		<div class="bg-surface py-20">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<TechStackGrid {skills} showCategories={displayMode === 'categories'} />
+			</div>
+		</div>
+	{/if}
 </section>
+
+<style>
+	.stats-number {
+		font-family:
+			system-ui,
+			-apple-system,
+			sans-serif;
+		line-height: 1;
+	}
+</style>
