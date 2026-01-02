@@ -67,12 +67,9 @@
 	}
 </script>
 
-<section id="ai-showcase" class="relative py-20 sm:py-28 overflow-hidden">
-	<!-- Gradient Background -->
-	<div class="absolute inset-0 bg-gradient-to-b from-background via-background to-amber-50/30" />
-
+<section id="ai-showcase" class="relative py-24 sm:py-32 bg-white overflow-hidden">
 	<div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<!-- Section Header -->
+		<!-- Section Header - Squarespace Style -->
 		<div
 			class="text-center mb-16 transition-all duration-700"
 			class:opacity-100={sectionVisible}
@@ -80,18 +77,18 @@
 			class:translate-y-0={sectionVisible}
 			class:translate-y-8={!sectionVisible}
 		>
-			<!-- Decorative Icon -->
+			<!-- Decorative Icon (Two Dots) -->
 			<div class="flex justify-center mb-6">
 				<div class="flex gap-1">
-					<div class="w-3 h-3 rounded-full bg-text-primary" />
-					<div class="w-3 h-3 rounded-full bg-text-primary/40" />
+					<div class="w-2.5 h-2.5 rounded-full bg-gray-900" />
+					<div class="w-2.5 h-2.5 rounded-full bg-gray-400" />
 				</div>
 			</div>
 
-			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary mb-4 leading-tight">
+			<h2 class="heading-section text-gray-900 mb-4 leading-tight">
 				Getting started has<br />never been easier with AI
 			</h2>
-			<p class="text-lg sm:text-xl text-text-secondary">No experience required.</p>
+			<p class="text-lg sm:text-xl text-gray-600">No experience required.</p>
 		</div>
 
 		<!-- Two Card Layout -->
@@ -213,7 +210,7 @@
 			class:opacity-100={sectionVisible}
 			class:opacity-0={!sectionVisible}
 		>
-			<p class="text-sm sm:text-base text-text-secondary">
+			<p class="text-sm sm:text-base text-gray-500">
 				Building smarter, faster solutions with cutting-edge AI technology
 			</p>
 		</div>

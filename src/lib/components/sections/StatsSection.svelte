@@ -65,29 +65,45 @@
 		}
 		return value.toString();
 	}
+
+	// Extract suffix from original value (like M+, B+, +, etc.)
+	function getSuffix(originalValue: string): string {
+		const match = originalValue.match(/[A-Za-z+%$]+$/);
+		return match ? match[0] : '';
+	}
 </script>
 
-<!-- Stats Section - Squarespace Style -->
+<!-- Stats Section - Squarespace Style (MASSIVE Numbers) -->
 <section id="stats-section" class="relative">
-	<!-- Dark Stats Banner -->
+	<!-- Stats Banner -->
 	{#if (displayMode === 'counters' || displayMode === 'hybrid') && countersEnabled && counters.length > 0}
-		<div class="bg-black py-24 sm:py-32">
+		<div class="bg-white py-20 sm:py-28 lg:py-36">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<!-- Headline -->
-				<p class="text-center text-text-secondary mb-16 text-lg sm:text-xl">
+				<p
+					class="text-center text-gray-600 mb-16 sm:mb-20 text-base sm:text-lg transition-all duration-700"
+					class:opacity-100={sectionVisible}
+					class:opacity-0={!sectionVisible}
+				>
 					Delivering quality solutions for clients worldwide.
 				</p>
 
-				<!-- Stats Grid - HUGE Numbers -->
-				<div class="grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-8">
+				<!-- Stats Grid - MASSIVE Numbers like Squarespace -->
+				<div
+					class="grid grid-cols-1 sm:grid-cols-3 gap-16 sm:gap-8 lg:gap-12 transition-all duration-700 delay-100"
+					class:opacity-100={sectionVisible}
+					class:opacity-0={!sectionVisible}
+				>
 					{#each counters as counter, index}
 						<div class="text-center">
-							<div
-								class="stats-number text-7xl sm:text-8xl lg:text-9xl font-bold text-white mb-4 tracking-tight"
-							>
-								{formatValue(animatedValues[index], counter.value)}{counter.suffix || ''}
+							<div class="stats-number mb-4 sm:mb-6">
+								<span class="text-black font-bold tracking-tighter leading-none">
+									{formatValue(animatedValues[index], counter.value)}{getSuffix(counter.value)}
+								</span>
 							</div>
-							<div class="text-base sm:text-lg text-gray-400 uppercase tracking-wider">
+							<div
+								class="text-sm sm:text-base text-gray-500 uppercase tracking-[0.2em] font-medium"
+							>
 								{counter.label}
 							</div>
 						</div>
@@ -99,7 +115,7 @@
 
 	<!-- Tech Stack Section -->
 	{#if (displayMode === 'icons' || displayMode === 'hybrid' || displayMode === 'categories') && iconsEnabled && skills.length > 0}
-		<div class="bg-surface py-20">
+		<div class="bg-gray-50 py-20">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<TechStackGrid {skills} showCategories={displayMode === 'categories'} />
 			</div>
@@ -112,7 +128,25 @@
 		font-family:
 			system-ui,
 			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
 			sans-serif;
-		line-height: 1;
+	}
+
+	.stats-number span {
+		font-size: clamp(4rem, 15vw, 10rem);
+		display: block;
+	}
+
+	@media (min-width: 640px) {
+		.stats-number span {
+			font-size: clamp(3.5rem, 10vw, 8rem);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.stats-number span {
+			font-size: clamp(5rem, 8vw, 9rem);
+		}
 	}
 </style>

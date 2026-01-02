@@ -3,6 +3,17 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
 		extend: {
+			fontFamily: {
+				serif: ['Playfair Display', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
+				sans: [
+					'system-ui',
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'Segoe UI',
+					'Roboto',
+					'sans-serif'
+				]
+			},
 			colors: {
 				primary: 'rgb(var(--color-primary) / <alpha-value>)',
 				secondary: 'rgb(var(--color-secondary) / <alpha-value>)',

@@ -67,7 +67,8 @@ export default [
 			'package-lock.json',
 			'pnpm-lock.yaml',
 			'playwright.config.ts',
-			'scraper/**'
+			'scraper/**',
+			'tests/**'
 		]
 	}
 ];

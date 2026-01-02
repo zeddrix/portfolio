@@ -96,9 +96,9 @@
 	});
 </script>
 
-<section id="deliverables" class="py-20 sm:py-28 bg-background">
+<section id="deliverables" class="py-24 sm:py-32 bg-white">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-		<!-- Section Header - Split Layout -->
+		<!-- Section Header - Split Layout (Squarespace Style) -->
 		<div
 			class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-16 transition-all duration-700"
 			class:opacity-100={sectionVisible}
@@ -106,11 +106,11 @@
 			class:translate-y-0={sectionVisible}
 			class:translate-y-8={!sectionVisible}
 		>
-			<h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary leading-tight">
+			<h2 class="heading-section text-gray-900 leading-tight max-w-md">
 				Everything you need<br />on one platform
 			</h2>
 			<p
-				class="mt-6 lg:mt-0 text-lg sm:text-xl text-text-secondary max-w-md lg:text-right leading-relaxed"
+				class="mt-6 lg:mt-0 text-lg sm:text-xl text-gray-600 max-w-md lg:text-right leading-relaxed"
 			>
 				Complete solutions with all the deliverables and tools you need for a successful project.
 			</p>
@@ -199,16 +199,16 @@
 				{/each}
 			</div>
 
-			<!-- Navigation -->
-			<div class="flex items-center justify-between mt-6">
+			<!-- Navigation - Squarespace Style (Dots left, Arrows right) -->
+			<div class="flex items-center justify-between mt-8">
 				<!-- Dot Indicators -->
 				<div class="flex gap-2">
 					{#each deliverables as _, index}
 						<button
 							type="button"
 							class="w-2 h-2 rounded-full transition-all duration-300 {activeIndex === index
-								? 'bg-text-primary w-6'
-								: 'bg-border hover:bg-text-secondary'}"
+								? 'bg-gray-900 w-6'
+								: 'bg-gray-300 hover:bg-gray-400'}"
 							on:click={() => scrollToCard(index)}
 							aria-label="Go to item {index + 1}"
 						/>
@@ -216,10 +216,10 @@
 				</div>
 
 				<!-- Arrow Buttons -->
-				<div class="flex gap-2">
+				<div class="flex gap-3">
 					<button
 						type="button"
-						class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+						class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
 						on:click={prevCard}
 						disabled={activeIndex === 0}
 						aria-label="Previous item"
@@ -235,7 +235,7 @@
 					</button>
 					<button
 						type="button"
-						class="w-10 h-10 rounded-full border border-border flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-text-primary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+						class="w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
 						on:click={nextCard}
 						disabled={activeIndex === deliverables.length - 1}
 						aria-label="Next item"

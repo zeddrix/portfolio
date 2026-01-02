@@ -16,7 +16,13 @@
 		"lint:fix": "eslint --fix .",
 		"quality": "pnpm format && pnpm lint && pnpm check",
 		"db:migrate": "tsx scripts/db/run-migrations.ts",
-		"db:verify": "tsx scripts/db/run-migrations.ts --verify-only"
+		"db:verify": "tsx scripts/db/run-migrations.ts --verify-only",
+		"test": "playwright test",
+		"test:ui": "playwright test --ui",
+		"test:headed": "playwright test --headed",
+		"test:debug": "playwright test --debug",
+		"test:visual": "playwright test tests/e2e/visual/",
+		"test:update-snapshots": "playwright test --update-snapshots"
 	},
 	"lint-staged": {
 		"*.{js,ts,svelte}": [
@@ -29,6 +35,7 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.1",
+		"@playwright/test": "^1.57.0",
 		"@supabase/supabase-js": "^2.84.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",

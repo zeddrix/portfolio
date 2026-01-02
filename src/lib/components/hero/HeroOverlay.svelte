@@ -16,27 +16,19 @@
 </script>
 
 <div class="absolute inset-0 z-10 flex items-center justify-center">
-	<div class="text-center max-w-3xl mx-auto px-4">
-		<!-- Project Title -->
-		<h1
-			class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 drop-shadow-lg"
-		>
+	<div class="text-center max-w-4xl mx-auto px-4">
+		<!-- Project Title - Squarespace Style Elegant Serif -->
+		<h1 class="heading-hero text-white mb-6 drop-shadow-lg">
 			{project.title}
 		</h1>
 
 		<!-- Short Description -->
-		<p class="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
+		<p class="text-lg sm:text-xl text-white/90 mb-10 max-w-2xl mx-auto drop-shadow-md">
 			{project.short_description}
 		</p>
 
-		<!-- CTA Button -->
-		<a
-			href="/projects/{project.slug}"
-			class="inline-flex items-center px-8 py-4 bg-white text-black font-semibold rounded-lg
-				   hover:bg-primary hover:text-white transition-all duration-300
-				   shadow-lg hover:shadow-xl hover:scale-105
-				   focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50"
-		>
+		<!-- CTA Button - Squarespace Style -->
+		<a href="/projects/{project.slug}" class="btn-white group">
 			{buttonText}
 			<svg
 				class="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1"

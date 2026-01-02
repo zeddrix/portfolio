@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { layoutStore } from '$lib/stores/layout';
-	import LayoutSwitcher from './LayoutSwitcher.svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
-	import ColorPaletteSwitcher from './ColorPaletteSwitcher.svelte';
 	import { swipe } from '$lib/actions/touch';
 	import { slide, fade } from 'svelte/transition';
 
@@ -15,6 +12,16 @@
 	 * Reference to mobile menu element
 	 */
 	let mobileMenuElement: HTMLDivElement;
+
+	/**
+	 * Navigation links
+	 */
+	const navLinks = [
+		{ label: 'Work', href: '#interactive-showcase' },
+		{ label: 'Process', href: '#development-process' },
+		{ label: 'Services', href: '#deliverables' },
+		{ label: 'Contact', href: '#contact' }
+	];
 
 	/**
 	 * Toggle mobile menu
@@ -85,84 +92,47 @@
 			closeMobileMenu();
 		}
 	}
-
-	/**
-	 * Current layout for conditional navigation
-	 */
-	let currentLayout: 'case_study' | 'single_page' | 'bento_grid';
-	layoutStore.subscribe((value) => {
-		currentLayout = value;
-	});
 </script>
 
 <svelte:window on:click={handleClickOutside} on:keydown={handleKeydown} />
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md border-b border-border">
+<!-- Navigation - Squarespace Minimal Style -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="flex items-center justify-between h-16">
 			<!-- Logo -->
 			<div class="flex-shrink-0">
-				<a href="/" class="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+				<a href="/" class="text-xl font-bold text-gray-900 hover:text-gray-600 transition-colors">
 					Zeddrix
 				</a>
 			</div>
 
 			<!-- Desktop Navigation -->
 			<div class="hidden md:flex items-center space-x-8">
-				{#if currentLayout === 'single_page'}
+				{#each navLinks as link}
 					<a
-						href="#about"
-						on:click={(e) => scrollToSection(e, 'about')}
-						class="text-text-primary hover:text-primary transition-colors"
+						href={link.href}
+						on:click={(e) => scrollToSection(e, link.href.slice(1))}
+						class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
 					>
-						About
+						{link.label}
 					</a>
-					<a
-						href="#projects"
-						on:click={(e) => scrollToSection(e, 'projects')}
-						class="text-text-primary hover:text-primary transition-colors"
-					>
-						Projects
-					</a>
-					<a
-						href="#skills"
-						on:click={(e) => scrollToSection(e, 'skills')}
-						class="text-text-primary hover:text-primary transition-colors"
-					>
-						Skills
-					</a>
-					<a
-						href="#contact"
-						on:click={(e) => scrollToSection(e, 'contact')}
-						class="text-text-primary hover:text-primary transition-colors"
-					>
-						Contact
-					</a>
-				{:else}
-					<a href="/" class="text-text-primary hover:text-primary transition-colors"> Home </a>
-					<a href="/#projects" class="text-text-primary hover:text-primary transition-colors">
-						Projects
-					</a>
-				{/if}
+				{/each}
 
 				<!-- Controls Group -->
-				<div class="flex items-center gap-2">
-					<!-- Layout Switcher -->
-					<LayoutSwitcher />
-					<!-- Theme & Palette Controls -->
-					<div class="flex items-center gap-2 pl-2 border-l border-border">
-						<ThemeToggle />
-						<ColorPaletteSwitcher />
-					</div>
+				<div class="flex items-center gap-3 pl-6 border-l border-gray-200">
+					<ThemeToggle />
+					<a href="#contact" class="btn-dark text-sm py-2 px-4"> Get Started </a>
 				</div>
 			</div>
 
 			<!-- Mobile Menu Button -->
-			<div class="md:hidden">
+			<div class="md:hidden flex items-center gap-3">
+				<ThemeToggle />
 				<button
 					type="button"
 					on:click={toggleMobileMenu}
-					class="text-text-primary hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+					class="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 rounded-md p-1"
 					aria-label="Toggle mobile menu"
 					aria-expanded={mobileMenuOpen}
 				>
@@ -198,7 +168,7 @@
 	{#if mobileMenuOpen}
 		<!-- Mobile Menu Overlay -->
 		<div
-			class="fixed inset-0 bg-background/50 backdrop-blur-sm z-40 md:hidden"
+			class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
 			transition:fade={{ duration: 200 }}
 			on:click={closeMobileMenu}
 			role="presentation"
@@ -207,75 +177,31 @@
 		<!-- Mobile Menu Content -->
 		<div
 			bind:this={mobileMenuElement}
-			class="mobile-menu-container fixed inset-x-0 top-16 bottom-0 z-50 md:hidden"
+			class="mobile-menu-container fixed inset-x-0 top-16 z-50 md:hidden"
 			transition:slide={{ duration: 300 }}
 			use:swipe={{ threshold: 50 }}
 		>
-			<div class="h-full bg-surface border-t border-border overflow-y-auto">
-				<div class="px-2 pt-2 pb-3 space-y-1">
-					{#if currentLayout === 'single_page'}
+			<div class="bg-white border-t border-gray-100 shadow-lg">
+				<div class="px-4 py-4 space-y-1">
+					{#each navLinks as link}
 						<a
-							href="#about"
-							on:click={(e) => scrollToSection(e, 'about')}
-							class="block px-3 py-2 text-text-primary hover:text-primary hover:bg-background rounded-md transition-colors active:scale-95"
+							href={link.href}
+							on:click={(e) => scrollToSection(e, link.href.slice(1))}
+							class="block px-4 py-3 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
 						>
-							About
+							{link.label}
 						</a>
-						<a
-							href="#projects"
-							on:click={(e) => scrollToSection(e, 'projects')}
-							class="block px-3 py-2 text-text-primary hover:text-primary hover:bg-background rounded-md transition-colors active:scale-95"
-						>
-							Projects
-						</a>
-						<a
-							href="#skills"
-							on:click={(e) => scrollToSection(e, 'skills')}
-							class="block px-3 py-2 text-text-primary hover:text-primary hover:bg-background rounded-md transition-colors active:scale-95"
-						>
-							Skills
-						</a>
+					{/each}
+
+					<!-- Mobile CTA -->
+					<div class="pt-4 mt-4 border-t border-gray-100">
 						<a
 							href="#contact"
 							on:click={(e) => scrollToSection(e, 'contact')}
-							class="block px-3 py-2 text-text-primary hover:text-primary hover:bg-background rounded-md transition-colors active:scale-95"
+							class="block w-full text-center btn-dark"
 						>
-							Contact
+							Get Started
 						</a>
-					{:else}
-						<a
-							href="/"
-							class="block px-3 py-2 text-text-primary hover:text-primary hover:bg-background rounded-md transition-colors active:scale-95"
-						>
-							Home
-						</a>
-						<a
-							href="/#projects"
-							class="block px-3 py-2 text-text-primary hover:text-primary hover:bg-background rounded-md transition-colors active:scale-95"
-						>
-							Projects
-						</a>
-					{/if}
-
-					<!-- Mobile Controls -->
-					<div class="px-3 py-4 space-y-4 border-t border-border mt-2">
-						<!-- Layout Switcher -->
-						<div>
-							<p class="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">
-								Layout
-							</p>
-							<LayoutSwitcher />
-						</div>
-						<!-- Theme & Palette Controls -->
-						<div>
-							<p class="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">
-								Appearance
-							</p>
-							<div class="flex items-center gap-2">
-								<ThemeToggle />
-								<ColorPaletteSwitcher />
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

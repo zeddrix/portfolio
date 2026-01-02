@@ -9,6 +9,27 @@
 
 	const currentYear = new Date().getFullYear();
 
+	// Navigation links organized by category
+	const navLinks = {
+		services: [
+			{ label: 'Web Development', href: '/#deliverables' },
+			{ label: 'UI/UX Design', href: '/#deliverables' },
+			{ label: 'Full Stack Apps', href: '/#deliverables' },
+			{ label: 'Consulting', href: '/#contact' }
+		],
+		company: [
+			{ label: 'About', href: '/#about' },
+			{ label: 'Projects', href: '/#interactive-showcase' },
+			{ label: 'Process', href: '/#development-process' },
+			{ label: 'Contact', href: '/#contact' }
+		],
+		resources: [
+			{ label: 'AI Tools', href: '/#ai-showcase' },
+			{ label: 'Tech Stack', href: '/#stats-section' },
+			{ label: 'Case Studies', href: '/#interactive-showcase' }
+		]
+	};
+
 	/**
 	 * Map icon names to SVG icons
 	 */
@@ -27,85 +48,113 @@
 	}
 </script>
 
-<footer class="bg-surface border-t border-border mt-auto">
-	<div class="container mx-auto px-4 py-12">
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-			<!-- About Section -->
-			<div>
-				<h3 class="text-xl font-bold text-text-primary mb-4">
-					{profile?.full_name || 'Zeddrix'}
-				</h3>
-				<p class="text-text-secondary mb-4">
-					{profile?.tagline || 'Full Stack Developer & Designer'}
-				</p>
-				{#if profile?.location}
-					<p class="text-text-secondary flex items-center gap-2">
-						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-							/>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-							/>
-						</svg>
-						{profile.location}
+<!-- Footer - Squarespace Dark Multi-Column Style -->
+<footer class="bg-zinc-950 text-white mt-auto">
+	<!-- Top Bar: Logo + Tagline -->
+	<div class="border-b border-zinc-800">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+			<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+				<!-- Logo/Name -->
+				<div>
+					<h2 class="text-2xl sm:text-3xl font-bold tracking-tight">
+						{profile?.full_name || 'Zeddrix'}
+					</h2>
+					<p class="text-gray-400 mt-1">
+						{profile?.tagline || 'Full Stack Developer & Designer'}
 					</p>
-				{/if}
-			</div>
+				</div>
 
-			<!-- Quick Links -->
+				<!-- CTA Button -->
+				<a href="#contact" class="btn-white w-fit"> Start a Project </a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Main Footer: Multi-Column Links -->
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+		<div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+			<!-- Services Column -->
 			<div>
-				<h3 class="text-lg font-semibold text-text-primary mb-4">Quick Links</h3>
-				<ul class="space-y-2">
-					<li>
-						<a href="/" class="text-text-secondary hover:text-primary transition-colors"> Home </a>
-					</li>
-					<li>
-						<a href="/#projects" class="text-text-secondary hover:text-primary transition-colors">
-							Projects
-						</a>
-					</li>
-					<li>
-						<a href="/#skills" class="text-text-secondary hover:text-primary transition-colors">
-							Skills
-						</a>
-					</li>
-					<li>
-						<a href="/#contact" class="text-text-secondary hover:text-primary transition-colors">
-							Contact
-						</a>
-					</li>
+				<h3 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Services</h3>
+				<ul class="space-y-3">
+					{#each navLinks.services as link}
+						<li>
+							<a
+								href={link.href}
+								class="text-gray-300 hover:text-white transition-colors duration-200"
+							>
+								{link.label}
+							</a>
+						</li>
+					{/each}
 				</ul>
 			</div>
 
-			<!-- Contact & Social -->
+			<!-- Company Column -->
 			<div>
-				<h3 class="text-lg font-semibold text-text-primary mb-4">Connect</h3>
-				{#if profile?.email}
-					<a
-						href="mailto:{profile.email}"
-						class="block text-text-secondary hover:text-primary transition-colors mb-4"
-					>
-						{profile.email}
-					</a>
-				{/if}
+				<h3 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Company</h3>
+				<ul class="space-y-3">
+					{#each navLinks.company as link}
+						<li>
+							<a
+								href={link.href}
+								class="text-gray-300 hover:text-white transition-colors duration-200"
+							>
+								{link.label}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<!-- Resources Column -->
+			<div>
+				<h3 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Resources</h3>
+				<ul class="space-y-3">
+					{#each navLinks.resources as link}
+						<li>
+							<a
+								href={link.href}
+								class="text-gray-300 hover:text-white transition-colors duration-200"
+							>
+								{link.label}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<!-- Contact Column -->
+			<div>
+				<h3 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4">Contact</h3>
+				<ul class="space-y-3">
+					{#if profile?.email}
+						<li>
+							<a
+								href="mailto:{profile.email}"
+								class="text-gray-300 hover:text-white transition-colors duration-200"
+							>
+								{profile.email}
+							</a>
+						</li>
+					{/if}
+					{#if profile?.location}
+						<li class="text-gray-300">{profile.location}</li>
+					{/if}
+				</ul>
+
+				<!-- Social Links -->
 				{#if socialLinks.length > 0}
-					<div class="flex gap-4">
+					<div class="flex gap-4 mt-6">
 						{#each socialLinks as link}
 							<a
 								href={link.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								class="text-text-secondary hover:text-primary transition-colors"
+								class="text-gray-400 hover:text-white transition-colors duration-200"
 								aria-label={link.platform}
 							>
-								<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 									{@html getIcon(link.icon_name)}
 								</svg>
 							</a>
@@ -114,20 +163,21 @@
 				{/if}
 			</div>
 		</div>
+	</div>
 
-		<!-- Copyright -->
-		<div class="border-t border-border pt-8 text-center text-text-secondary text-sm">
-			<p>
+	<!-- Bottom Bar: Copyright -->
+	<div class="border-t border-zinc-800">
+		<div
+			class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+		>
+			<p class="text-sm text-gray-500">
 				&copy; {currentYear}
 				{profile?.full_name || 'Zeddrix'}. All rights reserved.
 			</p>
-			<p class="mt-2">
-				Built with
-				<span class="text-primary">SvelteKit</span>
-				+
-				<span class="text-primary">Tailwind CSS</span>
-				+
-				<span class="text-primary">Supabase</span>
+			<p class="text-sm text-gray-500">
+				Built with <span class="text-gray-400">SvelteKit</span> +
+				<span class="text-gray-400">Tailwind</span> +
+				<span class="text-gray-400">Supabase</span>
 			</p>
 		</div>
 	</div>
