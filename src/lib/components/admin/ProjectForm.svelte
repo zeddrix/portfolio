@@ -4,6 +4,7 @@
 	import MediaUploader from './MediaUploader.svelte';
 	import { generateSlug } from '$lib/utils/slug';
 	import type { GalleryMedia } from '$lib/schemas/project';
+	import type { ButtonTextPreset, ProjectCategory, ButtonTextModeType } from '$lib/types/database';
 
 	interface Project {
 		id?: string;
@@ -23,10 +24,20 @@
 		demo_video_cloudinary_id?: string | null;
 		is_featured: boolean;
 		published: boolean;
+		// New fields from UI overhaul
+		show_in_hero_carousel?: boolean;
+		hero_display_order?: number;
+		video_preview_start?: number;
+		video_preview_end?: number;
+		button_text_mode?: ButtonTextModeType;
+		button_text?: string | null;
+		project_category_id?: string | null;
 	}
 
 	export let project: Project | null = null;
 	export let isEdit = false;
+	export let buttonTextPresets: ButtonTextPreset[] = [];
+	export let projectCategories: ProjectCategory[] = [];
 
 	let title = project?.title || '';
 	let slug = project?.slug || '';
@@ -44,6 +55,22 @@
 	let demoVideoCloudinaryId = project?.demo_video_cloudinary_id || '';
 	let isFeatured = project?.is_featured || false;
 	let published = project?.published || false;
+
+	// Hero carousel state
+	let showInHeroCarousel = project?.show_in_hero_carousel || false;
+	let heroDisplayOrder = project?.hero_display_order || 0;
+
+	// Video preview state (in seconds)
+	let videoPreviewStart = project?.video_preview_start || 0;
+	let videoPreviewEnd = project?.video_preview_end || 5;
+
+	// Button text state
+	let buttonTextMode: ButtonTextModeType = project?.button_text_mode || 'predefined';
+	let buttonText = project?.button_text || '';
+	let projectCategoryId = project?.project_category_id || '';
+
+	// Get default button text from selected category
+	$: selectedCategory = projectCategories.find((c) => c.id === projectCategoryId);
 
 	let autoGenerateSlug = !isEdit;
 
@@ -602,6 +629,62 @@
 				{/if}
 				<input type="hidden" name="demo_video_url" value={demoVideoUrl} />
 				<input type="hidden" name="demo_video_cloudinary_id" value={demoVideoCloudinaryId} />
+
+				<!-- Video Preview Segment -->
+				{#if demoVideoUrl}
+					<div class="mt-4 p-4 bg-background rounded-lg border border-border">
+						<h3 class="text-sm font-semibold text-text-primary mb-3">Video Preview Segment</h3>
+						<p class="text-xs text-text-secondary mb-4">
+							Set the 5-second segment to show as a preview in the hero carousel.
+						</p>
+						<div class="grid grid-cols-2 gap-4">
+							<div>
+								<label
+									for="video_preview_start"
+									class="block text-xs font-medium text-text-secondary mb-1"
+								>
+									Start Time (seconds)
+								</label>
+								<input
+									id="video_preview_start"
+									name="video_preview_start"
+									type="number"
+									min="0"
+									step="0.1"
+									bind:value={videoPreviewStart}
+									on:change={() => {
+										// Auto-adjust end time to be 5 seconds after start
+										videoPreviewEnd = videoPreviewStart + 5;
+									}}
+									class="w-full px-3 py-2 bg-surface border border-border rounded-lg text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+								/>
+							</div>
+							<div>
+								<label
+									for="video_preview_end"
+									class="block text-xs font-medium text-text-secondary mb-1"
+								>
+									End Time (seconds)
+								</label>
+								<input
+									id="video_preview_end"
+									name="video_preview_end"
+									type="number"
+									min="0"
+									step="0.1"
+									bind:value={videoPreviewEnd}
+									class="w-full px-3 py-2 bg-surface border border-border rounded-lg text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+								/>
+							</div>
+						</div>
+						<p class="text-xs text-text-secondary mt-2">
+							Preview duration: {(videoPreviewEnd - videoPreviewStart).toFixed(1)} seconds
+						</p>
+					</div>
+				{:else}
+					<input type="hidden" name="video_preview_start" value={videoPreviewStart} />
+					<input type="hidden" name="video_preview_end" value={videoPreviewEnd} />
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -632,6 +715,188 @@
 			</label>
 		</div>
 		<input type="hidden" name="metrics" value="" />
+	</div>
+
+	<!-- Hero Carousel Settings -->
+	<div class="bg-surface border border-border rounded-lg p-6">
+		<h2 class="text-xl font-bold text-text-primary mb-4">Hero Carousel</h2>
+		<div class="space-y-4">
+			<label class="flex items-center gap-2">
+				<input
+					type="checkbox"
+					name="show_in_hero_carousel"
+					bind:checked={showInHeroCarousel}
+					value="true"
+					class="w-4 h-4 rounded"
+				/>
+				<span class="text-text-primary">Show in hero carousel</span>
+			</label>
+
+			{#if showInHeroCarousel}
+				<div>
+					<label
+						for="hero_display_order"
+						class="block text-sm font-semibold text-text-primary mb-2"
+					>
+						Display Order
+					</label>
+					<input
+						id="hero_display_order"
+						name="hero_display_order"
+						type="number"
+						min="0"
+						bind:value={heroDisplayOrder}
+						class="w-32 px-4 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+					/>
+					<p class="text-xs text-text-secondary mt-1">Lower numbers appear first in the carousel</p>
+				</div>
+			{:else}
+				<input type="hidden" name="hero_display_order" value={heroDisplayOrder} />
+			{/if}
+		</div>
+	</div>
+
+	<!-- Button Text Settings -->
+	<div class="bg-surface border border-border rounded-lg p-6">
+		<h2 class="text-xl font-bold text-text-primary mb-4">Button Text</h2>
+		<p class="text-sm text-text-secondary mb-4">
+			Choose how the project action button text is determined.
+		</p>
+
+		<div class="space-y-4">
+			<!-- Button Text Mode Selection -->
+			<div class="space-y-2">
+				<label
+					class="flex items-center gap-3 p-3 bg-background rounded-lg border border-border cursor-pointer hover:border-primary/50"
+				>
+					<input
+						type="radio"
+						name="button_text_mode"
+						value="predefined"
+						bind:group={buttonTextMode}
+						class="w-4 h-4"
+					/>
+					<div>
+						<span class="text-text-primary font-medium">Use Preset</span>
+						<p class="text-xs text-text-secondary">Select from predefined button text options</p>
+					</div>
+				</label>
+
+				<label
+					class="flex items-center gap-3 p-3 bg-background rounded-lg border border-border cursor-pointer hover:border-primary/50"
+				>
+					<input
+						type="radio"
+						name="button_text_mode"
+						value="custom"
+						bind:group={buttonTextMode}
+						class="w-4 h-4"
+					/>
+					<div>
+						<span class="text-text-primary font-medium">Custom Text</span>
+						<p class="text-xs text-text-secondary">Enter your own button text</p>
+					</div>
+				</label>
+
+				<label
+					class="flex items-center gap-3 p-3 bg-background rounded-lg border border-border cursor-pointer hover:border-primary/50"
+				>
+					<input
+						type="radio"
+						name="button_text_mode"
+						value="category"
+						bind:group={buttonTextMode}
+						class="w-4 h-4"
+					/>
+					<div>
+						<span class="text-text-primary font-medium">By Category</span>
+						<p class="text-xs text-text-secondary">Use the default text for the project category</p>
+					</div>
+				</label>
+			</div>
+
+			<!-- Conditional fields based on mode -->
+			{#if buttonTextMode === 'predefined'}
+				<div>
+					<label
+						for="button_text_preset"
+						class="block text-sm font-semibold text-text-primary mb-2"
+					>
+						Select Preset
+					</label>
+					<select
+						id="button_text_preset"
+						name="button_text_preset_id"
+						bind:value={buttonText}
+						required
+						class="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+					>
+						<option value="">Choose a preset...</option>
+						{#each buttonTextPresets as preset}
+							<option value={preset.text}>{preset.text}</option>
+						{/each}
+					</select>
+					<input type="hidden" name="button_text" value={buttonText} />
+				</div>
+			{:else if buttonTextMode === 'custom'}
+				<div>
+					<label
+						for="button_text_custom"
+						class="block text-sm font-semibold text-text-primary mb-2"
+					>
+						Custom Button Text
+					</label>
+					<input
+						id="button_text_custom"
+						name="button_text"
+						type="text"
+						bind:value={buttonText}
+						required
+						placeholder="e.g., View Live Demo"
+						class="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+					/>
+				</div>
+			{:else if buttonTextMode === 'category'}
+				<div>
+					<label for="project_category" class="block text-sm font-semibold text-text-primary mb-2">
+						Project Category
+					</label>
+					<select
+						id="project_category"
+						name="project_category_id"
+						bind:value={projectCategoryId}
+						required
+						class="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+					>
+						<option value="">Choose a category...</option>
+						{#each projectCategories as category}
+							<option value={category.id}
+								>{category.display_name} → {category.default_button_text}</option
+							>
+						{/each}
+					</select>
+					{#if selectedCategory}
+						<p class="text-xs text-text-secondary mt-1">
+							Button will display: "{selectedCategory.default_button_text}"
+						</p>
+					{/if}
+				</div>
+			{/if}
+
+			<!-- Hidden fields to ensure all data is submitted -->
+			{#if buttonTextMode !== 'custom'}
+				{#if buttonTextMode === 'category'}
+					<input
+						type="hidden"
+						name="button_text"
+						value={selectedCategory?.default_button_text || ''}
+					/>
+				{/if}
+			{/if}
+			{#if buttonTextMode !== 'category'}
+				<input type="hidden" name="project_category_id" value="" />
+			{/if}
+		</div>
 	</div>
 
 	<!-- Actions -->

@@ -24,5 +24,10 @@
 		<p class="text-text-secondary mt-1">Add a new project to your portfolio</p>
 	</div>
 
-	<ProjectForm project={data.project} isEdit={false} />
+	<ProjectForm
+		project={data.project}
+		isEdit={false}
+		buttonTextPresets={data.buttonTextPresets}
+		projectCategories={data.projectCategories}
+	/>
 </div>

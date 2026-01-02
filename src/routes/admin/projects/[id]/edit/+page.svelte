@@ -27,5 +27,10 @@
 		<p class="text-text-secondary mt-1">Update project information</p>
 	</div>
 
-	<ProjectForm project={data.project} isEdit={true} />
+	<ProjectForm
+		project={data.project}
+		isEdit={true}
+		buttonTextPresets={data.buttonTextPresets}
+		projectCategories={data.projectCategories}
+	/>
 </div>

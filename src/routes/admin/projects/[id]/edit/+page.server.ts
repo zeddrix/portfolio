@@ -3,13 +3,15 @@ import type { PageServerLoad, Actions } from './$types';
 import { getSupabaseAdmin } from '$lib/server/supabase';
 import { projectFormSchema } from '$lib/schemas/project';
 import { deleteMedia } from '$lib/server/cloudinary';
-import type { Database } from '$lib/types/database';
+import type { Database, ButtonTextPreset, ProjectCategory } from '$lib/types/database';
 
 type Project = Database['public']['Tables']['projects']['Row'];
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
-		const { data: project, error } = await getSupabaseAdmin()
+		const supabase = getSupabaseAdmin();
+
+		const { data: project, error } = await supabase
 			.from('projects')
 			.select('*')
 			.eq('id', params.id)
@@ -19,8 +21,23 @@ export const load: PageServerLoad = async ({ params }) => {
 			throw redirect(303, '/admin/projects');
 		}
 
+		// Load button text presets
+		const { data: presets } = await supabase
+			.from('button_text_presets')
+			.select('*')
+			.eq('is_active', true)
+			.order('display_order');
+
+		// Load project categories
+		const { data: categories } = await supabase
+			.from('project_categories')
+			.select('*')
+			.order('display_order');
+
 		return {
-			project: project as Project
+			project: project as Project,
+			buttonTextPresets: (presets || []) as ButtonTextPreset[],
+			projectCategories: (categories || []) as ProjectCategory[]
 		};
 	} catch (error) {
 		if (error instanceof Response) throw error;
@@ -39,6 +56,15 @@ export const actions: Actions = {
 			const metrics = formData.get('metrics')?.toString()
 				? JSON.parse(formData.get('metrics')?.toString() || '{}')
 				: null;
+
+			// Parse new fields
+			const buttonTextMode = formData.get('button_text_mode')?.toString() || 'predefined';
+			const buttonText = formData.get('button_text')?.toString() || null;
+			const projectCategoryId = formData.get('project_category_id')?.toString() || null;
+			const showInHeroCarousel = formData.get('show_in_hero_carousel') === 'true';
+			const heroDisplayOrder = parseInt(formData.get('hero_display_order')?.toString() || '0', 10);
+			const videoPreviewStart = parseFloat(formData.get('video_preview_start')?.toString() || '0');
+			const videoPreviewEnd = parseFloat(formData.get('video_preview_end')?.toString() || '5');
 
 			// Get old project data for media cleanup
 			const { data: oldProject } = await getSupabaseAdmin()
@@ -71,7 +97,15 @@ export const actions: Actions = {
 				demo_video_cloudinary_id: formData.get('demo_video_cloudinary_id')?.toString() || null,
 				is_featured: formData.get('is_featured') === 'true',
 				published: formData.get('published') === 'true',
-				metrics
+				metrics,
+				// New fields from UI overhaul
+				show_in_hero_carousel: showInHeroCarousel,
+				hero_display_order: heroDisplayOrder,
+				video_preview_start: videoPreviewStart,
+				video_preview_end: videoPreviewEnd,
+				button_text_mode: buttonTextMode as 'predefined' | 'custom' | 'category',
+				button_text: buttonText,
+				project_category_id: projectCategoryId || null
 			};
 
 			// Validate data

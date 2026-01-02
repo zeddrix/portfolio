@@ -14,6 +14,9 @@ export const projectMetricsSchema = z
 	.optional()
 	.nullable();
 
+// Button text mode enum
+export const buttonTextModeSchema = z.enum(['predefined', 'custom', 'category']);
+
 // Project form schema
 export const projectFormSchema = z.object({
 	title: z.string().min(1, 'Title is required').max(200, 'Title must be less than 200 characters'),
@@ -45,7 +48,17 @@ export const projectFormSchema = z.object({
 	demo_video_cloudinary_id: z.string().optional().nullable().or(z.literal('')),
 	is_featured: z.boolean().default(false),
 	published: z.boolean().default(false),
-	metrics: projectMetricsSchema
+	metrics: projectMetricsSchema,
+	// Hero carousel settings
+	show_in_hero_carousel: z.boolean().default(false),
+	hero_display_order: z.number().int().min(0).default(0),
+	// Video preview settings (in seconds)
+	video_preview_start: z.number().min(0).default(0),
+	video_preview_end: z.number().min(0).default(5),
+	// Button text settings
+	button_text_mode: buttonTextModeSchema.default('predefined'),
+	button_text: z.string().optional().nullable(),
+	project_category_id: z.string().uuid().optional().nullable()
 });
 
 // Project update schema (partial for editing)

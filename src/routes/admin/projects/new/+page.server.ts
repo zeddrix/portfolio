@@ -2,14 +2,30 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { getSupabaseAdmin } from '$lib/server/supabase';
 import { projectFormSchema } from '$lib/schemas/project';
-import type { Database } from '$lib/types/database';
+import type { Database, ButtonTextPreset, ProjectCategory } from '$lib/types/database';
 
 type Project = Database['public']['Tables']['projects']['Row'];
 
 export const load: PageServerLoad = async () => {
-	// Return empty data for new project form
+	const supabase = getSupabaseAdmin();
+
+	// Load button text presets
+	const { data: presets } = await supabase
+		.from('button_text_presets')
+		.select('*')
+		.eq('is_active', true)
+		.order('display_order');
+
+	// Load project categories
+	const { data: categories } = await supabase
+		.from('project_categories')
+		.select('*')
+		.order('display_order');
+
 	return {
-		project: null
+		project: null,
+		buttonTextPresets: (presets || []) as ButtonTextPreset[],
+		projectCategories: (categories || []) as ProjectCategory[]
 	};
 };
 
@@ -24,6 +40,15 @@ export const actions: Actions = {
 			const metrics = formData.get('metrics')?.toString()
 				? JSON.parse(formData.get('metrics')?.toString() || '{}')
 				: null;
+
+			// Parse new fields
+			const buttonTextMode = formData.get('button_text_mode')?.toString() || 'predefined';
+			const buttonText = formData.get('button_text')?.toString() || null;
+			const projectCategoryId = formData.get('project_category_id')?.toString() || null;
+			const showInHeroCarousel = formData.get('show_in_hero_carousel') === 'true';
+			const heroDisplayOrder = parseInt(formData.get('hero_display_order')?.toString() || '0', 10);
+			const videoPreviewStart = parseFloat(formData.get('video_preview_start')?.toString() || '0');
+			const videoPreviewEnd = parseFloat(formData.get('video_preview_end')?.toString() || '5');
 
 			// Build project data object
 			const projectData = {
@@ -44,7 +69,15 @@ export const actions: Actions = {
 				demo_video_cloudinary_id: formData.get('demo_video_cloudinary_id')?.toString() || null,
 				is_featured: formData.get('is_featured') === 'true',
 				published: formData.get('published') === 'true',
-				metrics
+				metrics,
+				// New fields from UI overhaul
+				show_in_hero_carousel: showInHeroCarousel,
+				hero_display_order: heroDisplayOrder,
+				video_preview_start: videoPreviewStart,
+				video_preview_end: videoPreviewEnd,
+				button_text_mode: buttonTextMode as 'predefined' | 'custom' | 'category',
+				button_text: buttonText,
+				project_category_id: projectCategoryId || null
 			};
 
 			// Validate data
