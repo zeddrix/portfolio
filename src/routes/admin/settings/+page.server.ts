@@ -25,31 +25,6 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions = {
-	updateLayout: async ({ request }) => {
-		const supabase = getSupabaseAdmin();
-		const formData = await request.formData();
-		const layout = formData.get('layout') as string;
-
-		if (!layout || !['case_study', 'single_page', 'bento_grid'].includes(layout)) {
-			return fail(400, { error: 'Invalid layout value' });
-		}
-
-		const { data: settings } = await supabase.from('site_settings').select('id').single();
-		const typedSettings = settings as Pick<SiteSettings, 'id'> | null;
-
-		const { error: updateError } = await supabase
-			.from('site_settings')
-			.update({ active_layout: layout, updated_at: new Date().toISOString() } as never)
-			.eq('id', typedSettings?.id || '');
-
-		if (updateError) {
-			console.error('Error updating layout:', updateError);
-			return fail(500, { error: 'Failed to update layout' });
-		}
-
-		return { success: true, message: 'Default layout updated successfully' };
-	},
-
 	updatePalette: async ({ request }) => {
 		const supabase = getSupabaseAdmin();
 		const formData = await request.formData();
