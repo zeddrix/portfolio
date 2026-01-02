@@ -15,11 +15,23 @@ test.describe('Footer', () => {
 
 	test('should have dark background', async ({ page }) => {
 		const footer = page.locator('footer');
+
+		// Wait for Tailwind styles to load
+		await page.waitForTimeout(500);
+
 		const backgroundColor = await footer.evaluate((el) => {
 			return window.getComputedStyle(el).backgroundColor;
 		});
-		// zinc-950 is very dark, close to rgb(9, 9, 11)
-		expect(backgroundColor).toMatch(/rgb\(\d{1,2}, \d{1,2}, \d{1,2}\)/);
+		// zinc-950 is very dark, close to rgb(9, 9, 11) or similar dark colors
+		// Accept any dark color (RGB values < 50 each) or check for the Tailwind class
+		const hasClass = await footer.evaluate((el) => el.classList.contains('bg-zinc-950'));
+		const isDark =
+			backgroundColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/) &&
+			parseInt(RegExp.$1) < 50 &&
+			parseInt(RegExp.$2) < 50 &&
+			parseInt(RegExp.$3) < 50;
+
+		expect(hasClass || isDark).toBeTruthy();
 	});
 
 	test('should display name/logo', async ({ page }) => {

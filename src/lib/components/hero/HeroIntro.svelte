@@ -55,21 +55,45 @@
 	<!-- Centered Content - Squarespace Style -->
 	<div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 		<!-- Main Headline - Elegant Serif Italic -->
-		<h1 class="heading-hero text-white mb-6 {animationClass}" style="animation-delay: 0ms;">
+		<h1 class="heading-hero text-white mb-4 {animationClass}" style="animation-delay: 0ms;">
 			Hi, I'm {fullName}
 		</h1>
 
 		<!-- Tagline -->
 		<p
-			class="text-xl sm:text-2xl text-white/80 mb-10 {animationClass}"
+			class="text-xl sm:text-2xl text-white/80 mb-6 {animationClass}"
 			style="animation-delay: 200ms;"
 		>
 			{tagline}
 		</p>
 
-		<!-- CTA Button - Squarespace Style -->
+		<!-- Quote - Inspirational -->
+		<p
+			class="text-base sm:text-lg text-white/60 italic mb-10 max-w-2xl mx-auto {animationClass}"
+			style="animation-delay: 300ms;"
+		>
+			"The key to efficiency is to work smart, not hard."
+		</p>
+
+		<!-- CTA Button - Squarespace Style with Arrow -->
 		<div class={animationClass} style="animation-delay: 400ms;">
-			<a href="#contact" class="btn-white">Get in Touch</a>
+			<a href="#contact" class="btn-white group">
+				Get in Touch
+				<svg
+					class="inline-block w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M17 8l4 4m0 0l-4 4m4-4H3"
+					/>
+				</svg>
+			</a>
 		</div>
 
 		<!-- Subtext -->

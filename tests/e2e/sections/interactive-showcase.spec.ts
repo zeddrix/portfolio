@@ -61,7 +61,7 @@ test.describe('Interactive Showcase Section', () => {
 	test('floating cards should have parallax effect container', async ({ page, viewport }) => {
 		// Only test on desktop
 		if (viewport && viewport.width >= 1024) {
-			const perspectiveContainer = page.locator('#interactive-showcase .perspective-1000');
+			const perspectiveContainer = page.locator('#interactive-showcase .perspective-container');
 			await expect(perspectiveContainer).toBeVisible();
 		}
 	});
@@ -69,6 +69,42 @@ test.describe('Interactive Showcase Section', () => {
 	test('project cards should be clickable links', async ({ page }) => {
 		const cards = page.locator('#interactive-showcase a[href^="/projects/"]');
 		const count = await cards.count();
+		expect(count).toBeGreaterThan(0);
+	});
+
+	// Phase 6: Simplified parallax tests
+	test('should display "Made with Zeddrix" centered text', async ({ page }) => {
+		const madeWithDiv = page.locator('#interactive-showcase .pointer-events-none.z-30');
+		await expect(madeWithDiv).toBeVisible();
+
+		const madeWithText = await madeWithDiv.textContent();
+		expect(madeWithText?.toLowerCase()).toContain('made with');
+		expect(madeWithText).toContain('Zeddrix');
+	});
+
+	test('project cards should link to project pages', async ({ page }) => {
+		const projectLinks = page.locator('#interactive-showcase a[href^="/projects/"]');
+		const count = await projectLinks.count();
+
+		if (count > 0) {
+			const href = await projectLinks.first().getAttribute('href');
+			expect(href).toMatch(/^\/projects\//);
+		}
+	});
+
+	test('mobile should show simple grid layout', async ({ page }) => {
+		// Set mobile viewport
+		await page.setViewportSize({ width: 375, height: 667 });
+		await page.goto('/');
+		await page.locator('#interactive-showcase').scrollIntoViewIfNeeded();
+
+		// Check for mobile grid
+		const mobileGrid = page.locator('#interactive-showcase .lg\\:hidden');
+		await expect(mobileGrid).toBeVisible();
+
+		// Check that grid contains project links
+		const mobileLinks = mobileGrid.locator('a');
+		const count = await mobileLinks.count();
 		expect(count).toBeGreaterThan(0);
 	});
 });

@@ -51,6 +51,50 @@ test.describe('Hero Section', () => {
 			await expect(scrollIndicator).toBeVisible();
 		}
 	});
+
+	// Phase 2: Personalized hero tests
+	test('hero should display "Zeddrix Fabian" or name from profile', async ({ page }) => {
+		// Wait for hero content to load
+		await page.waitForTimeout(500);
+
+		const heroContent = page.locator('#hero');
+		const text = await heroContent.textContent();
+
+		// Should display the personalized name
+		const hasName =
+			text?.toLowerCase().includes('zeddrix') || text?.toLowerCase().includes('fabian');
+
+		expect(hasName).toBeTruthy();
+	});
+
+	test('hero CTA should have arrow icon', async ({ page }) => {
+		// Wait for content to load
+		await page.waitForTimeout(500);
+
+		// Find the CTA button with "Get in Touch" text
+		const ctaButton = page.locator('#hero a:has-text("Get in Touch")');
+		const ctaCount = await ctaButton.count();
+
+		if (ctaCount > 0) {
+			// Check for SVG arrow icon inside the button
+			const arrowIcon = ctaButton.locator('svg');
+			await expect(arrowIcon).toBeVisible();
+		}
+	});
+
+	test('hero should display inspirational quote', async ({ page }) => {
+		// Wait for hero content to load
+		await page.waitForTimeout(500);
+
+		const heroContent = page.locator('#hero');
+		const text = await heroContent.textContent();
+
+		// Should display the personalized quote
+		const hasQuote =
+			text?.toLowerCase().includes('efficiency') || text?.toLowerCase().includes('work smart');
+
+		expect(hasQuote).toBeTruthy();
+	});
 });
 
 test.describe('Hero Carousel Thumbnails', () => {

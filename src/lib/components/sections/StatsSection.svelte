@@ -77,7 +77,7 @@
 <section id="stats-section" class="relative">
 	<!-- Stats Banner -->
 	{#if (displayMode === 'counters' || displayMode === 'hybrid') && countersEnabled && counters.length > 0}
-		<div class="bg-white py-20 sm:py-28 lg:py-36">
+		<div class="bg-white py-28 sm:py-36 lg:py-44">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<!-- Headline -->
 				<p
@@ -133,20 +133,22 @@
 			sans-serif;
 	}
 
+	/* MASSIVE numbers like Squarespace's 14M+ style */
 	.stats-number span {
-		font-size: clamp(4rem, 15vw, 10rem);
+		font-size: clamp(5rem, 20vw, 12rem);
+		letter-spacing: -0.05em;
 		display: block;
 	}
 
 	@media (min-width: 640px) {
 		.stats-number span {
-			font-size: clamp(3.5rem, 10vw, 8rem);
+			font-size: clamp(4.5rem, 12vw, 10rem);
 		}
 	}
 
 	@media (min-width: 1024px) {
 		.stats-number span {
-			font-size: clamp(5rem, 8vw, 9rem);
+			font-size: clamp(7rem, 12vw, 14rem);
 		}
 	}
 </style>

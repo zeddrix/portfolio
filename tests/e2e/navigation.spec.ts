@@ -89,4 +89,64 @@ test.describe('Navigation', () => {
 		const classes = await nav.getAttribute('class');
 		expect(classes).toContain('fixed');
 	});
+
+	// Phase 8: Theme and additional navigation tests
+	test('theme toggle should be clickable', async ({ page }) => {
+		// Wait for theme toggle to mount (it uses {#if mounted})
+		await page.waitForTimeout(500);
+
+		// Find first visible theme toggle button using aria-label
+		// (There are 2: desktop and mobile, both have same aria-label)
+		const themeToggle = page.locator('nav button[aria-label="Toggle theme"]').first();
+		await expect(themeToggle).toBeVisible({ timeout: 5000 });
+
+		// Should be clickable
+		await expect(themeToggle).toBeEnabled();
+	});
+
+	test('mobile menu should close on nav link click', async ({ page }) => {
+		// Set mobile viewport
+		await page.setViewportSize({ width: 375, height: 667 });
+		await page.goto('/');
+
+		// Open mobile menu
+		const menuButton = page.locator('nav button[aria-label="Toggle mobile menu"]');
+		await menuButton.click();
+
+		// Wait for menu to open
+		await page.waitForTimeout(300);
+
+		// Click a nav link
+		const navLink = page.locator('.mobile-menu-container a').first();
+		const isVisible = await navLink.isVisible();
+
+		if (isVisible) {
+			await navLink.click();
+			await page.waitForTimeout(500);
+
+			// Menu should close after clicking
+			const mobileMenu = page.locator('.mobile-menu-container');
+			await expect(mobileMenu).not.toBeVisible();
+		}
+	});
+
+	test('navigation links should have smooth scroll behavior', async ({ page, viewport }) => {
+		if (viewport && viewport.width >= 768) {
+			// Get initial scroll position
+			const initialScroll = await page.evaluate(() => window.scrollY);
+
+			// Click on a section link
+			const processLink = page.locator('nav a[href="#development-process"]');
+			const isVisible = await processLink.isVisible();
+
+			if (isVisible) {
+				await processLink.click();
+				await page.waitForTimeout(1000);
+
+				// Verify scroll position changed
+				const newScroll = await page.evaluate(() => window.scrollY);
+				expect(newScroll).toBeGreaterThan(initialScroll);
+			}
+		}
+	});
 });

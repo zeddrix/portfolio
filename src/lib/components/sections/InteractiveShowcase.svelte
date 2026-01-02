@@ -10,34 +10,29 @@
 	let animationFrameId: number;
 	let sectionVisible = false;
 
-	// Predefined card positions for a more dramatic, Squarespace-like layout
-	// These mimic the scattered, varied-size look from the inspiration
+	// Simplified card positions - 12 cards for cleaner look (reduced from 16)
+	// Less dramatic rotations (max 6deg) for smoother parallax
 	const cardConfigs = [
 		// Row 1 - Top
-		{ x: 2, y: 3, scale: 0.6, rotation: -8, depth: 0.4 },
-		{ x: 35, y: 0, scale: 0.85, rotation: 3, depth: 0.7 },
-		{ x: 68, y: 5, scale: 0.55, rotation: 6, depth: 0.3 },
-		{ x: 88, y: 2, scale: 0.5, rotation: -5, depth: 0.35 },
+		{ x: 5, y: 5, scale: 0.65, rotation: -4, depth: 0.4 },
+		{ x: 35, y: 2, scale: 0.85, rotation: 2, depth: 0.7 },
+		{ x: 70, y: 6, scale: 0.6, rotation: 4, depth: 0.35 },
 		// Row 2 - Upper middle
-		{ x: 8, y: 25, scale: 0.75, rotation: 5, depth: 0.6 },
-		{ x: 55, y: 22, scale: 1.0, rotation: -2, depth: 0.9 },
-		{ x: 82, y: 28, scale: 0.7, rotation: 8, depth: 0.5 },
-		// Row 3 - Center (around "Made with Zeddrix")
-		{ x: 0, y: 45, scale: 0.65, rotation: -6, depth: 0.45 },
-		{ x: 78, y: 42, scale: 0.8, rotation: 4, depth: 0.65 },
-		// Row 4 - Lower middle
-		{ x: 5, y: 65, scale: 0.7, rotation: 7, depth: 0.55 },
-		{ x: 32, y: 70, scale: 0.6, rotation: -4, depth: 0.4 },
-		{ x: 60, y: 62, scale: 0.9, rotation: 2, depth: 0.75 },
-		{ x: 85, y: 68, scale: 0.55, rotation: -7, depth: 0.35 },
-		// Row 5 - Bottom
-		{ x: 15, y: 85, scale: 0.5, rotation: 5, depth: 0.3 },
-		{ x: 45, y: 88, scale: 0.65, rotation: -3, depth: 0.5 },
-		{ x: 75, y: 82, scale: 0.6, rotation: 6, depth: 0.4 }
+		{ x: 3, y: 28, scale: 0.75, rotation: 3, depth: 0.6 },
+		{ x: 55, y: 25, scale: 1.0, rotation: -2, depth: 0.85 },
+		{ x: 82, y: 30, scale: 0.7, rotation: 5, depth: 0.5 },
+		// Row 3 - Lower middle (around "Made with Zeddrix")
+		{ x: 0, y: 55, scale: 0.7, rotation: -4, depth: 0.5 },
+		{ x: 78, y: 52, scale: 0.8, rotation: 3, depth: 0.65 },
+		// Row 4 - Bottom
+		{ x: 8, y: 75, scale: 0.65, rotation: 4, depth: 0.45 },
+		{ x: 38, y: 78, scale: 0.6, rotation: -3, depth: 0.4 },
+		{ x: 62, y: 72, scale: 0.85, rotation: 2, depth: 0.7 },
+		{ x: 88, y: 80, scale: 0.55, rotation: -5, depth: 0.35 }
 	];
 
-	// Generate floating cards with dramatic positioning
-	$: floatingCards = projects.slice(0, 16).map((project, index) => {
+	// Generate floating cards with simplified positioning (12 cards max)
+	$: floatingCards = projects.slice(0, 12).map((project, index) => {
 		const config = cardConfigs[index] || {
 			x: Math.random() * 80 + 5,
 			y: Math.random() * 80 + 5,
@@ -63,10 +58,11 @@
 			if (!cardData) return;
 
 			const depth = cardData.depth;
-			const moveX = mouseX * 50 * depth;
-			const moveY = mouseY * 50 * depth;
-			const rotateX = mouseY * 12 * depth;
-			const rotateY = -mouseX * 12 * depth;
+			// Simplified parallax: reduced intensity (25 from 50) and rotation (6 from 12)
+			const moveX = mouseX * 25 * depth;
+			const moveY = mouseY * 25 * depth;
+			const rotateX = mouseY * 6 * depth;
+			const rotateY = -mouseX * 6 * depth;
 
 			(card as HTMLElement).style.transform = `
 				translate(${moveX}px, ${moveY}px)

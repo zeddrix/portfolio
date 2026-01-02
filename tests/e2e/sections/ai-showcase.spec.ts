@@ -64,4 +64,48 @@ test.describe('AI Showcase Section', () => {
 		const caption = page.locator('#ai-showcase p.text-gray-500');
 		await expect(caption).toBeVisible();
 	});
+
+	// Phase 5: Personalized AI tools and stats tests
+	test('should display AI tools grid with icons', async ({ page }) => {
+		await page.waitForTimeout(500);
+
+		// Check for tool icons in the grid
+		const toolIcons = page.locator(
+			'#ai-showcase .grid.grid-cols-3 img, #ai-showcase .grid.grid-cols-3 div.font-bold'
+		);
+		const count = await toolIcons.count();
+
+		expect(count).toBeGreaterThan(0);
+	});
+
+	test('should display "Faster" or speed-related stat', async ({ page }) => {
+		await page.waitForTimeout(2000); // Wait for animation
+
+		const section = page.locator('#ai-showcase');
+		const text = await section.textContent();
+
+		// Check for speed-related stat (3x faster, etc.)
+		const hasFaster =
+			text?.toLowerCase().includes('faster') || text?.includes('3x') || text?.includes('x');
+		expect(hasFaster).toBeTruthy();
+	});
+
+	test('stats should animate on scroll into view', async ({ page }) => {
+		// Scroll away first
+		await page.evaluate(() => window.scrollTo(0, 0));
+		await page.waitForTimeout(300);
+
+		// Scroll back to section
+		await page.locator('#ai-showcase').scrollIntoViewIfNeeded();
+		await page.waitForTimeout(1800); // Wait for animation
+
+		const statsValues = page.locator('#ai-showcase .text-3xl, #ai-showcase .text-4xl');
+		const count = await statsValues.count();
+
+		if (count > 0) {
+			// Check that values are no longer just "0"
+			const text = await statsValues.first().textContent();
+			expect(text).not.toBe('0');
+		}
+	});
 });

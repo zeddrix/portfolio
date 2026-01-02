@@ -62,4 +62,69 @@ test.describe('Project Deliverables Section', () => {
 			await expect(firstCard).toBeVisible();
 		}
 	});
+
+	// Phase 4: Personalized deliverables tests
+	test('should display "Clean" or "Code" deliverable card', async ({ page }) => {
+		await page.waitForTimeout(500);
+		const section = page.locator('#deliverables');
+		const text = await section.textContent();
+
+		// Check for clean code deliverable
+		const hasCleanCode =
+			text?.toLowerCase().includes('clean') || text?.toLowerCase().includes('code');
+		expect(hasCleanCode).toBeTruthy();
+	});
+
+	test('should display "Documentation" deliverable card', async ({ page }) => {
+		await page.waitForTimeout(500);
+		const section = page.locator('#deliverables');
+		const text = await section.textContent();
+
+		// Check for documentation deliverable
+		const hasDocumentation = text?.toLowerCase().includes('documentation');
+		expect(hasDocumentation).toBeTruthy();
+	});
+
+	test('should display "Deployment" or "Hosting" deliverable card', async ({ page }) => {
+		await page.waitForTimeout(500);
+		const section = page.locator('#deliverables');
+		const text = await section.textContent();
+
+		// Check for deployment deliverable
+		const hasDeployment =
+			text?.toLowerCase().includes('deploy') || text?.toLowerCase().includes('hosting');
+		expect(hasDeployment).toBeTruthy();
+	});
+
+	test('carousel arrows should navigate between cards', async ({ page }) => {
+		await page.waitForTimeout(1000);
+
+		// Find the next button (right arrow)
+		const nextButton = page.locator('#deliverables button[aria-label="Next item"]');
+		const isVisible = await nextButton.isVisible();
+
+		if (isVisible) {
+			const isDisabled = await nextButton.isDisabled();
+			if (!isDisabled) {
+				await nextButton.click();
+				await page.waitForTimeout(500);
+
+				// Verify navigation occurred by checking prev button becomes enabled
+				const prevButton = page.locator('#deliverables button[aria-label="Previous item"]');
+				const prevDisabled = await prevButton.isDisabled();
+				expect(prevDisabled).toBe(false);
+			}
+		}
+	});
+
+	test('dots should indicate active card', async ({ page }) => {
+		await page.waitForTimeout(500);
+
+		// Find active dot (wider than regular dots)
+		const dots = page.locator('#deliverables .rounded-full.w-2, #deliverables .rounded-full.w-6');
+		const count = await dots.count();
+
+		// Should have at least one dot
+		expect(count).toBeGreaterThan(0);
+	});
 });
