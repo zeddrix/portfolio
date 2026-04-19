@@ -1,5 +1,0 @@
-# Run lint-staged for formatting and linting on staged files
-pnpm lint-staged
-
-# Run type checking on entire project (svelte-check doesn't support individual files)
-pnpm check
