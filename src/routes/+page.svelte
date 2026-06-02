@@ -17,10 +17,28 @@
 	const highlightImageSets = {};
 	/** @type {ReturnType<typeof setInterval>[]} */
 	const intervalIds = [];
+	const staticImagePaths = Object.keys(import.meta.glob('/static/*.{png,jpg,jpeg,webp,avif,gif}'));
 
 	/** @param {PortfolioProject} project */
 	function getProjectImages(project) {
-		const imageCandidates = [project.primaryImage, ...project.galleryImages];
+		const slugPrefix = `/static/${project.slug}-`;
+		const sequencePattern = new RegExp(`^/static/${project.slug}-(\\d+)`);
+		const autoDiscoveredImages = staticImagePaths
+			.filter((modulePath) => modulePath.startsWith(slugPrefix))
+			// Files in /static are served from root (e.g. /usedelight-1-new-tab.png).
+			.map((modulePath) => modulePath.replace('/static', ''))
+			.sort((firstImage, secondImage) => {
+				const firstPath = `/static${firstImage}`;
+				const secondPath = `/static${secondImage}`;
+				const firstMatch = firstPath.match(sequencePattern);
+				const secondMatch = secondPath.match(sequencePattern);
+				const firstSequence = firstMatch ? Number(firstMatch[1]) : Number.MAX_SAFE_INTEGER;
+				const secondSequence = secondMatch ? Number(secondMatch[1]) : Number.MAX_SAFE_INTEGER;
+				if (firstSequence !== secondSequence) return firstSequence - secondSequence;
+				return firstImage.localeCompare(secondImage);
+			});
+
+		const imageCandidates = [...autoDiscoveredImages, project.primaryImage, ...project.galleryImages];
 		/** @type {string[]} */
 		const uniqueImages = [];
 		for (const image of imageCandidates) {

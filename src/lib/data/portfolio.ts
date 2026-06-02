@@ -38,11 +38,11 @@ export const projects: PortfolioProject[] = [
       "Groq",
       "Lemon Squeezy",
     ],
-    primaryImage: "/queue-dashboard.png",
+    primaryImage: "/queue-1-dashboard.png",
     galleryImages: [
-      "/queue-analytics.png",
-      "/queue-events.png",
-      "/queue-listings.png",
+      "/queue-2-analytics.png",
+      "/queue-3-events.png",
+      "/queue-4-listings.png",
     ],
     links: [],
     detailSections: [
@@ -74,8 +74,8 @@ export const projects: PortfolioProject[] = [
       "Groq",
       "Lemon Squeezy",
     ],
-    primaryImage: "/jwtabs-homepage.png",
-    galleryImages: ["/jwtabs-tabspage.png"],
+    primaryImage: "/jw-tabs-1-homepage.png",
+    galleryImages: ["/jw-tabs-2-tabspage.png"],
     links: [],
     detailSections: [
       {
@@ -127,8 +127,12 @@ export const projects: PortfolioProject[] = [
     description:
       "Live tab page experience with nature media, weather, games, and more, delivered through website and Chrome extension surfaces.",
     techStack: ["SvelteKit", "Node.js", "Django", "Stripe"],
-    primaryImage: "/usedelight-landing-website.png",
-    galleryImages: ["/usedelight-gallery.png"],
+    primaryImage: "/usedelight-1-new-tab.png",
+    galleryImages: [
+      "/usedelight-2-new-tab.png",
+      "/usedelight-3-gallery.png",
+      "/usedelight-4-subscription.png",
+    ],
     links: [
       { label: "Website", url: "https://usedelight.com/", external: true },
       {
@@ -165,8 +169,11 @@ export const projects: PortfolioProject[] = [
       "Stripe",
       "Redis",
     ],
-    primaryImage: "/adverio-tools.png",
-    galleryImages: ["/adverio-forecasting.png", "/adverio-seo-audit-steps.png"],
+    primaryImage: "/adverio-tools-1-overview.png",
+    galleryImages: [
+      "/adverio-tools-2-forecasting.png",
+      "/adverio-tools-3-seo-audit-steps.png",
+    ],
     links: [
       { label: "Website", url: "https://tools.adverio.io/", external: true },
       {
