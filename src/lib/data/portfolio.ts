@@ -123,6 +123,7 @@ export const projects: PortfolioProject[] = [
     name: "UseDelight",
     category: "client",
     tagline: "Landing site and browser extension ecosystem",
+    imageFocus: "top",
     description:
       "Live tab page experience with nature media, weather, games, and more, delivered through website and Chrome extension surfaces.",
     techStack: ["SvelteKit", "Node.js", "Django", "Stripe"],
@@ -152,6 +153,7 @@ export const projects: PortfolioProject[] = [
     name: "Adverio Tools",
     category: "client",
     tagline: "AI-assisted Amazon brand tooling suite",
+    imageFocus: "right",
     description:
       "Suite includes ASIN scraper, listing/image analyzer, proposal generation, forecasting, and brand operations tooling for Amazon sellers.",
     techStack: [

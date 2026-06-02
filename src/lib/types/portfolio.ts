@@ -16,6 +16,16 @@ export interface PortfolioProject {
   name: string;
   category: ProjectCategory;
   tagline: string;
+  imageFocus?:
+    | "center"
+    | "top"
+    | "bottom"
+    | "left"
+    | "right"
+    | "top-left"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-right";
   description: string;
   techStack: string[];
   primaryImage?: string;

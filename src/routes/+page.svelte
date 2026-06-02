@@ -31,6 +31,48 @@
 		return uniqueImages;
 	}
 
+	/** @param {PortfolioProject} project */
+	function getImageFocusClass(project) {
+		switch (project.imageFocus) {
+			case 'top':
+				return 'object-top';
+			case 'bottom':
+				return 'object-bottom';
+			case 'left':
+				return 'object-left';
+			case 'right':
+				return 'object-right';
+			case 'top-left':
+				return 'object-[left_top]';
+			case 'top-right':
+				return 'object-[right_top]';
+			case 'bottom-left':
+				return 'object-[left_bottom]';
+			case 'bottom-right':
+				return 'object-[right_bottom]';
+			default:
+				return 'object-center';
+		}
+	}
+
+	/** @param {PortfolioProject} project */
+	function getProjectDisplayUrl(project) {
+		switch (project.slug) {
+			case 'usedelight':
+				return 'usedelight.com';
+			case 'adverio-tools':
+				return 'tools.adverio.com';
+			case 'queue':
+				return 'queue.place';
+			case 'jw-tabs':
+				return 'jwtabs.app';
+			case 'iaso':
+				return 'iaso.doctor';
+			default:
+				return '/projects/' + project.slug;
+		}
+	}
+
 	function initHighlightSlides() {
 		for (const project of highlightProjects) {
 			const imageSet = getProjectImages(project);
@@ -155,61 +197,57 @@
 			>
 				<div class="flex w-max gap-5 sm:gap-6 md:gap-8">
 					{#each highlightProjects as project, index (project.slug)}
-						<article
-							data-testid={"highlight-card-" + index}
-							class="w-[min(88vw,920px)] shrink-0 snap-center overflow-hidden rounded-2xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10 sm:w-[min(90vw,920px)] sm:rounded-[1.85rem]"
-						>
-							<div class="flex h-11 items-center gap-3 border-b border-white/5 px-4">
-								<div class="flex gap-1.5">
-									<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
-									<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
-									<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
+						<div class="w-[min(88vw,920px)] shrink-0 snap-center space-y-4 sm:w-[min(90vw,920px)]">
+							<article
+								data-testid={"highlight-card-" + index}
+								class="group overflow-hidden rounded-2xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10 sm:rounded-[1.85rem]"
+							>
+								<div class="flex h-11 items-center gap-3 border-b border-white/5 px-4">
+									<div class="flex gap-1.5">
+										<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
+										<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
+										<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
+									</div>
+									<div
+										class="mx-auto flex h-7 min-w-0 max-w-md flex-1 items-center justify-center rounded-lg bg-black/40 px-3 text-xs text-zinc-300"
+									>
+										{getProjectDisplayUrl(project)}
+									</div>
 								</div>
-								<div
-									class="mx-auto flex h-7 min-w-0 max-w-md flex-1 items-center justify-center rounded-lg bg-black/40 px-3 text-xs text-zinc-300"
-								>
-									/projects/{project.slug}
-								</div>
-							</div>
-							<div class="space-y-6 p-6 sm:p-8">
 								{#if (highlightImageSets[project.slug] ?? []).length > 0}
-									<div class="relative h-[220px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 shadow-[0_20px_45px_-24px_rgba(0,0,0,0.75)] sm:h-[260px]">
+									<div class="w-full overflow-hidden bg-black/20">
 										{#key highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
 											<img
 												data-testid={"project-image-" + project.slug}
 												data-transition-state="active"
 												src={highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
 												alt={project.name + ' preview image'}
-												class="absolute inset-0 h-full w-full object-contain p-2 fade-in-image"
+												class="block w-full h-auto fade-in-image transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.01]"
 												loading="lazy"
 											/>
 										{/key}
 									</div>
 								{:else}
 									<div
-										class="flex h-[220px] w-full items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent text-sm font-medium text-zinc-500 sm:h-[260px]"
+										class="flex h-[280px] w-full items-center justify-center bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent text-sm font-medium text-zinc-500"
 									>
 										No preview image yet
 									</div>
 								{/if}
-								<div class="space-y-2">
-									<p class="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-400">
-										Personal Project
-									</p>
-									<h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-										{project.name}
-									</h2>
-									<p class="text-lg font-medium text-zinc-300">{project.tagline}</p>
-								</div>
+							</article>
+							<div class="space-y-3 px-2">
+								<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Personal Project</p>
+								<h2 class="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">{project.name}</h2>
+								<p class="max-w-[34ch] text-lg font-medium leading-relaxed text-zinc-600">{project.tagline}</p>
 								<a
 									data-testid={"showcase-project-link-" + project.slug}
 									href={"/projects/" + project.slug}
-									class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
+									class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
 								>
 									View project details
 								</a>
 							</div>
-						</article>
+						</div>
 					{/each}
 				</div>
 			</div>
@@ -240,7 +278,7 @@
 					<article
 						data-testid={"highlight-band-" + index}
 						data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
-						class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
+						class="group overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
 					>
 						<div class={"grid items-center gap-7 lg:grid-cols-2 lg:gap-10 " + (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}>
 							<div class="relative h-[220px] overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 sm:h-[290px]">
@@ -248,15 +286,15 @@
 									<img
 										src={getProjectImages(project)[0]}
 										alt={project.name + ' featured image'}
-										class="h-full w-full object-contain p-3"
+										class={"h-full w-full object-contain transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.02] " + getImageFocusClass(project)}
 										loading="lazy"
 									/>
 								{/if}
 							</div>
-							<div class="space-y-3">
+							<div class="space-y-4">
 								<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Project highlight</p>
 								<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">{project.name}</h3>
-								<p class="text-lg font-medium leading-relaxed text-zinc-600">{project.tagline}</p>
+								<p class="max-w-[34ch] text-lg font-medium leading-relaxed text-zinc-600">{project.tagline}</p>
 								<a
 									href={"/projects/" + project.slug}
 									class="inline-flex items-center gap-2 pt-1 text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
@@ -426,7 +464,7 @@
 
 <style>
 	.fade-in-image {
-		animation: fade-in 320ms ease;
+		animation: fade-in 1000ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	@keyframes fade-in {
