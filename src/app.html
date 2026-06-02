@@ -12,7 +12,10 @@
 		/>
 		%sveltekit.head%
 	</head>
-	<body data-sveltekit-preload-data="hover" class="font-sans antialiased">
+	<body
+		data-sveltekit-preload-data="hover"
+		class="font-sans antialiased overflow-x-hidden [text-size-adjust:100%] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)]"
+	>
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>

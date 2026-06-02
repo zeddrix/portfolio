@@ -40,3 +40,19 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+## Visual screenshots (Playwright)
+
+One-time browser install (after `pnpm install`):
+
+```sh
+pnpm exec playwright install chromium
+```
+
+Capture **localhost** and **[rickwaalders.com](https://www.rickwaalders.com/)** hero frames (same viewport) into `reference/screenshots/`. Playwright starts the dev server automatically via `playwright.config.ts` unless port 5173 is already in use:
+
+```sh
+pnpm screenshots
+```
+
+Override the local base URL (e.g. preview): `SCREENSHOT_BASE_URL=http://127.0.0.1:4173 pnpm screenshots`.
