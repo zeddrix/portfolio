@@ -1,0 +1,16 @@
+import { expect, test } from "@playwright/test";
+
+test.describe("smoke baseline", () => {
+  test("Given homepage, when loaded and CTA clicked, then core shell is visible", async ({
+    page,
+  }) => {
+    await page.goto("/");
+
+    const heroHeading = page.getByRole("heading", { level: 1 });
+    await expect(heroHeading).toBeVisible();
+
+    const contactCta = page.getByTestId("hero-cta");
+    await expect(contactCta).toBeVisible();
+    await expect(contactCta).toHaveAttribute("href", /mailto:/i);
+  });
+});
