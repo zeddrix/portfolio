@@ -1,28 +1,89 @@
-<script lang="ts">
+<script>
+	import { onDestroy, onMount } from 'svelte';
 	import {
 		capabilityCards,
 		clientProjects,
+		highlightProjects,
 		personalProjects,
 		profile,
 		projects
 	} from '$lib/data/portfolio';
+	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
+	/** @typedef {{ current: number }} SlideState */
+
+	/** @type {Record<string, SlideState>} */
+	const slideStates = {};
+	/** @type {Record<string, string[]>} */
+	const highlightImageSets = {};
+	/** @type {ReturnType<typeof setInterval>[]} */
+	const intervalIds = [];
+
+	/** @param {PortfolioProject} project */
+	function getProjectImages(project) {
+		const imageCandidates = [project.primaryImage, ...project.galleryImages];
+		/** @type {string[]} */
+		const uniqueImages = [];
+		for (const image of imageCandidates) {
+			if (typeof image === 'string' && image.length > 0 && !uniqueImages.includes(image)) {
+				uniqueImages.push(image);
+			}
+		}
+		return uniqueImages;
+	}
+
+	function initHighlightSlides() {
+		for (const project of highlightProjects) {
+			const imageSet = getProjectImages(project);
+			highlightImageSets[project.slug] = imageSet;
+			slideStates[project.slug] = { current: 0 };
+		}
+	}
+
+	function startHighlightSlides() {
+		for (const project of highlightProjects) {
+			const imageSet = highlightImageSets[project.slug] ?? [];
+			if (imageSet.length <= 1) continue;
+
+			const intervalId = setInterval(() => {
+				const currentState = slideStates[project.slug];
+				const nextIndex = (currentState.current + 1) % imageSet.length;
+				slideStates[project.slug] = { current: nextIndex };
+			}, 2000);
+
+			intervalIds.push(intervalId);
+		}
+	}
+
+	function clearSlideTimers() {
+		for (const intervalId of intervalIds) clearInterval(intervalId);
+	}
+
+	onMount(() => {
+		initHighlightSlides();
+		startHighlightSlides();
+	});
+
+	onDestroy(() => {
+		clearSlideTimers();
+	});
 </script>
 
 <div class="min-h-screen min-w-0 bg-[#f5f5f5] text-zinc-950">
 	<header class="mx-auto w-[94%] max-w-[1800px] pt-3 sm:pt-4 md:pt-5">
 		<div class="flex justify-end">
 			<a
-				href={profile.xUrl}
+				data-testid="header-github-link"
+				href={profile.websiteUrl}
 				class="inline-flex items-center gap-2 text-[15px] font-semibold text-[#8E8E93] transition-colors hover:text-zinc-700"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
 				<svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 					<path
-						d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+						d="M12 .296C5.372.296 0 5.67 0 12.303c0 5.303 3.438 9.8 8.205 11.387.6.111.82-.26.82-.577 0-.285-.01-1.04-.015-2.042-3.338.726-4.042-1.612-4.042-1.612-.546-1.388-1.333-1.756-1.333-1.756-1.09-.745.082-.729.082-.729 1.205.084 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.305 3.492.998.108-.776.418-1.305.762-1.605-2.665-.303-5.466-1.334-5.466-5.932 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.45 11.45 0 0 1 3.006-.403c1.02.004 2.047.138 3.006.403 2.291-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.119 3.176.771.84 1.233 1.911 1.233 3.221 0 4.61-2.806 5.625-5.479 5.921.43.37.814 1.096.814 2.21 0 1.595-.014 2.882-.014 3.274 0 .319.216.694.825.576C20.565 22.1 24 17.603 24 12.303 24 5.67 18.627.296 12 .296z"
 					/>
 				</svg>
-				<span>Follow me</span>
+				<span>GitHub</span>
 			</a>
 		</div>
 	</header>
@@ -89,12 +150,13 @@
 
 		<section class="pb-16 sm:pb-24 md:pb-28">
 			<div
+				data-testid="highlights-carousel"
 				class="mx-auto w-[94%] max-w-[1800px] touch-pan-x snap-x snap-mandatory overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 			>
 				<div class="flex w-max gap-5 sm:gap-6 md:gap-8">
-					{#each personalProjects as project (project.slug)}
+					{#each highlightProjects as project, index (project.slug)}
 						<article
-							data-testid={"showcase-project-card-" + project.slug}
+							data-testid={"highlight-card-" + index}
 							class="w-[min(88vw,920px)] shrink-0 snap-center overflow-hidden rounded-2xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10 sm:w-[min(90vw,920px)] sm:rounded-[1.85rem]"
 						>
 							<div class="flex h-11 items-center gap-3 border-b border-white/5 px-4">
@@ -110,14 +172,19 @@
 								</div>
 							</div>
 							<div class="space-y-6 p-6 sm:p-8">
-								{#if project.primaryImage}
-									<img
-										data-testid={"project-image-" + project.slug}
-										src={project.primaryImage}
-										alt={project.name + ' preview'}
-										class="h-[220px] w-full rounded-2xl border border-white/10 object-cover shadow-[0_20px_45px_-24px_rgba(0,0,0,0.75)] sm:h-[260px]"
-										loading="lazy"
-									/>
+								{#if (highlightImageSets[project.slug] ?? []).length > 0}
+									<div class="relative h-[220px] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/20 shadow-[0_20px_45px_-24px_rgba(0,0,0,0.75)] sm:h-[260px]">
+										{#key highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
+											<img
+												data-testid={"project-image-" + project.slug}
+												data-transition-state="active"
+												src={highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
+												alt={project.name + ' preview image'}
+												class="absolute inset-0 h-full w-full object-contain p-2 fade-in-image"
+												loading="lazy"
+											/>
+										{/key}
+									</div>
 								{:else}
 									<div
 										class="flex h-[220px] w-full items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent text-sm font-medium text-zinc-500 sm:h-[260px]"
@@ -152,94 +219,127 @@
 			data-testid="about-section"
 			class="mx-auto w-[94%] max-w-[1800px] pb-20 sm:pb-24 md:pb-32"
 		>
-			<div class="grid gap-12 lg:grid-cols-2 lg:gap-20">
-				<div class="min-w-0">
-					<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
-						About me
-					</h2>
-					<div
-						data-testid="about-description"
-						class="mt-6 space-y-5 text-xl font-medium leading-[1.6] text-[rgba(17,17,17,0.62)] sm:mt-8 sm:text-2xl"
+			<div class="min-w-0">
+				<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
+					About me
+				</h2>
+				<div
+					data-testid="about-description"
+					class="mt-6 max-w-[68rem] space-y-5 text-xl font-medium leading-[1.6] text-[rgba(17,17,17,0.62)] sm:mt-8 sm:text-2xl"
+				>
+					{#each profile.about as paragraph (paragraph)}
+						<p>{paragraph}</p>
+					{/each}
+				</div>
+			</div>
+		</section>
+
+		<section class="bg-gradient-to-b from-[#f5f5f5] via-[#efefef] to-[#f5f5f5] py-16 sm:py-20 md:py-24">
+			<div class="mx-auto w-[94%] max-w-[1800px] space-y-10 md:space-y-14">
+				{#each highlightProjects.slice(0, 2) as project, index (project.slug)}
+					<article
+						data-testid={"highlight-band-" + index}
+						data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
+						class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
 					>
-						{#each profile.about as paragraph (paragraph)}
-							<p>{paragraph}</p>
+						<div class={"grid items-center gap-7 lg:grid-cols-2 lg:gap-10 " + (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}>
+							<div class="relative h-[220px] overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 sm:h-[290px]">
+								{#if getProjectImages(project)[0]}
+									<img
+										src={getProjectImages(project)[0]}
+										alt={project.name + ' featured image'}
+										class="h-full w-full object-contain p-3"
+										loading="lazy"
+									/>
+								{/if}
+							</div>
+							<div class="space-y-3">
+								<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Project highlight</p>
+								<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">{project.name}</h3>
+								<p class="text-lg font-medium leading-relaxed text-zinc-600">{project.tagline}</p>
+								<a
+									href={"/projects/" + project.slug}
+									class="inline-flex items-center gap-2 pt-1 text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
+								>
+									Explore this case study
+								</a>
+							</div>
+						</div>
+					</article>
+				{/each}
+			</div>
+		</section>
+
+		<section
+			data-testid="projects-overview-section"
+			class="mx-auto w-[94%] max-w-[1800px] pb-20 pt-16 sm:pb-24 sm:pt-20 md:pb-32 md:pt-24"
+		>
+			<div class="space-y-8">
+				<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
+					Projects overview
+				</h2>
+
+				<div data-testid="my-projects-group" class="space-y-4">
+					<h3 class="text-2xl font-semibold text-zinc-900">My projects</h3>
+					<ul class="space-y-3">
+						{#each personalProjects as project (project.slug)}
+							<li data-testid={"project-card-" + project.slug} class="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+								<div class="flex items-start justify-between gap-4">
+									<div class="min-w-0">
+										<p class="text-xl font-semibold text-zinc-950">{project.name}</p>
+										<p class="mt-1 text-base text-zinc-600">{project.tagline}</p>
+									</div>
+									<a
+										data-testid={"project-link-" + project.slug}
+										href={"/projects/" + project.slug}
+										class="shrink-0 text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
+									>
+										Open
+									</a>
+								</div>
+							</li>
 						{/each}
-					</div>
+					</ul>
 				</div>
 
-				<div data-testid="projects-overview-section" class="min-w-0 space-y-8">
-					<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
-						Projects overview
-					</h2>
-
-					<div data-testid="my-projects-group" class="space-y-4">
-						<h3 class="text-2xl font-semibold text-zinc-900">My projects</h3>
-						<ul class="space-y-3">
-							{#each personalProjects as project (project.slug)}
-								<li
-									data-testid={"project-card-" + project.slug}
-									class="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm"
-								>
-									<div class="flex items-start justify-between gap-4">
-										<div class="min-w-0">
-											<p class="text-xl font-semibold text-zinc-950">{project.name}</p>
-											<p class="mt-1 text-base text-zinc-600">{project.tagline}</p>
-										</div>
-										<a
-											data-testid={"project-link-" + project.slug}
-											href={"/projects/" + project.slug}
-											class="shrink-0 text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
-										>
-											Open
-										</a>
-									</div>
-								</li>
-							{/each}
-						</ul>
-					</div>
-
-					<div data-testid="client-projects-group" class="space-y-4">
-						<h3 class="text-2xl font-semibold text-zinc-900">Client projects</h3>
-						<ul class="space-y-4">
-							{#each clientProjects as project (project.slug)}
-								<li
-									data-testid={"project-card-" + project.slug}
-									class="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm"
-								>
-									<div class="grid gap-0 sm:grid-cols-[180px_1fr]">
-										{#if project.primaryImage}
-											<img
-												data-testid={"project-image-" + project.slug}
-												src={project.primaryImage}
-												alt={project.name + ' preview'}
-												class="h-full min-h-[140px] w-full object-cover"
-												loading="lazy"
-											/>
-										{:else}
-											<div class="h-full min-h-[140px] bg-zinc-100"></div>
-										{/if}
-										<div class="space-y-3 p-5">
-											<p class="text-xl font-semibold text-zinc-950">{project.name}</p>
-											<p class="text-base text-zinc-600">{project.tagline}</p>
-											<div class="flex flex-wrap gap-2">
-												{#each project.links as link, linkIndex (link.url)}
-													<a
-														data-testid={linkIndex === 0 ? "project-link-" + project.slug : undefined}
-														href={link.url}
-														target={link.external ? '_blank' : undefined}
-														rel={link.external ? 'noopener noreferrer' : undefined}
-														class="text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
-													>
-														{link.label}
-													</a>
-												{/each}
-											</div>
+				<div data-testid="client-projects-group" class="space-y-4">
+					<h3 class="text-2xl font-semibold text-zinc-900">Client projects</h3>
+					<ul class="space-y-4">
+						{#each clientProjects as project (project.slug)}
+							<li data-testid={"project-card-" + project.slug} class="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+								<div class="grid gap-0 sm:grid-cols-[180px_1fr]">
+									{#if project.primaryImage}
+										<img
+											data-testid={"project-image-" + project.slug}
+											src={project.primaryImage}
+											alt={project.name + ' preview'}
+											class="h-full min-h-[140px] w-full object-cover"
+											loading="lazy"
+										/>
+									{:else}
+										<div class="h-full min-h-[140px] bg-zinc-100"></div>
+									{/if}
+									<div class="space-y-3 p-5">
+										<p class="text-xl font-semibold text-zinc-950">{project.name}</p>
+										<p class="text-base text-zinc-600">{project.tagline}</p>
+										<div class="flex flex-wrap gap-2">
+											{#each project.links as link, linkIndex (link.url)}
+												<a
+													data-testid={linkIndex === 0 ? "project-link-" + project.slug : undefined}
+													href={link.url}
+													target={link.external ? '_blank' : undefined}
+													rel={link.external ? 'noopener noreferrer' : undefined}
+													class="text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
+												>
+													{link.label}
+												</a>
+											{/each}
 										</div>
 									</div>
-								</li>
-							{/each}
-						</ul>
-					</div>
+								</div>
+							</li>
+						{/each}
+					</ul>
 				</div>
 			</div>
 		</section>
@@ -309,13 +409,13 @@
 					</p>
 					<p>
 						<a
-							data-testid="footer-x-link"
+							data-testid="footer-website-link"
 							class="break-words hover:text-[#111111]"
-							href={profile.xUrl}
+							href={profile.websiteUrl}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							{profile.xUrl}
+							{profile.websiteUrl}
 						</a>
 					</p>
 				</div>
@@ -323,3 +423,18 @@
 		</footer>
 	</main>
 </div>
+
+<style>
+	.fade-in-image {
+		animation: fade-in 320ms ease;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+</style>

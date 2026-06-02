@@ -5,34 +5,57 @@ test.describe("project image mapping", () => {
     page,
   }) => {
     await page.goto("/");
+    await page.getByTestId("highlights-carousel").scrollIntoViewIfNeeded();
 
-    await page.getByTestId("project-card-queue").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("project-image-queue")).toHaveAttribute(
       "src",
       /queue-dashboard\.png/,
     );
+    await expect(page.getByTestId("project-image-queue")).toHaveClass(
+      /object-contain/,
+    );
 
-    await page.getByTestId("project-card-jw-tabs").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("project-image-jw-tabs")).toHaveAttribute(
       "src",
       /jwtabs-homepage\.png/,
     );
 
-    await page.getByTestId("project-card-usedelight").scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("project-image-usedelight")).toHaveAttribute(
-      "src",
-      /usedelight-landing-website\.png/,
-    );
-
-    await page
-      .getByTestId("project-card-adverio-tools")
-      .scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-0").scrollIntoViewIfNeeded();
     await expect(
-      page.getByTestId("project-image-adverio-tools"),
+      page
+        .getByTestId("highlight-card-0")
+        .getByTestId("project-image-usedelight"),
+    ).toHaveAttribute("src", /usedelight-landing-website\.png/);
+
+    await page.getByTestId("highlight-card-1").scrollIntoViewIfNeeded();
+    await expect(
+      page
+        .getByTestId("highlight-card-1")
+        .getByTestId("project-image-adverio-tools"),
     ).toHaveAttribute("src", /adverio-tools\.png/);
     await expect(
-      page.getByTestId("project-image-adverio-tools"),
+      page
+        .getByTestId("highlight-card-1")
+        .getByTestId("project-image-adverio-tools"),
     ).toHaveAttribute("alt", /Adverio Tools/i);
+  });
+
+  test("Given multi-image highlight cards, when 2 seconds elapse, then image source transitions smoothly", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
+
+    const queueImage = page.getByTestId("project-image-queue");
+    const firstSrc = await queueImage.getAttribute("src");
+    await expect(queueImage).toHaveAttribute("data-transition-state", "active");
+
+    await page.waitForTimeout(2500);
+
+    const secondSrc = await queueImage.getAttribute("src");
+    expect(secondSrc).not.toBe(firstSrc);
   });
 
   test("Given a project detail page, when user views gallery, then slug media matches mapped assets", async ({

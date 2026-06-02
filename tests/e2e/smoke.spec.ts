@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("smoke baseline", () => {
-  test("Given homepage, when loaded and CTA clicked, then core shell is visible", async ({
+  test("Given homepage, when loaded and hero actions inspected, then core shell and github identity are visible", async ({
     page,
   }) => {
     await page.goto("/");
@@ -12,5 +12,12 @@ test.describe("smoke baseline", () => {
     const contactCta = page.getByTestId("hero-cta");
     await expect(contactCta).toBeVisible();
     await expect(contactCta).toHaveAttribute("href", /mailto:/i);
+
+    const githubLink = page.getByTestId("header-github-link");
+    await expect(githubLink).toBeVisible();
+    await expect(githubLink).toHaveAttribute(
+      "href",
+      "https://github.com/zeddrix",
+    );
   });
 });

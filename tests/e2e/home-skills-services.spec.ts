@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("homepage capabilities", () => {
-  test("Given homepage, when user reviews developer capabilities, then sections are developer-focused", async ({
+  test("Given homepage, when user reviews developer capabilities, then complete draft skill coverage is visible", async ({
     page,
   }) => {
     await page.goto("/");
@@ -13,12 +13,17 @@ test.describe("homepage capabilities", () => {
     await expect(page.getByTestId("capability-card-deployment")).toContainText(
       "Deployment and infrastructure",
     );
-
-    await page
-      .getByTestId("capability-card-ai-workflow")
-      .scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("capability-card-ai-workflow")).toContainText(
-      "AI-assisted workflows",
+    await expect(page.getByTestId("capabilities-section")).toContainText(
+      "Github",
+    );
+    await expect(page.getByTestId("capabilities-section")).toContainText(
+      "Docker Containerization",
+    );
+    await expect(page.getByTestId("capabilities-section")).toContainText(
+      "Supabase",
+    );
+    await expect(page.getByTestId("capabilities-section")).toContainText(
+      "Cloudflare",
     );
   });
 });

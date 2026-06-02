@@ -40,5 +40,5 @@ export interface PortfolioProfile {
   experienceSince: string;
   specialization: string;
   contactEmail: string;
-  xUrl: string;
+  websiteUrl: string;
 }

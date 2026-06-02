@@ -23,6 +23,15 @@ test.describe("content integrity", () => {
       "Docker",
     );
     await expect(page.getByTestId("capabilities-section")).toContainText(
+      "Github",
+    );
+    await expect(page.getByTestId("capabilities-section")).toContainText(
+      "Angular",
+    );
+    await expect(page.getByTestId("capabilities-section")).toContainText(
+      "React",
+    );
+    await expect(page.getByTestId("capabilities-section")).toContainText(
       "Cursor IDE",
     );
     await expect(page.getByTestId("capabilities-section")).toContainText(

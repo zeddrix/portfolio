@@ -16,8 +16,8 @@ export const profile: PortfolioProfile = {
   ],
   experienceSince: "2018",
   specialization: "SvelteKit, Angular, React",
-  contactEmail: "zeddrix@outlook.com",
-  xUrl: "https://x.com/zeddrix",
+  contactEmail: "zeddrix.fabian@gmail.com",
+  websiteUrl: "https://github.com/zeddrix",
 };
 
 export const projects: PortfolioProject[] = [
@@ -280,23 +280,41 @@ export const capabilityCards: CapabilityCard[] = [
     title: "Full-stack product development",
     description:
       "I ship production-ready features from UI to backend logic with a bias for maintainability and measurable outcomes.",
-    highlights: ["SvelteKit", "TypeScript", "Angular", "React"],
+    highlights: ["SvelteKit", "TypeScript", "Angular", "React", "Github"],
   },
   {
     id: "deployment",
     title: "Deployment and infrastructure",
     description:
       "I work on shipping pipelines and cloud deployment concerns so features reach users quickly and safely.",
-    highlights: ["Cloudflare", "Supabase", "Docker", "Redis"],
+    highlights: [
+      "Cloudflare",
+      "Supabase",
+      "Docker Containerization",
+      "NodeJS",
+      "Python",
+    ],
   },
   {
     id: "ai-workflow",
     title: "AI-assisted workflows",
     description:
       "I leverage AI tools for rapid iteration, but I keep engineering decisions grounded in testing, type safety, and delivery quality.",
-    highlights: ["Cursor IDE", "Claude Code", "ATDD"],
+    highlights: ["Cursor IDE", "Claude Code", "AI Agentic Developer"],
   },
 ];
+
+export const highlightProjectSlugs = [
+  "usedelight",
+  "adverio-tools",
+  "queue",
+  "jw-tabs",
+  "iaso",
+] as const;
+
+export const highlightProjects = highlightProjectSlugs
+  .map((slug) => projects.find((project) => project.slug === slug))
+  .filter((project): project is PortfolioProject => project !== undefined);
 
 export const personalProjects = projects.filter(
   (project) => project.category === "personal",
