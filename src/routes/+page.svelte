@@ -1,5 +1,6 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import {
 		capabilityCards,
 		clientProjects,
@@ -17,6 +18,12 @@
 	const highlightImageSets = {};
 	/** @type {ReturnType<typeof setInterval>[]} */
 	const intervalIds = [];
+	/** @type {Record<string, boolean>} */
+	const activeHighlightSlides = {};
+	/** @type {Record<string, HTMLElement | null>} */
+	const highlightSlideElements = {};
+	/** @type {IntersectionObserver | null} */
+	let highlightIntersectionObserver = null;
 	const staticImagePaths = Object.keys(import.meta.glob('/static/*.{png,jpg,jpeg,webp,avif,gif}'));
 
 	/** @param {PortfolioProject} project */
@@ -96,6 +103,29 @@
 			const imageSet = getProjectImages(project);
 			highlightImageSets[project.slug] = imageSet;
 			slideStates[project.slug] = { current: 0 };
+			activeHighlightSlides[project.slug] = false;
+		}
+	}
+
+	function initHighlightObserver() {
+		if (typeof IntersectionObserver === 'undefined') return;
+
+		highlightIntersectionObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					const targetSlug = entry.target.getAttribute('data-highlight-slug');
+					if (!targetSlug) continue;
+					activeHighlightSlides[targetSlug] = entry.isIntersecting && entry.intersectionRatio >= 0.9;
+				}
+			},
+			{
+				threshold: [0.9]
+			}
+		);
+
+		for (const project of highlightProjects) {
+			const element = highlightSlideElements[project.slug];
+			if (element) highlightIntersectionObserver.observe(element);
 		}
 	}
 
@@ -105,10 +135,11 @@
 			if (imageSet.length <= 1) continue;
 
 			const intervalId = setInterval(() => {
+				if (!activeHighlightSlides[project.slug]) return;
 				const currentState = slideStates[project.slug];
 				const nextIndex = (currentState.current + 1) % imageSet.length;
 				slideStates[project.slug] = { current: nextIndex };
-			}, 2000);
+			}, 3000);
 
 			intervalIds.push(intervalId);
 		}
@@ -118,13 +149,20 @@
 		for (const intervalId of intervalIds) clearInterval(intervalId);
 	}
 
+	function clearHighlightObserver() {
+		if (highlightIntersectionObserver) highlightIntersectionObserver.disconnect();
+		highlightIntersectionObserver = null;
+	}
+
 	onMount(() => {
 		initHighlightSlides();
+		initHighlightObserver();
 		startHighlightSlides();
 	});
 
 	onDestroy(() => {
 		clearSlideTimers();
+		clearHighlightObserver();
 	});
 </script>
 
@@ -218,6 +256,8 @@
 						<div class="w-[min(88vw,920px)] shrink-0 snap-center space-y-4 sm:w-[min(90vw,920px)]">
 							<article
 								data-testid={"highlight-card-" + index}
+								data-highlight-slug={project.slug}
+								bind:this={highlightSlideElements[project.slug]}
 								class="group overflow-hidden rounded-2xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10 sm:rounded-[1.85rem]"
 							>
 								<div class="flex h-11 items-center gap-3 border-b border-white/5 px-4">
@@ -233,14 +273,15 @@
 									</div>
 								</div>
 								{#if (highlightImageSets[project.slug] ?? []).length > 0}
-									<div class="w-full overflow-hidden bg-black/20">
+									<div class="grid w-full overflow-hidden bg-black/20">
 										{#key highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
 											<img
 												data-testid={"project-image-" + project.slug}
 												data-transition-state="active"
 												src={highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
 												alt={project.name + ' preview image'}
-												class="block w-full h-auto fade-in-image transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.01]"
+												transition:fade={{ duration: 900 }}
+												class="col-start-1 row-start-1 block w-full h-auto transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.01]"
 												loading="lazy"
 											/>
 										{/key}
@@ -480,17 +521,4 @@
 	</main>
 </div>
 
-<style>
-	.fade-in-image {
-		animation: fade-in 1000ms cubic-bezier(0.22, 1, 0.36, 1);
-	}
-
-	@keyframes fade-in {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-</style>
+<style></style>
