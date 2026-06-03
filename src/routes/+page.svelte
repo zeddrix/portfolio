@@ -577,7 +577,7 @@
 
 		<section
 			data-testid="capabilities-section"
-			class="mx-auto w-[94%] max-w-[1800px] pb-20 sm:pb-24 md:pb-32"
+			class="mx-auto w-[94%] max-w-[1800px] pb-0"
 		>
 			<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
 				Capabilities
@@ -604,14 +604,14 @@
 
 		<footer
 			data-testid="footer-section"
-			class="bg-[#f5f5f5] pb-24 pt-20 sm:pb-32 sm:pt-28 md:pb-36 md:pt-32"
+			class="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f5f5f5] px-[3%] py-8"
 		>
-			<div class="mx-auto w-[94%] max-w-[900px] text-center">
-				<p class="text-[2rem] font-semibold leading-[1.5] text-[#111111] sm:text-[2.3rem]">
-					<span aria-hidden="true" class="mr-1.5">👋</span>
+			<div class="mx-auto w-full max-w-[900px] text-center">
+				<span class="footer-wave block text-3xl leading-none sm:text-4xl" aria-hidden="true">👋</span>
+				<p class="mt-4 text-[clamp(1.75rem,calc(0.25rem+3vw),2.25rem)] font-semibold leading-[1.35] text-zinc-950">
 					Thanks for checking my work.
 				</p>
-				<div class="mt-7 space-y-2 text-lg font-medium leading-[1.5] text-zinc-500 sm:text-xl">
+				<div class="mt-5 space-y-1.5 text-base font-medium leading-relaxed text-zinc-500 sm:text-lg">
 					<p>
 						<a
 							data-testid="footer-email"
@@ -638,4 +638,36 @@
 	</main>
 </div>
 
-<style></style>
+<style>
+	.footer-wave {
+		display: inline-block;
+		transform-origin: 70% 75%;
+		animation: footer-wave 2.2s ease-in-out infinite;
+	}
+
+	@keyframes footer-wave {
+		0%,
+		45%,
+		100% {
+			transform: rotate(0deg);
+		}
+		10% {
+			transform: rotate(18deg);
+		}
+		20% {
+			transform: rotate(-10deg);
+		}
+		30% {
+			transform: rotate(16deg);
+		}
+		40% {
+			transform: rotate(-6deg);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.footer-wave {
+			animation: none;
+		}
+	}
+</style>
