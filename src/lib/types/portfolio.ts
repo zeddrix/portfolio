@@ -1,5 +1,11 @@
 export type ProjectCategory = "personal" | "client";
 
+export type ProjectStatus = "live" | "in_progress" | "concept";
+
+export type WorkSectionLayoutMode = "featuredGrid" | "caseStudyLed";
+
+export type WorkProjectFilter = "all" | "personal" | "client";
+
 export interface ProjectLink {
   label: string;
   url: string;
@@ -15,6 +21,10 @@ export interface PortfolioProject {
   slug: string;
   name: string;
   category: ProjectCategory;
+  status: ProjectStatus;
+  role: string;
+  outcome?: string;
+  displayDomain?: string;
   tagline: string;
   imageFocus?:
     | "center"
@@ -34,11 +44,9 @@ export interface PortfolioProject {
   detailSections: ProjectDetailSection[];
 }
 
-export interface CapabilityCard {
+export interface ToolStripItem {
   id: string;
-  title: string;
-  description: string;
-  highlights: string[];
+  label: string;
 }
 
 export type CapabilityBandVisualType = "screenshot" | "iconPanel" | "hybrid";
@@ -60,6 +68,7 @@ export interface CapabilityBand {
   title: string;
   description: string;
   highlights?: string[];
+  relatedProjectSlugs: string[];
   visual: CapabilityBandVisual;
 }
 

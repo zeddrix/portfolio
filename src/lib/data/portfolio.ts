@@ -2,10 +2,13 @@ import type {
   CapabilityBand,
   CapabilityBandGroup,
   CapabilityBandLayoutMode,
-  CapabilityCard,
   PortfolioProfile,
   PortfolioProject,
+  ToolStripItem,
+  WorkSectionLayoutMode,
+  WorkProjectFilter,
 } from "$lib/types/portfolio";
+import { filterProjectsByWorkFilter } from "$lib/utils/portfolio-display";
 
 export const profile: PortfolioProfile = {
   name: "Zeddrix Fabian",
@@ -16,7 +19,7 @@ export const profile: PortfolioProfile = {
   about: [
     "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
     "I work as an AI Agentic Developer using Cursor IDE and Claude Code to move quickly without sacrificing quality. I specialize in SvelteKit, Angular, and React while staying adaptable to product needs.",
-    "I practice acceptance-test-driven development (ATDD): I start from critical user journeys in focused end-to-end tests, then reinforce them with integration and unit coverage so shipped behavior stays predictable and regressions are caught early.",
+    "I focus on quality from the user journey down: critical paths covered first, then integration and unit tests so releases stay predictable and regressions are caught early.",
   ],
   experienceSince: "2018",
   specialization: "SvelteKit, Angular, React",
@@ -29,6 +32,11 @@ export const projects: PortfolioProject[] = [
     slug: "queue",
     name: "Queue",
     category: "personal",
+    status: "live",
+    role: "Sole builder",
+    outcome:
+      "Unified walk-in, booking, and operations flows in one installable PWA with billing and admin tooling.",
+    displayDomain: "queue.place",
     tagline: "PWA for walk-ins, bookings, and operations",
     description:
       "PWA dedicated for walk-in queueing, pre-ordering, reservations, event bookings, reviews, reporting, billing integration, owner/admin dashboards, and chatbot support.",
@@ -64,6 +72,11 @@ export const projects: PortfolioProject[] = [
     slug: "jw-tabs",
     name: "JW Tabs",
     category: "personal",
+    status: "live",
+    role: "Sole builder",
+    outcome:
+      "Tablature rendering and community workflows with billing, moderation, and admin controls in one product surface.",
+    displayDomain: "jwtabs.app",
     tagline: "Tablature platform for guitar and ukulele players",
     description:
       "PWA for rendering guitar and ukulele melody/fingerstyle tabs with commenting, reporting, billing integration, chatbot support, and an admin dashboard.",
@@ -96,6 +109,10 @@ export const projects: PortfolioProject[] = [
     slug: "iaso",
     name: "Iaso",
     category: "personal",
+    status: "concept",
+    role: "Sole builder",
+    outcome:
+      "Explored a guided diagnostic UX that balances safety and clarity for at-home health assistance.",
     tagline: "AI-powered health assistant concept",
     description:
       "AI-powered PWA concept focused on home-based diagnostics guidance, symptom assistance, and healthcare support workflows.",
@@ -126,6 +143,11 @@ export const projects: PortfolioProject[] = [
     slug: "usedelight",
     name: "UseDelight",
     category: "client",
+    status: "live",
+    role: "Full-stack contributor",
+    outcome:
+      "Consistent web and Chrome extension experiences with subscription flows and content discovery.",
+    displayDomain: "usedelight.com",
     tagline: "Landing site and browser extension ecosystem",
     imageFocus: "top",
     description:
@@ -134,8 +156,9 @@ export const projects: PortfolioProject[] = [
     primaryImage: "/usedelight-1-new-tab.png",
     galleryImages: [
       "/usedelight-2-new-tab.png",
-      "/usedelight-3-gallery.png",
-      "/usedelight-4-subscription.png",
+      "/usedelight-3-new-tab.png",
+      "/usedelight-4-gallery.png",
+      "/usedelight-5-subscription.png",
     ],
     links: [
       { label: "Website", url: "https://usedelight.com/", external: true },
@@ -160,6 +183,11 @@ export const projects: PortfolioProject[] = [
     slug: "adverio-tools",
     name: "Adverio Tools",
     category: "client",
+    status: "live",
+    role: "Full-stack contributor",
+    outcome:
+      "Connected scraping, AI analysis, forecasting, and proposal generation in one Amazon seller toolkit.",
+    displayDomain: "tools.adverio.io",
     tagline: "AI-assisted Amazon brand tooling suite",
     imageFocus: "right",
     description:
@@ -201,6 +229,11 @@ export const projects: PortfolioProject[] = [
     slug: "trulyhappy",
     name: "TrulyHappy",
     category: "client",
+    status: "live",
+    role: "Full-stack contributor",
+    outcome:
+      "Subscription-ready PWA with Redis-backed services and a maintainable BFF architecture.",
+    displayDomain: "trulyhappy.app",
     tagline: "PWA with BFF-oriented architecture",
     description:
       "PWA platform delivered with billing, Redis-backed services, and Backend for Frontend architecture.",
@@ -234,6 +267,11 @@ export const projects: PortfolioProject[] = [
     slug: "articulearn",
     name: "Articulearn",
     category: "client",
+    status: "live",
+    role: "Full-stack contributor",
+    outcome:
+      "Learning UX patterns that support rapid iteration with billing and BFF integrations.",
+    displayDomain: "articulearn.app",
     tagline: "Learning-focused PWA platform",
     description:
       "PWA project delivered with billing integrations, Redis, and a BFF architecture pattern.",
@@ -267,6 +305,10 @@ export const projects: PortfolioProject[] = [
     slug: "bolt-to-github",
     name: "Bolt to Github",
     category: "personal",
+    status: "in_progress",
+    role: "Sole builder",
+    outcome:
+      "Faster path from prototype to a production-ready GitHub repository using AI-assisted automation.",
     tagline: "Tooling workflow for shipping from idea to repo",
     description:
       "Workflow concept focused on accelerating project creation and delivery from rapid prototyping to production-ready GitHub repositories.",
@@ -290,6 +332,15 @@ export const projects: PortfolioProject[] = [
 export const defaultCapabilityBandLayoutMode: CapabilityBandLayoutMode =
   "groupedBands";
 
+export const defaultWorkSectionLayoutMode: WorkSectionLayoutMode =
+  "featuredGrid";
+
+export const caseStudyProjectSlugs = [
+  "usedelight",
+  "adverio-tools",
+  "queue",
+] as const;
+
 export const capabilityBands: CapabilityBand[] = [
   {
     id: "fullstack",
@@ -304,6 +355,7 @@ export const capabilityBands: CapabilityBand[] = [
       "Node.js",
       "Python",
     ],
+    relatedProjectSlugs: ["jw-tabs", "queue", "adverio-tools"],
     visual: {
       type: "screenshot",
       image: "/jw-tabs-1-homepage.png",
@@ -315,6 +367,7 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "Installable progressive web apps with responsive flows built for real-world mobile and desktop usage.",
     highlights: ["Queue", "JW Tabs", "TrulyHappy", "Articulearn"],
+    relatedProjectSlugs: ["queue", "jw-tabs", "trulyhappy", "articulearn"],
     visual: {
       type: "screenshot",
       image: "/queue-1-dashboard.png",
@@ -326,9 +379,10 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "Subscription flows with Stripe and Lemon Squeezy across client and personal products.",
     highlights: ["Stripe", "Lemon Squeezy", "UseDelight", "Queue"],
+    relatedProjectSlugs: ["usedelight", "queue"],
     visual: {
       type: "hybrid",
-      image: "/usedelight-4-subscription.png",
+      image: "/usedelight-5-subscription.png",
       icons: ["billing"],
       badges: ["Stripe", "Lemon Squeezy"],
     },
@@ -339,6 +393,7 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "Owner and admin dashboards for operations, analytics, moderation, and day-to-day product control.",
     highlights: ["Queue", "JW Tabs", "Adverio Tools"],
+    relatedProjectSlugs: ["queue", "jw-tabs", "adverio-tools"],
     visual: {
       type: "screenshot",
       image: "/queue-2-analytics.png",
@@ -350,6 +405,7 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "AI-assisted support and guided workflows that help users move faster without adding UI complexity.",
     highlights: ["Groq", "Queue", "JW Tabs", "Iaso"],
+    relatedProjectSlugs: ["queue", "jw-tabs", "iaso"],
     visual: {
       type: "iconPanel",
       icons: ["chatbot"],
@@ -361,6 +417,7 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "Containerized services and repeatable environments for safer local development and production delivery.",
     highlights: ["Docker", "Node.js", "Python", "Django"],
+    relatedProjectSlugs: ["queue", "adverio-tools"],
     visual: {
       type: "iconPanel",
       icons: ["docker"],
@@ -372,6 +429,7 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "Domain setup, hosting, and production rollout on Cloudflare and modern web deployment stacks.",
     highlights: ["Cloudflare", "Supabase", "Custom domains"],
+    relatedProjectSlugs: ["usedelight", "queue"],
     visual: {
       type: "hybrid",
       image: "/usedelight-1-new-tab.png",
@@ -390,6 +448,7 @@ export const capabilityBands: CapabilityBand[] = [
       "Unit tests",
       "User journeys",
     ],
+    relatedProjectSlugs: [],
     visual: {
       type: "iconPanel",
       icons: ["testing"],
@@ -434,46 +493,17 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
   },
 ];
 
-export const capabilityCards: CapabilityCard[] = [
-  {
-    id: "fullstack",
-    title: "Full-stack product development",
-    description:
-      "I ship production-ready features from UI to backend logic with a bias for maintainability and measurable outcomes.",
-    highlights: ["SvelteKit", "TypeScript", "Angular", "React", "Github"],
-  },
-  {
-    id: "deployment",
-    title: "Deployment and infrastructure",
-    description:
-      "I work on shipping pipelines and cloud deployment concerns so features reach users quickly and safely.",
-    highlights: [
-      "Cloudflare",
-      "Supabase",
-      "Docker Containerization",
-      "NodeJS",
-      "Python",
-    ],
-  },
-  {
-    id: "ai-workflow",
-    title: "AI-assisted workflows",
-    description:
-      "I leverage AI tools for rapid iteration, but I keep engineering decisions grounded in testing, type safety, and delivery quality.",
-    highlights: ["Cursor IDE", "Claude Code", "AI Agentic Developer"],
-  },
-  {
-    id: "testing",
-    title: "Testing & ATDD",
-    description:
-      "I build features acceptance-test-driven: critical paths in focused E2E specs first, then integration and unit tests for confidence at every layer.",
-    highlights: [
-      "Acceptance-test-driven development",
-      "End-to-end tests",
-      "Integration tests",
-      "Unit tests",
-    ],
-  },
+export const toolStripItems: ToolStripItem[] = [
+  { id: "sveltekit", label: "SvelteKit" },
+  { id: "typescript", label: "TypeScript" },
+  { id: "angular", label: "Angular" },
+  { id: "react", label: "React" },
+  { id: "cursor", label: "Cursor IDE" },
+  { id: "claude", label: "Claude Code" },
+  { id: "github", label: "GitHub" },
+  { id: "supabase", label: "Supabase" },
+  { id: "cloudflare", label: "Cloudflare" },
+  { id: "docker", label: "Docker" },
 ];
 
 export const highlightProjectSlugs = [
@@ -488,6 +518,10 @@ export const highlightProjects = highlightProjectSlugs
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is PortfolioProject => project !== undefined);
 
+export const caseStudyProjects = caseStudyProjectSlugs
+  .map((slug) => projects.find((project) => project.slug === slug))
+  .filter((project): project is PortfolioProject => project !== undefined);
+
 export const personalProjects = projects.filter(
   (project) => project.category === "personal",
 );
@@ -495,6 +529,26 @@ export const clientProjects = projects.filter(
   (project) => project.category === "client",
 );
 
+export const personalProjectCount = personalProjects.length;
+export const clientProjectCount = clientProjects.length;
+
 export function getProjectBySlug(slug: string): PortfolioProject | undefined {
   return projects.find((project) => project.slug === slug);
+}
+
+export function getBandsForProject(slug: string): CapabilityBand[] {
+  return capabilityBands.filter((band) =>
+    band.relatedProjectSlugs.includes(slug),
+  );
+}
+
+export function getProjectsForWorkFilter(
+  filter: WorkProjectFilter,
+): PortfolioProject[] {
+  return filterProjectsByWorkFilter(projects, filter);
+}
+
+export function getMoreProjectsForCaseStudies(): PortfolioProject[] {
+  const caseStudySet = new Set<string>(caseStudyProjectSlugs);
+  return projects.filter((project) => !caseStudySet.has(project.slug));
 }
