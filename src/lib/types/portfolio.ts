@@ -49,6 +49,12 @@ export interface ToolStripItem {
   label: string;
 }
 
+export interface ToolStripGroup {
+  id: string;
+  title: string;
+  items: ToolStripItem[];
+}
+
 export type CapabilityBandVisualType = "screenshot" | "iconPanel" | "hybrid";
 
 export type CapabilityBandLayoutMode =

@@ -4,6 +4,7 @@ import type {
   CapabilityBandLayoutMode,
   PortfolioProfile,
   PortfolioProject,
+  ToolStripGroup,
   ToolStripItem,
   WorkSectionLayoutMode,
   WorkProjectFilter,
@@ -17,7 +18,7 @@ export const profile: PortfolioProfile = {
   heroSubtitle:
     "Full-stack web app developer shipping production apps with AI-accelerated workflows.",
   heroProof:
-    "7",
+    "Built 7 live products — including Queue, JW Tabs, and client SaaS.",
   about: [
     "I like to work smart, not hard.",
     "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
@@ -496,18 +497,102 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
   },
 ];
 
-export const toolStripItems: ToolStripItem[] = [
-  { id: "sveltekit", label: "SvelteKit" },
-  { id: "typescript", label: "TypeScript" },
-  { id: "angular", label: "Angular" },
-  { id: "react", label: "React" },
-  { id: "cursor", label: "Cursor IDE" },
-  { id: "claude", label: "Claude Code" },
-  { id: "github", label: "GitHub" },
-  { id: "supabase", label: "Supabase" },
-  { id: "cloudflare", label: "Cloudflare" },
-  { id: "docker", label: "Docker" },
+export const toolStripGroups: ToolStripGroup[] = [
+  {
+    id: "ai-delivery",
+    title: "AI-accelerated delivery",
+    items: [
+      { id: "cursor", label: "Cursor IDE" },
+      { id: "claude", label: "Claude Code" },
+    ],
+  },
+  {
+    id: "frontend-frameworks",
+    title: "Frontend frameworks",
+    items: [
+      { id: "svelte", label: "Svelte" },
+      { id: "sveltekit", label: "SvelteKit" },
+      { id: "react", label: "React" },
+      { id: "react-native", label: "React Native" },
+      { id: "nextjs", label: "Next.js" },
+      { id: "angular", label: "Angular" },
+    ],
+  },
+  {
+    id: "frontend-libraries",
+    title: "Frontend libraries & patterns",
+    items: [
+      { id: "redux", label: "Redux" },
+      { id: "context-api", label: "Context API" },
+    ],
+  },
+  {
+    id: "languages",
+    title: "Languages",
+    items: [
+      { id: "typescript", label: "TypeScript" },
+      { id: "python", label: "Python" },
+      { id: "vanilla-js", label: "Vanilla JS" },
+    ],
+  },
+  {
+    id: "backend-architecture",
+    title: "Backend & architecture",
+    items: [
+      { id: "nodejs", label: "Node.js (Express, NestJS)" },
+      { id: "django", label: "Django" },
+      { id: "bff", label: "BFF" },
+    ],
+  },
+  {
+    id: "data-storage",
+    title: "Data & storage",
+    items: [
+      { id: "supabase", label: "Supabase" },
+      { id: "postgresql", label: "PostgreSQL" },
+      { id: "mongodb", label: "MongoDB" },
+      { id: "mysql", label: "MySQL" },
+      { id: "redis", label: "Redis" },
+    ],
+  },
+  {
+    id: "styling-ui",
+    title: "Styling & UI",
+    items: [
+      { id: "css", label: "CSS" },
+      { id: "sass", label: "SASS" },
+      { id: "tailwind-css", label: "Tailwind CSS" },
+      { id: "material-ui", label: "Material UI" },
+      { id: "bootstrap", label: "Bootstrap" },
+    ],
+  },
+  {
+    id: "testing",
+    title: "Testing",
+    items: [
+      { id: "jest", label: "Jest" },
+      { id: "react-testing-library", label: "React Testing Library" },
+      { id: "cypress", label: "Cypress" },
+      { id: "playwright", label: "Playwright" },
+    ],
+  },
+  {
+    id: "devops-platforms",
+    title: "DevOps, platforms & workflow",
+    items: [
+      { id: "cloudflare", label: "Cloudflare" },
+      { id: "docker", label: "Docker" },
+      { id: "git", label: "Git" },
+      { id: "github", label: "GitHub" },
+      { id: "wordpress", label: "WordPress" },
+      { id: "namecheap", label: "Namecheap" },
+    ],
+  },
 ];
+
+export const toolStripItems: ToolStripItem[] = toolStripGroups.flatMap(
+  (group) => group.items,
+);
 
 export const highlightProjectSlugs = [
   "usedelight",

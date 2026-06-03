@@ -6,22 +6,18 @@ test.describe("content integrity", () => {
   }) => {
     await page.goto("/");
 
-    await page.getByTestId("tools-strip-section").scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("tools-strip-section")).toContainText(
-      "SvelteKit",
-    );
-    await expect(page.getByTestId("tools-strip-section")).toContainText(
-      "TypeScript",
-    );
-    await expect(page.getByTestId("tools-strip-section")).toContainText(
-      "Angular",
-    );
-    await expect(page.getByTestId("tools-strip-section")).toContainText(
-      "Cursor IDE",
-    );
-    await expect(page.getByTestId("tools-strip-section")).toContainText(
-      "Claude Code",
-    );
+    const toolsSection = page.getByTestId("tools-strip-section");
+    await toolsSection.scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("tool-group-ai-delivery")).toBeVisible();
+    await expect(
+      page.getByTestId("tool-group-frontend-frameworks"),
+    ).toBeVisible();
+    await expect(toolsSection).toContainText("SvelteKit");
+    await expect(toolsSection).toContainText("TypeScript");
+    await expect(toolsSection).toContainText("Angular");
+    await expect(toolsSection).toContainText("Cursor IDE");
+    await expect(toolsSection).toContainText("Claude Code");
+    await expect(toolsSection).toContainText("Playwright");
 
     await page.getByTestId("capability-bands-section").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("capability-bands-section")).toContainText(
