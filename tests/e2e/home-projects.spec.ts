@@ -7,15 +7,19 @@ test.describe("homepage projects", () => {
     await page.goto("/");
 
     await page.getByTestId("highlights-carousel").scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("highlight-card-0")).toContainText(
+    await expect(page.getByTestId("highlights-carousel")).toContainText(
       "UseDelight",
     );
-    await expect(page.getByTestId("highlight-card-1")).toContainText(
+    await expect(page.getByTestId("highlights-carousel")).toContainText(
       "Adverio Tools",
     );
-    await expect(page.getByTestId("highlight-card-2")).toContainText("Queue");
-    await expect(page.getByTestId("highlight-card-3")).toContainText("JW Tabs");
-    await expect(page.getByTestId("highlight-card-4")).toContainText("Iaso");
+    await expect(page.getByTestId("highlights-carousel")).toContainText(
+      "Queue",
+    );
+    await expect(page.getByTestId("highlights-carousel")).toContainText(
+      "JW Tabs",
+    );
+    await expect(page.getByTestId("highlights-carousel")).toContainText("Iaso");
 
     await page
       .getByTestId("projects-overview-section")

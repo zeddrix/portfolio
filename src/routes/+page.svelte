@@ -18,6 +18,8 @@
 	/** @typedef {{ current: number }} SlideState */
 
 	const pageContainerClass = 'mx-auto w-[90%] max-w-[1400px]';
+	const carouselScrollClass =
+		'highlights-carousel-scroll touch-pan-x snap-x overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
 	const capabilityBandLayoutStorageKey = 'capability-band-layout-mode';
@@ -276,13 +278,13 @@
 		</section>
 
 		<section class="pb-16 sm:pb-24 md:pb-28">
-			<div
-				data-testid="highlights-carousel"
-				class="{pageContainerClass} touch-pan-x snap-x snap-mandatory overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-			>
-				<div class="flex w-max gap-5 sm:gap-6 md:gap-8">
+			<div data-testid="highlights-carousel" class={carouselScrollClass}>
+				<div
+					data-testid="highlights-carousel-track"
+					class="highlights-carousel-track flex w-max gap-5 sm:gap-6 md:gap-8"
+				>
 					{#each highlightProjects as project, index (project.slug)}
-						<div class="w-[min(88vw,920px)] shrink-0 snap-center space-y-4 sm:w-[min(90vw,920px)]">
+						<div class="w-[min(88vw,920px)] shrink-0 snap-start space-y-4 sm:w-[min(90vw,920px)]">
 							<article
 								data-testid={"highlight-card-" + index}
 								data-highlight-slug={project.slug}

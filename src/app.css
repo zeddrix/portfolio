@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+.highlights-carousel-scroll {
+  --carousel-page-gutter: max(0px, calc((100% - min(90%, 1400px)) / 2));
+  width: 100%;
+  max-width: none;
+  margin-right: calc(50% - 50vw);
+  scroll-padding-left: var(--carousel-page-gutter);
+  scroll-padding-right: var(--carousel-page-gutter);
+}
+
+.highlights-carousel-track {
+  padding-left: var(--carousel-page-gutter);
+  padding-right: var(--carousel-page-gutter);
+}
+
 html {
   zoom: 1.1;
 }
