@@ -304,8 +304,8 @@ export const capabilityBands: CapabilityBand[] = [
       "Python",
     ],
     visual: {
-      type: "iconPanel",
-      icons: ["fullstack"],
+      type: "screenshot",
+      image: "/jw-tabs-1-homepage.png",
     },
   },
   {
@@ -405,7 +405,7 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
     description:
       "Containerized delivery, domain setup, and production deployment workflows.",
     bands: capabilityBands.filter((band) =>
-      ["docker", "deployment"].includes(band.id),
+      ["deployment", "docker"].includes(band.id),
     ),
   },
 ];

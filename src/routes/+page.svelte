@@ -357,123 +357,147 @@
 			</div>
 		</section>
 
-		<section
-			data-testid="capability-bands-section"
-			class="bg-gradient-to-b from-[#f5f5f5] via-[#efefef] to-[#f5f5f5] py-16 sm:py-20 md:py-24"
-		>
-			<div class="mx-auto w-[94%] max-w-[1800px] space-y-10 md:space-y-14">
-				<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-					<div class="space-y-2">
-						<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Technology stack</p>
-						<h2 class="text-[clamp(2rem,calc(0.25rem+4vw),3.5rem)] font-bold tracking-[-0.03em] text-zinc-950">
-							What I build across products
-						</h2>
-					</div>
-					<div
-						class="inline-flex self-start rounded-full border border-zinc-200 bg-white/80 p-1 shadow-sm"
-						role="group"
-						aria-label="Capability layout"
+		<section data-testid="capability-bands-section" class="bg-[#f5f5f5] py-20 sm:py-28 md:py-32">
+			<div class="mx-auto w-[94%] max-w-[1200px]">
+				<div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+					<h2
+						class="max-w-[16ch] text-[clamp(2.25rem,calc(0.25rem+4.5vw),3.75rem)] font-bold leading-[1.08] tracking-[-0.04em] text-zinc-950"
 					>
-						{#each capabilityBandLayoutOptions as option (option.mode)}
-							<button
-								type="button"
-								class={"rounded-full px-3 py-1.5 text-xs font-semibold transition-colors " +
-									(capabilityBandLayoutMode === option.mode
-										? 'bg-zinc-900 text-white'
-										: 'text-zinc-600 hover:text-zinc-900')}
-								aria-pressed={capabilityBandLayoutMode === option.mode}
-								on:click={() => setCapabilityBandLayoutMode(/** @type {CapabilityBandLayoutMode} */ (option.mode))}
-							>
-								{option.label}
-							</button>
-						{/each}
-					</div>
+						What I build across products
+					</h2>
+					<details class="group relative self-start">
+						<summary
+							class="cursor-pointer list-none text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-800 [&::-webkit-details-marker]:hidden"
+						>
+							Layout view
+						</summary>
+						<div
+							class="absolute right-0 z-10 mt-2 inline-flex rounded-full border border-zinc-200 bg-white p-1 shadow-lg"
+							role="group"
+							aria-label="Capability layout"
+						>
+							{#each capabilityBandLayoutOptions as option (option.mode)}
+								<button
+									type="button"
+									class={"rounded-full px-3 py-1.5 text-xs font-semibold transition-colors " +
+										(capabilityBandLayoutMode === option.mode
+											? 'bg-zinc-900 text-white'
+											: 'text-zinc-600 hover:text-zinc-900')}
+									aria-pressed={capabilityBandLayoutMode === option.mode}
+									on:click={() =>
+										setCapabilityBandLayoutMode(/** @type {CapabilityBandLayoutMode} */ (option.mode))}
+								>
+									{option.label}
+								</button>
+							{/each}
+						</div>
+					</details>
 				</div>
 				<p class="sr-only" aria-live="polite">{capabilityBandLayoutAnnouncement}</p>
 
-				{#if capabilityBandLayoutMode === 'sevenBands'}
-					{#each capabilityBands as band, index (band.id)}
-						<article
-							data-testid={"highlight-band-" + index}
-							data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
-							class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
-						>
-							<div class={"grid items-center gap-7 lg:grid-cols-2 lg:gap-10 " + (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}>
-								<CapabilityBandVisual visual={band.visual} title={band.title} />
-								<div class="space-y-4">
-									<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Capability</p>
-									<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">{band.title}</h3>
-									<p class="max-w-[42ch] text-lg font-medium leading-relaxed text-zinc-600">{band.description}</p>
-									{#if band.highlights}
-										<div class="flex flex-wrap gap-2 pt-1">
-											{#each band.highlights as highlight (highlight)}
-												<span class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-700">
-													{highlight}
-												</span>
-											{/each}
-										</div>
-									{/if}
-								</div>
-							</div>
-						</article>
-					{/each}
-				{:else if capabilityBandLayoutMode === 'groupedBands'}
-					{#each capabilityBandGroups as group, index (group.id)}
-						<article
-							data-testid={"highlight-band-" + index}
-							data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
-							class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
-						>
-							<div class={"grid items-center gap-7 lg:grid-cols-2 lg:gap-10 " + (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}>
-								<CapabilityBandVisual visual={group.bands[0].visual} title={group.title} />
-								<div class="space-y-5">
-									<div class="space-y-2">
-										<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Capability group</p>
-										<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">{group.title}</h3>
-										{#if group.description}
-											<p class="max-w-[42ch] text-lg font-medium leading-relaxed text-zinc-600">{group.description}</p>
-										{/if}
+				<div class="mt-14 space-y-20 sm:mt-16 sm:space-y-24 md:space-y-28">
+					{#if capabilityBandLayoutMode === 'sevenBands'}
+						{#each capabilityBands as band, index (band.id)}
+							<article
+								data-testid={"highlight-band-" + index}
+								data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
+							>
+								<div
+									class={"grid items-center gap-10 lg:grid-cols-2 lg:gap-16 " +
+										(index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}
+								>
+									<CapabilityBandVisual visual={band.visual} title={band.title} />
+									<div class="space-y-5 lg:py-4">
+										<h3
+											class="text-[clamp(1.75rem,calc(0.25rem+3vw),2.75rem)] font-bold leading-[1.12] tracking-[-0.03em] text-zinc-950"
+										>
+											{band.title}
+										</h3>
+										<p class="max-w-[46ch] text-lg leading-[1.65] text-zinc-600">{band.description}</p>
+										<a
+											href={`mailto:${profile.contactEmail}`}
+											class="inline-flex items-center gap-1.5 pt-1 text-base font-semibold text-[#136ef6] transition-colors hover:text-[#0f5dcc]"
+										>
+											Get in touch
+											<span aria-hidden="true">›</span>
+										</a>
 									</div>
-									<ul class="space-y-4">
-										{#each group.bands as band (band.id)}
-											<li class="space-y-1 border-t border-zinc-200/80 pt-4 first:border-t-0 first:pt-0">
-												<p class="text-lg font-semibold text-zinc-900">{band.title}</p>
-												<p class="text-base leading-relaxed text-zinc-600">{band.description}</p>
+								</div>
+							</article>
+						{/each}
+					{:else if capabilityBandLayoutMode === 'groupedBands'}
+						{#each capabilityBandGroups as group, index (group.id)}
+							<article
+								data-testid={"highlight-band-" + index}
+								data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
+							>
+								<div
+									class={"grid items-center gap-10 lg:grid-cols-2 lg:gap-16 " +
+										(index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}
+								>
+									<CapabilityBandVisual visual={group.bands[0].visual} title={group.title} />
+									<div class="space-y-6 lg:py-4">
+										<h3
+											class="text-[clamp(1.75rem,calc(0.25rem+3vw),2.75rem)] font-bold leading-[1.12] tracking-[-0.03em] text-zinc-950"
+										>
+											{group.title}
+										</h3>
+										{#if group.description}
+											<p class="max-w-[46ch] text-lg leading-[1.65] text-zinc-600">{group.description}</p>
+										{/if}
+										<ul class="space-y-5 pt-1">
+											{#each group.bands as band (band.id)}
+												<li class="space-y-1">
+													<p class="text-base font-semibold text-zinc-900">{band.title}</p>
+													<p class="max-w-[44ch] text-base leading-relaxed text-zinc-600">{band.description}</p>
+												</li>
+											{/each}
+										</ul>
+										<a
+											href={`mailto:${profile.contactEmail}`}
+											class="inline-flex items-center gap-1.5 pt-1 text-base font-semibold text-[#136ef6] transition-colors hover:text-[#0f5dcc]"
+										>
+											Get in touch
+											<span aria-hidden="true">›</span>
+										</a>
+									</div>
+								</div>
+							</article>
+						{/each}
+					{:else}
+						<article data-testid="highlight-band-0" data-align="left-media">
+							<div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+								<CapabilityBandVisual visual={singleStackVisual} title="Technology stack" />
+								<div class="space-y-6 lg:py-4">
+									<h3
+										class="text-[clamp(1.75rem,calc(0.25rem+3vw),2.75rem)] font-bold leading-[1.12] tracking-[-0.03em] text-zinc-950"
+									>
+										End-to-end product delivery
+									</h3>
+									<p class="max-w-[46ch] text-lg leading-[1.65] text-zinc-600">
+										From frontend and backend product work to billing, admin tooling, chatbot support, and
+										deployment.
+									</p>
+									<ul class="space-y-5">
+										{#each capabilityBands as band (band.id)}
+											<li class="space-y-1">
+												<p class="text-base font-semibold text-zinc-900">{band.title}</p>
+												<p class="max-w-[44ch] text-base leading-relaxed text-zinc-600">{band.description}</p>
 											</li>
 										{/each}
 									</ul>
+									<a
+										href={`mailto:${profile.contactEmail}`}
+										class="inline-flex items-center gap-1.5 pt-1 text-base font-semibold text-[#136ef6] transition-colors hover:text-[#0f5dcc]"
+									>
+										Get in touch
+										<span aria-hidden="true">›</span>
+									</a>
 								</div>
 							</div>
 						</article>
-					{/each}
-				{:else}
-					<article
-						data-testid="highlight-band-0"
-						data-align="left-media"
-						class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
-					>
-						<div class="grid items-center gap-7 lg:grid-cols-2 lg:gap-10">
-							<CapabilityBandVisual visual={singleStackVisual} title="Technology stack" />
-							<div class="space-y-5">
-								<div class="space-y-2">
-									<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Capability stack</p>
-									<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">End-to-end product delivery</h3>
-									<p class="max-w-[42ch] text-lg font-medium leading-relaxed text-zinc-600">
-										From frontend and backend product work to billing, admin tooling, chatbot support, and deployment.
-									</p>
-								</div>
-								<ul class="space-y-4">
-									{#each capabilityBands as band (band.id)}
-										<li class="space-y-1 border-t border-zinc-200/80 pt-4 first:border-t-0 first:pt-0">
-											<p class="text-lg font-semibold text-zinc-900">{band.title}</p>
-											<p class="text-base leading-relaxed text-zinc-600">{band.description}</p>
-										</li>
-									{/each}
-								</ul>
-							</div>
-						</div>
-					</article>
-				{/if}
+					{/if}
+				</div>
 			</div>
 		</section>
 

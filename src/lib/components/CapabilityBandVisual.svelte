@@ -33,61 +33,45 @@
 </script>
 
 <div
-	class="relative h-[220px] overflow-hidden rounded-2xl border border-zinc-200 bg-gradient-to-br from-zinc-50 via-white to-zinc-100 shadow-sm sm:h-[290px]"
+	class="relative min-h-[260px] w-full overflow-hidden rounded-2xl bg-zinc-900 shadow-[0_24px_48px_-28px_rgba(0,0,0,0.45)] sm:min-h-[300px] lg:min-h-[340px]"
 >
 	{#if visual.type === 'screenshot' && visual.image}
 		<img
 			src={visual.image}
 			alt={screenshotAlt}
-			class="h-full w-full object-contain p-2"
+			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
 			loading="lazy"
 		/>
 	{:else if visual.type === 'hybrid' && visual.image}
 		<img
 			src={visual.image}
 			alt={screenshotAlt}
-			class="h-full w-full object-contain p-2"
+			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
 			loading="lazy"
 		/>
-		<div class="absolute inset-x-0 bottom-0 flex flex-wrap gap-2 bg-gradient-to-t from-black/55 to-transparent p-4 pt-10">
-			{#each badges as badge (badge)}
-				<span class="rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-zinc-900 shadow-sm">
-					{badge}
-				</span>
-			{/each}
-		</div>
-		{#if iconIds.length > 0}
-			<div
-				class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white/90 text-zinc-700 shadow-sm"
-				aria-hidden="true"
-			>
-				{#if iconIds[0] === 'billing'}
-					<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-						<rect x="3" y="5" width="18" height="14" rx="2" />
-						<path d="M3 10h18" />
-					</svg>
-				{:else if iconIds[0] === 'deployment'}
-					<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-						<circle cx="12" cy="12" r="9" />
-						<path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" />
-					</svg>
-				{/if}
+		{#if badges.length > 0}
+			<div class="absolute inset-x-0 bottom-0 flex flex-wrap gap-2 bg-gradient-to-t from-zinc-950/90 to-transparent p-5 pt-12">
+				{#each badges as badge (badge)}
+					<span class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-zinc-100 ring-1 ring-white/15">
+						{badge}
+					</span>
+				{/each}
 			</div>
 		{/if}
 	{:else}
 		<div
-			class="flex h-full flex-col items-center justify-center gap-5 p-6"
+			class="flex h-full min-h-[260px] flex-col items-center justify-center gap-6 p-8 sm:min-h-[300px] lg:min-h-[340px]"
 			role="img"
 			aria-label={iconPanelAlt}
 		>
 			<div
-				class={"grid place-items-center gap-4 " +
+				class={"grid place-items-center gap-6 " +
 					(iconIds.length > 3 ? 'grid-cols-3 sm:grid-cols-4' : iconIds.length > 1 ? 'grid-cols-2' : 'grid-cols-1')}
 			>
 				{#each iconIds.length > 0 ? iconIds : ['fullstack'] as iconId (iconId)}
-					<div class="flex flex-col items-center gap-2 text-center">
+					<div class="flex flex-col items-center gap-3 text-center">
 						<div
-							class="flex h-14 w-14 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-zinc-700 shadow-sm sm:h-16 sm:w-16"
+							class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-zinc-100 ring-1 ring-white/15 sm:h-16 sm:w-16"
 						>
 							{#if iconId === 'fullstack'}
 								<svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
@@ -133,7 +117,7 @@
 							{/if}
 						</div>
 						{#if iconIds.length <= 3}
-							<span class="text-xs font-medium text-zinc-500">{getIconLabel(iconId)}</span>
+							<span class="text-xs font-medium text-zinc-400">{getIconLabel(iconId)}</span>
 						{/if}
 					</div>
 				{/each}
