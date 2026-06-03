@@ -17,9 +17,19 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BASE_PATH: /${{ github.event.repository.name }}
+      PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Write CI environment file
+        run: |
+          printf '%s\n' \
+            "PUBLIC_SITE_URL=${PUBLIC_SITE_URL}" \
+            "BASE_PATH=${BASE_PATH}" \
+            > .env
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -39,9 +49,6 @@ jobs:
         run: pnpm quality
 
       - name: Build static site
-        env:
-          BASE_PATH: /${{ github.event.repository.name }}
-          PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
         run: pnpm build
 
       - name: Upload Pages artifact

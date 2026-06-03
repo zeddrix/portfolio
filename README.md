@@ -62,6 +62,8 @@ CI sets:
 - `BASE_PATH=/<repository-name>`
 - `PUBLIC_SITE_URL=https://<owner>.github.io/<repository-name>`
 
+The workflow writes these into a temporary `.env` on the runner before `pnpm quality` and `pnpm build` (SvelteKit needs them at typegen/check time).
+
 ### One-time manual setup (repository owner)
 
 1. Push this repo to GitHub (default branch `main`).
