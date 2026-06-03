@@ -1,4 +1,7 @@
 import type {
+  CapabilityBand,
+  CapabilityBandGroup,
+  CapabilityBandLayoutMode,
   CapabilityCard,
   PortfolioProfile,
   PortfolioProject,
@@ -280,6 +283,130 @@ export const projects: PortfolioProject[] = [
         body: "I use AI-assisted automation to streamline repetitive setup and focus on product-critical decisions.",
       },
     ],
+  },
+];
+
+export const defaultCapabilityBandLayoutMode: CapabilityBandLayoutMode =
+  "groupedBands";
+
+export const capabilityBands: CapabilityBand[] = [
+  {
+    id: "fullstack",
+    title: "Full-stack development",
+    description:
+      "End-to-end product work across frontend UX and backend logic, from API design to polished interfaces.",
+    highlights: [
+      "SvelteKit",
+      "TypeScript",
+      "Angular",
+      "React",
+      "Node.js",
+      "Python",
+    ],
+    visual: {
+      type: "iconPanel",
+      icons: ["fullstack"],
+    },
+  },
+  {
+    id: "pwa",
+    title: "PWA",
+    description:
+      "Installable progressive web apps with responsive flows built for real-world mobile and desktop usage.",
+    highlights: ["Queue", "JW Tabs", "TrulyHappy", "Articulearn"],
+    visual: {
+      type: "screenshot",
+      image: "/queue-1-dashboard.png",
+    },
+  },
+  {
+    id: "billing",
+    title: "Billing integration",
+    description:
+      "Subscription flows with Stripe and Lemon Squeezy across client and personal products.",
+    highlights: ["Stripe", "Lemon Squeezy", "UseDelight", "Queue"],
+    visual: {
+      type: "hybrid",
+      image: "/usedelight-4-subscription.png",
+      icons: ["billing"],
+      badges: ["Stripe", "Lemon Squeezy"],
+    },
+  },
+  {
+    id: "admin-dashboard",
+    title: "Admin Dashboard",
+    description:
+      "Owner and admin dashboards for operations, analytics, moderation, and day-to-day product control.",
+    highlights: ["Queue", "JW Tabs", "Adverio Tools"],
+    visual: {
+      type: "screenshot",
+      image: "/queue-2-analytics.png",
+    },
+  },
+  {
+    id: "chatbot",
+    title: "Chatbot",
+    description:
+      "AI-assisted support and guided workflows that help users move faster without adding UI complexity.",
+    highlights: ["Groq", "Queue", "JW Tabs", "Iaso"],
+    visual: {
+      type: "iconPanel",
+      icons: ["chatbot"],
+    },
+  },
+  {
+    id: "docker",
+    title: "Docker Containerization",
+    description:
+      "Containerized services and repeatable environments for safer local development and production delivery.",
+    highlights: ["Docker", "Node.js", "Python", "Django"],
+    visual: {
+      type: "iconPanel",
+      icons: ["docker"],
+    },
+  },
+  {
+    id: "deployment",
+    title: "Website Domain and Deployment",
+    description:
+      "Domain setup, hosting, and production rollout on Cloudflare and modern web deployment stacks.",
+    highlights: ["Cloudflare", "Supabase", "Custom domains"],
+    visual: {
+      type: "hybrid",
+      image: "/usedelight-1-new-tab.png",
+      icons: ["deployment"],
+      badges: ["Domain", "Deployment"],
+    },
+  },
+];
+
+export const capabilityBandGroups: CapabilityBandGroup[] = [
+  {
+    id: "product-foundations",
+    title: "Product foundations",
+    description:
+      "Core product engineering from full-stack delivery to installable PWA experiences.",
+    bands: capabilityBands.filter((band) =>
+      ["fullstack", "pwa"].includes(band.id),
+    ),
+  },
+  {
+    id: "monetization-operations",
+    title: "Monetization and operations",
+    description:
+      "Billing, admin control, and AI-assisted support built into shipped products.",
+    bands: capabilityBands.filter((band) =>
+      ["billing", "admin-dashboard", "chatbot"].includes(band.id),
+    ),
+  },
+  {
+    id: "shipping-infra",
+    title: "Shipping and infrastructure",
+    description:
+      "Containerized delivery, domain setup, and production deployment workflows.",
+    bands: capabilityBands.filter((band) =>
+      ["docker", "deployment"].includes(band.id),
+    ),
   },
 ];
 

@@ -1,16 +1,37 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import CapabilityBandVisual from '$lib/components/CapabilityBandVisual.svelte';
 	import {
+		capabilityBandGroups,
+		capabilityBands,
 		capabilityCards,
 		clientProjects,
+		defaultCapabilityBandLayoutMode,
 		highlightProjects,
 		personalProjects,
 		profile,
 		projects
 	} from '$lib/data/portfolio';
+	/** @typedef {import('$lib/types/portfolio').CapabilityBandLayoutMode} CapabilityBandLayoutMode */
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
+
+	const capabilityBandLayoutStorageKey = 'capability-band-layout-mode';
+	const capabilityBandLayoutOptions = [
+		{ mode: 'sevenBands', label: 'Detailed' },
+		{ mode: 'groupedBands', label: 'Grouped' },
+		{ mode: 'singleStack', label: 'Compact' }
+	];
+	/** @type {import('$lib/types/portfolio').CapabilityBandVisual} */
+	const singleStackVisual = {
+		type: 'iconPanel',
+		icons: ['fullstack', 'pwa', 'billing', 'dashboard', 'chatbot', 'docker', 'deployment']
+	};
+
+	/** @type {CapabilityBandLayoutMode} */
+	let capabilityBandLayoutMode = defaultCapabilityBandLayoutMode;
+	let capabilityBandLayoutAnnouncement = 'Capability layout: Grouped';
 
 	/** @type {Record<string, SlideState>} */
 	const slideStates = {};
@@ -56,27 +77,23 @@
 		return uniqueImages;
 	}
 
-	/** @param {PortfolioProject} project */
-	function getImageFocusClass(project) {
-		switch (project.imageFocus) {
-			case 'top':
-				return 'object-top';
-			case 'bottom':
-				return 'object-bottom';
-			case 'left':
-				return 'object-left';
-			case 'right':
-				return 'object-right';
-			case 'top-left':
-				return 'object-[left_top]';
-			case 'top-right':
-				return 'object-[right_top]';
-			case 'bottom-left':
-				return 'object-[left_bottom]';
-			case 'bottom-right':
-				return 'object-[right_bottom]';
-			default:
-				return 'object-center';
+	/** @param {string} mode */
+	function isCapabilityBandLayoutMode(mode) {
+		return mode === 'sevenBands' || mode === 'groupedBands' || mode === 'singleStack';
+	}
+
+	/** @param {CapabilityBandLayoutMode} mode */
+	function getCapabilityBandLayoutLabel(mode) {
+		const option = capabilityBandLayoutOptions.find((entry) => entry.mode === mode);
+		return option?.label ?? 'Grouped';
+	}
+
+	/** @param {CapabilityBandLayoutMode} mode */
+	function setCapabilityBandLayoutMode(mode) {
+		capabilityBandLayoutMode = mode;
+		capabilityBandLayoutAnnouncement = 'Capability layout: ' + getCapabilityBandLayoutLabel(mode);
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem(capabilityBandLayoutStorageKey, mode);
 		}
 	}
 
@@ -155,6 +172,15 @@
 	}
 
 	onMount(() => {
+		if (typeof localStorage !== 'undefined') {
+			const storedLayoutMode = localStorage.getItem(capabilityBandLayoutStorageKey);
+			if (storedLayoutMode && isCapabilityBandLayoutMode(storedLayoutMode)) {
+				capabilityBandLayoutMode = /** @type {CapabilityBandLayoutMode} */ (storedLayoutMode);
+				capabilityBandLayoutAnnouncement =
+					'Capability layout: ' + getCapabilityBandLayoutLabel(storedLayoutMode);
+			}
+		}
+
 		initHighlightSlides();
 		initHighlightObserver();
 		startHighlightSlides();
@@ -331,39 +357,123 @@
 			</div>
 		</section>
 
-		<section class="bg-gradient-to-b from-[#f5f5f5] via-[#efefef] to-[#f5f5f5] py-16 sm:py-20 md:py-24">
+		<section
+			data-testid="capability-bands-section"
+			class="bg-gradient-to-b from-[#f5f5f5] via-[#efefef] to-[#f5f5f5] py-16 sm:py-20 md:py-24"
+		>
 			<div class="mx-auto w-[94%] max-w-[1800px] space-y-10 md:space-y-14">
-				{#each highlightProjects.slice(0, 2) as project, index (project.slug)}
-					<article
-						data-testid={"highlight-band-" + index}
-						data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
-						class="group overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
+				<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+					<div class="space-y-2">
+						<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Technology stack</p>
+						<h2 class="text-[clamp(2rem,calc(0.25rem+4vw),3.5rem)] font-bold tracking-[-0.03em] text-zinc-950">
+							What I build across products
+						</h2>
+					</div>
+					<div
+						class="inline-flex self-start rounded-full border border-zinc-200 bg-white/80 p-1 shadow-sm"
+						role="group"
+						aria-label="Capability layout"
 					>
-						<div class={"grid items-center gap-7 lg:grid-cols-2 lg:gap-10 " + (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}>
-							<div class="relative h-[220px] overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 sm:h-[290px]">
-								{#if getProjectImages(project)[0]}
-									<img
-										src={getProjectImages(project)[0]}
-										alt={project.name + ' featured image'}
-										class={"h-full w-full object-contain transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.02] " + getImageFocusClass(project)}
-										loading="lazy"
-									/>
-								{/if}
+						{#each capabilityBandLayoutOptions as option (option.mode)}
+							<button
+								type="button"
+								class={"rounded-full px-3 py-1.5 text-xs font-semibold transition-colors " +
+									(capabilityBandLayoutMode === option.mode
+										? 'bg-zinc-900 text-white'
+										: 'text-zinc-600 hover:text-zinc-900')}
+								aria-pressed={capabilityBandLayoutMode === option.mode}
+								on:click={() => setCapabilityBandLayoutMode(/** @type {CapabilityBandLayoutMode} */ (option.mode))}
+							>
+								{option.label}
+							</button>
+						{/each}
+					</div>
+				</div>
+				<p class="sr-only" aria-live="polite">{capabilityBandLayoutAnnouncement}</p>
+
+				{#if capabilityBandLayoutMode === 'sevenBands'}
+					{#each capabilityBands as band, index (band.id)}
+						<article
+							data-testid={"highlight-band-" + index}
+							data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
+							class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
+						>
+							<div class={"grid items-center gap-7 lg:grid-cols-2 lg:gap-10 " + (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}>
+								<CapabilityBandVisual visual={band.visual} title={band.title} />
+								<div class="space-y-4">
+									<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Capability</p>
+									<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">{band.title}</h3>
+									<p class="max-w-[42ch] text-lg font-medium leading-relaxed text-zinc-600">{band.description}</p>
+									{#if band.highlights}
+										<div class="flex flex-wrap gap-2 pt-1">
+											{#each band.highlights as highlight (highlight)}
+												<span class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-700">
+													{highlight}
+												</span>
+											{/each}
+										</div>
+									{/if}
+								</div>
 							</div>
-							<div class="space-y-4">
-								<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Project highlight</p>
-								<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">{project.name}</h3>
-								<p class="max-w-[34ch] text-lg font-medium leading-relaxed text-zinc-600">{project.tagline}</p>
-								<a
-									href={"/projects/" + project.slug}
-									class="inline-flex items-center gap-2 pt-1 text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
-								>
-									Explore this case study
-								</a>
+						</article>
+					{/each}
+				{:else if capabilityBandLayoutMode === 'groupedBands'}
+					{#each capabilityBandGroups as group, index (group.id)}
+						<article
+							data-testid={"highlight-band-" + index}
+							data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
+							class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
+						>
+							<div class={"grid items-center gap-7 lg:grid-cols-2 lg:gap-10 " + (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}>
+								<CapabilityBandVisual visual={group.bands[0].visual} title={group.title} />
+								<div class="space-y-5">
+									<div class="space-y-2">
+										<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Capability group</p>
+										<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">{group.title}</h3>
+										{#if group.description}
+											<p class="max-w-[42ch] text-lg font-medium leading-relaxed text-zinc-600">{group.description}</p>
+										{/if}
+									</div>
+									<ul class="space-y-4">
+										{#each group.bands as band (band.id)}
+											<li class="space-y-1 border-t border-zinc-200/80 pt-4 first:border-t-0 first:pt-0">
+												<p class="text-lg font-semibold text-zinc-900">{band.title}</p>
+												<p class="text-base leading-relaxed text-zinc-600">{band.description}</p>
+											</li>
+										{/each}
+									</ul>
+								</div>
+							</div>
+						</article>
+					{/each}
+				{:else}
+					<article
+						data-testid="highlight-band-0"
+						data-align="left-media"
+						class="overflow-hidden rounded-3xl border border-zinc-200 bg-white/90 p-5 shadow-[0_26px_50px_-34px_rgba(0,0,0,0.35)] sm:p-8"
+					>
+						<div class="grid items-center gap-7 lg:grid-cols-2 lg:gap-10">
+							<CapabilityBandVisual visual={singleStackVisual} title="Technology stack" />
+							<div class="space-y-5">
+								<div class="space-y-2">
+									<p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Capability stack</p>
+									<h3 class="text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">End-to-end product delivery</h3>
+									<p class="max-w-[42ch] text-lg font-medium leading-relaxed text-zinc-600">
+										From frontend and backend product work to billing, admin tooling, chatbot support, and deployment.
+									</p>
+								</div>
+								<ul class="space-y-4">
+									{#each capabilityBands as band (band.id)}
+										<li class="space-y-1 border-t border-zinc-200/80 pt-4 first:border-t-0 first:pt-0">
+											<p class="text-lg font-semibold text-zinc-900">{band.title}</p>
+											<p class="text-base leading-relaxed text-zinc-600">{band.description}</p>
+										</li>
+									{/each}
+								</ul>
 							</div>
 						</div>
 					</article>
-				{/each}
+				{/if}
 			</div>
 		</section>
 

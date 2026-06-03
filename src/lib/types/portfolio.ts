@@ -41,6 +41,35 @@ export interface CapabilityCard {
   highlights: string[];
 }
 
+export type CapabilityBandVisualType = "screenshot" | "iconPanel" | "hybrid";
+
+export type CapabilityBandLayoutMode =
+  | "sevenBands"
+  | "groupedBands"
+  | "singleStack";
+
+export interface CapabilityBandVisual {
+  type: CapabilityBandVisualType;
+  image?: string;
+  icons?: string[];
+  badges?: string[];
+}
+
+export interface CapabilityBand {
+  id: string;
+  title: string;
+  description: string;
+  highlights?: string[];
+  visual: CapabilityBandVisual;
+}
+
+export interface CapabilityBandGroup {
+  id: string;
+  title: string;
+  description?: string;
+  bands: CapabilityBand[];
+}
+
 export interface PortfolioProfile {
   name: string;
   motto: string;
