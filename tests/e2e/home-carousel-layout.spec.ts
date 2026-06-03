@@ -105,7 +105,9 @@ test.describe("homepage carousel layout", () => {
       alignmentTolerancePx,
     );
 
-    await expect(page.getByTestId("about-description")).toContainText("(ATDD)");
+    await expect(page.getByTestId("about-description")).not.toContainText(
+      "(ATDD)",
+    );
     await expect(page.getByTestId("capability-bands-section")).toContainText(
       "Testing & ATDD",
     );

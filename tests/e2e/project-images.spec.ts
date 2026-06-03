@@ -8,54 +8,55 @@ test.describe("project image mapping", () => {
     await page.getByTestId("highlights-carousel").scrollIntoViewIfNeeded();
 
     await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("project-image-queue")).toHaveAttribute(
-      "src",
-      /queue-dashboard\.png/,
-    );
-    await expect(page.getByTestId("project-image-queue")).toHaveClass(
-      /object-contain/,
-    );
+    await expect(
+      page
+        .getByTestId("highlight-card-2")
+        .getByTestId("carousel-project-image-queue"),
+    ).toHaveAttribute("src", /queue-1-dashboard\.png/);
 
     await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("project-image-jw-tabs")).toHaveAttribute(
-      "src",
-      /jwtabs-homepage\.png/,
-    );
+    await expect(
+      page
+        .getByTestId("highlight-card-3")
+        .getByTestId("carousel-project-image-jw-tabs"),
+    ).toHaveAttribute("src", /jw-tabs-1-homepage\.png/);
 
     await page.getByTestId("highlight-card-0").scrollIntoViewIfNeeded();
     await expect(
       page
         .getByTestId("highlight-card-0")
-        .getByTestId("project-image-usedelight"),
-    ).toHaveAttribute("src", /usedelight-landing-website\.png/);
+        .getByTestId("carousel-project-image-usedelight"),
+    ).toHaveAttribute("src", /usedelight-1-new-tab\.png/);
 
     await page.getByTestId("highlight-card-1").scrollIntoViewIfNeeded();
     await expect(
       page
         .getByTestId("highlight-card-1")
-        .getByTestId("project-image-adverio-tools"),
-    ).toHaveAttribute("src", /adverio-tools\.png/);
+        .getByTestId("carousel-project-image-adverio-tools"),
+    ).toHaveAttribute("src", /adverio-tools-1-overview\.png/);
     await expect(
       page
         .getByTestId("highlight-card-1")
-        .getByTestId("project-image-adverio-tools"),
+        .getByTestId("carousel-project-image-adverio-tools"),
     ).toHaveAttribute("alt", /Adverio Tools/i);
   });
 
-  test("Given multi-image highlight cards, when 2 seconds elapse, then image source transitions smoothly", async ({
+  test("Given multi-image highlight cards, when carousel advances, then image source transitions", async ({
     page,
   }) => {
     await page.goto("/");
     await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
 
-    const queueImage = page.getByTestId("project-image-queue");
+    const queueImage = page
+      .getByTestId("highlight-card-2")
+      .getByTestId("carousel-project-image-queue")
+      .first();
     const firstSrc = await queueImage.getAttribute("src");
     await expect(queueImage).toHaveAttribute("data-transition-state", "active");
 
-    await page.waitForTimeout(2500);
-
-    const secondSrc = await queueImage.getAttribute("src");
-    expect(secondSrc).not.toBe(firstSrc);
+    await expect
+      .poll(async () => queueImage.getAttribute("src"))
+      .not.toBe(firstSrc);
   });
 
   test("Given a project detail page, when user views gallery, then slug media matches mapped assets", async ({
@@ -68,10 +69,24 @@ test.describe("project image mapping", () => {
     );
     await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
       "src",
-      /adverio-tools\.png/,
+      /adverio-tools-1-overview\.png/,
     );
     await expect(
       page.getByTestId("project-detail-gallery-image-1"),
-    ).toHaveAttribute("src", /adverio-forecasting\.png/);
+    ).toHaveAttribute("src", /adverio-tools-2-forecasting\.png/);
+  });
+
+  test("Given UseDelight detail page, when user views gallery, then updated static assets are rendered", async ({
+    page,
+  }) => {
+    await page.goto("/projects/usedelight");
+
+    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
+      "src",
+      /usedelight-1-new-tab\.png/,
+    );
+    await expect(
+      page.getByTestId("project-detail-gallery-image-4"),
+    ).toHaveAttribute("src", /usedelight-5-subscription\.png/);
   });
 });
