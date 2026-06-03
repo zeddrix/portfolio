@@ -1,5 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { PAGES_HOME_PATH, pagesPath } from "./fixtures/pages-env";
+import {
+  PAGES_BASE_PATH,
+  PAGES_HOME_PATH,
+  pagesPath,
+} from "./fixtures/pages-env";
 
 test.describe("project details routing", () => {
   test("Given homepage work grid, when user opens a project, then detail page shows metadata and stack", async ({
@@ -10,7 +14,7 @@ test.describe("project details routing", () => {
     await page.getByTestId("work-section").scrollIntoViewIfNeeded();
     await page.getByTestId("work-filter-personal").click();
     await page.getByTestId("project-link-queue").click();
-    await page.waitForURL("**/zeddrix-portfolio/projects/queue");
+    await page.waitForURL(`**${PAGES_BASE_PATH}/projects/queue`);
 
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Queue",
@@ -36,7 +40,7 @@ test.describe("project details routing", () => {
 
     await page.getByTestId("capability-bands-section").scrollIntoViewIfNeeded();
     await page.getByTestId("band-project-link-pwa-queue").click();
-    await page.waitForURL("**/zeddrix-portfolio/projects/queue");
+    await page.waitForURL(`**${PAGES_BASE_PATH}/projects/queue`);
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Queue",
     );
@@ -49,7 +53,7 @@ test.describe("project details routing", () => {
 
     await expect(page.getByTestId("project-not-found")).toBeVisible();
     await page.getByTestId("project-not-found-home-link").click();
-    await page.waitForURL(/\/zeddrix-portfolio\/?$/);
+    await page.waitForURL(new RegExp(`${PAGES_BASE_PATH}/?$`));
     await expect(page.getByTestId("hero-title")).toBeVisible();
   });
 });

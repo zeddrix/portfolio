@@ -72,7 +72,7 @@ test.describe("project image mapping", () => {
     const heroSrc = await heroImage.getAttribute("src");
     expect(heroSrc).not.toBeNull();
     const heroUrl = new URL(heroSrc ?? "", page.url()).href;
-    expect(heroUrl).toContain("/zeddrix-portfolio/");
+    expect(heroUrl).toContain(`${PAGES_BASE_PATH}/`);
     expect((await page.request.get(heroUrl)).ok()).toBeTruthy();
 
     await expect(

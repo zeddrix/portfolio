@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
+  PAGES_BASE_PATH,
   PAGES_HOME_PATH,
   PAGES_SITE_URL,
   pagesPath,
@@ -43,7 +44,7 @@ test.describe("seo metadata", () => {
     const faviconHref = await favicon.getAttribute("href");
     expect(faviconHref).not.toBeNull();
     const faviconUrl = new URL(faviconHref ?? "", page.url()).href;
-    expect(faviconUrl).toContain("/zeddrix-portfolio/");
+    expect(faviconUrl).toContain(`${PAGES_BASE_PATH}/`);
     expect(faviconUrl).toMatch(/me\.png$/);
 
     const personJsonLd = await page

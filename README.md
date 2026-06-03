@@ -44,18 +44,18 @@ You can preview the production build with `pnpm preview`.
 Match Project Pages base path and public URL locally:
 
 ```sh
-BASE_PATH=/zeddrix-portfolio \
-PUBLIC_SITE_URL=http://127.0.0.1:4173/zeddrix-portfolio \
+BASE_PATH=/portfolio \
+PUBLIC_SITE_URL=http://127.0.0.1:4173/portfolio \
 pnpm build && pnpm preview
 ```
 
-Open `http://127.0.0.1:4173/zeddrix-portfolio/`.
+Open `http://127.0.0.1:4173/portfolio/`.
 
 ## Deploy to GitHub Pages
 
 This site uses `@sveltejs/adapter-static` and deploys automatically on push to `main` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
 
-**Live URL (Project Pages):** `https://<github-username>.github.io/zeddrix-portfolio/`
+**Live URL (Project Pages):** `https://<github-username>.github.io/portfolio/`
 
 CI sets:
 
@@ -86,7 +86,7 @@ pnpm test:unit
 pnpm test:e2e
 ```
 
-E2E runs the dev server with `BASE_PATH=/zeddrix-portfolio` for deployment parity (see `playwright.config.ts`).
+E2E runs the dev server with `BASE_PATH=/portfolio` for deployment parity (see `playwright.config.ts`).
 
 ## Visual screenshots (Playwright)
 
