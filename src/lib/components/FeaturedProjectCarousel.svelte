@@ -6,6 +6,8 @@
 		getProjectDisplayUrl,
 		getProjectTypeLabel
 	} from '$lib/utils/portfolio-display';
+	import { resolveStaticAsset } from '$lib/utils/static-asset';
+	import { appPath } from '$lib/utils/app-path';
 
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
@@ -33,7 +35,7 @@
 		const sequencePattern = new RegExp(`^/static/${project.slug}-(\\d+)`);
 		const autoDiscoveredImages = staticImagePaths
 			.filter((modulePath) => modulePath.startsWith(slugPrefix))
-			.map((modulePath) => modulePath.replace('/static', ''))
+			.map((modulePath) => resolveStaticAsset(modulePath.replace('/static', '')))
 			.sort((firstImage, secondImage) => {
 				const firstPath = `/static${firstImage}`;
 				const secondPath = `/static${secondImage}`;
@@ -45,7 +47,11 @@
 				return firstImage.localeCompare(secondImage);
 			});
 
-		const imageCandidates = [...autoDiscoveredImages, project.primaryImage, ...project.galleryImages];
+		const imageCandidates = [
+			...autoDiscoveredImages,
+			...(project.primaryImage ? [resolveStaticAsset(project.primaryImage)] : []),
+			...project.galleryImages.map((image) => resolveStaticAsset(image))
+		];
 		/** @type {string[]} */
 		const uniqueImages = [];
 		for (const image of imageCandidates) {
@@ -171,7 +177,7 @@
 					<p class="max-w-[34ch] text-lg font-medium leading-relaxed text-zinc-600">{project.tagline}</p>
 					<a
 						data-testid={'showcase-project-link-' + project.slug}
-						href={'/projects/' + project.slug}
+						href={appPath('/projects/' + project.slug)}
 						class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
 					>
 						View project details

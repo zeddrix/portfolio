@@ -1,11 +1,12 @@
 import { expect, test } from "@playwright/test";
+import { PAGES_HOME_PATH } from "./fixtures/pages-env";
 
 const workLayoutStorageKey = "portfolio-work-layout-mode";
 const capabilityLayoutStorageKey = "capability-band-layout-mode";
 
 test.describe("homepage work section", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
     await page.evaluate(
       ({ workKey, capabilityKey }) => {
         localStorage.removeItem(workKey);

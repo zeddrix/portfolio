@@ -1,4 +1,4 @@
-import { env } from "$env/dynamic/public";
+import { PUBLIC_SITE_URL } from "$env/static/public";
 import { profile } from "$lib/data/portfolio";
 import type { PortfolioProject } from "$lib/types/portfolio";
 
@@ -13,7 +13,7 @@ export const homeSeo = {
 } as const;
 
 export function getSiteUrl(): string {
-  const configured = env.PUBLIC_SITE_URL?.trim();
+  const configured = PUBLIC_SITE_URL?.trim();
   const base =
     configured && configured.length > 0 ? configured : devFallbackSiteUrl;
   return base.replace(/\/$/, "");

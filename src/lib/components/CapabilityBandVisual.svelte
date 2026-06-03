@@ -1,4 +1,6 @@
 <script>
+	import { resolveStaticAsset } from '$lib/utils/static-asset';
+
 	/** @type {import('$lib/types/portfolio').CapabilityBandVisual} */
 	export let visual;
 	/** @type {string} */
@@ -39,14 +41,14 @@
 >
 	{#if visual.type === 'screenshot' && visual.image}
 		<img
-			src={visual.image}
+			src={resolveStaticAsset(visual.image)}
 			alt={screenshotAlt}
 			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
 			loading="lazy"
 		/>
 	{:else if visual.type === 'hybrid' && visual.image}
 		<img
-			src={visual.image}
+			src={resolveStaticAsset(visual.image)}
 			alt={screenshotAlt}
 			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
 			loading="lazy"

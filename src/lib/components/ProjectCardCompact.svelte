@@ -1,5 +1,7 @@
 <script>
 	import { getProjectTypeLabel, getStatusLabel } from '$lib/utils/portfolio-display';
+	import { resolveStaticAsset } from '$lib/utils/static-asset';
+	import { appPath } from '$lib/utils/app-path';
 
 	/** @type {import('$lib/types/portfolio').PortfolioProject} */
 	export let project;
@@ -9,7 +11,7 @@
 		if (item.links.length > 0) {
 			return item.links[0].url;
 		}
-		return '/projects/' + item.slug;
+		return appPath('/projects/' + item.slug);
 	}
 
 	/** @param {import('$lib/types/portfolio').PortfolioProject} item */
@@ -26,7 +28,7 @@
 		{#if project.primaryImage}
 			<img
 				data-testid={'project-image-' + project.slug}
-				src={project.primaryImage}
+				src={resolveStaticAsset(project.primaryImage)}
 				alt={project.name + ' preview'}
 				class="h-full min-h-[132px] w-full object-cover"
 				loading="lazy"
@@ -67,7 +69,7 @@
 					{isExternalPrimary(project) ? 'Visit' : 'Open'}
 				</a>
 				<a
-					href={'/projects/' + project.slug}
+					href={appPath('/projects/' + project.slug)}
 					class="text-sm font-semibold text-zinc-500 hover:text-zinc-800"
 				>
 					Details

@@ -8,6 +8,8 @@
 		getProjectTypeLabel,
 		getStatusLabel
 	} from '$lib/utils/portfolio-display';
+	import { resolveStaticAsset } from '$lib/utils/static-asset';
+	import { appPath } from '$lib/utils/app-path';
 
 	const moreProjects = getMoreProjectsForCaseStudies();
 
@@ -26,7 +28,7 @@
 			<div class="grid gap-0 lg:grid-cols-2">
 				{#if project.primaryImage}
 					<img
-						src={project.primaryImage}
+						src={resolveStaticAsset(project.primaryImage)}
 						alt={project.name + ' case study preview'}
 						class="h-full min-h-[240px] w-full object-cover"
 						loading="lazy"
@@ -64,7 +66,7 @@
 					</div>
 					<a
 						data-testid={'case-study-link-' + project.slug}
-						href={'/projects/' + project.slug}
+						href={appPath('/projects/' + project.slug)}
 						class="inline-flex items-center gap-2 rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
 					>
 						View full case study

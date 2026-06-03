@@ -5,6 +5,7 @@
 		capabilityBands,
 		profile
 	} from '$lib/data/portfolio';
+	import { appPath } from '$lib/utils/app-path';
 
 	export let capabilityLayoutMode = 'groupedBands';
 
@@ -62,7 +63,7 @@
 										{#each band.relatedProjectSlugs as slug (slug)}
 											<a
 												data-testid={'band-project-link-' + band.id + '-' + slug}
-												href={'/projects/' + slug}
+												href={appPath('/projects/' + slug)}
 												class="rounded-full bg-white px-3 py-1 text-sm font-semibold text-[#136ef6] ring-1 ring-zinc-200 hover:text-[#0f5dcc]"
 											>
 												{slug}
@@ -104,7 +105,7 @@
 													{#each band.relatedProjectSlugs as slug (slug)}
 														<a
 															data-testid={'band-project-link-' + band.id + '-' + slug}
-															href={'/projects/' + slug}
+															href={appPath('/projects/' + slug)}
 															class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-[#136ef6] ring-1 ring-zinc-200 hover:text-[#0f5dcc]"
 														>
 															{slug}

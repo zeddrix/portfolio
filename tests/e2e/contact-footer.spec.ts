@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { PAGES_HOME_PATH } from "./fixtures/pages-env";
 
 test.describe("contact and footer", () => {
   test("Given homepage, when user navigates to contact and verifies links, then identity links are coherent", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
 
     await expect(page.getByTestId("header-github-link")).toHaveAttribute(
       "href",

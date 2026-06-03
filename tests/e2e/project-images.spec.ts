@@ -1,50 +1,47 @@
 import { expect, test } from "@playwright/test";
+import {
+  PAGES_BASE_PATH,
+  PAGES_HOME_PATH,
+  pagesPath,
+} from "./fixtures/pages-env";
+
+const basePathPattern = new RegExp(
+  `${PAGES_BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/`,
+);
 
 test.describe("project image mapping", () => {
-  test("Given homepage cards, when user inspects media, then mapped static images are rendered", async ({
+  test("Given homepage cards, when user inspects media and opens Queue detail, then images use base-prefixed paths", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
     await page.getByTestId("highlights-carousel").scrollIntoViewIfNeeded();
 
     await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
-    await expect(
-      page
-        .getByTestId("highlight-card-2")
-        .getByTestId("carousel-project-image-queue"),
-    ).toHaveAttribute("src", /queue-1-dashboard\.png/);
+    const queueCarouselImage = page
+      .getByTestId("highlight-card-2")
+      .getByTestId("carousel-project-image-queue");
+    await expect(queueCarouselImage).toHaveAttribute(
+      "src",
+      /queue-1-dashboard\.png/,
+    );
+    await expect(queueCarouselImage).toHaveAttribute("src", basePathPattern);
 
-    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
-    await expect(
-      page
-        .getByTestId("highlight-card-3")
-        .getByTestId("carousel-project-image-jw-tabs"),
-    ).toHaveAttribute("src", /jw-tabs-1-homepage\.png/);
-
-    await page.getByTestId("highlight-card-0").scrollIntoViewIfNeeded();
-    await expect(
-      page
-        .getByTestId("highlight-card-0")
-        .getByTestId("carousel-project-image-usedelight"),
-    ).toHaveAttribute("src", /usedelight-1-new-tab\.png/);
-
-    await page.getByTestId("highlight-card-1").scrollIntoViewIfNeeded();
-    await expect(
-      page
-        .getByTestId("highlight-card-1")
-        .getByTestId("carousel-project-image-adverio-tools"),
-    ).toHaveAttribute("src", /adverio-tools-1-overview\.png/);
-    await expect(
-      page
-        .getByTestId("highlight-card-1")
-        .getByTestId("carousel-project-image-adverio-tools"),
-    ).toHaveAttribute("alt", /Adverio Tools/i);
+    await page.getByTestId("showcase-project-link-queue").click();
+    await page.waitForURL("**/projects/queue");
+    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
+      "src",
+      basePathPattern,
+    );
+    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
+      "src",
+      /queue-1-dashboard\.png/,
+    );
   });
 
   test("Given multi-image highlight cards, when carousel advances, then image source transitions", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
     await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
 
     const queueImage = page
@@ -62,15 +59,22 @@ test.describe("project image mapping", () => {
   test("Given a project detail page, when user views gallery, then slug media matches mapped assets", async ({
     page,
   }) => {
-    await page.goto("/projects/adverio-tools");
+    await page.goto(pagesPath("/projects/adverio-tools"));
 
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Adverio Tools",
     );
-    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
+    const heroImage = page.getByTestId("project-detail-hero-image");
+    await expect(heroImage).toHaveAttribute(
       "src",
       /adverio-tools-1-overview\.png/,
     );
+    const heroSrc = await heroImage.getAttribute("src");
+    expect(heroSrc).not.toBeNull();
+    const heroUrl = new URL(heroSrc ?? "", page.url()).href;
+    expect(heroUrl).toContain("/zeddrix-portfolio/");
+    expect((await page.request.get(heroUrl)).ok()).toBeTruthy();
+
     await expect(
       page.getByTestId("project-detail-gallery-image-1"),
     ).toHaveAttribute("src", /adverio-tools-2-forecasting\.png/);
@@ -79,7 +83,7 @@ test.describe("project image mapping", () => {
   test("Given UseDelight detail page, when user views gallery, then updated static assets are rendered", async ({
     page,
   }) => {
-    await page.goto("/projects/usedelight");
+    await page.goto(pagesPath("/projects/usedelight"));
 
     await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
       "src",
@@ -88,5 +92,8 @@ test.describe("project image mapping", () => {
     await expect(
       page.getByTestId("project-detail-gallery-image-4"),
     ).toHaveAttribute("src", /usedelight-5-subscription\.png/);
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "UseDelight",
+    );
   });
 });

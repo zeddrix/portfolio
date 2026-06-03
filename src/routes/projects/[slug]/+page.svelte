@@ -6,6 +6,8 @@
 		getProjectTypeLabel,
 		getStatusLabel
 	} from '$lib/utils/portfolio-display';
+	import { resolveStaticAsset } from '$lib/utils/static-asset';
+	import { appPath } from '$lib/utils/app-path';
 
 	export let data;
 
@@ -39,7 +41,7 @@
 				</p>
 				<a
 					data-testid="project-not-found-home-link"
-					href="/"
+					href={appPath('/')}
 					class="mt-8 inline-flex items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
 				>
 					Back to home
@@ -47,7 +49,7 @@
 			</section>
 		{:else}
 			<section class="space-y-8">
-				<a href="/" class="inline-flex text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]">
+				<a href={appPath('/')} class="inline-flex text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]">
 					← Back to homepage
 				</a>
 
@@ -98,7 +100,7 @@
 					<div class="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
 						<img
 							data-testid="project-detail-hero-image"
-							src={data.project.primaryImage}
+							src={resolveStaticAsset(data.project.primaryImage)}
 							alt={data.project.name + ' hero preview'}
 							class="h-full max-h-[640px] w-full object-cover"
 						/>
@@ -111,7 +113,7 @@
 							<figure class="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
 								<img
 									data-testid={'project-detail-gallery-image-' + (index + 1)}
-									src={image}
+									src={resolveStaticAsset(image)}
 									alt={data.project.name + ' gallery image ' + (index + 1)}
 									class="h-full w-full object-cover"
 									loading="lazy"

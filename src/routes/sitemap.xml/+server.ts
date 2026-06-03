@@ -1,6 +1,8 @@
 import { projects } from "$lib/data/portfolio";
 import { buildAbsoluteUrl } from "$lib/data/seo";
 
+export const prerender = true;
+
 function escapeXml(value: string): string {
   return value
     .replace(/&/g, "&amp;")

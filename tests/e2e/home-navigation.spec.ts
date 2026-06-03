@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { PAGES_HOME_PATH } from "./fixtures/pages-env";
 
 test.describe("homepage navigation", () => {
   test("Given homepage, when user uses header nav, then work and contact sections are reachable", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
 
     await page.getByTestId("nav-link-work").click();
     await expect(page.getByTestId("work-section")).toBeInViewport();
@@ -16,7 +17,7 @@ test.describe("homepage navigation", () => {
   test("Given homepage DOM order, when sections are compared, then work precedes about and approach", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
 
     const order = await page.evaluate(() => {
       const ids = ["work-section", "about-section", "capability-bands-section"];

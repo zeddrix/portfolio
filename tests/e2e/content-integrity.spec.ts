@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { PAGES_HOME_PATH } from "./fixtures/pages-env";
 
 test.describe("content integrity", () => {
   test("Given homepage, when user scans tools and approach sections, then required stack keywords are rendered", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
 
     const toolsSection = page.getByTestId("tools-strip-section");
     await toolsSection.scrollIntoViewIfNeeded();

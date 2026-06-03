@@ -1,4 +1,12 @@
 import { defineConfig, devices } from "@playwright/test";
+import {
+  PAGES_BASE_PATH,
+  PAGES_SITE_URL,
+} from "./tests/e2e/fixtures/pages-env";
+
+const e2ePort = 7212;
+const e2eHost = `http://127.0.0.1:${e2ePort}`;
+const e2eAppURL = `${e2eHost}${PAGES_BASE_PATH}`;
 
 export default defineConfig({
   testDir: "tests",
@@ -10,16 +18,17 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   use: {
     ...devices["Desktop Chrome"],
-    baseURL: "http://127.0.0.1:7212",
+    baseURL: e2eHost,
     trace: "off",
   },
   webServer: {
-    command: "pnpm dev --host 127.0.0.1 --port 7212",
-    url: "http://127.0.0.1:7212",
-    reuseExistingServer: true,
+    command: `pnpm dev --host 127.0.0.1 --port ${e2ePort}`,
+    url: e2eAppURL,
+    reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     env: {
-      PUBLIC_SITE_URL: "http://127.0.0.1:7212",
+      BASE_PATH: PAGES_BASE_PATH,
+      PUBLIC_SITE_URL: PAGES_SITE_URL,
     },
   },
 });

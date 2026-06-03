@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { PAGES_HOME_PATH } from "./fixtures/pages-env";
 
 test.describe("homepage hero and about", () => {
   test("Given homepage, when user reads intro and navigates to work, then identity and section rhythm are clear", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
 
     await expect(page.getByTestId("hero-title")).toContainText(
       "Zeddrix Fabian",

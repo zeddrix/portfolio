@@ -1,10 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { PAGES_HOME_PATH } from "./fixtures/pages-env";
 
 test.describe("homepage tools strip", () => {
   test("Given homepage, when user reviews grouped tools strip, then stack groups render in order without duplicate chips", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
 
     const toolsSection = page.getByTestId("tools-strip-section");
     await toolsSection.scrollIntoViewIfNeeded();

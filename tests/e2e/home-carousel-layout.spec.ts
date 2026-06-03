@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { PAGES_HOME_PATH } from "./fixtures/pages-env";
 
 const alignmentTolerancePx = 4;
 
@@ -19,7 +20,7 @@ test.describe("homepage carousel layout", () => {
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/");
+    await page.goto(PAGES_HOME_PATH);
 
     await page.getByTestId("highlights-carousel").scrollIntoViewIfNeeded();
     await scrollCarousel(page, 0);

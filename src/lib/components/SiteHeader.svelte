@@ -1,5 +1,6 @@
 <script>
 	import { profile } from '$lib/data/portfolio';
+	import { appPath } from '$lib/utils/app-path';
 	import PortfolioPreviewSettings from '$lib/components/PortfolioPreviewSettings.svelte';
 
 	export let workLayoutMode = 'featuredGrid';
@@ -20,7 +21,7 @@
 <header class="mx-auto w-[90%] max-w-[1400px] pt-3 sm:pt-4 md:pt-5">
 	<div class="flex items-center justify-between gap-4">
 		<a
-			href="/"
+			href={appPath('/')}
 			class="text-sm font-semibold tracking-tight text-zinc-900 transition-colors hover:text-zinc-600"
 		>
 			{profile.name}

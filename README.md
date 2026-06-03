@@ -34,12 +34,57 @@ npm run dev -- --open
 To create a production version of your app:
 
 ```sh
-npm run build
+pnpm build
 ```
 
-You can preview the production build with `npm run preview`.
+You can preview the production build with `pnpm preview`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+### Local GitHub Pages parity
+
+Match Project Pages base path and public URL locally:
+
+```sh
+BASE_PATH=/zeddrix-portfolio \
+PUBLIC_SITE_URL=http://127.0.0.1:4173/zeddrix-portfolio \
+pnpm build && pnpm preview
+```
+
+Open `http://127.0.0.1:4173/zeddrix-portfolio/`.
+
+## Deploy to GitHub Pages
+
+This site uses `@sveltejs/adapter-static` and deploys automatically on push to `main` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
+
+**Live URL (Project Pages):** `https://<github-username>.github.io/zeddrix-portfolio/`
+
+CI sets:
+
+- `BASE_PATH=/<repository-name>`
+- `PUBLIC_SITE_URL=https://<owner>.github.io/<repository-name>`
+
+### One-time manual setup (repository owner)
+
+1. Push this repo to GitHub (default branch `main`).
+2. **Settings → Pages → Build and deployment → Source:** select **GitHub Actions**.
+3. Ensure **Settings → Actions → General → Workflow permissions** allows read/write (required for `pages: write` and `id-token: write`).
+4. Push to `main` or run the **Deploy to GitHub Pages** workflow manually.
+5. Confirm the workflow succeeds and open the published URL from the **github-pages** environment.
+
+### Custom domain (optional, later)
+
+1. Add DNS records for your domain per GitHub Pages docs.
+2. Set **Settings → Pages → Custom domain**.
+3. Set `PUBLIC_SITE_URL` in the workflow env to your custom domain (no trailing slash).
+
+## Quality and tests
+
+```sh
+pnpm quality
+pnpm test:unit
+pnpm test:e2e
+```
+
+E2E runs the dev server with `BASE_PATH=/zeddrix-portfolio` for deployment parity (see `playwright.config.ts`).
 
 ## Visual screenshots (Playwright)
 
