@@ -602,37 +602,20 @@
 			</div>
 		</section>
 
-		<section data-testid="contact-section" class="bg-[#f5f5f5] pb-20 pt-8 sm:pb-28 sm:pt-10 md:pb-36 md:pt-16">
-			<div class="mx-auto w-[94%] max-w-[900px]">
-				<div class="rounded-2xl bg-white p-6 shadow-[0_32px_90px_-36px_rgba(0,0,0,0.22)] sm:rounded-[2rem] sm:p-10 md:p-14">
-					<h2 class="text-[2rem] font-semibold leading-[1.3] text-[#111111]">Contact</h2>
-					<p class="mt-6 text-xl font-medium leading-[1.55] text-[rgba(17,17,17,0.6)] sm:text-2xl">
-						Want to build something practical and high quality together? Send me the context and I can
-						respond with concrete next steps.
-					</p>
-					<div class="mt-8 flex justify-center sm:mt-10">
-						<a
-							data-testid="contact-cta"
-							href={`mailto:${profile.contactEmail}`}
-							class="inline-flex min-h-[52px] w-full max-w-sm items-center justify-center gap-2.5 rounded-full bg-black px-8 py-3.5 text-lg font-semibold text-white shadow-sm transition-opacity hover:opacity-90 sm:w-auto sm:max-w-none sm:px-9 sm:text-xl"
-						>
-							Send an email
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<footer data-testid="footer-section" class="bg-[#f5f5f5] pb-24 pt-6 sm:pb-32 sm:pt-8 md:pb-36">
+		<footer
+			data-testid="footer-section"
+			class="bg-[#f5f5f5] pb-24 pt-20 sm:pb-32 sm:pt-28 md:pb-36 md:pt-32"
+		>
 			<div class="mx-auto w-[94%] max-w-[900px] text-center">
 				<p class="text-[2rem] font-semibold leading-[1.5] text-[#111111] sm:text-[2.3rem]">
+					<span aria-hidden="true" class="mr-1.5">👋</span>
 					Thanks for checking my work.
 				</p>
-				<div class="mt-7 space-y-2 text-xl font-medium leading-[1.5] text-[rgba(17,17,17,0.6)] sm:text-2xl">
+				<div class="mt-7 space-y-2 text-lg font-medium leading-[1.5] text-zinc-500 sm:text-xl">
 					<p>
 						<a
 							data-testid="footer-email"
-							class="break-words hover:text-[#111111]"
+							class="break-words transition-colors hover:text-zinc-900"
 							href={`mailto:${profile.contactEmail}`}
 						>
 							{profile.contactEmail}
@@ -641,7 +624,7 @@
 					<p>
 						<a
 							data-testid="footer-website-link"
-							class="break-words hover:text-[#111111]"
+							class="break-words transition-colors hover:text-zinc-900"
 							href={profile.websiteUrl}
 							target="_blank"
 							rel="noopener noreferrer"
