@@ -16,6 +16,7 @@ export const profile: PortfolioProfile = {
   about: [
     "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
     "I work as an AI Agentic Developer using Cursor IDE and Claude Code to move quickly without sacrificing quality. I specialize in SvelteKit, Angular, and React while staying adaptable to product needs.",
+    "I practice acceptance-test-driven development (ATDD): I start from critical user journeys in focused end-to-end tests, then reinforce them with integration and unit coverage so shipped behavior stays predictable and regressions are caught early.",
   ],
   experienceSince: "2018",
   specialization: "SvelteKit, Angular, React",
@@ -378,6 +379,22 @@ export const capabilityBands: CapabilityBand[] = [
       badges: ["Domain", "Deployment"],
     },
   },
+  {
+    id: "atdd",
+    title: "Acceptance-test-driven development (ATDD)",
+    description:
+      "I define critical user journeys in focused end-to-end tests first, then layer integration and unit tests so each release ships with clear behavior and fewer regressions.",
+    highlights: [
+      "End-to-end tests",
+      "Integration tests",
+      "Unit tests",
+      "User journeys",
+    ],
+    visual: {
+      type: "iconPanel",
+      icons: ["testing"],
+    },
+  },
 ];
 
 export const capabilityBandGroups: CapabilityBandGroup[] = [
@@ -408,6 +425,13 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
       ["deployment", "docker"].includes(band.id),
     ),
   },
+  {
+    id: "quality-atdd",
+    title: "Testing & ATDD",
+    description:
+      "Quality built from the user journey down—focused E2E specs, integration tests, and unit tests.",
+    bands: capabilityBands.filter((band) => band.id === "atdd"),
+  },
 ];
 
 export const capabilityCards: CapabilityCard[] = [
@@ -437,6 +461,18 @@ export const capabilityCards: CapabilityCard[] = [
     description:
       "I leverage AI tools for rapid iteration, but I keep engineering decisions grounded in testing, type safety, and delivery quality.",
     highlights: ["Cursor IDE", "Claude Code", "AI Agentic Developer"],
+  },
+  {
+    id: "testing",
+    title: "Testing & ATDD",
+    description:
+      "I build features acceptance-test-driven: critical paths in focused E2E specs first, then integration and unit tests for confidence at every layer.",
+    highlights: [
+      "Acceptance-test-driven development",
+      "End-to-end tests",
+      "Integration tests",
+      "Unit tests",
+    ],
   },
 ];
 

@@ -21,6 +21,8 @@
 				return 'Docker';
 			case 'deployment':
 				return 'Deployment';
+			case 'testing':
+				return 'ATDD';
 			default:
 				return title;
 		}
@@ -113,6 +115,11 @@
 								<svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
 									<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" />
 									<path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" />
+								</svg>
+							{:else if iconId === 'testing'}
+								<svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+									<path d="M9 11l3 3L22 4" />
+									<path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
 								</svg>
 							{/if}
 						</div>

@@ -29,7 +29,7 @@
 	/** @type {import('$lib/types/portfolio').CapabilityBandVisual} */
 	const singleStackVisual = {
 		type: 'iconPanel',
-		icons: ['fullstack', 'pwa', 'billing', 'dashboard', 'chatbot', 'docker', 'deployment']
+		icons: ['fullstack', 'pwa', 'billing', 'dashboard', 'chatbot', 'docker', 'deployment', 'testing']
 	};
 
 	/** @type {CapabilityBandLayoutMode} */
@@ -577,7 +577,7 @@
 			class="{pageContainerClass} pb-0"
 		>
 			<h2 class={sectionHeadingClass}>Capabilities</h2>
-			<div class="mt-10 grid gap-5 md:grid-cols-3">
+			<div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
 				{#each capabilityCards as capability (capability.id)}
 					<article
 						data-testid={"capability-card-" + capability.id}
