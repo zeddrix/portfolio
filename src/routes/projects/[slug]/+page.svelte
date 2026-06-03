@@ -3,7 +3,7 @@
 </script>
 
 <div class="min-h-screen bg-[#f5f5f5] text-zinc-950">
-	<main class="mx-auto w-[94%] max-w-[1800px] py-8 sm:py-10 md:py-14">
+	<main class="mx-auto w-[90%] max-w-[1400px] py-8 sm:py-10 md:py-14">
 		{#if !data.project}
 			<section
 				data-testid="project-not-found"

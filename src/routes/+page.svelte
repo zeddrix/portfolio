@@ -17,7 +17,7 @@
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
 
-	const pageContainerClass = 'mx-auto w-[94%] max-w-[1800px]';
+	const pageContainerClass = 'mx-auto w-[90%] max-w-[1400px]';
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
 	const capabilityBandLayoutStorageKey = 'capability-band-layout-mode';
