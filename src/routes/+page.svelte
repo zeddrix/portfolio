@@ -6,10 +6,8 @@
 	import ToolsStrip from '$lib/components/ToolsStrip.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
 	import {
-		clientProjectCount,
 		defaultCapabilityBandLayoutMode,
 		defaultWorkSectionLayoutMode,
-		personalProjectCount,
 		profile
 	} from '$lib/data/portfolio';
 
@@ -98,9 +96,6 @@
 					>
 						{profile.heroSubtitle}
 					</p>
-					<p data-testid="hero-motto" class="mt-3 text-lg font-semibold text-zinc-700">
-						{profile.motto}
-					</p>
 					<div class="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center lg:mt-12">
 						<a
 							data-testid="hero-cta"
@@ -118,27 +113,37 @@
 						</a>
 					</div>
 				</div>
-				<div class="rounded-[2rem] border border-zinc-200/70 bg-white/80 p-6 shadow-[0_28px_56px_-28px_rgba(0,0,0,0.3)] sm:p-8">
+				<div
+					data-testid="hero-glance-card"
+					class="rounded-[2rem] border border-zinc-200/70 bg-white/80 p-6 shadow-[0_28px_56px_-28px_rgba(0,0,0,0.3)] sm:p-8"
+				>
 					<p class="text-sm font-semibold uppercase tracking-[0.18em] text-zinc-500">At a glance</p>
 					<dl class="mt-5 space-y-5">
 						<div>
 							<dt class="text-sm font-medium text-zinc-500">Experience since</dt>
-							<dd class="text-xl font-semibold text-zinc-900">{profile.experienceSince}</dd>
-						</div>
-						<div>
-							<dt class="text-sm font-medium text-zinc-500">Specialization</dt>
-							<dd class="text-xl font-semibold text-zinc-900">{profile.specialization}</dd>
-						</div>
-						<div>
-							<dt class="text-sm font-medium text-zinc-500">Personal products</dt>
-							<dd data-testid="hero-glance-personal-count" class="text-xl font-semibold text-zinc-900">
-								{personalProjectCount}
+							<dd
+								data-testid="hero-glance-experience"
+								class="text-xl font-semibold text-zinc-900"
+							>
+								{profile.experienceSince}
 							</dd>
 						</div>
 						<div>
-							<dt class="text-sm font-medium text-zinc-500">Client engagements</dt>
-							<dd data-testid="hero-glance-client-count" class="text-xl font-semibold text-zinc-900">
-								{clientProjectCount}
+							<dt class="text-sm font-medium text-zinc-500">Shipped products</dt>
+							<dd
+								data-testid="hero-glance-proof"
+								class="text-xl font-semibold leading-snug text-zinc-900"
+							>
+								{profile.heroProof}
+							</dd>
+						</div>
+						<div>
+							<dt class="text-sm font-medium text-zinc-500">Strong in</dt>
+							<dd
+								data-testid="hero-glance-specialization"
+								class="text-xl font-semibold leading-snug text-zinc-900"
+							>
+								{profile.specialization}
 							</dd>
 						</div>
 					</dl>

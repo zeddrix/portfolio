@@ -84,6 +84,7 @@ export interface PortfolioProfile {
   motto: string;
   heroTitle: string;
   heroSubtitle: string;
+  heroProof: string;
   about: string[];
   experienceSince: string;
   specialization: string;

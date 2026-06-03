@@ -67,7 +67,9 @@ test.describe("homepage work section", () => {
       .getByTestId("portfolio-preview-settings")
       .scrollIntoViewIfNeeded();
     await page.getByTestId("portfolio-preview-settings").click();
-    await expect(page.getByTestId("portfolio-preview-settings-panel")).toBeVisible();
+    await expect(
+      page.getByTestId("portfolio-preview-settings-panel"),
+    ).toBeVisible();
     await page.getByTestId("work-layout-option-case-studies").click();
     await expect(page.getByTestId("case-study-queue")).toBeVisible();
     await page.reload();

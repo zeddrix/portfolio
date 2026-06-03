@@ -15,8 +15,11 @@ export const profile: PortfolioProfile = {
   motto: "I like to work smart, not hard.",
   heroTitle: "Hello, I'm Zeddrix Fabian",
   heroSubtitle:
-    "Junior developer and AI Agentic Developer building practical products fast with modern web tooling.",
+    "Full-stack web app developer shipping production apps with AI-accelerated workflows.",
+  heroProof:
+    "7",
   about: [
+    "I like to work smart, not hard.",
     "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
     "I work as an AI Agentic Developer using Cursor IDE and Claude Code to move quickly without sacrificing quality. I specialize in SvelteKit, Angular, and React while staying adaptable to product needs.",
     "I focus on quality from the user journey down: critical paths covered first, then integration and unit tests so releases stay predictable and regressions are caught early.",
@@ -304,14 +307,14 @@ export const projects: PortfolioProject[] = [
   {
     slug: "bolt-to-github",
     name: "Bolt to Github",
-    category: "personal",
-    status: "in_progress",
-    role: "Sole builder",
+    category: "client",
+    status: "live",
+    role: "Full-stack contributor",
     outcome:
-      "Faster path from prototype to a production-ready GitHub repository using AI-assisted automation.",
-    tagline: "Tooling workflow for shipping from idea to repo",
+      "Shipped a live workflow that moves prototypes to production-ready GitHub repositories with AI-assisted automation.",
+    tagline: "Live tooling workflow for shipping from idea to repo",
     description:
-      "Workflow concept focused on accelerating project creation and delivery from rapid prototyping to production-ready GitHub repositories.",
+      "Live client workflow for accelerating project creation and delivery from rapid prototyping to production-ready GitHub repositories.",
     techStack: ["TypeScript", "Automation Workflows", "GitHub"],
     primaryImage: "/bolt2github.png",
     galleryImages: [],

@@ -10,18 +10,35 @@ test.describe("homepage hero and about", () => {
       "Zeddrix Fabian",
     );
     await expect(page.getByTestId("hero-subtitle")).toContainText(
-      "AI Agentic Developer",
+      "Full-stack web app developer",
     );
-    await expect(page.getByTestId("hero-motto")).toContainText(
-      "I like to work smart, not hard.",
+    await expect(page.getByTestId("hero-subtitle")).toContainText(
+      "AI-accelerated workflows",
     );
+    await expect(page.getByTestId("hero-subtitle")).not.toContainText(
+      "SvelteKit",
+    );
+    await expect(page.getByTestId("hero-proof")).toHaveCount(0);
+    await expect(page.getByTestId("hero-motto")).toHaveCount(0);
 
-    await expect(page.getByTestId("hero-glance-personal-count")).toContainText(
-      "4",
+    const glanceCard = page.getByTestId("hero-glance-card");
+    await expect(glanceCard).toBeVisible();
+    await expect(page.getByTestId("hero-glance-profile-image")).toHaveCount(0);
+    await expect(page.getByTestId("hero-glance-experience")).toContainText(
+      "2018",
     );
-    await expect(page.getByTestId("hero-glance-client-count")).toContainText(
-      "4",
+    await expect(page.getByTestId("hero-glance-proof")).toContainText(
+      "Built 7 live products",
     );
+    await expect(page.getByTestId("hero-glance-proof")).toContainText("Queue");
+    await expect(page.getByTestId("hero-glance-specialization")).toContainText(
+      "SvelteKit",
+    );
+    await expect(page.getByTestId("hero-glance-specialization")).toContainText(
+      "React",
+    );
+    await expect(glanceCard.getByText("Personal products")).toHaveCount(0);
+    await expect(glanceCard.getByText("Client engagements")).toHaveCount(0);
 
     await page.getByTestId("hero-cta").click();
     await expect(page.getByTestId("hero-cta")).toHaveAttribute(
@@ -33,6 +50,9 @@ test.describe("homepage hero and about", () => {
     await expect(page).toHaveURL(/#work$/);
 
     await page.getByTestId("about-section").scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("about-description")).toContainText(
+      "I like to work smart, not hard.",
+    );
     await expect(page.getByTestId("about-description")).toContainText(
       "AI Agentic Developer",
     );
