@@ -5,6 +5,8 @@
 	import CapabilityBandsSection from '$lib/components/CapabilityBandsSection.svelte';
 	import ToolsStrip from '$lib/components/ToolsStrip.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
+	import SeoHead from '$lib/components/SeoHead.svelte';
+	import { homeSeo } from '$lib/data/seo';
 	import {
 		defaultCapabilityBandLayoutMode,
 		defaultWorkSectionLayoutMode,
@@ -66,6 +68,12 @@
 		}
 	});
 </script>
+
+<SeoHead
+	title={homeSeo.title}
+	description={homeSeo.description}
+	path={homeSeo.path}
+/>
 
 <div class="min-h-screen min-w-0 bg-[#f5f5f5] text-zinc-950">
 	<SiteHeader

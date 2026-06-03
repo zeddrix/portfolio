@@ -18,5 +18,8 @@ export default defineConfig({
     url: "http://127.0.0.1:7212",
     reuseExistingServer: true,
     timeout: 120_000,
+    env: {
+      PUBLIC_SITE_URL: "http://127.0.0.1:7212",
+    },
   },
 });

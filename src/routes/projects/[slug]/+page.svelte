@@ -1,5 +1,7 @@
 <script>
+	import SeoHead from '$lib/components/SeoHead.svelte';
 	import { getBandsForProject } from '$lib/data/portfolio';
+	import { buildProjectMeta, homeSeo } from '$lib/data/seo';
 	import {
 		getProjectTypeLabel,
 		getStatusLabel
@@ -8,7 +10,21 @@
 	export let data;
 
 	$: relatedBands = data.project ? getBandsForProject(data.project.slug) : [];
+	$: pageSeo = data.project
+		? buildProjectMeta(data.project)
+		: {
+				title: `Project Not Found | Zeddrix Fabian Portfolio`,
+				description: homeSeo.description,
+				path: '/'
+			};
 </script>
+
+<SeoHead
+	title={pageSeo.title}
+	description={pageSeo.description}
+	path={pageSeo.path}
+	ogImage={pageSeo.ogImage}
+/>
 
 <div class="min-h-screen bg-[#f5f5f5] text-zinc-950">
 	<main class="mx-auto w-[90%] max-w-[1400px] py-8 sm:py-10 md:py-14">
