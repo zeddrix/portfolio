@@ -17,6 +17,9 @@
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
 
+	const pageContainerClass = 'mx-auto w-[94%] max-w-[1800px]';
+	const sectionHeadingClass =
+		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
 	const capabilityBandLayoutStorageKey = 'capability-band-layout-mode';
 	const capabilityBandLayoutOptions = [
 		{ mode: 'sevenBands', label: 'Detailed' },
@@ -193,7 +196,7 @@
 </script>
 
 <div class="min-h-screen min-w-0 bg-[#f5f5f5] text-zinc-950">
-	<header class="mx-auto w-[94%] max-w-[1800px] pt-3 sm:pt-4 md:pt-5">
+	<header class="{pageContainerClass} pt-3 sm:pt-4 md:pt-5">
 		<div class="flex justify-end">
 			<a
 				data-testid="header-github-link"
@@ -214,7 +217,7 @@
 
 	<main>
 		<section
-			class="mx-auto w-[94%] max-w-[1800px] pb-16 pt-2 sm:pb-24 sm:pt-3 md:pb-32 md:pt-4 lg:min-h-[min(78vh,880px)] lg:pb-32 lg:pt-6"
+			class="{pageContainerClass} pb-16 pt-2 sm:pb-24 sm:pt-3 md:pb-32 md:pt-4 lg:min-h-[min(78vh,880px)] lg:pb-32 lg:pt-6"
 		>
 			<div class="grid items-center gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 xl:gap-16">
 				<div class="min-w-0">
@@ -275,7 +278,7 @@
 		<section class="pb-16 sm:pb-24 md:pb-28">
 			<div
 				data-testid="highlights-carousel"
-				class="mx-auto w-[94%] max-w-[1800px] touch-pan-x snap-x snap-mandatory overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+				class="{pageContainerClass} touch-pan-x snap-x snap-mandatory overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 			>
 				<div class="flex w-max gap-5 sm:gap-6 md:gap-8">
 					{#each highlightProjects as project, index (project.slug)}
@@ -340,12 +343,10 @@
 
 		<section
 			data-testid="about-section"
-			class="mx-auto w-[94%] max-w-[1800px] pb-20 sm:pb-24 md:pb-32"
+			class="{pageContainerClass} pb-20 sm:pb-24 md:pb-32"
 		>
 			<div class="min-w-0">
-				<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
-					About me
-				</h2>
+				<h2 class={sectionHeadingClass}>About me</h2>
 				<div
 					data-testid="about-description"
 					class="mt-6 max-w-[68rem] space-y-5 text-xl font-medium leading-[1.6] text-[rgba(17,17,17,0.62)] sm:mt-8 sm:text-2xl"
@@ -358,11 +359,9 @@
 		</section>
 
 		<section data-testid="capability-bands-section" class="bg-[#f5f5f5] py-20 sm:py-28 md:py-32">
-			<div class="mx-auto w-[94%] max-w-[1200px]">
+			<div class={pageContainerClass}>
 				<div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-					<h2
-						class="max-w-[16ch] text-[clamp(2.25rem,calc(0.25rem+4.5vw),3.75rem)] font-bold leading-[1.08] tracking-[-0.04em] text-zinc-950"
-					>
+					<h2 class="{sectionHeadingClass} max-w-[20ch]">
 						What I build across products
 					</h2>
 					<details class="group relative self-start">
@@ -503,12 +502,10 @@
 
 		<section
 			data-testid="projects-overview-section"
-			class="mx-auto w-[94%] max-w-[1800px] pb-20 pt-16 sm:pb-24 sm:pt-20 md:pb-32 md:pt-24"
+			class="{pageContainerClass} pb-20 pt-16 sm:pb-24 sm:pt-20 md:pb-32 md:pt-24"
 		>
 			<div class="space-y-8">
-				<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
-					Projects overview
-				</h2>
+				<h2 class={sectionHeadingClass}>Projects overview</h2>
 
 				<div data-testid="my-projects-group" class="space-y-4">
 					<h3 class="text-2xl font-semibold text-zinc-900">My projects</h3>
@@ -577,11 +574,9 @@
 
 		<section
 			data-testid="capabilities-section"
-			class="mx-auto w-[94%] max-w-[1800px] pb-0"
+			class="{pageContainerClass} pb-0"
 		>
-			<h2 class="text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]">
-				Capabilities
-			</h2>
+			<h2 class={sectionHeadingClass}>Capabilities</h2>
 			<div class="mt-10 grid gap-5 md:grid-cols-3">
 				{#each capabilityCards as capability (capability.id)}
 					<article
@@ -604,9 +599,9 @@
 
 		<footer
 			data-testid="footer-section"
-			class="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f5f5f5] px-[3%] py-8"
+			class="flex min-h-[100dvh] flex-col items-center justify-center bg-[#f5f5f5] py-8"
 		>
-			<div class="mx-auto w-full max-w-[900px] text-center">
+			<div class="{pageContainerClass} text-center">
 				<span class="footer-wave block text-3xl leading-none sm:text-4xl" aria-hidden="true">👋</span>
 				<p class="mt-4 text-[clamp(1.75rem,calc(0.25rem+3vw),2.25rem)] font-semibold leading-[1.35] text-zinc-950">
 					Thanks for checking my work.
