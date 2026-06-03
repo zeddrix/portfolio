@@ -1,5 +1,13 @@
 <script>
+	import { getBandsForProject } from '$lib/data/portfolio';
+	import {
+		getProjectTypeLabel,
+		getStatusLabel
+	} from '$lib/utils/portfolio-display';
+
 	export let data;
+
+	$: relatedBands = data.project ? getBandsForProject(data.project.slug) : [];
 </script>
 
 <div class="min-h-screen bg-[#f5f5f5] text-zinc-950">
@@ -28,8 +36,22 @@
 				</a>
 
 				<div class="space-y-4">
-					<p class="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-						{data.project.category === 'personal' ? 'Personal project' : 'Client project'}
+					<div class="flex flex-wrap gap-2">
+						<span
+							data-testid="project-detail-type"
+							class="rounded-full bg-zinc-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-700"
+						>
+							{getProjectTypeLabel(data.project)}
+						</span>
+						<span
+							data-testid="project-detail-status"
+							class="rounded-full bg-zinc-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-600"
+						>
+							{getStatusLabel(data.project.status)}
+						</span>
+					</div>
+					<p data-testid="project-detail-role" class="text-base font-semibold text-zinc-600">
+						{data.project.role}
 					</p>
 					<h1
 						data-testid="project-detail-title"
@@ -38,6 +60,11 @@
 						{data.project.name}
 					</h1>
 					<p class="max-w-4xl text-xl font-medium leading-[1.5] text-zinc-600">{data.project.description}</p>
+					{#if data.project.outcome}
+						<p data-testid="project-detail-outcome" class="max-w-4xl text-lg leading-relaxed text-zinc-700">
+							{data.project.outcome}
+						</p>
+					{/if}
 				</div>
 
 				<div
@@ -67,7 +94,7 @@
 						{#each data.project.galleryImages as image, index (image)}
 							<figure class="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
 								<img
-									data-testid={"project-detail-gallery-image-" + (index + 1)}
+									data-testid={'project-detail-gallery-image-' + (index + 1)}
 									src={image}
 									alt={data.project.name + ' gallery image ' + (index + 1)}
 									class="h-full w-full object-cover"
@@ -86,6 +113,24 @@
 						</article>
 					{/each}
 				</section>
+
+				{#if relatedBands.length > 0}
+					<section
+						data-testid="project-detail-related-capabilities"
+						class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+					>
+						<h2 class="text-2xl font-semibold text-zinc-900">Related capabilities</h2>
+						<ul class="mt-4 flex flex-wrap gap-2">
+							{#each relatedBands as band (band.id)}
+								<li>
+									<span class="rounded-full bg-zinc-100 px-3 py-1 text-sm font-semibold text-zinc-700">
+										{band.title}
+									</span>
+								</li>
+							{/each}
+						</ul>
+					</section>
+				{/if}
 
 				<section class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
 					<h2 class="text-2xl font-semibold text-zinc-900">Links</h2>
