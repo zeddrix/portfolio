@@ -52,13 +52,19 @@ test.describe("homepage hero and about", () => {
 
     await page.getByTestId("about-section").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("about-description")).toContainText(
+      "I have been developing since 2018",
+    );
+    await expect(page.getByTestId("about-description")).toContainText(
       "I like to work smart, not hard.",
     );
     await expect(page.getByTestId("about-description")).toContainText(
-      "AI Agentic Developer",
+      "Cursor and Claude Code",
     );
-    await expect(page.getByTestId("about-description")).not.toContainText(
+    await expect(page.getByTestId("about-description")).toContainText(
       "(ATDD)",
+    );
+    await expect(page.getByTestId("about-description")).toContainText(
+      "any development project 'til shipped",
     );
 
     await expect(page.getByTestId("work-section")).toBeVisible();

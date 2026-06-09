@@ -18,12 +18,11 @@ export const profile: PortfolioProfile = {
   heroSubtitle:
     "Full-stack web app developer shipping production apps with AI-accelerated workflows.",
   heroProof:
-    "Built 7 live products — including Queue, JW Tabs, and client SaaS.",
+    "9",
   about: [
-    "I like to work smart, not hard.",
     "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
-    "I work as an AI Agentic Developer using Cursor IDE and Claude Code to move quickly without sacrificing quality. I specialize in SvelteKit, Angular, and React while staying adaptable to product needs.",
-    "I focus on quality from the user journey down: critical paths covered first, then integration and unit tests so releases stay predictable and regressions are caught early.",
+    "I like to work smart, not hard. So now I utilize AI tools such as Cursor and Claude Code to move quickly without sacrificing quality, using the Acceptance Test-Driven Development (ATDD) approach.",
+    "I specialize in SvelteKit, React, and Angular while staying adaptable to product needs. With AI tools, I think it's not an exaggeration to say that I can work on any development project 'til shipped.",
   ],
   experienceSince: "2018",
   specialization: "SvelteKit, Angular, React",
