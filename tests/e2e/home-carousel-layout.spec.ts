@@ -30,7 +30,7 @@ test.describe("homepage carousel layout", () => {
     const aboutSection = page.getByTestId("about-section");
     const firstCard = page.getByTestId("highlight-card-0");
     const startCard = page.getByTestId("highlight-card-0");
-    const lastCard = page.getByTestId("highlight-card-4");
+    const lastCard = page.getByTestId("highlight-card-5");
     const carousel = page.getByTestId("highlights-carousel");
 
     await expect(heroTitle).toBeVisible();

@@ -28,10 +28,7 @@ test.describe("homepage hero and about", () => {
     await expect(page.getByTestId("hero-glance-experience")).toContainText(
       "2018",
     );
-    await expect(page.getByTestId("hero-glance-proof")).toContainText(
-      "Built 7 live products",
-    );
-    await expect(page.getByTestId("hero-glance-proof")).toContainText("Queue");
+    await expect(page.getByTestId("hero-glance-proof")).toContainText("9");
     await expect(page.getByTestId("hero-glance-specialization")).toContainText(
       "SvelteKit",
     );

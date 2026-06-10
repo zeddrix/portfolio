@@ -46,6 +46,25 @@ test.describe("project details routing", () => {
     );
   });
 
+  test("Given ATDD capability band, when user opens MERN's Shop link, then detail page shows related capabilities", async ({
+    page,
+  }) => {
+    await page.goto(PAGES_HOME_PATH);
+
+    await page.getByTestId("capability-bands-section").scrollIntoViewIfNeeded();
+    await page.getByTestId("band-project-link-atdd-merns-shop").click();
+    await page.waitForURL(`**${PAGES_BASE_PATH}/projects/merns-shop`);
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "MERN's Shop",
+    );
+    await expect(
+      page.getByTestId("project-detail-related-capabilities"),
+    ).toContainText("Acceptance-test-driven development");
+    await expect(page.getByTestId("project-detail-tech-stack")).toContainText(
+      "React",
+    );
+  });
+
   test("Given unknown slug, when route loads and user returns home, then not found and homepage resolve under base path", async ({
     page,
   }) => {

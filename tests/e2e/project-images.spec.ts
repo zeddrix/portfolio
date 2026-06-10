@@ -96,4 +96,43 @@ test.describe("project image mapping", () => {
       "UseDelight",
     );
   });
+
+  test("Given homepage carousel, when user inspects MERN's Shop card, then preview image uses mapped asset", async ({
+    page,
+  }) => {
+    await page.goto(PAGES_HOME_PATH);
+    await page.getByTestId("highlight-card-4").scrollIntoViewIfNeeded();
+
+    const mernsShopImage = page
+      .getByTestId("highlight-card-4")
+      .getByTestId("carousel-project-image-merns-shop");
+    await expect(mernsShopImage).toHaveAttribute(
+      "src",
+      /merns-shop-1-homepage\.png/,
+    );
+    await expect(mernsShopImage).toHaveAttribute("src", basePathPattern);
+  });
+
+  test("Given MERN's Shop detail page, when user views gallery, then mapped static assets are rendered", async ({
+    page,
+  }) => {
+    await page.goto(pagesPath("/projects/merns-shop"));
+
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "MERN's Shop",
+    );
+    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
+      "src",
+      /merns-shop-1-homepage\.png/,
+    );
+    await expect(
+      page.getByTestId("project-detail-gallery-image-1"),
+    ).toHaveAttribute("src", /merns-shop-2-product\.png/);
+    await expect(
+      page.getByTestId("project-detail-gallery-image-2"),
+    ).toHaveAttribute("src", /merns-shop-4-checkout\.png/);
+    await expect(
+      page.getByTestId("project-detail-gallery-image-5"),
+    ).toHaveAttribute("src", /atdd-playwright-e2e\.png/);
+  });
 });

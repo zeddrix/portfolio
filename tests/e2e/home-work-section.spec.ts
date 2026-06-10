@@ -57,6 +57,7 @@ test.describe("homepage work section", () => {
     await expect(page.getByTestId("case-study-usedelight")).toBeVisible();
     await expect(page.getByTestId("case-study-adverio-tools")).toBeVisible();
     await expect(page.getByTestId("case-study-queue")).toBeVisible();
+    await expect(page.getByTestId("case-study-merns-shop")).toBeVisible();
     await expect(page.getByTestId("work-featured-grid")).toHaveCount(0);
   });
 
@@ -110,9 +111,31 @@ test.describe("homepage work section", () => {
     await expect(page.getByTestId("highlights-carousel")).toContainText(
       "Queue",
     );
+    await expect(page.getByTestId("highlights-carousel")).toContainText(
+      "MERN's Shop",
+    );
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("highlight-card-3")).toHaveAttribute(
+      "data-highlight-slug",
+      "jw-tabs",
+    );
+    await page.getByTestId("highlight-card-4").scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("highlight-card-4")).toHaveAttribute(
+      "data-highlight-slug",
+      "merns-shop",
+    );
+    await expect(page.getByTestId("highlight-card-4")).toContainText(
+      "merns-shop.onrender.com",
+    );
+    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("highlight-card-5")).toHaveAttribute(
+      "data-highlight-slug",
+      "iaso",
+    );
 
     await page.getByTestId("work-section").scrollIntoViewIfNeeded();
     await page.getByTestId("work-filter-all").click();
+    await expect(page.getByTestId("project-card-merns-shop")).toBeVisible();
     await expect(page.getByTestId("project-card-trulyhappy")).toBeVisible();
     await expect(page.getByTestId("project-card-bolt-to-github")).toBeVisible();
   });

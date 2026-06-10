@@ -100,7 +100,9 @@ test.describe("seo metadata", () => {
 
     const body = await sitemapResponse.text();
     const queueLoc = `${PAGES_SITE_URL}/projects/queue`;
+    const mernsShopLoc = `${PAGES_SITE_URL}/projects/merns-shop`;
     expect(body).toContain(`<loc>${queueLoc}</loc>`);
+    expect(body).toContain(`<loc>${mernsShopLoc}</loc>`);
     expect(body).toContain(`<loc>${PAGES_SITE_URL}/</loc>`);
 
     const robotsResponse = await request.get(pagesPath("/robots.txt"));
@@ -111,6 +113,32 @@ test.describe("seo metadata", () => {
     await page.goto(projectPath("queue"));
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Queue",
+    );
+  });
+
+  test("Given MERN's Shop detail route, when user inspects head and page, then SEO and project content resolve", async ({
+    page,
+  }) => {
+    await page.goto(projectPath("merns-shop"));
+
+    await expect(page).toHaveTitle(/MERN's Shop.*Zeddrix Fabian/i);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/projects/merns-shop`,
+    );
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /electronics|PayPal|Playwright/i,
+    );
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "MERN's Shop",
+    );
+    await expect(
+      page.getByRole("link", { name: "Live demo", exact: true }),
+    ).toHaveAttribute("href", "https://merns-shop.onrender.com/");
+    await expect(page.getByRole("link", { name: "Source", exact: true })).toHaveAttribute(
+      "href",
+      "https://github.com/zeddrix/merns-shop",
     );
   });
 });

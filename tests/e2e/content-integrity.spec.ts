@@ -22,6 +22,9 @@ test.describe("content integrity", () => {
     await expect(toolsSection).toContainText("NestJS");
     await expect(toolsSection).toContainText("Strapi");
     await expect(toolsSection).toContainText("Nx");
+    await expect(toolsSection).toContainText("Vitest");
+    await expect(toolsSection).toContainText("Supertest");
+    await expect(toolsSection).toContainText("Render");
 
     await page.getByTestId("capability-bands-section").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("capability-bands-section")).toContainText(
@@ -33,5 +36,8 @@ test.describe("content integrity", () => {
     await expect(page.getByTestId("capability-bands-section")).toContainText(
       "Testing & ATDD",
     );
+    await expect(
+      page.getByTestId("band-project-link-atdd-merns-shop"),
+    ).toBeVisible();
   });
 });
