@@ -49,7 +49,11 @@
 			</section>
 		{:else}
 			<section class="space-y-8">
-				<a href={appPath('/')} class="inline-flex text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]">
+				<a
+					data-testid="project-detail-back-link"
+					href={appPath('/')}
+					class="inline-flex text-sm font-semibold text-[#136ef6] hover:text-[#0f5dcc]"
+				>
 					← Back to homepage
 				</a>
 
@@ -150,15 +154,19 @@
 					</section>
 				{/if}
 
-				<section class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+				<section
+					data-testid="project-detail-links-section"
+					class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+				>
 					<h2 class="text-2xl font-semibold text-zinc-900">Links</h2>
 					{#if data.project.links.length === 0}
 						<p class="mt-3 text-base text-zinc-600">No external links added for this project yet.</p>
 					{:else}
 						<ul class="mt-4 space-y-3">
-							{#each data.project.links as link (link.url)}
+							{#each data.project.links as link, index (link.url)}
 								<li>
 									<a
+										data-testid={'project-external-link-' + index}
 										href={link.url}
 										target={link.external ? '_blank' : undefined}
 										rel={link.external ? 'noopener noreferrer' : undefined}

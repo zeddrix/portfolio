@@ -117,9 +117,23 @@
 		for (const intervalId of intervalIds) clearInterval(intervalId);
 		if (highlightIntersectionObserver) highlightIntersectionObserver.disconnect();
 	});
+
+	/** @type {HTMLElement | null} */
+	let carouselElement = null;
+
+	/** @param {'prev' | 'next'} direction */
+	function scrollCarouselHorizontally(direction) {
+		if (!carouselElement) return;
+		const scrollAmount = Math.max(carouselElement.clientWidth * 0.85, 320);
+		carouselElement.scrollBy({
+			left: direction === 'next' ? scrollAmount : -scrollAmount,
+			behavior: 'smooth'
+		});
+	}
 </script>
 
-<div data-testid="highlights-carousel" class={carouselScrollClass}>
+<div class="relative">
+<div bind:this={carouselElement} data-testid="highlights-carousel" class={carouselScrollClass}>
 	<div
 		data-testid="highlights-carousel-track"
 		class="highlights-carousel-track flex w-max gap-5 sm:gap-6 md:gap-8"
@@ -186,4 +200,25 @@
 			</div>
 		{/each}
 	</div>
+</div>
+<div class="mt-3 flex justify-end gap-2 px-2">
+	<button
+		type="button"
+		data-testid="carousel-control-prev"
+		class="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-zinc-300 hover:text-zinc-900"
+		aria-label="Previous highlight project"
+		on:click={() => scrollCarouselHorizontally('prev')}
+	>
+		Previous
+	</button>
+	<button
+		type="button"
+		data-testid="carousel-control-next"
+		class="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-zinc-300 hover:text-zinc-900"
+		aria-label="Next highlight project"
+		on:click={() => scrollCarouselHorizontally('next')}
+	>
+		Next
+	</button>
+</div>
 </div>

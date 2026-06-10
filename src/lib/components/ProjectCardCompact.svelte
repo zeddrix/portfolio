@@ -69,6 +69,7 @@
 					{isExternalPrimary(project) ? 'Visit' : 'Open'}
 				</a>
 				<a
+					data-testid={'project-details-link-' + project.slug}
 					href={appPath('/projects/' + project.slug)}
 					class="text-sm font-semibold text-zinc-500 hover:text-zinc-800"
 				>
