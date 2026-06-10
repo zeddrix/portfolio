@@ -24,8 +24,7 @@
     "test:e2e:journeys": "playwright test tests/e2e/journeys",
     "test:e2e:generate-matrix": "node scripts/generate-e2e-flow-coverage-matrix.mjs",
     "test:unit": "vitest run",
-    "screenshots": "playwright test tests/visual/capture.spec.ts --config playwright.visual.config.ts",
-    "blur:screenshots": "node scripts/blur-capability-screenshots.mjs"
+    "screenshots": "playwright test tests/visual/capture.spec.ts --config playwright.visual.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -42,7 +41,6 @@
     "globals": "^16.5.0",
     "postcss": "^8.5.3",
     "prettier": "^3.6.2",
-    "sharp": "^0.34.5",
     "svelte": "^4.2.19",
     "svelte-check": "^4.0.0",
     "tailwindcss": "^3.4.17",
