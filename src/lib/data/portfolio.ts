@@ -506,8 +506,10 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     relatedProjectSlugs: [],
     visual: {
-      type: "iconPanel",
+      type: "hybrid",
+      image: "/atdd-playwright-e2e.png",
       icons: ["testing"],
+      badges: ["Playwright", "Vitest"],
     },
   },
 ];
