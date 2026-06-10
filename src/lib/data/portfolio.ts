@@ -108,6 +108,64 @@ export const projects: PortfolioProject[] = [
     ],
   },
   {
+    slug: "merns-shop",
+    name: "MERN's Shop",
+    category: "personal",
+    status: "live",
+    role: "Sole builder",
+    outcome:
+      "Live electronics e-commerce with ~170 products, PayPal checkout, admin ops, installable PWA, and 100+ automated tests.",
+    displayDomain: "merns-shop.onrender.com",
+    tagline: "Full-stack MERN e-commerce with PWA and ATDD",
+    description:
+      "Production-style electronics store for phones, tablets, TVs, and consoles — catalog browsing with variants and filters, guest and registered checkout via PayPal sandbox, admin panel for products/orders/users, installable PWA with web push, SEO for crawlers, and ATDD with Playwright + Vitest. Modernized from a 2021 Udemy exercise to a 2026 portfolio centerpiece on MongoDB Atlas and Render.",
+    techStack: [
+      "React",
+      "TypeScript",
+      "Express",
+      "MongoDB",
+      "Redux Toolkit",
+      "Vite",
+      "Mongoose",
+      "PayPal",
+      "PWA",
+      "Playwright",
+      "Vitest",
+      "Docker",
+      "Render",
+    ],
+    primaryImage: "/merns-shop-1-homepage.png",
+    galleryImages: [
+      "/merns-shop-2-product.png",
+      "/merns-shop-4-checkout.png",
+      "/merns-shop-3-admin.png",
+      "/render-dashboard-merns-shop.png",
+      "/atdd-playwright-e2e.png",
+    ],
+    links: [
+      {
+        label: "Live demo",
+        url: "https://merns-shop.onrender.com/",
+        external: true,
+      },
+      {
+        label: "Source",
+        url: "https://github.com/zeddrix/merns-shop",
+        external: true,
+      },
+    ],
+    detailSections: [
+      {
+        title: "Problem",
+        body: "Portfolio e-commerce demos often stop at basic CRUD. Real stores need variant catalogs, payment flows, admin operations, mobile UX, SEO, and test coverage that catches regressions across the stack.",
+      },
+      {
+        title: "Approach",
+        body: "I built a deployable MERN app with a rich gadget catalog, PayPal checkout, httpOnly cookie auth, admin workflows, PWA + push notifications, and ATDD — acceptance tests first, then integration and unit layers, with CI gates on every push.",
+      },
+    ],
+  },
+  {
     slug: "iaso",
     name: "Iaso",
     category: "personal",
@@ -361,6 +419,7 @@ export const caseStudyProjectSlugs = [
   "usedelight",
   "adverio-tools",
   "queue",
+  "merns-shop",
 ] as const;
 
 export const capabilityBands: CapabilityBand[] = [
@@ -374,6 +433,8 @@ export const capabilityBands: CapabilityBand[] = [
       "TypeScript",
       "Angular",
       "React",
+      "Express",
+      "MongoDB",
       "Node.js",
       "Python",
       "NestJS",
@@ -382,6 +443,7 @@ export const capabilityBands: CapabilityBand[] = [
     relatedProjectSlugs: [
       "jw-tabs",
       "queue",
+      "merns-shop",
       "adverio-tools",
       "trulyhappy",
       "articulearn",
@@ -399,11 +461,18 @@ export const capabilityBands: CapabilityBand[] = [
     highlights: [
       "Queue",
       "JW Tabs",
+      "MERN's Shop",
       "TrulyHappy",
       "Articulearn",
       "Angular SSR",
     ],
-    relatedProjectSlugs: ["queue", "jw-tabs", "trulyhappy", "articulearn"],
+    relatedProjectSlugs: [
+      "queue",
+      "jw-tabs",
+      "merns-shop",
+      "trulyhappy",
+      "articulearn",
+    ],
     visual: {
       type: "screenshot",
       images: ["/pwa-queue-desktop.png", "/pwa-queue-mobile.png"],
@@ -429,8 +498,8 @@ export const capabilityBands: CapabilityBand[] = [
     title: "Admin Dashboard",
     description:
       "Owner and admin dashboards for operations, analytics, moderation, and day-to-day product control.",
-    highlights: ["Queue", "JW Tabs", "Adverio Tools"],
-    relatedProjectSlugs: ["queue", "jw-tabs", "adverio-tools"],
+    highlights: ["Queue", "JW Tabs", "MERN's Shop", "Adverio Tools"],
+    relatedProjectSlugs: ["queue", "jw-tabs", "merns-shop", "adverio-tools"],
     visual: {
       type: "screenshot",
       image: "/queue-2-analytics.png",
@@ -456,6 +525,7 @@ export const capabilityBands: CapabilityBand[] = [
     highlights: ["Docker", "Node.js", "Python", "Django", "Nx", "nginx"],
     relatedProjectSlugs: [
       "queue",
+      "merns-shop",
       "adverio-tools",
       "trulyhappy",
       "articulearn",
@@ -479,7 +549,13 @@ export const capabilityBands: CapabilityBand[] = [
       "GitHub Actions",
       "AWS S3",
     ],
-    relatedProjectSlugs: ["usedelight", "queue", "trulyhappy", "articulearn"],
+    relatedProjectSlugs: [
+      "usedelight",
+      "queue",
+      "merns-shop",
+      "trulyhappy",
+      "articulearn",
+    ],
     visual: {
       type: "hybrid",
       images: [
@@ -499,12 +575,14 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "I define critical user journeys in focused end-to-end tests first, then layer integration and unit tests so each release ships with clear behavior and fewer regressions.",
     highlights: [
+      "MERN's Shop",
+      "Playwright journeys",
       "End-to-end tests",
       "Integration tests",
       "Unit tests",
       "User journeys",
     ],
-    relatedProjectSlugs: [],
+    relatedProjectSlugs: ["merns-shop"],
     visual: {
       type: "hybrid",
       image: "/atdd-playwright-e2e.png",
@@ -636,6 +714,8 @@ export const toolStripGroups: ToolStripGroup[] = [
     title: "Testing",
     items: [
       { id: "jest", label: "Jest" },
+      { id: "vitest", label: "Vitest" },
+      { id: "supertest", label: "Supertest" },
       { id: "react-testing-library", label: "React Testing Library" },
       { id: "cypress", label: "Cypress" },
       { id: "playwright", label: "Playwright" },
@@ -653,6 +733,7 @@ export const toolStripGroups: ToolStripGroup[] = [
       { id: "github-actions", label: "GitHub Actions" },
       { id: "nx", label: "Nx" },
       { id: "digitalocean", label: "DigitalOcean" },
+      { id: "render", label: "Render" },
       { id: "lemon-squeezy", label: "Lemon Squeezy" },
       { id: "yarn", label: "Yarn" },
       { id: "wordpress", label: "WordPress" },
@@ -670,6 +751,7 @@ export const highlightProjectSlugs = [
   "adverio-tools",
   "queue",
   "jw-tabs",
+  "merns-shop",
   "iaso",
 ] as const;
 
