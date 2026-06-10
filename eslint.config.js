@@ -18,6 +18,16 @@ export default [
   js.configs.recommended,
   prettier,
   {
+    files: ["**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
     files: ["**/*.ts", "**/*.js"],
     languageOptions: {
       parser: tsParser,
