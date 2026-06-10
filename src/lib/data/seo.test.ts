@@ -65,6 +65,20 @@ describe("seo URL helpers", () => {
     expect(meta.description.length).toBeGreaterThan(0);
   });
 
+  it("buildProjectMeta produces AnswerIQ SEO fields from portfolio data", async () => {
+    const { buildProjectMeta, buildAbsoluteUrl } = await import("./seo");
+    const { getProjectBySlug } = await import("./portfolio");
+    const answeriq = getProjectBySlug("answeriq");
+    expect(answeriq).toBeDefined();
+    if (!answeriq) return;
+
+    const meta = buildProjectMeta(answeriq);
+    expect(meta.title).toMatch(/AnswerIQ Case Study/i);
+    expect(meta.path).toBe("/projects/answeriq");
+    expect(meta.description.length).toBeGreaterThan(0);
+    expect(meta.ogImage).toBe(buildAbsoluteUrl("/answeriq-1-dashboard.png"));
+  });
+
   it("buildWebsiteJsonLd references portfolio site URL", async () => {
     const { buildWebsiteJsonLd, getSiteUrl } = await import("./seo");
     const jsonLd = buildWebsiteJsonLd();

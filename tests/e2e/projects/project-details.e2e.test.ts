@@ -91,6 +91,45 @@ test.describe("project details routing", () => {
     );
   });
 
+  test("Given carousel showcase, when user opens AnswerIQ, then detail shows billing and admin capabilities", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.work.carousel);
+    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+    await Promise.all([
+      page.waitForURL(`**${PAGES_BASE_PATH}/projects/answeriq`),
+      page.getByTestId("showcase-project-link-answeriq").click(),
+    ]);
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "AnswerIQ",
+    );
+    await expect(
+      page.getByTestId("project-detail-related-capabilities"),
+    ).toContainText("Billing integration");
+    await expect(
+      page.getByTestId("project-detail-related-capabilities"),
+    ).toContainText("Admin Dashboard");
+  });
+
+  test("Given case study layout, when user opens AnswerIQ case study, then detail loads with Stripe stack", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await setWorkLayout(page, "caseStudyLed");
+    await scrollToTestId(page, selectors.work.section);
+    await Promise.all([
+      page.waitForURL(`**${PAGES_BASE_PATH}/projects/answeriq`),
+      page.getByTestId("case-study-link-answeriq").click(),
+    ]);
+    await expect(page.getByTestId("project-detail-tech-stack")).toContainText(
+      "Stripe",
+    );
+    await expect(page.getByTestId("project-detail-tech-stack")).toContainText(
+      "PostgreSQL",
+    );
+  });
+
   test("Given project detail, when user clicks back link, then homepage hero is visible", async ({
     page,
   }) => {

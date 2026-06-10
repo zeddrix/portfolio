@@ -23,7 +23,7 @@ test.describe("homepage hero and about", () => {
     await expect(page.getByTestId("hero-glance-experience")).toContainText(
       "2018",
     );
-    await expect(page.getByTestId("hero-glance-proof")).toContainText("9");
+    await expect(page.getByTestId("hero-glance-proof")).toContainText("10");
 
     await page.getByTestId(selectors.hero.cta).click();
     await expect(page.getByTestId(selectors.hero.cta)).toHaveAttribute(

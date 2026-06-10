@@ -55,4 +55,26 @@ test.describe("seo navigation metadata", () => {
       "https://github.com/zeddrix/merns-shop",
     );
   });
+
+  test("Given homepage billing band, when user opens AnswerIQ, then SEO meta and live demo link resolve", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.sections.approach);
+    await Promise.all([
+      page.waitForURL(`**${PAGES_BASE_PATH}/projects/answeriq`),
+      page.getByTestId("band-project-link-billing-answeriq").click(),
+    ]);
+
+    await expect(page).toHaveTitle(/AnswerIQ.*Zeddrix Fabian/i);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/projects/answeriq`,
+    );
+    await expect(page.getByTestId("project-external-link-0")).toHaveAttribute(
+      "href",
+      "https://answeriq.io/",
+    );
+    await expect(page.getByTestId("project-external-link-1")).toHaveCount(0);
+  });
 });

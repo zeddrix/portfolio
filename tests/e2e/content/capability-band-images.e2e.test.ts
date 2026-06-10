@@ -32,9 +32,18 @@ test.describe("capability band images", () => {
       .getByTestId("capability-band-image-0");
     await expect(atddImage).toHaveAttribute("src", /atdd-playwright-e2e\.png/);
 
+    const adminDashboardImage = page
+      .getByTestId("highlight-band-3")
+      .getByTestId("capability-band-image-0");
+    await expect(adminDashboardImage).toHaveAttribute(
+      "src",
+      /answeriq-5-admin-dashboard\.png/,
+    );
+
     const imageUrls = [
       await dockerImage.getAttribute("src"),
       await atddImage.getAttribute("src"),
+      await adminDashboardImage.getAttribute("src"),
     ];
 
     for (const imageUrl of imageUrls) {

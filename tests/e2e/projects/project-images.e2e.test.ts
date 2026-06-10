@@ -125,4 +125,33 @@ test.describe("project image mapping", () => {
       page.getByTestId("project-detail-gallery-image-5"),
     ).toHaveAttribute("src", /atdd-playwright-e2e\.png/);
   });
+
+  test("Given AnswerIQ carousel card, when user opens detail, then hero and admin gallery assets render", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+
+    const answeriqCarouselImage = page
+      .getByTestId("highlight-card-5")
+      .getByTestId("carousel-project-image-answeriq");
+    await expect(answeriqCarouselImage).toHaveAttribute(
+      "src",
+      /answeriq-1-dashboard\.png/,
+    );
+    await expect(answeriqCarouselImage).toHaveAttribute("src", basePathPattern);
+
+    await Promise.all([
+      page.waitForURL("**/projects/answeriq"),
+      page.getByTestId("showcase-project-link-answeriq").click(),
+    ]);
+
+    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
+      "src",
+      /answeriq-1-dashboard\.png/,
+    );
+    await expect(
+      page.getByTestId("project-detail-gallery-image-5"),
+    ).toHaveAttribute("src", /answeriq-6-admin-users\.png/);
+  });
 });

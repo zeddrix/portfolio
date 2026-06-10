@@ -98,6 +98,23 @@ test.describe("homepage work section", () => {
     await expect(page.getByTestId("project-card-bolt-to-github")).toBeVisible();
   });
 
+  test("Given homepage carousel, when user scrolls to card after MERN's Shop, then AnswerIQ slug and label are accurate", async ({
+    page,
+  }) => {
+    const carousel = page.getByTestId(selectors.work.carousel);
+    await scrollToTestId(page, selectors.work.section);
+    await carousel.scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+
+    await expect(page.getByTestId("highlight-card-5")).toHaveAttribute(
+      "data-highlight-slug",
+      "answeriq",
+    );
+    await expect(
+      carousel.getByTestId("carousel-project-type-label-answeriq"),
+    ).toContainText("Personal");
+  });
+
   test("Given case study layout, when user opens more projects card, then additional project is reachable", async ({
     page,
   }) => {

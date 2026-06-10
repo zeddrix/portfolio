@@ -55,22 +55,24 @@ describe("portfolio data", () => {
       "adverio-tools",
       "queue",
       "merns-shop",
+      "answeriq",
     ]);
   });
 
-  it("exposes highlight carousel slugs with MERN's Shop after JW Tabs", () => {
+  it("exposes highlight carousel slugs with AnswerIQ after MERN's Shop", () => {
     expect(highlightProjectSlugs).toEqual([
       "usedelight",
       "adverio-tools",
       "queue",
       "jw-tabs",
       "merns-shop",
+      "answeriq",
       "iaso",
     ]);
   });
 
-  it("ships nine portfolio projects total", () => {
-    expect(projects.length).toBe(9);
+  it("ships ten portfolio projects total", () => {
+    expect(projects.length).toBe(10);
   });
 
   it("returns MERN's Shop project with mapped assets and bands", () => {
@@ -100,6 +102,36 @@ describe("portfolio data", () => {
 
     expect(bandIds).toContain("fullstack");
     expect(bandIds).toContain("pwa");
+    expect(bandIds).toContain("admin-dashboard");
+    expect(bandIds).toContain("deployment");
+    expect(bandIds).toContain("atdd");
+    expect(bandIds).toContain("docker");
+  });
+
+  it("returns AnswerIQ project with mapped assets and bands", () => {
+    const project = getProjectBySlug("answeriq");
+
+    expect(project?.name).toBe("AnswerIQ");
+    expect(project?.status).toBe("live");
+    expect(project?.techStack).toContain("React");
+    expect(project?.techStack).toContain("PostgreSQL");
+    expect(project?.techStack).toContain("Stripe");
+    expect(project?.techStack).toContain("OpenAI");
+    expect(project?.techStack).toContain("Recharts");
+    expect(project?.primaryImage).toBe("/answeriq-1-dashboard.png");
+    expect(project?.galleryImages).toContain("/answeriq-2-articles.png");
+    expect(project?.galleryImages).toContain("/answeriq-6-admin-users.png");
+    expect(project?.links).toEqual([
+      expect.objectContaining({
+        label: "Live demo",
+        url: "https://answeriq.io/",
+      }),
+    ]);
+
+    const bandIds = getBandsForProject("answeriq").map((band) => band.id);
+
+    expect(bandIds).toContain("fullstack");
+    expect(bandIds).toContain("billing");
     expect(bandIds).toContain("admin-dashboard");
     expect(bandIds).toContain("deployment");
     expect(bandIds).toContain("atdd");

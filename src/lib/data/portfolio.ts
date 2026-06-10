@@ -17,7 +17,7 @@ export const profile: PortfolioProfile = {
   heroTitle: "Hello, I'm Zeddrix Fabian",
   heroSubtitle:
     "Full-stack web app developer shipping production apps with AI-accelerated workflows.",
-  heroProof: "9",
+  heroProof: "10",
   about: [
     "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
     "I like to work smart, not hard. So now I utilize AI tools such as Cursor and Claude Code to move quickly without sacrificing quality, using the Acceptance Test-Driven Development (ATDD) approach.",
@@ -162,6 +162,67 @@ export const projects: PortfolioProject[] = [
       {
         title: "Approach",
         body: "I built a deployable MERN app with a rich gadget catalog, PayPal checkout, httpOnly cookie auth, admin workflows, PWA + push notifications, and ATDD — acceptance tests first, then integration and unit layers, with CI gates on every push.",
+      },
+    ],
+  },
+  {
+    slug: "answeriq",
+    name: "AnswerIQ",
+    category: "personal",
+    status: "live",
+    role: "Sole builder",
+    outcome:
+      "Live multi-tenant SaaS that turns PAA queries into SEO FAQ articles, publishes to Shopify, bills via Stripe, and ships an admin console with audit logs — backed by Playwright, Jest, and Vitest ATDD.",
+    displayDomain: "answeriq.io",
+    tagline: "AI-powered FAQ generation SaaS for Shopify SEO",
+    description:
+      "Production SaaS for Shopify merchants: SerpAPI pulls People Also Ask questions, GPT-4.1 generates 400–600 word FAQ articles, and a review workflow publishes to Shopify blogs with SEO meta, tags, and sitemap updates. Includes LLMs.txt generation for AI-readable store docs, workspace RBAC with PostgreSQL row-level security, encrypted API credentials, Stripe subscriptions with trials and usage credits, and a full admin console for users, workspaces, billing sync, and audit logs — deployed on AWS EC2 with PM2.",
+    techStack: [
+      "React",
+      "TypeScript",
+      "Express",
+      "PostgreSQL",
+      "Vite",
+      "Tailwind CSS",
+      "OpenAI",
+      "SerpAPI",
+      "Shopify",
+      "Stripe",
+      "JWT",
+      "Playwright",
+      "Jest",
+      "Vitest",
+      "Docker",
+      "Recharts",
+      "AWS EC2",
+      "PM2",
+    ],
+    primaryImage: "/answeriq-1-dashboard.png",
+    galleryImages: [
+      "/answeriq-2-articles.png",
+      "/answeriq-3-profile.png",
+      "/answeriq-4-settings.png",
+      "/answeriq-5-admin-dashboard.png",
+      "/answeriq-6-admin-users.png",
+      "/answeriq-7-admin-subscriptions.png",
+      "/answeriq-8-admin-workspaces.png",
+      "/answeriq-9-admin-system-settings.png",
+    ],
+    links: [
+      {
+        label: "Live demo",
+        url: "https://answeriq.io/",
+        external: true,
+      },
+    ],
+    detailSections: [
+      {
+        title: "Problem",
+        body: "Shopify stores miss long-tail SEO traffic from People Also Ask queries, and manual FAQ content creation is slow. Stores also lack AI-readable discovery files that help LLM crawlers understand their catalog.",
+      },
+      {
+        title: "Approach",
+        body: "I built an end-to-end SaaS with workspace isolation via PostgreSQL RLS, an async keyword-to-publish pipeline, Stripe billing with usage metering, and a separate admin console — all driven by ATDD with Playwright journeys, integration tests, and unit coverage.",
       },
     ],
   },
@@ -420,6 +481,7 @@ export const caseStudyProjectSlugs = [
   "adverio-tools",
   "queue",
   "merns-shop",
+  "answeriq",
 ] as const;
 
 export const capabilityBands: CapabilityBand[] = [
@@ -439,11 +501,13 @@ export const capabilityBands: CapabilityBand[] = [
       "Python",
       "NestJS",
       "Strapi",
+      "AnswerIQ",
     ],
     relatedProjectSlugs: [
       "jw-tabs",
       "queue",
       "merns-shop",
+      "answeriq",
       "adverio-tools",
       "trulyhappy",
       "articulearn",
@@ -484,8 +548,14 @@ export const capabilityBands: CapabilityBand[] = [
     title: "Billing integration",
     description:
       "Subscription flows with Stripe and Lemon Squeezy across client and personal products.",
-    highlights: ["Stripe", "Lemon Squeezy", "UseDelight", "Queue"],
-    relatedProjectSlugs: ["usedelight", "queue", "trulyhappy", "articulearn"],
+    highlights: ["Stripe", "Lemon Squeezy", "UseDelight", "Queue", "AnswerIQ"],
+    relatedProjectSlugs: [
+      "usedelight",
+      "queue",
+      "trulyhappy",
+      "articulearn",
+      "answeriq",
+    ],
     visual: {
       type: "hybrid",
       image: "/lemonsqueezy-dashboard.png",
@@ -498,11 +568,23 @@ export const capabilityBands: CapabilityBand[] = [
     title: "Admin Dashboard",
     description:
       "Owner and admin dashboards for operations, analytics, moderation, and day-to-day product control.",
-    highlights: ["Queue", "JW Tabs", "MERN's Shop", "Adverio Tools"],
-    relatedProjectSlugs: ["queue", "jw-tabs", "merns-shop", "adverio-tools"],
+    highlights: [
+      "Queue",
+      "JW Tabs",
+      "MERN's Shop",
+      "Adverio Tools",
+      "AnswerIQ",
+    ],
+    relatedProjectSlugs: [
+      "queue",
+      "jw-tabs",
+      "merns-shop",
+      "adverio-tools",
+      "answeriq",
+    ],
     visual: {
       type: "screenshot",
-      image: "/queue-2-analytics.png",
+      image: "/answeriq-5-admin-dashboard.png",
     },
   },
   {
@@ -526,6 +608,7 @@ export const capabilityBands: CapabilityBand[] = [
     relatedProjectSlugs: [
       "queue",
       "merns-shop",
+      "answeriq",
       "adverio-tools",
       "trulyhappy",
       "articulearn",
@@ -544,6 +627,8 @@ export const capabilityBands: CapabilityBand[] = [
       "Namecheap",
       "Cloudflare",
       "Render",
+      "AWS EC2",
+      "AnswerIQ",
       "Custom domains",
       "DigitalOcean",
       "GitHub Actions",
@@ -553,6 +638,7 @@ export const capabilityBands: CapabilityBand[] = [
       "usedelight",
       "queue",
       "merns-shop",
+      "answeriq",
       "trulyhappy",
       "articulearn",
     ],
@@ -576,13 +662,14 @@ export const capabilityBands: CapabilityBand[] = [
       "I define critical user journeys in focused end-to-end tests first, then layer integration and unit tests so each release ships with clear behavior and fewer regressions.",
     highlights: [
       "MERN's Shop",
+      "AnswerIQ",
       "Playwright journeys",
       "End-to-end tests",
       "Integration tests",
       "Unit tests",
       "User journeys",
     ],
-    relatedProjectSlugs: ["merns-shop"],
+    relatedProjectSlugs: ["merns-shop", "answeriq"],
     visual: {
       type: "hybrid",
       image: "/atdd-playwright-e2e.png",
@@ -734,6 +821,8 @@ export const toolStripGroups: ToolStripGroup[] = [
       { id: "nx", label: "Nx" },
       { id: "digitalocean", label: "DigitalOcean" },
       { id: "render", label: "Render" },
+      { id: "stripe", label: "Stripe" },
+      { id: "aws-ec2", label: "AWS EC2" },
       { id: "lemon-squeezy", label: "Lemon Squeezy" },
       { id: "yarn", label: "Yarn" },
       { id: "wordpress", label: "WordPress" },
@@ -752,6 +841,7 @@ export const highlightProjectSlugs = [
   "queue",
   "jw-tabs",
   "merns-shop",
+  "answeriq",
   "iaso",
 ] as const;
 

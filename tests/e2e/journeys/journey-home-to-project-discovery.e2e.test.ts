@@ -43,6 +43,25 @@ test.describe.serial("Journey: home to project discovery", () => {
     await expect(page.getByTestId(selectors.work.section)).toBeVisible();
   });
 
+  test("Carousel card after MERN's Shop → AnswerIQ detail → related capabilities → back", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.work.carousel);
+    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+
+    await Promise.all([
+      page.waitForURL(`**${PAGES_BASE_PATH}/projects/answeriq`),
+      page.getByTestId("showcase-project-link-answeriq").click(),
+    ]);
+    await expect(
+      page.getByTestId("project-detail-related-capabilities"),
+    ).toBeVisible();
+
+    await page.getByTestId("project-detail-back-link").click();
+    await expect(page.getByTestId(selectors.work.section)).toBeVisible();
+  });
+
   test("Tools strip → approach band → Adverio detail", async ({ page }) => {
     await gotoHome(page);
     await scrollToTestId(page, selectors.sections.tools);
