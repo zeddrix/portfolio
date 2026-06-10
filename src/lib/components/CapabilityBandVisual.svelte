@@ -6,6 +6,8 @@
 	/** @type {string} */
 	export let title;
 
+	let carouselIndex = 0;
+
 	/** @param {string} iconId */
 	function getIconLabel(iconId) {
 		switch (iconId) {
@@ -30,38 +32,138 @@
 		}
 	}
 
+	/** @param {string[]} images */
+	function getImageLayout(images) {
+		if (visual.imageLayout) {
+			return visual.imageLayout;
+		}
+
+		if (images.length > 2) {
+			return 'carousel';
+		}
+
+		if (images.length === 2) {
+			return 'split';
+		}
+
+		return 'single';
+	}
+
 	$: iconIds = visual.icons ?? [];
 	$: badges = visual.badges ?? [];
 	$: screenshotAlt = title + ' capability preview';
 	$: iconPanelAlt = title + ' capability illustration';
+	$: displayImages =
+		visual.images && visual.images.length > 0
+			? visual.images
+			: visual.image
+				? [visual.image]
+				: [];
+	$: imageLayout = getImageLayout(displayImages);
+	$: hasVisualMedia =
+		(visual.type === 'screenshot' || visual.type === 'hybrid') && displayImages.length > 0;
+	$: carouselCount = displayImages.length;
+	$: safeCarouselIndex =
+		carouselCount > 0 ? ((carouselIndex % carouselCount) + carouselCount) % carouselCount : 0;
+
+	/** @param {number} nextIndex */
+	function setCarouselIndex(nextIndex) {
+		if (carouselCount === 0) {
+			return;
+		}
+
+		carouselIndex = ((nextIndex % carouselCount) + carouselCount) % carouselCount;
+	}
+
+	function showPreviousSlide() {
+		setCarouselIndex(safeCarouselIndex - 1);
+	}
+
+	function showNextSlide() {
+		setCarouselIndex(safeCarouselIndex + 1);
+	}
+
+	$: if (carouselIndex >= carouselCount) {
+		carouselIndex = 0;
+	}
 </script>
 
 <div
 	class="relative min-h-[260px] w-full overflow-hidden rounded-2xl bg-zinc-900 shadow-[0_24px_48px_-28px_rgba(0,0,0,0.45)] sm:min-h-[300px] lg:min-h-[340px]"
+	data-testid="capability-band-visual"
 >
-	{#if visual.type === 'screenshot' && visual.image}
-		<img
-			src={resolveStaticAsset(visual.image)}
-			alt={screenshotAlt}
-			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
-			loading="lazy"
-		/>
-	{:else if visual.type === 'hybrid' && visual.image}
-		<img
-			src={resolveStaticAsset(visual.image)}
-			alt={screenshotAlt}
-			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
-			loading="lazy"
-		/>
-		{#if badges.length > 0}
-			<div class="absolute inset-x-0 bottom-0 flex flex-wrap gap-2 bg-gradient-to-t from-zinc-950/90 to-transparent p-5 pt-12">
-				{#each badges as badge (badge)}
-					<span class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-zinc-100 ring-1 ring-white/15">
-						{badge}
-					</span>
-				{/each}
+	{#if hasVisualMedia && imageLayout === 'split'}
+		<div
+			class="grid h-full min-h-[260px] grid-cols-1 items-center gap-3 p-4 sm:min-h-[300px] lg:min-h-[340px] lg:grid-cols-[1.35fr_0.65fr]"
+			data-testid="capability-band-visual-split"
+		>
+			{#each displayImages as imagePath, index (imagePath)}
+				<img
+					src={resolveStaticAsset(imagePath)}
+					alt={screenshotAlt + (index === 0 ? ' desktop' : ' mobile')}
+					class={'w-full object-contain ' + (index === 1 ? 'mx-auto max-w-[220px] lg:max-w-none' : '')}
+					loading="lazy"
+					data-testid={'capability-band-image-' + index}
+				/>
+			{/each}
+		</div>
+	{:else if hasVisualMedia && imageLayout === 'carousel'}
+		<div class="relative h-full min-h-[260px] sm:min-h-[300px] lg:min-h-[340px]" data-testid="capability-band-visual-carousel">
+			{#each displayImages as imagePath, index (imagePath)}
+				<img
+					src={resolveStaticAsset(imagePath)}
+					alt={screenshotAlt + ' slide ' + (index + 1)}
+					class={'absolute inset-0 h-full w-full object-contain p-4 transition-opacity duration-300 ' +
+						(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
+					loading={index === 0 ? 'eager' : 'lazy'}
+					data-testid={'capability-band-image-' + index}
+					aria-hidden={index !== safeCarouselIndex}
+				/>
+			{/each}
+
+			<div
+				class={'absolute inset-x-0 z-20 flex items-center justify-center gap-3 px-4 ' +
+					(visual.type === 'hybrid' && badges.length > 0 ? 'bottom-14' : 'bottom-3')}
+			>
+				<button
+					type="button"
+					class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
+					aria-label={'Previous ' + title + ' screenshot'}
+					on:click={showPreviousSlide}
+				>
+					Prev
+				</button>
+				<div class="flex items-center gap-2" role="tablist" aria-label={title + ' screenshot slides'}>
+					{#each displayImages as imagePath, index (imagePath)}
+						<button
+							type="button"
+							class={'h-2.5 w-2.5 rounded-full transition ' +
+								(index === safeCarouselIndex ? 'bg-white' : 'bg-white/35 hover:bg-white/55')}
+							aria-label={'Show slide ' + (index + 1)}
+							aria-selected={index === safeCarouselIndex}
+							role="tab"
+							on:click={() => setCarouselIndex(index)}
+						></button>
+					{/each}
+				</div>
+				<button
+					type="button"
+					class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
+					aria-label={'Next ' + title + ' screenshot'}
+					on:click={showNextSlide}
+				>
+					Next
+				</button>
 			</div>
-		{/if}
+		</div>
+	{:else if hasVisualMedia}
+		<img
+			src={resolveStaticAsset(displayImages[0])}
+			alt={screenshotAlt}
+			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
+			loading="lazy"
+			data-testid="capability-band-image-0"
+		/>
 	{:else}
 		<div
 			class="flex h-full min-h-[260px] flex-col items-center justify-center gap-6 p-8 sm:min-h-[300px] lg:min-h-[340px]"
@@ -131,6 +233,16 @@
 					</div>
 				{/each}
 			</div>
+		</div>
+	{/if}
+
+	{#if hasVisualMedia && visual.type === 'hybrid' && badges.length > 0}
+		<div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-wrap gap-2 bg-gradient-to-t from-zinc-950/90 to-transparent p-5 pt-12">
+			{#each badges as badge (badge)}
+				<span class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-zinc-100 ring-1 ring-white/15">
+					{badge}
+				</span>
+			{/each}
 		</div>
 	{/if}
 </div>
