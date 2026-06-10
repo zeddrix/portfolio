@@ -112,7 +112,7 @@ test.describe("homepage work section", () => {
     );
     await expect(
       carousel.getByTestId("carousel-project-type-label-answeriq"),
-    ).toContainText("Personal");
+    ).toContainText("Client work");
   });
 
   test("Given case study layout, when user opens more projects card, then additional project is reachable", async ({

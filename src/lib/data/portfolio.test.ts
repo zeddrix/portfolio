@@ -112,6 +112,8 @@ describe("portfolio data", () => {
     const project = getProjectBySlug("answeriq");
 
     expect(project?.name).toBe("AnswerIQ");
+    expect(project?.category).toBe("client");
+    expect(project?.role).toBe("Full-stack contributor");
     expect(project?.status).toBe("live");
     expect(project?.techStack).toContain("React");
     expect(project?.techStack).toContain("PostgreSQL");

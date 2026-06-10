@@ -168,9 +168,9 @@ export const projects: PortfolioProject[] = [
   {
     slug: "answeriq",
     name: "AnswerIQ",
-    category: "personal",
+    category: "client",
     status: "live",
-    role: "Sole builder",
+    role: "Full-stack contributor",
     outcome:
       "Live multi-tenant SaaS that turns PAA queries into SEO FAQ articles, publishes to Shopify, bills via Stripe, and ships an admin console with audit logs — backed by Playwright, Jest, and Vitest ATDD.",
     displayDomain: "answeriq.io",
@@ -222,7 +222,7 @@ export const projects: PortfolioProject[] = [
       },
       {
         title: "Approach",
-        body: "I built an end-to-end SaaS with workspace isolation via PostgreSQL RLS, an async keyword-to-publish pipeline, Stripe billing with usage metering, and a separate admin console — all driven by ATDD with Playwright journeys, integration tests, and unit coverage.",
+        body: "I contributed to the end-to-end SaaS across workspace isolation, the keyword-to-publish pipeline, Stripe billing, and the admin console — with Playwright journeys, integration tests, and unit coverage.",
       },
     ],
   },
