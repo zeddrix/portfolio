@@ -5,6 +5,7 @@ import {
   getBandsForProject,
   getProjectBySlug,
   getProjectsForWorkFilter,
+  highlightProjectSlugs,
   personalProjectCount,
   projects,
 } from "./portfolio";
@@ -53,7 +54,56 @@ describe("portfolio data", () => {
       "usedelight",
       "adverio-tools",
       "queue",
+      "merns-shop",
     ]);
+  });
+
+  it("exposes highlight carousel slugs with MERN's Shop after JW Tabs", () => {
+    expect(highlightProjectSlugs).toEqual([
+      "usedelight",
+      "adverio-tools",
+      "queue",
+      "jw-tabs",
+      "merns-shop",
+      "iaso",
+    ]);
+  });
+
+  it("ships nine portfolio projects total", () => {
+    expect(projects.length).toBe(9);
+  });
+
+  it("returns MERN's Shop project with mapped assets and bands", () => {
+    const project = getProjectBySlug("merns-shop");
+
+    expect(project?.name).toBe("MERN's Shop");
+    expect(project?.status).toBe("live");
+    expect(project?.techStack).toContain("React");
+    expect(project?.primaryImage).toBe("/merns-shop-1-homepage.png");
+    expect(project?.galleryImages).toContain("/merns-shop-2-product.png");
+    expect(project?.galleryImages).toContain("/merns-shop-4-checkout.png");
+    expect(project?.galleryImages).toContain("/atdd-playwright-e2e.png");
+    expect(project?.links).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: "Live demo",
+          url: "https://merns-shop.onrender.com/",
+        }),
+        expect.objectContaining({
+          label: "Source",
+          url: "https://github.com/zeddrix/merns-shop",
+        }),
+      ]),
+    );
+
+    const bandIds = getBandsForProject("merns-shop").map((band) => band.id);
+
+    expect(bandIds).toContain("fullstack");
+    expect(bandIds).toContain("pwa");
+    expect(bandIds).toContain("admin-dashboard");
+    expect(bandIds).toContain("deployment");
+    expect(bandIds).toContain("atdd");
+    expect(bandIds).toContain("docker");
   });
 
   it("returns capability bands related to a project", () => {

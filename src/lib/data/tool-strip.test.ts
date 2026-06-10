@@ -35,5 +35,8 @@ describe("tool strip groups", () => {
     expect(labels.has("Anthropic Claude")).toBe(true);
     expect(labels.has("AWS S3")).toBe(true);
     expect(labels.has("Lemon Squeezy")).toBe(true);
+    expect(labels.has("Vitest")).toBe(true);
+    expect(labels.has("Supertest")).toBe(true);
+    expect(labels.has("Render")).toBe(true);
   });
 });
