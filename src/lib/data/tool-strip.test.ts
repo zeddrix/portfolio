@@ -29,5 +29,11 @@ describe("tool strip groups", () => {
     expect(labels.has("Cursor IDE")).toBe(true);
     expect(labels.has("Node.js (Express, NestJS)")).toBe(true);
     expect(labels.has("Tailwind CSS")).toBe(true);
+    expect(labels.has("NestJS")).toBe(true);
+    expect(labels.has("Strapi")).toBe(true);
+    expect(labels.has("Nx")).toBe(true);
+    expect(labels.has("Anthropic Claude")).toBe(true);
+    expect(labels.has("AWS S3")).toBe(true);
+    expect(labels.has("Lemon Squeezy")).toBe(true);
   });
 });

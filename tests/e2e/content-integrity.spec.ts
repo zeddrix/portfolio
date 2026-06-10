@@ -19,6 +19,9 @@ test.describe("content integrity", () => {
     await expect(toolsSection).toContainText("Cursor IDE");
     await expect(toolsSection).toContainText("Claude Code");
     await expect(toolsSection).toContainText("Playwright");
+    await expect(toolsSection).toContainText("NestJS");
+    await expect(toolsSection).toContainText("Strapi");
+    await expect(toolsSection).toContainText("Nx");
 
     await page.getByTestId("capability-bands-section").scrollIntoViewIfNeeded();
     await expect(page.getByTestId("capability-bands-section")).toContainText(

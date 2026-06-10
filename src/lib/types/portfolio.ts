@@ -57,6 +57,8 @@ export interface ToolStripGroup {
 
 export type CapabilityBandVisualType = "screenshot" | "iconPanel" | "hybrid";
 
+export type CapabilityBandImageLayout = "single" | "split" | "carousel";
+
 export type CapabilityBandLayoutMode =
   | "sevenBands"
   | "groupedBands"
@@ -65,6 +67,8 @@ export type CapabilityBandLayoutMode =
 export interface CapabilityBandVisual {
   type: CapabilityBandVisualType;
   image?: string;
+  images?: string[];
+  imageLayout?: CapabilityBandImageLayout;
   icons?: string[];
   badges?: string[];
 }
