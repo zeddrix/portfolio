@@ -95,7 +95,9 @@ async function main() {
   const requestedFiles = process.argv.slice(2);
   const configs =
     requestedFiles.length > 0
-      ? imageBlurConfigs.filter((config) => requestedFiles.includes(config.file))
+      ? imageBlurConfigs.filter((config) =>
+          requestedFiles.includes(config.file),
+        )
       : imageBlurConfigs;
 
   if (requestedFiles.length > 0 && configs.length === 0) {
