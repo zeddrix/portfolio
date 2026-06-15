@@ -57,6 +57,8 @@ export const projects: PortfolioProject[] = [
       "/queue-2-analytics.png",
       "/queue-3-events.png",
       "/queue-4-listings.png",
+      "/chatbot-start.png",
+      "/chatbot-placement-in-full-dashboard.png",
     ],
     links: [],
     detailSections: [
@@ -66,7 +68,7 @@ export const projects: PortfolioProject[] = [
       },
       {
         title: "Approach",
-        body: "I designed a modular PWA architecture with shared scheduling, billing, and messaging capabilities so each business mode can grow independently.",
+        body: "I designed a modular PWA architecture with shared scheduling, billing, and messaging capabilities so each business mode can grow independently. Embedded Support Chat uses Groq-backed guidance to answer owner questions in context without leaving the dashboard.",
       },
     ],
   },
@@ -595,8 +597,14 @@ export const capabilityBands: CapabilityBand[] = [
     highlights: ["Groq", "Anthropic Claude", "Queue", "JW Tabs", "Iaso"],
     relatedProjectSlugs: ["queue", "jw-tabs", "iaso", "trulyhappy"],
     visual: {
-      type: "iconPanel",
+      type: "hybrid",
+      images: [
+        "/chatbot-start.png",
+        "/chatbot-placement-in-full-dashboard.png",
+      ],
+      imageLayout: "carousel",
       icons: ["chatbot"],
+      badges: ["Groq", "Anthropic Claude"],
     },
   },
   {

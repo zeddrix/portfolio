@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  capabilityBands,
   caseStudyProjectSlugs,
   clientProjectCount,
   getBandsForProject,
@@ -40,7 +41,23 @@ describe("portfolio data", () => {
       "/usedelight-5-subscription.png",
     );
     expect(queue?.primaryImage).toBe("/queue-1-dashboard.png");
+    expect(queue?.galleryImages).toContain("/chatbot-start.png");
+    expect(queue?.galleryImages).toContain(
+      "/chatbot-placement-in-full-dashboard.png",
+    );
     expect(jwTabs?.primaryImage).toBe("/jw-tabs-1-homepage.png");
+  });
+
+  it("maps chatbot capability band to hybrid carousel visuals", () => {
+    const chatbotBand = capabilityBands.find((band) => band.id === "chatbot");
+
+    expect(chatbotBand?.visual.type).toBe("hybrid");
+    expect(chatbotBand?.visual.imageLayout).toBe("carousel");
+    expect(chatbotBand?.visual.images).toEqual([
+      "/chatbot-start.png",
+      "/chatbot-placement-in-full-dashboard.png",
+    ]);
+    expect(chatbotBand?.visual.badges).toEqual(["Groq", "Anthropic Claude"]);
   });
 
   it("contains at least one personal and one client project", () => {

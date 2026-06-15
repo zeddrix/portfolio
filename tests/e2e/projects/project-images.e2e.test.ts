@@ -22,7 +22,8 @@ test.describe("project image mapping", () => {
 
     const queueCarouselImage = page
       .getByTestId("highlight-card-2")
-      .getByTestId("carousel-project-image-queue");
+      .getByTestId("carousel-project-image-queue")
+      .first();
     await expect(queueCarouselImage).toHaveAttribute(
       "src",
       /queue-1-dashboard\.png/,
@@ -66,6 +67,43 @@ test.describe("project image mapping", () => {
     await expect
       .poll(async () => queueImage.getAttribute("src"))
       .not.toBe(firstSrc);
+  });
+
+  test("Given Queue carousel journey, when user opens detail, then chatbot gallery assets render", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
+    await Promise.all([
+      page.waitForURL("**/projects/queue"),
+      page.getByTestId("showcase-project-link-queue").click(),
+    ]);
+
+    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
+      "src",
+      /queue-1-dashboard\.png/,
+    );
+    await expect(
+      page.getByTestId("project-detail-gallery-image-4"),
+    ).toHaveAttribute("src", /chatbot-start\.png/);
+    await expect(
+      page.getByTestId("project-detail-gallery-image-5"),
+    ).toHaveAttribute("src", /chatbot-placement-in-full-dashboard\.png/);
+
+    const galleryUrls = [
+      await page
+        .getByTestId("project-detail-gallery-image-4")
+        .getAttribute("src"),
+      await page
+        .getByTestId("project-detail-gallery-image-5")
+        .getAttribute("src"),
+    ];
+
+    for (const imageUrl of galleryUrls) {
+      expect(imageUrl).not.toBeNull();
+      const resolvedUrl = new URL(imageUrl ?? "", page.url()).href;
+      expect((await page.request.get(resolvedUrl)).ok()).toBeTruthy();
+    }
   });
 
   test("Given Adverio band link journey, when user opens project, then gallery assets render", async ({

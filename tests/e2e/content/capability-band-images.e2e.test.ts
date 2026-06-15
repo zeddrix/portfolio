@@ -40,10 +40,20 @@ test.describe("capability band images", () => {
       /answeriq-5-admin-dashboard\.png/,
     );
 
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    await expect(
+      chatbotBand.getByTestId("capability-band-visual-carousel"),
+    ).toBeVisible();
+    const chatbotImage = chatbotBand.getByTestId("capability-band-image-0");
+    await expect(chatbotImage).toHaveAttribute("src", /chatbot-start\.png/);
+    await expect(chatbotBand).toContainText("Groq");
+    await expect(chatbotBand).toContainText("Anthropic Claude");
+
     const imageUrls = [
       await dockerImage.getAttribute("src"),
       await atddImage.getAttribute("src"),
       await adminDashboardImage.getAttribute("src"),
+      await chatbotImage.getAttribute("src"),
     ];
 
     for (const imageUrl of imageUrls) {
@@ -51,6 +61,23 @@ test.describe("capability band images", () => {
       const resolvedUrl = new URL(imageUrl ?? "", page.url()).href;
       expect((await page.request.get(resolvedUrl)).ok()).toBeTruthy();
     }
+  });
+
+  test("Given chatbot carousel, when user advances slides, then screenshot source updates", async ({
+    page,
+  }) => {
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    await expect(
+      chatbotBand.getByTestId("capability-band-image-0"),
+    ).toHaveAttribute("src", /chatbot-start\.png/);
+
+    await chatbotBand
+      .getByRole("button", { name: "Next Chatbot screenshot" })
+      .click();
+
+    await expect(
+      chatbotBand.getByTestId("capability-band-image-1"),
+    ).toHaveAttribute("src", /chatbot-placement-in-full-dashboard\.png/);
   });
 
   test("Given deployment carousel, when user advances slides, then screenshot source updates", async ({
