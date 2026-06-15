@@ -1,0 +1,708 @@
+{
+  "/adverio-tools-1-overview.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/adverio-tools-1-overview-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/adverio-tools-1-overview-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/adverio-tools-1-overview-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACwAwCdASogABQAPwFurlCrJiQiqA1RYCAJZQCw7BEc94kbtb1gKAD+5AQKrX7wT2yjcKBYZ/8G0lJWWTg6+OubijIfYcHCJCWUBjAA"
+  },
+  "/adverio-tools-2-forecasting.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/adverio-tools-2-forecasting-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/adverio-tools-2-forecasting-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/adverio-tools-2-forecasting-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAwBACdASogABQAPwF0rVKrJqOiqAqpYCAJYwAALlGnYyvmt81PeleVIgAA/uLvXtmCXp4RVa/dGKeFZaZFTKkPMp8XKIAhkHNxc8jNQWgEBCuwQTwG+6zD+DHgAAAA"
+  },
+  "/adverio-tools-3-seo-audit-steps.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/adverio-tools-3-seo-audit-steps-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/adverio-tools-3-seo-audit-steps-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/adverio-tools-3-seo-audit-steps-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASogABQAPwFssFErJaSnMBgIAWAgCWUAt7gWiSDIkihNY3rAAP7to/EkHEdlr2Xf0bTj5tv36JhUeyqhwhAiq6cesoRQm7gA"
+  },
+  "/answeriq-1-dashboard.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-1-dashboard-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAwCdASogABQAPwF0r1KrJqQiqAqpYCAJZwAALnhE33H9Cih6cAAA/s17UtoC8uY9kiDTerW7e3lMMikG+evwFpbLMqESYxTMaoggAAA="
+  },
+  "/answeriq-2-articles.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-2-articles-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAwCdASogABQAPwFwsVGrJiSiqAqpYCAJZwDG9BWEr4svR4Z6Zi4AAP7t3Vgq/m34SM8GN2SHQkY1j5MbaXg0tmfkPkF9I+wAAA=="
+  },
+  "/answeriq-3-profile.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-3-profile-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAACwAwCdASogABQAPwF2s1QrJySjKAgBYCAJZwAARTr8vZZZali9KAD+7nwt8Rh7MnymO/RiO16c6/Ux/33wBkHhtSwLSoANzYkQAA=="
+  },
+  "/answeriq-4-settings.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-4-settings-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASogABQAPwF0rlKrJqQiqAqpYCAJZwDDcBWEkSLPZJX0oAD+7hzrw74kL2gKB4K8pqww7cHLj1rcPTQYgAA="
+  },
+  "/answeriq-5-admin-dashboard.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-5-admin-dashboard-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASogABQAPwF4tVQrJyUjKAgBYCAJZ2apVdaH31GgGpmlJiaAAP68VuNWLWVHtVEPyUixv5+AqyxP/9Mm4fGvS7jet3c0xGRg1dKMP7L15RNbXIWAAAA="
+  },
+  "/answeriq-6-admin-users.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-6-admin-users-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABwBACdASogABQAPwFysFIrJqSiqAqpYCAJZwDImBI/+t7IWbXoUIaKOyIOGAD+vGQwRmP0FVMZ/SBrJlbYA723MaC/tPswlRtQMWoMAAA="
+  },
+  "/answeriq-7-admin-subscriptions.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-7-admin-subscriptions-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwBACdASogABQAPwFqsFErJaSisBgIAWAgCWcAyrQYPM8cvPwx1r744oAA/u6qN+L3YdLe2kovKbgxTD9E+tpCICkhxsqASjHVcQEHbtOncqXTFnFA0G7D2AAAAA=="
+  },
+  "/answeriq-8-admin-workspaces.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-8-admin-workspaces-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQBACdASogABQAPwF0r1KrJqQiqAqpYCAJZwDGQBI/7Ef99+dVjzPT0RCAAP7N2g456K5jgdKtR4rvL8/nmx0zbRs0XG0t2t1u0rIAAAA="
+  },
+  "/answeriq-9-admin-system-settings.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-9-admin-system-settings-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAwCdASogABQAPwFurlArJiQiqA1RYCAJZwDKABXzS5M/Y1d+JagA/u9eTpkFEJhW0lGY0GnYSYNiwFATRCUtF06AgJUaBzd8MY/wAAA="
+  },
+  "/articulearn.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/articulearn-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/articulearn-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/articulearn-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADQBACdASogABQAPwFsrE8rJiQiMAgBYCAJZwDM0CHflDJKqk8QHWZakXBhqzqCWAD+W/mZ8gp7ztw4gYs4lWP7RsnquxySQNk0r2K/ZroDzMM2b1beCG0oi/pAsEe3wAAAAA=="
+  },
+  "/atdd-playwright-e2e.webp": {
+    "width": 1024,
+    "height": 624,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/atdd-playwright-e2e-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/atdd-playwright-e2e-920w.webp"
+      },
+      {
+        "width": 1024,
+        "path": "/atdd-playwright-e2e-1024w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAwBACdASogABQAPwFqrE6rJiQiMAgBYCAJaQAAW+o9Q+Y6xvVAjPTa+3AA/uK9XmKj3p9GuE3wacAAAAA="
+  },
+  "/bolt2github.webp": {
+    "width": 1840,
+    "height": 1094,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/bolt2github-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/bolt2github-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/bolt2github-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABwBACdASogABMAPwF0r1IrJqQiqAqpYCAJZwAAj0/O7uigyPIGMFwASky8MAD+7oqlv3drufA9RMLYjuLFID6ZGhsXbZexSOyLBCaVgSfXVSKFnQ2yG5AeRbfSjgIA"
+  },
+  "/chatbot-placement-in-full-dashboard.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/chatbot-placement-in-full-dashboard-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAwCdASogABQAPvVmqU6qpaQiMAwBUB6JZQAAW+o3Khxu21DLYBwAAP7v0gEMxpgvSGs718ua06R8b6LtkYaa2wbwCLajgAA="
+  },
+  "/chatbot-start.webp": {
+    "width": 630,
+    "height": 828,
+    "variants": [
+      {
+        "width": 630,
+        "path": "/chatbot-start-630w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAQBQCdASogACoAPwFqqE8rJiOiMBqqqWAgCWMAzuwWZ7w/oknPGNeZjulS8RJ/lZsAAP4AhI4UNesgwvW3nP2ZvswuameKkjEqOOOUrp7Olcu+0IXe4gxaf7oH8aHTIsMOplKJbkAAAA=="
+  },
+  "/cloudflare-dashboard.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/cloudflare-dashboard-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/cloudflare-dashboard-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/cloudflare-dashboard-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAgCdASogABQAPwF2s1OrJySsKAgBgCAJaQAAPaOgAP7wMgjym3PpnC1ZZl7C+yAAAA=="
+  },
+  "/cloudflare-deployments.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/cloudflare-deployments-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/cloudflare-deployments-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/cloudflare-deployments-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADQAgCdASogABQAPwF4s1OrJySkKAgBYCAJaQAAPaOgAP7wDl/xqUmQzpWAAA=="
+  },
+  "/docker-desktop.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/docker-desktop-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/docker-desktop-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/docker-desktop-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAAAwBACdASogABQAPwFqr1ErJaQisBgIAWAgCWcAuwAR9t9RIDDxJXGO4QAA/ukKoROZtAltnP2mmSSs2VqfeX03w5Q/3vjdNW4I0qAAAAA="
+  },
+  "/jw-tabs-1-homepage.webp": {
+    "width": 1840,
+    "height": 1099,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/jw-tabs-1-homepage-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/jw-tabs-1-homepage-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/jw-tabs-1-homepage-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAADwBACdASogABMAPwFqr1ErJaQisBgIAWAgCWUAxvQQ8Mwatg16JewCfXOzA+OS+AAA/mba7dKKE6p0szyyeSh5G2L+D7eGPy0CB48zC5QiQ2i6xSuDzLbWi2NGjQQ+NqW7cfS+Aoi4C95Lhpnjc8Xb1V4dXNSvcgAAAA=="
+  },
+  "/jw-tabs-2-tabspage.webp": {
+    "width": 1840,
+    "height": 1095,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/jw-tabs-2-tabspage-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/jw-tabs-2-tabspage-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/jw-tabs-2-tabspage-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAABwAwCdASogABMAPwFsrU6rJiQiMAgBYCAJZwDKACHe1FjpdwAA/lv5lDoeqaSsASycVd52lPJBLIyeizzTKANYQgAAAA=="
+  },
+  "/lemonsqueezy-dashboard.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/lemonsqueezy-dashboard-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/lemonsqueezy-dashboard-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/lemonsqueezy-dashboard-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADwAgCdASogABQAPwF4tVQrJyUkKAgBYCAJaQAAPaUIAAD+8ElqwsV41qEPigAA"
+  },
+  "/merns-shop-1-homepage.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/merns-shop-1-homepage-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/merns-shop-1-homepage-920w.webp"
+      },
+      {
+        "width": 1024,
+        "path": "/merns-shop-1-homepage-1024w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwBACdASogABQAPwFysE+rJySiMAgBYCAJaQAAWlVc8LRFYtgYXk5DWBGtqUxQAPwNlBCRU1FVayw+2ubNKKxInv81V5rPOexNEvB7QY62olbKwGAsJJIzC66VZDG/ys5ec/t6a/NWclA6bj4J6WTwKm2+HqCpofJssrRMpRQAAA=="
+  },
+  "/merns-shop-2-product.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/merns-shop-2-product-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/merns-shop-2-product-920w.webp"
+      },
+      {
+        "width": 1024,
+        "path": "/merns-shop-2-product-1024w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAwCdASogABQAPwFsrU6rJiQiMAgBYCAJaQAAW+jHWKELhkIpgAD+kb0lkg8ligR7FkwutpcfQmYJQx0AVlWH+QAAAA=="
+  },
+  "/merns-shop-3-admin.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/merns-shop-3-admin-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/merns-shop-3-admin-920w.webp"
+      },
+      {
+        "width": 1024,
+        "path": "/merns-shop-3-admin-1024w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwBACdASogABQAPu1gqE6ppaQiN/qoATAdiWUAAOz2ZCtEscGoMiXJeJAA/rI/nUkRyUtwIw3u9er7weIvgAa0pvb2PAS1G74xAmxCHQkAAA=="
+  },
+  "/merns-shop-4-checkout.webp": {
+    "width": 1024,
+    "height": 640,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/merns-shop-4-checkout-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/merns-shop-4-checkout-920w.webp"
+      },
+      {
+        "width": 1024,
+        "path": "/merns-shop-4-checkout-1024w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACQAwCdASogABQAPwFqrE6rJiQmMAgBYCAJaQAAW+jCK7tVfA1QAP7GBQlRsbgNWtHbMiDfTgAAAA=="
+  },
+  "/namecheap-dashboard-domain.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/namecheap-dashboard-domain-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/namecheap-dashboard-domain-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/namecheap-dashboard-domain-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAAAwAwCdASogABQAPwFqrE6rJiQiMAgBYCAJaQAAUchJN2wAAP7fhaw/uN9HwyHVQmwhKqFZKQZAAA=="
+  },
+  "/pwa-jwtabs-desktop.webp": {
+    "width": 1840,
+    "height": 1093,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/pwa-jwtabs-desktop-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/pwa-jwtabs-desktop-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/pwa-jwtabs-desktop-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQBACdASogABMAPulgp06pJaOiN/qoASAdCWcAzNAh4EyFXqBKIF6cPojLyD0EAAD+dpDeaIRKAO1T3juVI6EkuCSeXfGq1/+Lcr7h64mu0n7uurgv4F7EDKhI0HKLRT0CAAAA"
+  },
+  "/pwa-queue-desktop.webp": {
+    "width": 1840,
+    "height": 1136,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/pwa-queue-desktop-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/pwa-queue-desktop-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/pwa-queue-desktop-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwBQCdASogABQAPwFsrU6rJiQiMAgBYCAJZwDGBB5THjPrvkT+/wG0n+KwsaYmV8ZZAAD+y6XKCwC4eDsruIHXouO4rueRJhrGShb0jrAD9uvaTmzPshNsrXa7e4VcK76Oo74WssJycAAA"
+  },
+  "/pwa-queue-mobile.webp": {
+    "width": 680,
+    "height": 1458,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/pwa-queue-mobile-640w.webp"
+      },
+      {
+        "width": 680,
+        "path": "/pwa-queue-mobile-680w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAACwBgCdASogAEUAPu1mqE6ppiQiMzgN+TAdiWMAx2w+y0yeLJdb6CQWy+RSpTP7+XcYR7MBQtLN+82eBxMJ4AD+2r40pDKe5Q5xtHknI2oVk2llbSziwr5b622AjXFa6LIUV9jX8P8BlnLTqXUaO3HtE0dB1sNrS/otn0ZUcJ6bx8yKnXJr6Ti49WP0NgCwLR7sLR4vCiw7VpoNNlCq5o2d028kMr4hYIKZuPBGBjhq1cPWAAA="
+  },
+  "/queue-1-dashboard.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/queue-1-dashboard-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/queue-1-dashboard-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/queue-1-dashboard-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAABwAwCdASogABQAPwFkrU+rJSQiMBgMAWAgCWcAADpwJBInnkAA/u/TbEVR0hKNioEXrImkzLl1okTTNAAAAA=="
+  },
+  "/queue-2-analytics.webp": {
+    "width": 1840,
+    "height": 1099,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/queue-2-analytics-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/queue-2-analytics-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/queue-2-analytics-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAABQBACdASogABMAPulkpk6pJiOiN/qoASAdCWUAAOz0/hKlTud2b+jZvJagAP7gC0sj2ttvBsyiWPCcH06Oz6GdgxLeNYYAAAA="
+  },
+  "/queue-3-events.webp": {
+    "width": 1840,
+    "height": 1099,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/queue-3-events-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/queue-3-events-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/queue-3-events-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAABwAwCdASogABMAPvVkqE6qpaOiMAwBUB6JaQAAW+s2mE6nRgAA/tUV5jbxKw+tQk6tA5ohPKAAAA=="
+  },
+  "/queue-4-listings.webp": {
+    "width": 1840,
+    "height": 1095,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/queue-4-listings-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/queue-4-listings-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/queue-4-listings-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwBACdASogABMAPwFurlArJqQiqA1RYCAJZwAAvetIhGLyCvPmzCdn6ISp1AhAAP6yKXoLKa7HwxJ1krR4KkCLPL//jwI7j4XuCmk8lI3chKHrIEUPXpE8xwAAAA=="
+  },
+  "/render-dashboard-merns-shop.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/render-dashboard-merns-shop-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/render-dashboard-merns-shop-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/render-dashboard-merns-shop-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAABQAwCdASogABQAPwFusFErJiSjsBgIAWAgCWkAADpwI2WQAAD+75xQoR3gkBb88LoAAA=="
+  },
+  "/trulyhappy.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/trulyhappy-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/trulyhappy-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/trulyhappy-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAACQBQCdASogABQAPvVoqE6qpiOiN/VYAVAeiWgAt/GMgeGEyPQLUl9A84vwLPINGmSYYMRQAAD+88qDCqOfUluj2Y/eb5FfYb4M1K+O97m9AYHAkgo0wS2nVg3cO9weQhNgw4ZvQLsqdRe8tVhmxQ5UT0PlYmUr7aHbnqAA"
+  },
+  "/usedelight-1-new-tab.webp": {
+    "width": 1840,
+    "height": 1127,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/usedelight-1-new-tab-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/usedelight-1-new-tab-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/usedelight-1-new-tab-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAADwBACdASogABQAPvlmqk6qpaQiN/VYAVAfCUAVw4IW/0Q6lTVhenuW87qmxnB/G0AA/iJe5FV0P6JiBChpQoa1URav+tJqFWnqnnfaHCj7VsSQNpJnscbtHPr8HQBFwBekRvafGD6EsHEuJFVnVGAA"
+  },
+  "/usedelight-2-new-tab.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/usedelight-2-new-tab-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/usedelight-2-new-tab-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/usedelight-2-new-tab-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAABQAwCdASogABQAPwFwrVErJiQiqA1RYCAJQAAHdwt6cFdMAAD+7lagr8UMVn6tG/H0GTzwe3ccj5WEkIFAxfdJTD/kCm4QqThSgAAA"
+  },
+  "/usedelight-3-new-tab.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/usedelight-3-new-tab-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/usedelight-3-new-tab-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/usedelight-3-new-tab-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAABwBACdASogABQAPwForE6rJaQiMAgBYCAJQBgbhDrsBoeQpfOtAVjzhAUvAADKM80o5M9fz2DEhqw95xFyEZRX14L4kyoNkCHrMhAk68zHIsAA"
+  },
+  "/usedelight-4-gallery.webp": {
+    "width": 1840,
+    "height": 1151,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/usedelight-4-gallery-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/usedelight-4-gallery-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/usedelight-4-gallery-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAAAQBQCdASogABQAPuFepU6opaOiN+gBEBwJZAC4MDNh/yFcL+lqKV+mhADgMqh+Zg4AAP4tcmIlz6U9qO3WWbHq7CuUqt1cA47oEm/lmMxMtYgpDW36aZfn8iUW66CU2bZniiD59wh659j6efxBUmr6u8imLI3q1rxrncBjgAlgAA=="
+  },
+  "/usedelight-5-subscription.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/usedelight-5-subscription-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/usedelight-5-subscription-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/usedelight-5-subscription-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAACQBACdASogABQAPvVmqk6qpaQiN/VYAVAeiWUAALvrs3ls70Ny2dTjBuweMAAA/vVsIHpBhUKd99stwdngLGQkpi8egAAA"
+  }
+}
