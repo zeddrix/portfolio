@@ -1,5 +1,5 @@
 <script>
-	import { resolveStaticAsset } from '$lib/utils/static-asset';
+	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 
 	/** @type {import('$lib/types/portfolio').CapabilityBandVisual} */
 	export let visual;
@@ -98,26 +98,29 @@
 			data-testid="capability-band-visual-split"
 		>
 			{#each displayImages as imagePath, index (imagePath)}
-				<img
-					src={resolveStaticAsset(imagePath)}
+				<OptimizedImage
+					src={imagePath}
 					alt={screenshotAlt + (index === 0 ? ' desktop' : ' mobile')}
-					class={'w-full object-contain ' + (index === 1 ? 'mx-auto max-w-[220px] lg:max-w-none' : '')}
+					className={'w-full ' + (index === 1 ? 'mx-auto max-w-[220px] lg:max-w-none' : '')}
+					fit="contain"
+					sizes="(max-width: 1024px) 100vw, 600px"
 					loading="lazy"
-					data-testid={'capability-band-image-' + index}
+					testId={'capability-band-image-' + index}
 				/>
 			{/each}
 		</div>
 	{:else if hasVisualMedia && imageLayout === 'carousel'}
 		<div class="relative h-full min-h-[260px] sm:min-h-[300px] lg:min-h-[340px]" data-testid="capability-band-visual-carousel">
 			{#each displayImages as imagePath, index (imagePath)}
-				<img
-					src={resolveStaticAsset(imagePath)}
+				<OptimizedImage
+					src={imagePath}
 					alt={screenshotAlt + ' slide ' + (index + 1)}
-					class={'absolute inset-0 h-full w-full object-contain p-4 transition-opacity duration-300 ' +
+					className={'absolute inset-0 h-full w-full p-4 transition-opacity duration-300 ' +
 						(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
+					fit="contain"
+					sizes="(max-width: 1024px) 100vw, 600px"
 					loading={index === 0 ? 'eager' : 'lazy'}
-					data-testid={'capability-band-image-' + index}
-					aria-hidden={index !== safeCarouselIndex}
+					testId={'capability-band-image-' + index}
 				/>
 			{/each}
 
@@ -157,12 +160,14 @@
 			</div>
 		</div>
 	{:else if hasVisualMedia}
-		<img
-			src={resolveStaticAsset(displayImages[0])}
+		<OptimizedImage
+			src={displayImages[0]}
 			alt={screenshotAlt}
-			class="h-full min-h-[260px] w-full object-contain p-4 sm:min-h-[300px] lg:min-h-[340px]"
+			className="h-full min-h-[260px] w-full p-4 sm:min-h-[300px] lg:min-h-[340px]"
+			fit="contain"
+			sizes="(max-width: 1024px) 100vw, 600px"
 			loading="lazy"
-			data-testid="capability-band-image-0"
+			testId="capability-band-image-0"
 		/>
 	{:else}
 		<div

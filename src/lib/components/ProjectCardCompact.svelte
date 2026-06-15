@@ -1,6 +1,6 @@
 <script>
+	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import { getProjectTypeLabel, getStatusLabel } from '$lib/utils/portfolio-display';
-	import { resolveStaticAsset } from '$lib/utils/static-asset';
 	import { appPath } from '$lib/utils/app-path';
 
 	/** @type {import('$lib/types/portfolio').PortfolioProject} */
@@ -26,11 +26,13 @@
 >
 	<div class="grid gap-0 sm:grid-cols-[160px_1fr]">
 		{#if project.primaryImage}
-			<img
-				data-testid={'project-image-' + project.slug}
-				src={resolveStaticAsset(project.primaryImage)}
+			<OptimizedImage
+				testId={'project-image-' + project.slug}
+				src={project.primaryImage}
 				alt={project.name + ' preview'}
-				class="h-full min-h-[132px] w-full object-cover"
+				className="min-h-[132px]"
+				sizes="160px"
+				preferredWidth={320}
 				loading="lazy"
 			/>
 		{:else}

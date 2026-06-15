@@ -1,5 +1,5 @@
 <script>
-	import { profile } from '$lib/data/portfolio';
+	import { profile } from '$lib/data/profile';
 	import { appPath } from '$lib/utils/app-path';
 	import PortfolioPreviewSettings from '$lib/components/PortfolioPreviewSettings.svelte';
 

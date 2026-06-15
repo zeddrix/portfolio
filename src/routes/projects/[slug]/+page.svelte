@@ -1,12 +1,12 @@
 <script>
 	import SeoHead from '$lib/components/SeoHead.svelte';
+	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import { getBandsForProject } from '$lib/data/portfolio';
 	import { buildProjectMeta, homeSeo } from '$lib/data/seo';
 	import {
 		getProjectTypeLabel,
 		getStatusLabel
 	} from '$lib/utils/portfolio-display';
-	import { resolveStaticAsset } from '$lib/utils/static-asset';
 	import { appPath } from '$lib/utils/app-path';
 
 	export let data;
@@ -102,11 +102,14 @@
 
 				{#if data.project.primaryImage}
 					<div class="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm">
-						<img
-							data-testid="project-detail-hero-image"
-							src={resolveStaticAsset(data.project.primaryImage)}
+						<OptimizedImage
+							testId="project-detail-hero-image"
+							src={data.project.primaryImage}
 							alt={data.project.name + ' hero preview'}
-							class="h-full max-h-[640px] w-full object-cover"
+							className="max-h-[640px]"
+							sizes="(max-width: 768px) 100vw, 920px"
+							loading="eager"
+							fetchpriority="high"
 						/>
 					</div>
 				{/if}
@@ -115,11 +118,11 @@
 					<section class="grid gap-5 md:grid-cols-2">
 						{#each data.project.galleryImages as image, index (image)}
 							<figure class="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-								<img
-									data-testid={'project-detail-gallery-image-' + (index + 1)}
-									src={resolveStaticAsset(image)}
+								<OptimizedImage
+									testId={'project-detail-gallery-image-' + (index + 1)}
+									src={image}
 									alt={data.project.name + ' gallery image ' + (index + 1)}
-									class="h-full w-full object-cover"
+									sizes="(max-width: 768px) 100vw, 50vw"
 									loading="lazy"
 								/>
 							</figure>

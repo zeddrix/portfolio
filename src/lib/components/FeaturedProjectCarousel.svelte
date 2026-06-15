@@ -1,12 +1,13 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import { highlightProjects } from '$lib/data/portfolio';
 	import {
 		getProjectDisplayUrl,
 		getProjectTypeLabel
 	} from '$lib/utils/portfolio-display';
-	import { resolveStaticAsset } from '$lib/utils/static-asset';
+	import { getDefaultImageSrc } from '$lib/utils/optimized-image';
+	import { prefetchImageUrl, scheduleIdlePrefetch } from '$lib/utils/prefetch-images';
 	import { appPath } from '$lib/utils/app-path';
 
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
@@ -14,6 +15,8 @@
 
 	const carouselScrollClass =
 		'highlights-carousel-scroll touch-pan-x snap-x overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
+
+	const carouselSizes = '(max-width: 640px) 88vw, 920px';
 
 	/** @type {Record<string, SlideState>} */
 	const slideStates = {};
@@ -27,30 +30,14 @@
 	const highlightSlideElements = {};
 	/** @type {IntersectionObserver | null} */
 	let highlightIntersectionObserver = null;
-	const staticImagePaths = Object.keys(import.meta.glob('/static/*.{png,jpg,jpeg,webp,avif,gif}'));
+	/** @type {IntersectionObserver | null} */
+	let carouselPrefetchObserver = null;
 
 	/** @param {PortfolioProject} project */
 	function getProjectImages(project) {
-		const slugPrefix = `/static/${project.slug}-`;
-		const sequencePattern = new RegExp(`^/static/${project.slug}-(\\d+)`);
-		const autoDiscoveredImages = staticImagePaths
-			.filter((modulePath) => modulePath.startsWith(slugPrefix))
-			.map((modulePath) => resolveStaticAsset(modulePath.replace('/static', '')))
-			.sort((firstImage, secondImage) => {
-				const firstPath = `/static${firstImage}`;
-				const secondPath = `/static${secondImage}`;
-				const firstMatch = firstPath.match(sequencePattern);
-				const secondMatch = secondPath.match(sequencePattern);
-				const firstSequence = firstMatch ? Number(firstMatch[1]) : Number.MAX_SAFE_INTEGER;
-				const secondSequence = secondMatch ? Number(secondMatch[1]) : Number.MAX_SAFE_INTEGER;
-				if (firstSequence !== secondSequence) return firstSequence - secondSequence;
-				return firstImage.localeCompare(secondImage);
-			});
-
 		const imageCandidates = [
-			...autoDiscoveredImages,
-			...(project.primaryImage ? [resolveStaticAsset(project.primaryImage)] : []),
-			...project.galleryImages.map((image) => resolveStaticAsset(image))
+			...(project.primaryImage ? [project.primaryImage] : []),
+			...project.galleryImages
 		];
 		/** @type {string[]} */
 		const uniqueImages = [];
@@ -62,6 +49,16 @@
 		return uniqueImages;
 	}
 
+	/** @param {number} cardIndex */
+	function getCardLoading(cardIndex) {
+		return cardIndex <= 2 ? 'eager' : 'lazy';
+	}
+
+	/** @param {number} cardIndex */
+	function getCardFetchPriority(cardIndex) {
+		return cardIndex === 0 ? 'high' : '';
+	}
+
 	function initHighlightSlides() {
 		for (const project of highlightProjects) {
 			const imageSet = getProjectImages(project);
@@ -70,6 +67,8 @@
 			activeHighlightSlides[project.slug] = false;
 		}
 	}
+
+	initHighlightSlides();
 
 	function initHighlightObserver() {
 		if (typeof IntersectionObserver === 'undefined') return;
@@ -91,6 +90,29 @@
 		}
 	}
 
+	function initCarouselPrefetchObserver() {
+		if (typeof IntersectionObserver === 'undefined' || !carouselElement) return;
+
+		carouselPrefetchObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					for (const project of highlightProjects) {
+						const images = highlightImageSets[project.slug] ?? [];
+						const currentIndex = slideStates[project.slug]?.current ?? 0;
+						const currentImage = images[currentIndex];
+						if (currentImage) {
+							prefetchImageUrl(getDefaultImageSrc(currentImage, 920));
+						}
+					}
+				}
+			},
+			{ rootMargin: '400px' }
+		);
+
+		carouselPrefetchObserver.observe(carouselElement);
+	}
+
 	function startHighlightSlides() {
 		for (const project of highlightProjects) {
 			const imageSet = highlightImageSets[project.slug] ?? [];
@@ -100,6 +122,10 @@
 				if (!activeHighlightSlides[project.slug]) return;
 				const currentState = slideStates[project.slug];
 				const nextIndex = (currentState.current + 1) % imageSet.length;
+				const nextImage = imageSet[nextIndex];
+				if (nextImage) {
+					prefetchImageUrl(getDefaultImageSrc(nextImage, 920));
+				}
 				slideStates[project.slug] = { current: nextIndex };
 			}, 3000);
 
@@ -108,14 +134,21 @@
 	}
 
 	onMount(() => {
-		initHighlightSlides();
 		initHighlightObserver();
+		initCarouselPrefetchObserver();
 		startHighlightSlides();
+
+		const prefetchPaths = highlightProjects
+			.slice(1, 4)
+			.flatMap((project) => (project.primaryImage ? [project.primaryImage] : []))
+			.map((path) => getDefaultImageSrc(path, 920));
+		scheduleIdlePrefetch(prefetchPaths);
 	});
 
 	onDestroy(() => {
 		for (const intervalId of intervalIds) clearInterval(intervalId);
 		if (highlightIntersectionObserver) highlightIntersectionObserver.disconnect();
+		if (carouselPrefetchObserver) carouselPrefetchObserver.disconnect();
 	});
 
 	/** @type {HTMLElement | null} */
@@ -161,14 +194,16 @@
 					{#if (highlightImageSets[project.slug] ?? []).length > 0}
 						<div class="grid w-full overflow-hidden bg-black/20">
 							{#key highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
-								<img
-									data-testid={'carousel-project-image-' + project.slug}
-									data-transition-state="active"
+								<OptimizedImage
+									testId={'carousel-project-image-' + project.slug}
 									src={highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
 									alt={project.name + ' preview image'}
-									transition:fade={{ duration: 900 }}
-									class="col-start-1 row-start-1 block h-auto w-full transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.01]"
-									loading="lazy"
+									loading={getCardLoading(index)}
+									fetchpriority={getCardFetchPriority(index)}
+									sizes={carouselSizes}
+									fit="contain"
+									fadeOnMount={(slideStates[project.slug]?.current ?? 0) > 0}
+									className="col-start-1 row-start-1 transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.01]"
 								/>
 							{/key}
 						</div>

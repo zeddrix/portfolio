@@ -2,7 +2,6 @@ import type {
   CapabilityBand,
   CapabilityBandGroup,
   CapabilityBandLayoutMode,
-  PortfolioProfile,
   PortfolioProject,
   ToolStripGroup,
   ToolStripItem,
@@ -11,23 +10,7 @@ import type {
 } from "$lib/types/portfolio";
 import { filterProjectsByWorkFilter } from "$lib/utils/portfolio-display";
 
-export const profile: PortfolioProfile = {
-  name: "Zeddrix Fabian",
-  motto: "I like to work smart, not hard.",
-  heroTitle: "Hello, I'm Zeddrix Fabian",
-  heroSubtitle:
-    "Full-stack web app developer shipping production apps with AI-accelerated workflows.",
-  heroProof: "10",
-  about: [
-    "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
-    "I like to work smart, not hard. So now I utilize AI tools such as Cursor and Claude Code to move quickly without sacrificing quality, using the Acceptance Test-Driven Development (ATDD) approach.",
-    "I specialize in SvelteKit, React, and Angular while staying adaptable to product needs. With AI tools, I think it's not an exaggeration to say that I can work on any development project 'til shipped.",
-  ],
-  experienceSince: "2018",
-  specialization: "SvelteKit, React, Angular",
-  contactEmail: "zeddrix.fabian@gmail.com",
-  websiteUrl: "https://github.com/zeddrix",
-};
+export { profile } from "$lib/data/profile";
 
 export const projects: PortfolioProject[] = [
   {
@@ -52,13 +35,13 @@ export const projects: PortfolioProject[] = [
       "Groq",
       "Lemon Squeezy",
     ],
-    primaryImage: "/queue-1-dashboard.png",
+    primaryImage: "/queue-1-dashboard.webp",
     galleryImages: [
-      "/queue-2-analytics.png",
-      "/queue-3-events.png",
-      "/queue-4-listings.png",
-      "/chatbot-start.png",
-      "/chatbot-placement-in-full-dashboard.png",
+      "/queue-2-analytics.webp",
+      "/queue-3-events.webp",
+      "/queue-4-listings.webp",
+      "/chatbot-start.webp",
+      "/chatbot-placement-in-full-dashboard.webp",
     ],
     links: [],
     detailSections: [
@@ -95,8 +78,8 @@ export const projects: PortfolioProject[] = [
       "Groq",
       "Lemon Squeezy",
     ],
-    primaryImage: "/jw-tabs-1-homepage.png",
-    galleryImages: ["/jw-tabs-2-tabspage.png"],
+    primaryImage: "/jw-tabs-1-homepage.webp",
+    galleryImages: ["/jw-tabs-2-tabspage.webp"],
     links: [],
     detailSections: [
       {
@@ -136,13 +119,13 @@ export const projects: PortfolioProject[] = [
       "Docker",
       "Render",
     ],
-    primaryImage: "/merns-shop-1-homepage.png",
+    primaryImage: "/merns-shop-1-homepage.webp",
     galleryImages: [
-      "/merns-shop-2-product.png",
-      "/merns-shop-4-checkout.png",
-      "/merns-shop-3-admin.png",
-      "/render-dashboard-merns-shop.png",
-      "/atdd-playwright-e2e.png",
+      "/merns-shop-2-product.webp",
+      "/merns-shop-4-checkout.webp",
+      "/merns-shop-3-admin.webp",
+      "/render-dashboard-merns-shop.webp",
+      "/atdd-playwright-e2e.webp",
     ],
     links: [
       {
@@ -199,16 +182,16 @@ export const projects: PortfolioProject[] = [
       "AWS EC2",
       "PM2",
     ],
-    primaryImage: "/answeriq-1-dashboard.png",
+    primaryImage: "/answeriq-1-dashboard.webp",
     galleryImages: [
-      "/answeriq-2-articles.png",
-      "/answeriq-3-profile.png",
-      "/answeriq-4-settings.png",
-      "/answeriq-5-admin-dashboard.png",
-      "/answeriq-6-admin-users.png",
-      "/answeriq-7-admin-subscriptions.png",
-      "/answeriq-8-admin-workspaces.png",
-      "/answeriq-9-admin-system-settings.png",
+      "/answeriq-2-articles.webp",
+      "/answeriq-3-profile.webp",
+      "/answeriq-4-settings.webp",
+      "/answeriq-5-admin-dashboard.webp",
+      "/answeriq-6-admin-users.webp",
+      "/answeriq-7-admin-subscriptions.webp",
+      "/answeriq-8-admin-workspaces.webp",
+      "/answeriq-9-admin-system-settings.webp",
     ],
     links: [
       {
@@ -276,12 +259,12 @@ export const projects: PortfolioProject[] = [
     description:
       "Live tab page experience with nature media, weather, games, and more, delivered through website and Chrome extension surfaces.",
     techStack: ["SvelteKit", "Node.js", "Django", "Stripe"],
-    primaryImage: "/usedelight-1-new-tab.png",
+    primaryImage: "/usedelight-1-new-tab.webp",
     galleryImages: [
-      "/usedelight-2-new-tab.png",
-      "/usedelight-3-new-tab.png",
-      "/usedelight-4-gallery.png",
-      "/usedelight-5-subscription.png",
+      "/usedelight-2-new-tab.webp",
+      "/usedelight-3-new-tab.webp",
+      "/usedelight-4-gallery.webp",
+      "/usedelight-5-subscription.webp",
     ],
     links: [
       { label: "Website", url: "https://usedelight.com/", external: true },
@@ -324,10 +307,10 @@ export const projects: PortfolioProject[] = [
       "Stripe",
       "Redis",
     ],
-    primaryImage: "/adverio-tools-1-overview.png",
+    primaryImage: "/adverio-tools-1-overview.webp",
     galleryImages: [
-      "/adverio-tools-2-forecasting.png",
-      "/adverio-tools-3-seo-audit-steps.png",
+      "/adverio-tools-2-forecasting.webp",
+      "/adverio-tools-3-seo-audit-steps.webp",
     ],
     links: [
       { label: "Website", url: "https://tools.adverio.io/", external: true },
@@ -380,7 +363,7 @@ export const projects: PortfolioProject[] = [
       "Lemon Squeezy",
       "Anthropic Claude",
     ],
-    primaryImage: "/trulyhappy.png",
+    primaryImage: "/trulyhappy.webp",
     galleryImages: [],
     links: [
       { label: "Website", url: "https://trulyhappy.app/", external: true },
@@ -428,7 +411,7 @@ export const projects: PortfolioProject[] = [
       "Lemon Squeezy",
       "Anthropic Claude",
     ],
-    primaryImage: "/articulearn.png",
+    primaryImage: "/articulearn.webp",
     galleryImages: [],
     links: [
       { label: "Website", url: "https://articulearn.app/", external: true },
@@ -456,7 +439,7 @@ export const projects: PortfolioProject[] = [
     description:
       "Live client workflow for accelerating project creation and delivery from rapid prototyping to production-ready GitHub repositories.",
     techStack: ["TypeScript", "Automation Workflows", "GitHub"],
-    primaryImage: "/bolt2github.png",
+    primaryImage: "/bolt2github.webp",
     galleryImages: [],
     links: [],
     detailSections: [
@@ -516,7 +499,7 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "screenshot",
-      image: "/jw-tabs-1-homepage.png",
+      image: "/jw-tabs-1-homepage.webp",
     },
   },
   {
@@ -541,7 +524,7 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "screenshot",
-      images: ["/pwa-queue-desktop.png", "/pwa-queue-mobile.png"],
+      images: ["/pwa-queue-desktop.webp", "/pwa-queue-mobile.webp"],
       imageLayout: "split",
     },
   },
@@ -560,7 +543,7 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "hybrid",
-      image: "/lemonsqueezy-dashboard.png",
+      image: "/lemonsqueezy-dashboard.webp",
       icons: ["billing"],
       badges: ["Stripe", "Lemon Squeezy"],
     },
@@ -586,7 +569,7 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "screenshot",
-      image: "/answeriq-5-admin-dashboard.png",
+      image: "/answeriq-5-admin-dashboard.webp",
     },
   },
   {
@@ -599,8 +582,8 @@ export const capabilityBands: CapabilityBand[] = [
     visual: {
       type: "hybrid",
       images: [
-        "/chatbot-start.png",
-        "/chatbot-placement-in-full-dashboard.png",
+        "/chatbot-start.webp",
+        "/chatbot-placement-in-full-dashboard.webp",
       ],
       imageLayout: "carousel",
       icons: ["chatbot"],
@@ -623,7 +606,7 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "screenshot",
-      image: "/docker-desktop.png",
+      image: "/docker-desktop.webp",
     },
   },
   {
@@ -653,10 +636,10 @@ export const capabilityBands: CapabilityBand[] = [
     visual: {
       type: "hybrid",
       images: [
-        "/namecheap-dashboard-domain.png",
-        "/cloudflare-dashboard.png",
-        "/cloudflare-deployments.png",
-        "/render-dashboard-merns-shop.png",
+        "/namecheap-dashboard-domain.webp",
+        "/cloudflare-dashboard.webp",
+        "/cloudflare-deployments.webp",
+        "/render-dashboard-merns-shop.webp",
       ],
       imageLayout: "carousel",
       icons: ["deployment"],
@@ -680,7 +663,7 @@ export const capabilityBands: CapabilityBand[] = [
     relatedProjectSlugs: ["merns-shop", "answeriq"],
     visual: {
       type: "hybrid",
-      image: "/atdd-playwright-e2e.png",
+      image: "/atdd-playwright-e2e.webp",
       icons: ["testing"],
       badges: ["Playwright", "Vitest"],
     },

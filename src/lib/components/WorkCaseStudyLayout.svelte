@@ -3,12 +3,12 @@
 		caseStudyProjects,
 		getMoreProjectsForCaseStudies
 	} from '$lib/data/portfolio';
+	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import ProjectCardCompact from '$lib/components/ProjectCardCompact.svelte';
 	import {
 		getProjectTypeLabel,
 		getStatusLabel
 	} from '$lib/utils/portfolio-display';
-	import { resolveStaticAsset } from '$lib/utils/static-asset';
 	import { appPath } from '$lib/utils/app-path';
 
 	const moreProjects = getMoreProjectsForCaseStudies();
@@ -27,10 +27,11 @@
 		>
 			<div class="grid gap-0 lg:grid-cols-2">
 				{#if project.primaryImage}
-					<img
-						src={resolveStaticAsset(project.primaryImage)}
+					<OptimizedImage
+						src={project.primaryImage}
 						alt={project.name + ' case study preview'}
-						class="h-full min-h-[240px] w-full object-cover"
+						className="min-h-[240px]"
+						sizes="(max-width: 1024px) 100vw, 50vw"
 						loading="lazy"
 					/>
 				{:else}
