@@ -3,18 +3,19 @@
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 	import WorkSection from '$lib/components/WorkSection.svelte';
 	import CapabilityBandsSection from '$lib/components/CapabilityBandsSection.svelte';
-	import ToolsStrip from '$lib/components/ToolsStrip.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
 	import SeoHead from '$lib/components/SeoHead.svelte';
 	import { homeSeo } from '$lib/data/seo';
+	import { profile } from '$lib/data/profile';
 	import {
 		defaultCapabilityBandLayoutMode,
-		defaultWorkSectionLayoutMode,
-		profile
+		defaultWorkSectionLayoutMode
 	} from '$lib/data/portfolio';
 
 	/** @typedef {import('$lib/types/portfolio').CapabilityBandLayoutMode} CapabilityBandLayoutMode */
 	/** @typedef {import('$lib/types/portfolio').WorkSectionLayoutMode} WorkSectionLayoutMode */
+	/** @type {typeof import('$lib/components/ToolsStrip.svelte').default | null} */
+	let ToolsStrip = null;
 
 	const pageContainerClass = 'mx-auto w-[90%] max-w-[1400px]';
 	const sectionHeadingClass =
@@ -27,6 +28,19 @@
 	let workLayoutMode = defaultWorkSectionLayoutMode;
 	/** @type {CapabilityBandLayoutMode} */
 	let capabilityLayoutMode = defaultCapabilityBandLayoutMode;
+	const clientReady = typeof window !== 'undefined';
+
+	if (typeof localStorage !== 'undefined') {
+		const storedWorkMode = localStorage.getItem(workLayoutStorageKey);
+		if (storedWorkMode && isWorkSectionLayoutMode(storedWorkMode)) {
+			workLayoutMode = /** @type {WorkSectionLayoutMode} */ (storedWorkMode);
+		}
+
+		const storedCapabilityMode = localStorage.getItem(capabilityBandLayoutStorageKey);
+		if (storedCapabilityMode && isCapabilityBandLayoutMode(storedCapabilityMode)) {
+			capabilityLayoutMode = /** @type {CapabilityBandLayoutMode} */ (storedCapabilityMode);
+		}
+	}
 
 	/** @param {string} mode */
 	function isWorkSectionLayoutMode(mode) {
@@ -54,18 +68,9 @@
 		}
 	}
 
-	onMount(() => {
-		if (typeof localStorage === 'undefined') return;
-
-		const storedWorkMode = localStorage.getItem(workLayoutStorageKey);
-		if (storedWorkMode && isWorkSectionLayoutMode(storedWorkMode)) {
-			workLayoutMode = /** @type {WorkSectionLayoutMode} */ (storedWorkMode);
-		}
-
-		const storedCapabilityMode = localStorage.getItem(capabilityBandLayoutStorageKey);
-		if (storedCapabilityMode && isCapabilityBandLayoutMode(storedCapabilityMode)) {
-			capabilityLayoutMode = /** @type {CapabilityBandLayoutMode} */ (storedCapabilityMode);
-		}
+	onMount(async () => {
+		const toolsModule = await import('$lib/components/ToolsStrip.svelte');
+		ToolsStrip = toolsModule.default;
 	});
 </script>
 
@@ -76,6 +81,9 @@
 />
 
 <div class="min-h-screen min-w-0 bg-[#f5f5f5] text-zinc-950">
+	{#if clientReady}
+		<span data-testid="client-ready" class="sr-only">ready</span>
+	{/if}
 	<SiteHeader
 		{workLayoutMode}
 		{capabilityLayoutMode}
@@ -181,7 +189,9 @@
 
 		<CapabilityBandsSection {capabilityLayoutMode} />
 
-		<ToolsStrip />
+		{#if ToolsStrip}
+			<svelte:component this={ToolsStrip} />
+		{/if}
 
 		<ContactSection />
 
