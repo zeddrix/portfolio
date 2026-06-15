@@ -49,6 +49,7 @@
   margin-right: calc(50% - 50vw);
   scroll-padding-left: var(--carousel-page-gutter);
   scroll-padding-right: var(--carousel-page-gutter);
+  overscroll-behavior-x: contain;
 }
 
 .highlights-carousel-track {

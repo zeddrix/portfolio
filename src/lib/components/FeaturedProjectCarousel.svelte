@@ -14,7 +14,7 @@
 	/** @typedef {{ current: number }} SlideState */
 
 	const carouselScrollClass =
-		'highlights-carousel-scroll touch-pan-x snap-x overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
+		'highlights-carousel-scroll snap-x overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
 
 	const carouselSizes = '(max-width: 640px) 88vw, 920px';
 
