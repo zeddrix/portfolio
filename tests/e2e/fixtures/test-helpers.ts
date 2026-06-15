@@ -192,6 +192,53 @@ export async function assertSectionInViewport(
   await expect(page.getByTestId(testId)).toBeInViewport();
 }
 
+export type TouchPoint = { x: number; y: number };
+
+export async function getWindowScrollY(page: Page): Promise<number> {
+  return page.evaluate(() => window.scrollY);
+}
+
+export async function getCarouselCenter(page: Page): Promise<TouchPoint> {
+  const carousel = page.getByTestId(selectors.work.carousel);
+  const box = await carousel.boundingBox();
+  if (!box) {
+    throw new Error("Expected highlights carousel bounding box.");
+  }
+  return {
+    x: box.x + box.width / 2,
+    y: box.y + box.height / 2,
+  };
+}
+
+export async function touchDrag(
+  page: Page,
+  from: TouchPoint,
+  to: TouchPoint,
+  steps = 12,
+): Promise<void> {
+  const client = await page.context().newCDPSession(page);
+
+  await client.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [{ x: Math.round(from.x), y: Math.round(from.y) }],
+  });
+
+  for (let step = 1; step <= steps; step += 1) {
+    const ratio = step / steps;
+    const x = Math.round(from.x + (to.x - from.x) * ratio);
+    const y = Math.round(from.y + (to.y - from.y) * ratio);
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x, y }],
+    });
+  }
+
+  await client.send("Input.dispatchTouchEvent", {
+    type: "touchEnd",
+    touchPoints: [],
+  });
+}
+
 /** Chrome DevTools Slow 3G: ~400 Kbps, 400 ms RTT */
 export async function emulateSlow3G(page: Page): Promise<void> {
   const client = await page.context().newCDPSession(page);
