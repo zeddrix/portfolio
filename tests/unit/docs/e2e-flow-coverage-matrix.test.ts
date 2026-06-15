@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { execSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -31,5 +32,14 @@ describe("e2e-flow-coverage-matrix.md", () => {
     for (const spec of specs) {
       expect(content).toContain(spec);
     }
+  });
+
+  it("passes prettier format:check so CI quality gate stays green", () => {
+    expect(() => {
+      execSync(`pnpm exec prettier --check "${MATRIX}"`, {
+        cwd: process.cwd(),
+        stdio: "pipe",
+      });
+    }).not.toThrow();
   });
 });

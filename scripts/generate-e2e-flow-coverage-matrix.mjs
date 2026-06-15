@@ -1,5 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { spawnSync } from "node:child_process";
 
 const E2E_ROOT = path.resolve("tests/e2e");
 const OUT = path.resolve("docs/e2e-flow-coverage-matrix.md");
@@ -47,6 +48,7 @@ function branchesFor(file) {
   if (file.includes("home-preview-settings"))
     return "work-layouts,capability-layouts";
   if (file.includes("home-carousel-layout")) return "carousel";
+  if (file.includes("home-carousel-touch")) return "carousel-touch";
   if (file.includes("project-all-slugs")) return "project-routing,404";
   if (file.includes("project-details")) return "project-routing";
   if (file.includes("project-images")) return "project-routing";
@@ -79,6 +81,15 @@ function main() {
 
   md += `\nTotal specs: **${files.length}**\n`;
   fs.writeFileSync(OUT, md, "utf8");
+
+  const prettier = spawnSync("pnpm", ["exec", "prettier", "--write", OUT], {
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
+  if (prettier.status !== 0) {
+    process.exit(prettier.status ?? 1);
+  }
+
   console.log(`Wrote ${OUT} (${files.length} rows)`);
 }
 
