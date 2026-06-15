@@ -76,7 +76,7 @@ describe("seo URL helpers", () => {
     expect(meta.title).toMatch(/AnswerIQ Case Study/i);
     expect(meta.path).toBe("/projects/answeriq");
     expect(meta.description.length).toBeGreaterThan(0);
-    expect(meta.ogImage).toBe(buildAbsoluteUrl("/answeriq-1-dashboard.png"));
+    expect(meta.ogImage).toBe(buildAbsoluteUrl("/answeriq-1-dashboard.webp"));
   });
 
   it("buildWebsiteJsonLd references portfolio site URL", async () => {

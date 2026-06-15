@@ -1,7 +1,11 @@
 import { expect, test } from "@playwright/test";
 import { PAGES_BASE_PATH, PAGES_SITE_URL } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
-import { gotoHome, scrollToTestId } from "../fixtures/test-helpers";
+import {
+  gotoHome,
+  scrollToTestId,
+  setCapabilityLayout,
+} from "../fixtures/test-helpers";
 
 test.describe("seo navigation metadata", () => {
   test("Given homepage, when user navigates to Queue project, then canonical and title update", async ({
@@ -31,6 +35,7 @@ test.describe("seo navigation metadata", () => {
     page,
   }) => {
     await gotoHome(page);
+    await setCapabilityLayout(page, "sevenBands");
     await scrollToTestId(page, selectors.sections.approach);
     await Promise.all([
       page.waitForURL(`**${PAGES_BASE_PATH}/projects/merns-shop`),

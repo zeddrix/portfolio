@@ -32,20 +32,20 @@ describe("portfolio data", () => {
     const queue = getProjectBySlug("queue");
     const jwTabs = getProjectBySlug("jw-tabs");
 
-    expect(adverio?.primaryImage).toBe("/adverio-tools-1-overview.png");
+    expect(adverio?.primaryImage).toBe("/adverio-tools-1-overview.webp");
     expect(adverio?.galleryImages).toContain(
-      "/adverio-tools-2-forecasting.png",
+      "/adverio-tools-2-forecasting.webp",
     );
-    expect(usedelight?.primaryImage).toBe("/usedelight-1-new-tab.png");
+    expect(usedelight?.primaryImage).toBe("/usedelight-1-new-tab.webp");
     expect(usedelight?.galleryImages).toContain(
-      "/usedelight-5-subscription.png",
+      "/usedelight-5-subscription.webp",
     );
-    expect(queue?.primaryImage).toBe("/queue-1-dashboard.png");
-    expect(queue?.galleryImages).toContain("/chatbot-start.png");
+    expect(queue?.primaryImage).toBe("/queue-1-dashboard.webp");
+    expect(queue?.galleryImages).toContain("/chatbot-start.webp");
     expect(queue?.galleryImages).toContain(
-      "/chatbot-placement-in-full-dashboard.png",
+      "/chatbot-placement-in-full-dashboard.webp",
     );
-    expect(jwTabs?.primaryImage).toBe("/jw-tabs-1-homepage.png");
+    expect(jwTabs?.primaryImage).toBe("/jw-tabs-1-homepage.webp");
   });
 
   it("maps chatbot capability band to hybrid carousel visuals", () => {
@@ -54,8 +54,8 @@ describe("portfolio data", () => {
     expect(chatbotBand?.visual.type).toBe("hybrid");
     expect(chatbotBand?.visual.imageLayout).toBe("carousel");
     expect(chatbotBand?.visual.images).toEqual([
-      "/chatbot-start.png",
-      "/chatbot-placement-in-full-dashboard.png",
+      "/chatbot-start.webp",
+      "/chatbot-placement-in-full-dashboard.webp",
     ]);
     expect(chatbotBand?.visual.badges).toEqual(["Groq", "Anthropic Claude"]);
   });
@@ -98,10 +98,10 @@ describe("portfolio data", () => {
     expect(project?.name).toBe("MERN's Shop");
     expect(project?.status).toBe("live");
     expect(project?.techStack).toContain("React");
-    expect(project?.primaryImage).toBe("/merns-shop-1-homepage.png");
-    expect(project?.galleryImages).toContain("/merns-shop-2-product.png");
-    expect(project?.galleryImages).toContain("/merns-shop-4-checkout.png");
-    expect(project?.galleryImages).toContain("/atdd-playwright-e2e.png");
+    expect(project?.primaryImage).toBe("/merns-shop-1-homepage.webp");
+    expect(project?.galleryImages).toContain("/merns-shop-2-product.webp");
+    expect(project?.galleryImages).toContain("/merns-shop-4-checkout.webp");
+    expect(project?.galleryImages).toContain("/atdd-playwright-e2e.webp");
     expect(project?.links).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -137,9 +137,9 @@ describe("portfolio data", () => {
     expect(project?.techStack).toContain("Stripe");
     expect(project?.techStack).toContain("OpenAI");
     expect(project?.techStack).toContain("Recharts");
-    expect(project?.primaryImage).toBe("/answeriq-1-dashboard.png");
-    expect(project?.galleryImages).toContain("/answeriq-2-articles.png");
-    expect(project?.galleryImages).toContain("/answeriq-6-admin-users.png");
+    expect(project?.primaryImage).toBe("/answeriq-1-dashboard.webp");
+    expect(project?.galleryImages).toContain("/answeriq-2-articles.webp");
+    expect(project?.galleryImages).toContain("/answeriq-6-admin-users.webp");
     expect(project?.links).toEqual([
       expect.objectContaining({
         label: "Live demo",

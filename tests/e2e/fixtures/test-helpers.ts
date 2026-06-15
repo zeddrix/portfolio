@@ -21,9 +21,25 @@ export async function waitForPageLoad(page: Page): Promise<void> {
   }
 }
 
-export async function gotoHome(page: Page): Promise<void> {
+export async function waitForClientReady(
+  page: Page,
+  timeout = 30_000,
+): Promise<void> {
+  await expect(page.getByTestId("client-ready")).toBeAttached({ timeout });
+}
+
+export async function gotoHomeForNetworkThrottling(page: Page): Promise<void> {
+  await page.goto(PAGES_HOME_PATH, { waitUntil: "domcontentloaded" });
+  await expect(page.getByTestId("hero-title")).toBeVisible({ timeout: 60_000 });
+}
+
+export async function gotoHome(
+  page: Page,
+  options?: { readyTimeout?: number },
+): Promise<void> {
   await page.goto(PAGES_HOME_PATH);
   await waitForPageLoad(page);
+  await waitForClientReady(page, options?.readyTimeout);
 }
 
 export async function scrollToTestId(
@@ -55,14 +71,21 @@ export async function gotoHomeWithCleanState(page: Page): Promise<void> {
 }
 
 export async function openPreviewSettings(page: Page): Promise<void> {
-  await page
-    .getByTestId(selectors.previewSettings.toggle)
-    .scrollIntoViewIfNeeded();
+  const toggle = page.getByTestId(selectors.previewSettings.toggle);
   const panel = page.getByTestId(selectors.previewSettings.panel);
-  if (!(await panel.isVisible())) {
-    await page.getByTestId(selectors.previewSettings.toggle).click();
-  }
-  await expect(panel).toBeVisible();
+
+  await toggle.scrollIntoViewIfNeeded();
+  await expect(toggle).toBeVisible();
+
+  await expect(async () => {
+    if ((await toggle.getAttribute("aria-expanded")) === "true") {
+      await expect(panel).toBeVisible();
+      return;
+    }
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await expect(panel).toBeVisible();
+  }).toPass({ timeout: 15_000 });
 }
 
 export async function setWorkLayout(
@@ -126,7 +149,10 @@ export async function waitForCarouselImageChange(
   page: Page,
   slug: string,
 ): Promise<void> {
-  const image = page.getByTestId(`carousel-project-image-${slug}`).first();
+  const image = page
+    .getByTestId(`carousel-project-image-${slug}`)
+    .first()
+    .locator("img");
   const firstSrc = await image.getAttribute("src");
   await expect.poll(async () => image.getAttribute("src")).not.toBe(firstSrc);
 }
@@ -164,4 +190,16 @@ export async function assertSectionInViewport(
   testId: string,
 ): Promise<void> {
   await expect(page.getByTestId(testId)).toBeInViewport();
+}
+
+/** Chrome DevTools Slow 3G: ~400 Kbps, 400 ms RTT */
+export async function emulateSlow3G(page: Page): Promise<void> {
+  const client = await page.context().newCDPSession(page);
+  await client.send("Network.enable");
+  await client.send("Network.emulateNetworkConditions", {
+    offline: false,
+    downloadThroughput: (400 * 1024) / 8,
+    uploadThroughput: (400 * 1024) / 8,
+    latency: 400,
+  });
 }

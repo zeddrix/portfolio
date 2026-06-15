@@ -1,6 +1,6 @@
 # E2E Flow Coverage Matrix
 
-Generated: 2026-06-10
+Generated: 2026-06-15
 
 | Spec file                                                             | Domain   | MinActions | BranchesCovered                    | JourneyTier |
 | --------------------------------------------------------------------- | -------- | ---------- | ---------------------------------- | ----------- |
@@ -10,6 +10,7 @@ Generated: 2026-06-10
 | `tests/e2e/home/home-carousel-layout.e2e.test.ts`                     | home     | 2          | carousel                           | focused     |
 | `tests/e2e/home/home-hero-about.e2e.test.ts`                          | home     | 2          | —                                  | focused     |
 | `tests/e2e/home/home-navigation.e2e.test.ts`                          | home     | 2          | nav                                | focused     |
+| `tests/e2e/home/home-performance.e2e.test.ts`                         | home     | 2          | —                                  | focused     |
 | `tests/e2e/home/home-preview-settings.e2e.test.ts`                    | home     | 2          | work-layouts,capability-layouts    | focused     |
 | `tests/e2e/home/home-shell.e2e.test.ts`                               | home     | 2          | —                                  | focused     |
 | `tests/e2e/home/home-tools-strip.e2e.test.ts`                         | home     | 2          | —                                  | focused     |
@@ -24,4 +25,4 @@ Generated: 2026-06-10
 | `tests/e2e/seo/seo-navigation.e2e.test.ts`                            | seo      | 2          | seo                                | focused     |
 | `tests/e2e/seo/seo-sitemap-robots.e2e.test.ts`                        | seo      | 2          | seo,sitemap                        | focused     |
 
-Total specs: **19**
+Total specs: **20**

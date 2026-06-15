@@ -1,51 +1,66 @@
 import { expect, test } from "@playwright/test";
 import { selectors } from "../fixtures/selectors";
 import {
+  capabilityLayoutStorageKey,
   gotoHome,
   openPreviewSettings,
   scrollToTestId,
   setCapabilityLayout,
 } from "../fixtures/test-helpers";
 
+function bandImage(
+  page: import("@playwright/test").Page,
+  bandIndex: number,
+  imageIndex: number,
+) {
+  return page
+    .getByTestId(`highlight-band-${bandIndex}`)
+    .getByTestId(`capability-band-image-${imageIndex}`)
+    .locator("img");
+}
+
 test.describe("capability band images", () => {
   test.beforeEach(async ({ page }) => {
+    await page.addInitScript(
+      ({ capabilityKey, mode }) => {
+        localStorage.setItem(capabilityKey, mode);
+      },
+      { capabilityKey: capabilityLayoutStorageKey, mode: "sevenBands" },
+    );
     await gotoHome(page);
-    await setCapabilityLayout(page, "sevenBands");
+    await expect(page.getByTestId("highlight-band-6")).toBeVisible();
     await scrollToTestId(page, selectors.sections.approach);
   });
 
   test("Given detailed capability layout, when user views capability bands, then mapped screenshots render with valid assets", async ({
     page,
   }) => {
-    const dockerImage = page
-      .getByTestId("highlight-band-5")
-      .getByTestId("capability-band-image-0");
-    await expect(dockerImage).toHaveAttribute("src", /docker-desktop\.png/);
+    const dockerImage = bandImage(page, 5, 0);
+    await expect(dockerImage).toHaveAttribute("src", /docker-desktop.*\.webp/);
 
     const pwaSplit = page
       .getByTestId("highlight-band-1")
       .getByTestId("capability-band-visual-split");
     await expect(pwaSplit).toBeVisible();
 
-    const atddImage = page
-      .getByTestId("highlight-band-7")
-      .getByTestId("capability-band-image-0");
-    await expect(atddImage).toHaveAttribute("src", /atdd-playwright-e2e\.png/);
+    const atddImage = bandImage(page, 7, 0);
+    await expect(atddImage).toHaveAttribute(
+      "src",
+      /atdd-playwright-e2e.*\.webp/,
+    );
 
-    const adminDashboardImage = page
-      .getByTestId("highlight-band-3")
-      .getByTestId("capability-band-image-0");
+    const adminDashboardImage = bandImage(page, 3, 0);
     await expect(adminDashboardImage).toHaveAttribute(
       "src",
-      /answeriq-5-admin-dashboard\.png/,
+      /answeriq-5-admin-dashboard.*\.webp/,
     );
 
     const chatbotBand = page.getByTestId("highlight-band-4");
     await expect(
       chatbotBand.getByTestId("capability-band-visual-carousel"),
     ).toBeVisible();
-    const chatbotImage = chatbotBand.getByTestId("capability-band-image-0");
-    await expect(chatbotImage).toHaveAttribute("src", /chatbot-start\.png/);
+    const chatbotImage = bandImage(page, 4, 0);
+    await expect(chatbotImage).toHaveAttribute("src", /chatbot-start.*\.webp/);
     await expect(chatbotBand).toContainText("Groq");
     await expect(chatbotBand).toContainText("Anthropic Claude");
 
@@ -67,26 +82,29 @@ test.describe("capability band images", () => {
     page,
   }) => {
     const chatbotBand = page.getByTestId("highlight-band-4");
-    await expect(
-      chatbotBand.getByTestId("capability-band-image-0"),
-    ).toHaveAttribute("src", /chatbot-start\.png/);
+    await expect(bandImage(page, 4, 0)).toHaveAttribute(
+      "src",
+      /chatbot-start.*\.webp/,
+    );
 
     await chatbotBand
       .getByRole("button", { name: "Next Chatbot screenshot" })
       .click();
 
-    await expect(
-      chatbotBand.getByTestId("capability-band-image-1"),
-    ).toHaveAttribute("src", /chatbot-placement-in-full-dashboard\.png/);
+    await expect(bandImage(page, 4, 1)).toHaveAttribute(
+      "src",
+      /chatbot-placement-in-full-dashboard.*\.webp/,
+    );
   });
 
   test("Given deployment carousel, when user advances slides, then screenshot source updates", async ({
     page,
   }) => {
     const deploymentBand = page.getByTestId("highlight-band-6");
-    await expect(
-      deploymentBand.getByTestId("capability-band-image-0"),
-    ).toHaveAttribute("src", /namecheap-dashboard-domain\.png/);
+    await expect(bandImage(page, 6, 0)).toHaveAttribute(
+      "src",
+      /namecheap-dashboard-domain.*\.webp/,
+    );
 
     await deploymentBand
       .getByRole("button", {
@@ -94,9 +112,10 @@ test.describe("capability band images", () => {
       })
       .click();
 
-    await expect(
-      deploymentBand.getByTestId("capability-band-image-1"),
-    ).toHaveAttribute("src", /cloudflare-dashboard\.png/);
+    await expect(bandImage(page, 6, 1)).toHaveAttribute(
+      "src",
+      /cloudflare-dashboard.*\.webp/,
+    );
   });
 
   test("Given grouped capability layout, when user switches from preview settings, then grouped bands render without detailed band six", async ({

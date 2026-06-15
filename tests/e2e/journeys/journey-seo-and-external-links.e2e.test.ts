@@ -5,11 +5,16 @@ import {
   pagesPath,
 } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
-import { gotoHome, scrollToTestId } from "../fixtures/test-helpers";
+import {
+  gotoHome,
+  scrollToTestId,
+  setCapabilityLayout,
+} from "../fixtures/test-helpers";
 
 test.describe("Journey: seo and external links", () => {
   test("Home → merns-shop → canonical + live demo link", async ({ page }) => {
     await gotoHome(page);
+    await setCapabilityLayout(page, "sevenBands");
     await scrollToTestId(page, selectors.sections.approach);
     await Promise.all([
       page.waitForURL(`**${PAGES_BASE_PATH}/projects/merns-shop`),

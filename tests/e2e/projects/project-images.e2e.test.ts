@@ -12,6 +12,17 @@ const basePathPattern = new RegExp(
   `${PAGES_BASE_PATH.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/`,
 );
 
+function carouselImage(page: import("@playwright/test").Page, slug: string) {
+  return page
+    .getByTestId(`carousel-project-image-${slug}`)
+    .first()
+    .locator("img");
+}
+
+function detailImage(page: import("@playwright/test").Page, testId: string) {
+  return page.getByTestId(testId).locator("img");
+}
+
 test.describe("project image mapping", () => {
   test("Given homepage carousel, when user opens Queue showcase, then images use base-prefixed paths", async ({
     page,
@@ -20,24 +31,21 @@ test.describe("project image mapping", () => {
     await scrollToTestId(page, "highlights-carousel");
     await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
 
-    const queueCarouselImage = page
-      .getByTestId("highlight-card-2")
-      .getByTestId("carousel-project-image-queue")
-      .first();
+    const queueCarouselImage = carouselImage(page, "queue");
     await expect(queueCarouselImage).toHaveAttribute(
       "src",
-      /queue-1-dashboard\.png/,
+      /queue-1-dashboard.*\.webp/,
     );
     await expect(queueCarouselImage).toHaveAttribute("src", basePathPattern);
+    await expect(queueCarouselImage).toHaveAttribute("srcset", /.+/);
 
     await Promise.all([
       page.waitForURL("**/projects/queue"),
       page.getByTestId("showcase-project-link-queue").click(),
     ]);
-    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
-      "src",
-      /queue-1-dashboard\.png/,
-    );
+    await expect(
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("src", /queue-1-dashboard.*\.webp/);
   });
 
   test("Given multi-image highlight card, when user advances carousel control, then visible card changes", async ({
@@ -58,10 +66,7 @@ test.describe("project image mapping", () => {
     await scrollToTestId(page, selectors.work.carousel);
     await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
 
-    const queueImage = page
-      .getByTestId("highlight-card-2")
-      .getByTestId("carousel-project-image-queue")
-      .first();
+    const queueImage = carouselImage(page, "queue");
     const firstSrc = await queueImage.getAttribute("src");
     await waitForCarouselImageChange(page, "queue");
     await expect
@@ -79,24 +84,23 @@ test.describe("project image mapping", () => {
       page.getByTestId("showcase-project-link-queue").click(),
     ]);
 
-    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
-      "src",
-      /queue-1-dashboard\.png/,
-    );
     await expect(
-      page.getByTestId("project-detail-gallery-image-4"),
-    ).toHaveAttribute("src", /chatbot-start\.png/);
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("src", /queue-1-dashboard.*\.webp/);
     await expect(
-      page.getByTestId("project-detail-gallery-image-5"),
-    ).toHaveAttribute("src", /chatbot-placement-in-full-dashboard\.png/);
+      detailImage(page, "project-detail-gallery-image-4"),
+    ).toHaveAttribute("src", /chatbot-start.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-5"),
+    ).toHaveAttribute("src", /chatbot-placement-in-full-dashboard.*\.webp/);
 
     const galleryUrls = [
-      await page
-        .getByTestId("project-detail-gallery-image-4")
-        .getAttribute("src"),
-      await page
-        .getByTestId("project-detail-gallery-image-5")
-        .getAttribute("src"),
+      await detailImage(page, "project-detail-gallery-image-4").getAttribute(
+        "src",
+      ),
+      await detailImage(page, "project-detail-gallery-image-5").getAttribute(
+        "src",
+      ),
     ];
 
     for (const imageUrl of galleryUrls) {
@@ -116,13 +120,12 @@ test.describe("project image mapping", () => {
       page.getByTestId("band-project-link-fullstack-adverio-tools").click(),
     ]);
 
-    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
-      "src",
-      /adverio-tools-1-overview\.png/,
-    );
     await expect(
-      page.getByTestId("project-detail-gallery-image-1"),
-    ).toHaveAttribute("src", /adverio-tools-2-forecasting\.png/);
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("src", /adverio-tools-1-overview.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-1"),
+    ).toHaveAttribute("src", /adverio-tools-2-forecasting.*\.webp/);
   });
 
   test("Given UseDelight grid journey, when user filters client and opens project, then gallery renders", async ({
@@ -136,13 +139,18 @@ test.describe("project image mapping", () => {
       page.getByTestId("project-details-link-usedelight").click(),
     ]);
 
-    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
-      "src",
-      /usedelight-1-new-tab\.png/,
-    );
     await expect(
-      page.getByTestId("project-detail-gallery-image-4"),
-    ).toHaveAttribute("src", /usedelight-5-subscription\.png/);
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("src", /usedelight-1-new-tab.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("srcset", /640w/);
+    await expect(
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("srcset", /920w/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-4"),
+    ).toHaveAttribute("src", /usedelight-5-subscription.*\.webp/);
   });
 
   test("Given MERN's Shop carousel journey, when user opens detail, then mapped gallery assets render", async ({
@@ -155,13 +163,12 @@ test.describe("project image mapping", () => {
       page.getByTestId("showcase-project-link-merns-shop").click(),
     ]);
 
-    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
-      "src",
-      /merns-shop-1-homepage\.png/,
-    );
     await expect(
-      page.getByTestId("project-detail-gallery-image-5"),
-    ).toHaveAttribute("src", /atdd-playwright-e2e\.png/);
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("src", /merns-shop-1-homepage.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-5"),
+    ).toHaveAttribute("src", /atdd-playwright-e2e.*\.webp/);
   });
 
   test("Given AnswerIQ carousel card, when user opens detail, then hero and admin gallery assets render", async ({
@@ -170,12 +177,10 @@ test.describe("project image mapping", () => {
     await gotoHome(page);
     await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
 
-    const answeriqCarouselImage = page
-      .getByTestId("highlight-card-5")
-      .getByTestId("carousel-project-image-answeriq");
+    const answeriqCarouselImage = carouselImage(page, "answeriq");
     await expect(answeriqCarouselImage).toHaveAttribute(
       "src",
-      /answeriq-1-dashboard\.png/,
+      /answeriq-1-dashboard.*\.webp/,
     );
     await expect(answeriqCarouselImage).toHaveAttribute("src", basePathPattern);
 
@@ -184,12 +189,11 @@ test.describe("project image mapping", () => {
       page.getByTestId("showcase-project-link-answeriq").click(),
     ]);
 
-    await expect(page.getByTestId("project-detail-hero-image")).toHaveAttribute(
-      "src",
-      /answeriq-1-dashboard\.png/,
-    );
     await expect(
-      page.getByTestId("project-detail-gallery-image-5"),
-    ).toHaveAttribute("src", /answeriq-6-admin-users\.png/);
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("src", /answeriq-1-dashboard.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-5"),
+    ).toHaveAttribute("src", /answeriq-6-admin-users.*\.webp/);
   });
 });
