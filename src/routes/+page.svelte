@@ -70,10 +70,10 @@
 	<main>
 		<section
 			data-testid="hero-section"
-			class="{pageContainerClass} pb-8 pt-2 sm:pb-10 sm:pt-3 md:pb-12 md:pt-4 lg:min-h-0 lg:pb-12 lg:pt-6"
+			class="{pageContainerClass} pb-16 pt-2 sm:pb-20 sm:pt-3 md:pb-24 md:pt-4 lg:min-h-0 lg:pb-28 lg:pt-6"
 		>
-			<div class="grid items-center gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 xl:gap-16">
-				<div class="min-w-0">
+			<div class="grid items-center gap-8 sm:gap-10 md:gap-12 lg:grid-cols-3 lg:gap-12 xl:gap-16">
+				<div class="min-w-0 lg:col-span-2">
 					<h1
 						data-testid="hero-title"
 						class="text-[clamp(3rem,calc(0.25rem+5.5vw),5rem)] font-bold leading-[1.1] tracking-[-0.04em] text-black"
@@ -82,7 +82,7 @@
 					</h1>
 					<p
 						data-testid="hero-subtitle"
-						class="mt-3 max-w-[38rem] text-[clamp(1.125rem,calc(1.1rem+1.25vw),2rem)] font-medium leading-[1.45] text-[#8E8E93] sm:mt-4"
+						class="mt-3 max-w-[38rem] text-[clamp(1.125rem,calc(1.1rem+1.25vw),2rem)] font-medium leading-[1.45] text-[#8E8E93] sm:mt-4 lg:max-w-[44rem]"
 					>
 						{profile.heroSubtitle}
 					</p>
@@ -92,15 +92,15 @@
 				</div>
 				<div
 					data-testid="hero-glance-card"
-					class="rounded-[2rem] border border-zinc-200/70 bg-white/80 p-6 shadow-[0_28px_56px_-28px_rgba(0,0,0,0.3)] sm:p-8"
+					class="rounded-[2rem] border border-zinc-200/70 bg-white/80 p-5 shadow-[0_28px_56px_-28px_rgba(0,0,0,0.3)] sm:p-6 lg:col-span-1"
 				>
 					<p class="text-sm font-semibold uppercase tracking-[0.18em] text-zinc-500">At a glance</p>
-					<dl class="mt-5 space-y-5">
+					<dl class="mt-4 space-y-4">
 						<div>
 							<dt class="text-sm font-medium text-zinc-500">Experience since</dt>
 							<dd
 								data-testid="hero-glance-experience"
-								class="text-xl font-semibold text-zinc-900"
+								class="text-lg font-semibold text-zinc-900"
 							>
 								{profile.experienceSince}
 							</dd>
@@ -109,7 +109,7 @@
 							<dt class="text-sm font-medium text-zinc-500">Shipped products</dt>
 							<dd
 								data-testid="hero-glance-proof"
-								class="text-xl font-semibold leading-snug text-zinc-900"
+								class="text-lg font-semibold leading-snug text-zinc-900"
 							>
 								{profile.heroProof}
 							</dd>
@@ -118,7 +118,7 @@
 							<dt class="text-sm font-medium text-zinc-500">Strong in</dt>
 							<dd
 								data-testid="hero-glance-specialization"
-								class="text-xl font-semibold leading-snug text-zinc-900"
+								class="text-lg font-semibold leading-snug text-zinc-900"
 							>
 								{profile.specialization}
 							</dd>

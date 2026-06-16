@@ -57,7 +57,7 @@ test.describe("homepage navigation", () => {
     expect(approachIndex).toBeGreaterThan(aboutIndex);
   });
 
-  test("Given homepage scrolled to contact, when user clicks header name, then hero title returns to view", async ({
+  test("Given homepage scrolled to contact, when user returns to top, then hero title is in view without header name link", async ({
     page,
   }) => {
     await gotoHome(page);
@@ -65,8 +65,15 @@ test.describe("homepage navigation", () => {
     await scrollToTestId(page, selectors.sections.contact);
     await assertSectionInViewport(page, selectors.sections.contact);
 
-    await page.getByRole("link", { name: "Zeddrix Fabian" }).click();
-    await expect(page).toHaveURL(/\/portfolio\/?$/);
+    await expect(page.getByRole("banner").getByRole("link")).toHaveCount(1);
+    await expect(page.getByTestId(selectors.nav.github)).toBeVisible();
+
+    await page.evaluate(() => {
+      window.scrollTo(0, 0);
+    });
     await expect(page.getByTestId(selectors.hero.title)).toBeInViewport();
+    await expect(page.getByTestId(selectors.hero.title)).toContainText(
+      "Zeddrix Fabian",
+    );
   });
 });

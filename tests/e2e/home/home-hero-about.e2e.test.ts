@@ -6,6 +6,7 @@ test.describe("homepage hero and about", () => {
   test("Given homepage, when user reads intro and navigates to work, then identity and section rhythm are clear", async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
     await gotoHome(page);
 
     await expect(page.getByTestId(selectors.hero.title)).toContainText(
@@ -24,6 +25,44 @@ test.describe("homepage hero and about", () => {
       "2018",
     );
     await expect(page.getByTestId("hero-glance-proof")).toContainText("10");
+
+    const heroLayout = await page.evaluate(() => {
+      const heroSection = document.querySelector(
+        '[data-testid="hero-section"]',
+      );
+      const glanceCard = document.querySelector(
+        '[data-testid="hero-glance-card"]',
+      );
+      const greetingColumn = document.querySelector(
+        '[data-testid="hero-title"]',
+      )?.parentElement;
+      const cta = document.querySelector('[data-testid="hero-cta"]');
+      const firstCard = document.querySelector(
+        '[data-testid="highlight-card-0"]',
+      );
+      const heroRect = heroSection?.getBoundingClientRect();
+      const glanceRect = glanceCard?.getBoundingClientRect();
+      const greetingRect = greetingColumn?.getBoundingClientRect();
+      const ctaRect = cta?.getBoundingClientRect();
+      const cardRect = firstCard?.getBoundingClientRect();
+      return {
+        heroWidth: heroRect?.width ?? 0,
+        glanceWidth: glanceRect?.width ?? 0,
+        greetingWidth: greetingRect?.width ?? 0,
+        ctaToCarouselGap:
+          cardRect && ctaRect ? cardRect.top - ctaRect.bottom : 0,
+      };
+    });
+    expect(heroLayout.glanceWidth).toBeGreaterThanOrEqual(
+      heroLayout.heroWidth * 0.28,
+    );
+    expect(heroLayout.glanceWidth).toBeLessThanOrEqual(
+      heroLayout.heroWidth * 0.38,
+    );
+    expect(heroLayout.greetingWidth).toBeGreaterThanOrEqual(
+      heroLayout.heroWidth * 0.55,
+    );
+    expect(heroLayout.ctaToCarouselGap).toBeGreaterThanOrEqual(48);
 
     await expect(page.getByTestId(selectors.hero.cta)).toContainText(
       "Get in touch",

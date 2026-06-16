@@ -24,18 +24,24 @@
 
 <div
 	data-testid="capability-layout-toggle"
-	class={'rounded-2xl border border-zinc-200 bg-white p-3 shadow-sm sm:p-4 ' + className}
+	class={'inline-flex flex-col items-end gap-2 ' + className}
 >
-	<p class="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">Approach layout</p>
-	<div class="mt-2 flex flex-wrap gap-1.5" role="group" aria-label="Approach layout">
+	<span class="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400">
+		Approach layout
+	</span>
+	<div
+		class="inline-flex rounded-full bg-zinc-100/90 p-1 ring-1 ring-zinc-200/70"
+		role="group"
+		aria-label="Approach layout"
+	>
 		{#each capabilityLayoutOptions as option (option.mode)}
 			<button
 				type="button"
 				data-testid={option.testId}
-				class={'rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ' +
+				class={'rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ' +
 					(capabilityLayoutMode === option.mode
-						? 'bg-zinc-900 text-white'
-						: 'bg-zinc-100 text-zinc-600 hover:text-zinc-900')}
+						? 'bg-zinc-900 text-white shadow-sm'
+						: 'text-zinc-600 hover:text-zinc-900')}
 				aria-pressed={capabilityLayoutMode === option.mode}
 				on:click={() => selectCapabilityLayout(option.mode)}
 			>

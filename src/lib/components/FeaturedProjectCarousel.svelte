@@ -248,24 +248,42 @@
 		{/each}
 	</div>
 </div>
-<div class="mt-3 flex justify-end gap-2 px-2">
+<div class="mt-4 flex justify-center gap-3 sm:justify-end sm:gap-2">
 	<button
 		type="button"
 		data-testid="carousel-control-prev"
-		class="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-zinc-300 hover:text-zinc-900"
+		class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white text-zinc-700 shadow-sm ring-1 ring-zinc-200/80 transition hover:bg-zinc-50 hover:text-zinc-900"
 		aria-label="Previous highlight project"
+		title="Previous project"
 		on:click={() => scrollCarouselHorizontally('prev')}
 	>
-		Previous
+		<svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+			<path
+				d="M12.5 15 7.5 10l5-5"
+				stroke="currentColor"
+				stroke-width="1.75"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+		</svg>
 	</button>
 	<button
 		type="button"
 		data-testid="carousel-control-next"
-		class="rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-xs font-semibold text-zinc-700 transition-colors hover:border-zinc-300 hover:text-zinc-900"
+		class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white text-zinc-700 shadow-sm ring-1 ring-zinc-200/80 transition hover:bg-zinc-50 hover:text-zinc-900"
 		aria-label="Next highlight project"
+		title="Next project"
 		on:click={() => scrollCarouselHorizontally('next')}
 	>
-		Next
+		<svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+			<path
+				d="m7.5 15 5-5-5-5"
+				stroke="currentColor"
+				stroke-width="1.75"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+		</svg>
 	</button>
 </div>
 </div>
