@@ -9,12 +9,10 @@
 	import { homeSeo } from '$lib/data/seo';
 	import { profile } from '$lib/data/profile';
 	import {
-		defaultCapabilityBandLayoutMode,
-		defaultWorkSectionLayoutMode
+		defaultCapabilityBandLayoutMode
 	} from '$lib/data/portfolio';
 
 	/** @typedef {import('$lib/types/portfolio').CapabilityBandLayoutMode} CapabilityBandLayoutMode */
-	/** @typedef {import('$lib/types/portfolio').WorkSectionLayoutMode} WorkSectionLayoutMode */
 	/** @type {typeof import('$lib/components/ToolsStrip.svelte').default | null} */
 	let ToolsStrip = null;
 
@@ -22,21 +20,13 @@
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
 
-	const workLayoutStorageKey = 'portfolio-work-layout-mode';
 	const capabilityBandLayoutStorageKey = 'capability-band-layout-mode';
 
-	/** @type {WorkSectionLayoutMode} */
-	let workLayoutMode = defaultWorkSectionLayoutMode;
 	/** @type {CapabilityBandLayoutMode} */
 	let capabilityLayoutMode = defaultCapabilityBandLayoutMode;
 	const clientReady = typeof window !== 'undefined';
 
 	if (typeof localStorage !== 'undefined') {
-		const storedWorkMode = localStorage.getItem(workLayoutStorageKey);
-		if (storedWorkMode && isWorkSectionLayoutMode(storedWorkMode)) {
-			workLayoutMode = /** @type {WorkSectionLayoutMode} */ (storedWorkMode);
-		}
-
 		const storedCapabilityMode = localStorage.getItem(capabilityBandLayoutStorageKey);
 		if (storedCapabilityMode === 'singleStack') {
 			capabilityLayoutMode = 'sevenBands';
@@ -47,21 +37,8 @@
 	}
 
 	/** @param {string} mode */
-	function isWorkSectionLayoutMode(mode) {
-		return mode === 'featuredGrid' || mode === 'caseStudyLed';
-	}
-
-	/** @param {string} mode */
 	function isCapabilityBandLayoutMode(mode) {
 		return mode === 'sevenBands' || mode === 'groupedBands';
-	}
-
-	/** @param {WorkSectionLayoutMode} mode */
-	function setWorkLayoutMode(mode) {
-		workLayoutMode = mode;
-		if (typeof localStorage !== 'undefined') {
-			localStorage.setItem(workLayoutStorageKey, mode);
-		}
 	}
 
 	/** @param {CapabilityBandLayoutMode} mode */
@@ -89,10 +66,7 @@
 		<span data-testid="client-ready" class="sr-only">ready</span>
 	{/if}
 	<SiteHeader
-		{workLayoutMode}
 		{capabilityLayoutMode}
-		onWorkLayoutChange={(mode) =>
-			setWorkLayoutMode(/** @type {WorkSectionLayoutMode} */ (mode))}
 		onCapabilityLayoutChange={(mode) =>
 			setCapabilityLayoutMode(/** @type {CapabilityBandLayoutMode} */ (mode))}
 	/>
@@ -158,7 +132,7 @@
 			</div>
 		</section>
 
-		<WorkSection {workLayoutMode} />
+		<WorkSection />
 
 		<section
 			id="about"
@@ -184,38 +158,40 @@
 			<svelte:component this={ToolsStrip} />
 		{/if}
 
-		<ContactSection />
+		<div class="min-h-screen bg-[#f5f5f5] flex flex-col justify-end">
+			<ContactSection />
 
-		<footer data-testid="footer-section" class="bg-[#f5f5f5] py-12 sm:py-16">
-			<div class="{pageContainerClass} text-center">
-				<span class="footer-wave block text-3xl leading-none sm:text-4xl" aria-hidden="true">👋</span>
-				<p class="mt-4 text-[clamp(1.75rem,calc(0.25rem+3vw),2.25rem)] font-semibold leading-[1.35] text-zinc-950">
-					Thanks for checking my work.
-				</p>
-				<div class="mt-5 space-y-1.5 text-base font-medium leading-relaxed text-zinc-500 sm:text-lg">
-					<p>
-						<a
-							data-testid="footer-email"
-							class="break-words transition-colors hover:text-zinc-900"
-							href={'mailto:' + profile.contactEmail}
-						>
-							{profile.contactEmail}
-						</a>
+			<footer data-testid="footer-section" class="bg-[#f5f5f5] py-10 sm:py-12">
+				<div class="{pageContainerClass} text-center">
+					<span class="footer-wave block text-3xl leading-none sm:text-4xl" aria-hidden="true">👋</span>
+					<p class="mt-4 text-[clamp(1.75rem,calc(0.25rem+3vw),2.25rem)] font-semibold leading-[1.35] text-zinc-950">
+						Thanks for checking my work.
 					</p>
-					<p>
-						<a
-							data-testid="footer-website-link"
-							class="break-words transition-colors hover:text-zinc-900"
-							href={profile.websiteUrl}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{profile.websiteUrl}
-						</a>
-					</p>
+					<div class="mt-5 space-y-1.5 text-base font-medium leading-relaxed text-zinc-500 sm:text-lg">
+						<p>
+							<a
+								data-testid="footer-email"
+								class="break-words transition-colors hover:text-zinc-900"
+								href={'mailto:' + profile.contactEmail}
+							>
+								{profile.contactEmail}
+							</a>
+						</p>
+						<p>
+							<a
+								data-testid="footer-website-link"
+								class="break-words transition-colors hover:text-zinc-900"
+								href={profile.websiteUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{profile.websiteUrl}
+							</a>
+						</p>
+					</div>
 				</div>
-			</div>
-		</footer>
+			</footer>
+		</div>
 	</main>
 </div>
 

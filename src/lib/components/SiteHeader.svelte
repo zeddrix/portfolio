@@ -3,10 +3,7 @@
 	import { appPath } from '$lib/utils/app-path';
 	import PortfolioPreviewSettings from '$lib/components/PortfolioPreviewSettings.svelte';
 
-	export let workLayoutMode = 'featuredGrid';
-	export let capabilityLayoutMode = 'sevenBands';
-	/** @type {(mode: string) => void} */
-	export let onWorkLayoutChange = (_mode) => {};
+	export let capabilityLayoutMode = 'groupedBands';
 	/** @type {(mode: string) => void} */
 	export let onCapabilityLayoutChange = (_mode) => {};
 
@@ -39,9 +36,7 @@
 				{/each}
 			</nav>
 			<PortfolioPreviewSettings
-				{workLayoutMode}
 				{capabilityLayoutMode}
-				{onWorkLayoutChange}
 				{onCapabilityLayoutChange}
 			/>
 			<a

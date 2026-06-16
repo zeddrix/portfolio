@@ -1,4 +1,5 @@
 <script>
+	import { onDestroy, onMount } from 'svelte';
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 
 	/** @type {import('$lib/types/portfolio').CapabilityBandVisual} */
@@ -7,6 +8,13 @@
 	export let title;
 
 	let carouselIndex = 0;
+	/** @type {HTMLElement | null} */
+	let visualRoot = null;
+	let isVisible = false;
+	/** @type {ReturnType<typeof setInterval> | null} */
+	let autoRotateIntervalId = null;
+	/** @type {IntersectionObserver | null} */
+	let visibilityObserver = null;
 
 	/** @param {string} iconId */
 	function getIconLabel(iconId) {
@@ -65,6 +73,8 @@
 	$: carouselCount = displayImages.length;
 	$: safeCarouselIndex =
 		carouselCount > 0 ? ((carouselIndex % carouselCount) + carouselCount) % carouselCount : 0;
+	$: autoRotate = visual.autoRotate === true && imageLayout === 'carousel' && carouselCount > 1;
+	$: showCarouselControls = imageLayout === 'carousel' && !autoRotate;
 
 	/** @param {number} nextIndex */
 	function setCarouselIndex(nextIndex) {
@@ -83,12 +93,68 @@
 		setCarouselIndex(safeCarouselIndex + 1);
 	}
 
+	function startAutoRotate() {
+		if (!autoRotate || autoRotateIntervalId) {
+			return;
+		}
+
+		autoRotateIntervalId = setInterval(() => {
+			if (!isVisible) {
+				return;
+			}
+			setCarouselIndex(safeCarouselIndex + 1);
+		}, 3000);
+	}
+
+	function stopAutoRotate() {
+		if (!autoRotateIntervalId) {
+			return;
+		}
+		clearInterval(autoRotateIntervalId);
+		autoRotateIntervalId = null;
+	}
+
+	function initVisibilityObserver() {
+		if (typeof IntersectionObserver === 'undefined' || !visualRoot) {
+			return;
+		}
+
+		visibilityObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+				}
+			},
+			{ threshold: [0, 0.5, 0.9] }
+		);
+		visibilityObserver.observe(visualRoot);
+	}
+
+	onMount(() => {
+		initVisibilityObserver();
+		startAutoRotate();
+	});
+
+	onDestroy(() => {
+		stopAutoRotate();
+		if (visibilityObserver) {
+			visibilityObserver.disconnect();
+		}
+	});
+
+	$: if (autoRotate) {
+		startAutoRotate();
+	} else {
+		stopAutoRotate();
+	}
+
 	$: if (carouselIndex >= carouselCount) {
 		carouselIndex = 0;
 	}
 </script>
 
 <div
+	bind:this={visualRoot}
 	class="relative min-h-[260px] w-full overflow-hidden rounded-2xl bg-zinc-900 shadow-[0_24px_48px_-28px_rgba(0,0,0,0.45)] sm:min-h-[300px] lg:min-h-[340px]"
 	data-testid="capability-band-visual"
 >
@@ -132,40 +198,42 @@
 				</div>
 			{/each}
 
-			<div
-				class={'absolute inset-x-0 z-20 flex items-center justify-center gap-3 px-4 ' +
-					(visual.type === 'hybrid' && badges.length > 0 ? 'bottom-14' : 'bottom-3')}
-			>
-				<button
-					type="button"
-					class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
-					aria-label={'Previous ' + title + ' screenshot'}
-					on:click={showPreviousSlide}
+			{#if showCarouselControls}
+				<div
+					class={'absolute inset-x-0 z-20 flex items-center justify-center gap-3 px-4 ' +
+						(visual.type === 'hybrid' && badges.length > 0 ? 'bottom-14' : 'bottom-3')}
 				>
-					Prev
-				</button>
-				<div class="flex items-center gap-2" role="tablist" aria-label={title + ' screenshot slides'}>
-					{#each displayImages as imagePath, index (imagePath)}
-						<button
-							type="button"
-							class={'h-2.5 w-2.5 rounded-full transition ' +
-								(index === safeCarouselIndex ? 'bg-white' : 'bg-white/35 hover:bg-white/55')}
-							aria-label={'Show slide ' + (index + 1)}
-							aria-selected={index === safeCarouselIndex}
-							role="tab"
-							on:click={() => setCarouselIndex(index)}
-						></button>
-					{/each}
+					<button
+						type="button"
+						class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
+						aria-label={'Previous ' + title + ' screenshot'}
+						on:click={showPreviousSlide}
+					>
+						Prev
+					</button>
+					<div class="flex items-center gap-2" role="tablist" aria-label={title + ' screenshot slides'}>
+						{#each displayImages as imagePath, index (imagePath)}
+							<button
+								type="button"
+								class={'h-2.5 w-2.5 rounded-full transition ' +
+									(index === safeCarouselIndex ? 'bg-white' : 'bg-white/35 hover:bg-white/55')}
+								aria-label={'Show slide ' + (index + 1)}
+								aria-selected={index === safeCarouselIndex}
+								role="tab"
+								on:click={() => setCarouselIndex(index)}
+							></button>
+						{/each}
+					</div>
+					<button
+						type="button"
+						class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
+						aria-label={'Next ' + title + ' screenshot'}
+						on:click={showNextSlide}
+					>
+						Next
+					</button>
 				</div>
-				<button
-					type="button"
-					class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
-					aria-label={'Next ' + title + ' screenshot'}
-					on:click={showNextSlide}
-				>
-					Next
-				</button>
-			</div>
+			{/if}
 		</div>
 	{:else if hasVisualMedia}
 		<OptimizedImage

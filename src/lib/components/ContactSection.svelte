@@ -8,7 +8,7 @@
 <section
 	id="contact"
 	data-testid="contact-section"
-	class="mx-auto w-[90%] max-w-[1400px] py-16 sm:py-20"
+	class="mx-auto w-[90%] max-w-[1400px] py-12 sm:py-16"
 >
 	<div class="rounded-3xl border border-zinc-200 bg-white px-6 py-10 text-center shadow-sm sm:px-10 sm:py-12">
 		<h2 class={sectionHeadingClass}>Let&apos;s work together</h2>

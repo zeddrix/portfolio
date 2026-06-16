@@ -1,7 +1,7 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
-	import { highlightProjects } from '$lib/data/portfolio';
+	import { carouselProjects } from '$lib/data/portfolio';
 	import {
 		getProjectDisplayUrl,
 		getProjectTypeLabel
@@ -16,7 +16,8 @@
 	const carouselScrollClass =
 		'highlights-carousel-scroll snap-x overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
 
-	const carouselSizes = '(max-width: 640px) 88vw, 920px';
+	const carouselSizes = '(max-width: 640px) 78vw, 720px';
+	const carouselImageWidth = 720;
 
 	/** @type {Record<string, SlideState>} */
 	const slideStates = {};
@@ -60,7 +61,7 @@
 	}
 
 	function initHighlightSlides() {
-		for (const project of highlightProjects) {
+		for (const project of carouselProjects) {
 			const imageSet = getProjectImages(project);
 			highlightImageSets[project.slug] = imageSet;
 			slideStates[project.slug] = { current: 0 };
@@ -84,7 +85,7 @@
 			{ threshold: [0, 0.5, 0.9] }
 		);
 
-		for (const project of highlightProjects) {
+		for (const project of carouselProjects) {
 			const element = highlightSlideElements[project.slug];
 			if (element) highlightIntersectionObserver.observe(element);
 		}
@@ -97,12 +98,12 @@
 			(entries) => {
 				for (const entry of entries) {
 					if (!entry.isIntersecting) continue;
-					for (const project of highlightProjects) {
+					for (const project of carouselProjects) {
 						const images = highlightImageSets[project.slug] ?? [];
 						const currentIndex = slideStates[project.slug]?.current ?? 0;
 						const currentImage = images[currentIndex];
 						if (currentImage) {
-							prefetchImageUrl(getDefaultImageSrc(currentImage, 920));
+							prefetchImageUrl(getDefaultImageSrc(currentImage, carouselImageWidth));
 						}
 					}
 				}
@@ -114,7 +115,7 @@
 	}
 
 	function startHighlightSlides() {
-		for (const project of highlightProjects) {
+		for (const project of carouselProjects) {
 			const imageSet = highlightImageSets[project.slug] ?? [];
 			if (imageSet.length <= 1) continue;
 
@@ -124,7 +125,7 @@
 				const nextIndex = (currentState.current + 1) % imageSet.length;
 				const nextImage = imageSet[nextIndex];
 				if (nextImage) {
-					prefetchImageUrl(getDefaultImageSrc(nextImage, 920));
+					prefetchImageUrl(getDefaultImageSrc(nextImage, carouselImageWidth));
 				}
 				slideStates[project.slug] = { current: nextIndex };
 			}, 3000);
@@ -138,10 +139,10 @@
 		initCarouselPrefetchObserver();
 		startHighlightSlides();
 
-		const prefetchPaths = highlightProjects
+		const prefetchPaths = carouselProjects
 			.slice(1, 4)
 			.flatMap((project) => (project.primaryImage ? [project.primaryImage] : []))
-			.map((path) => getDefaultImageSrc(path, 920));
+			.map((path) => getDefaultImageSrc(path, carouselImageWidth));
 		scheduleIdlePrefetch(prefetchPaths);
 	});
 
@@ -157,7 +158,18 @@
 	/** @param {'prev' | 'next'} direction */
 	function scrollCarouselHorizontally(direction) {
 		if (!carouselElement) return;
-		const scrollAmount = Math.max(carouselElement.clientWidth * 0.85, 320);
+
+		const track = carouselElement.querySelector('[data-testid="highlights-carousel-track"]');
+		const firstCard = track?.firstElementChild;
+		let scrollAmount = Math.max(carouselElement.clientWidth * 0.72, 320);
+
+		if (firstCard instanceof HTMLElement && track instanceof HTMLElement) {
+			const cardWidth = firstCard.getBoundingClientRect().width;
+			const gapValue = getComputedStyle(track).columnGap || getComputedStyle(track).gap;
+			const gap = Number.parseFloat(gapValue) || 24;
+			scrollAmount = cardWidth + gap;
+		}
+
 		carouselElement.scrollBy({
 			left: direction === 'next' ? scrollAmount : -scrollAmount,
 			behavior: 'smooth'
@@ -169,10 +181,10 @@
 <div bind:this={carouselElement} data-testid="highlights-carousel" class={carouselScrollClass}>
 	<div
 		data-testid="highlights-carousel-track"
-		class="highlights-carousel-track flex w-max gap-5 sm:gap-6 md:gap-8"
+		class="highlights-carousel-track flex w-max gap-6 md:gap-8"
 	>
-		{#each highlightProjects as project, index (project.slug)}
-			<div class="w-[min(88vw,920px)] shrink-0 snap-start space-y-4 sm:w-[min(90vw,920px)]">
+		{#each carouselProjects as project, index (project.slug)}
+			<div class="w-[min(78vw,680px)] shrink-0 snap-start space-y-4 sm:w-[min(72vw,720px)]">
 				<article
 					data-testid={'highlight-card-' + index}
 					data-highlight-slug={project.slug}

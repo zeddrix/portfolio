@@ -7,7 +7,7 @@
 	} from '$lib/data/portfolio';
 	import { appPath } from '$lib/utils/app-path';
 
-	export let capabilityLayoutMode = 'sevenBands';
+	export let capabilityLayoutMode = 'groupedBands';
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
@@ -85,7 +85,10 @@
 							class={'grid items-center gap-10 lg:grid-cols-2 lg:gap-16 ' +
 								(index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}
 						>
-							<CapabilityBandVisual visual={group.bands[0].visual} title={group.title} />
+							<CapabilityBandVisual
+								visual={group.visual ?? group.bands[0].visual}
+								title={group.title}
+							/>
 							<div class="space-y-6 lg:py-4">
 								<h3
 									class="text-[clamp(1.75rem,calc(0.25rem+3vw),2.75rem)] font-bold leading-[1.12] tracking-[-0.03em] text-zinc-950"
