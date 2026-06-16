@@ -4,18 +4,18 @@ import { selectors } from "../fixtures/selectors";
 import {
   clickNavLink,
   gotoHome,
-  navigateToProjectViaGrid,
+  navigateToProjectViaCarousel,
   scrollToTestId,
 } from "../fixtures/test-helpers";
 
 test.describe.serial("Journey: home to project discovery", () => {
-  test("Hero → work filter → Queue detail → back home", async ({ page }) => {
+  test("Hero → work carousel → Queue detail → back home", async ({ page }) => {
     await gotoHome(page);
 
     await clickNavLink(page, "work");
     await expect(page).toHaveURL(/#work$/);
 
-    await navigateToProjectViaGrid(page, "queue", "personal");
+    await navigateToProjectViaCarousel(page, "queue");
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Queue",
     );

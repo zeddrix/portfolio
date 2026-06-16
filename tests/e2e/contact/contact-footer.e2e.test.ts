@@ -71,4 +71,35 @@ test.describe("contact and footer", () => {
       dimensions.viewportHeight * 0.7,
     );
   });
+
+  test("Given homepage at max scroll, when user reaches page bottom, then contact and footer are visible without tools strip", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await page.evaluate(() => {
+      window.scrollTo(0, document.documentElement.scrollHeight);
+    });
+
+    await expect(page.getByTestId(selectors.sections.contact)).toBeInViewport();
+    await expect(page.getByTestId(selectors.sections.footer)).toBeInViewport();
+    await expect(
+      page.getByTestId(selectors.sections.tools),
+    ).not.toBeInViewport();
+  });
+
+  test("Given homepage at max scroll on mobile, when user reaches page bottom, then contact and footer are visible without tools strip", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.evaluate(() => {
+      window.scrollTo(0, document.documentElement.scrollHeight);
+    });
+
+    await expect(page.getByTestId(selectors.sections.contact)).toBeInViewport();
+    await expect(page.getByTestId(selectors.sections.footer)).toBeInViewport();
+    await expect(
+      page.getByTestId(selectors.sections.tools),
+    ).not.toBeInViewport();
+  });
 });

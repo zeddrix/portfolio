@@ -3,17 +3,16 @@ import { PAGES_BASE_PATH, pagesPath } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
 import {
   gotoHome,
-  navigateToProjectViaGrid,
+  navigateToProjectViaCarousel,
   scrollToTestId,
-  setWorkLayout,
 } from "../fixtures/test-helpers";
 
 test.describe("project details routing", () => {
-  test("Given homepage work grid, when user opens Queue via personal filter, then detail page shows metadata and stack", async ({
+  test("Given homepage carousel, when user opens Queue showcase, then detail page shows metadata and stack", async ({
     page,
   }) => {
     await gotoHome(page);
-    await navigateToProjectViaGrid(page, "queue", "personal");
+    await navigateToProjectViaCarousel(page, "queue");
 
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Queue",
@@ -47,12 +46,7 @@ test.describe("project details routing", () => {
     page,
   }) => {
     await gotoHome(page);
-    await scrollToTestId(page, selectors.work.carousel);
-    await page.getByTestId("highlight-card-4").scrollIntoViewIfNeeded();
-    await Promise.all([
-      page.waitForURL(`**${PAGES_BASE_PATH}/projects/merns-shop`),
-      page.getByTestId("showcase-project-link-merns-shop").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "merns-shop");
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "MERN's Shop",
     );
@@ -65,27 +59,17 @@ test.describe("project details routing", () => {
     page,
   }) => {
     await gotoHome(page);
-    await scrollToTestId(page, selectors.work.carousel);
-    await page.getByTestId("highlight-card-2").scrollIntoViewIfNeeded();
-    await Promise.all([
-      page.waitForURL(`**${PAGES_BASE_PATH}/projects/queue`),
-      page.getByTestId("showcase-project-link-queue").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "queue");
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Queue",
     );
   });
 
-  test("Given case study layout, when user opens MERN's Shop case study, then detail loads with React stack", async ({
+  test("Given carousel showcase, when user opens MERN's Shop, then detail loads with React stack", async ({
     page,
   }) => {
     await gotoHome(page);
-    await setWorkLayout(page, "caseStudyLed");
-    await scrollToTestId(page, selectors.work.section);
-    await Promise.all([
-      page.waitForURL(`**${PAGES_BASE_PATH}/projects/merns-shop`),
-      page.getByTestId("case-study-link-merns-shop").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "merns-shop");
     await expect(page.getByTestId("project-detail-tech-stack")).toContainText(
       "React",
     );
@@ -95,12 +79,7 @@ test.describe("project details routing", () => {
     page,
   }) => {
     await gotoHome(page);
-    await scrollToTestId(page, selectors.work.carousel);
-    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
-    await Promise.all([
-      page.waitForURL(`**${PAGES_BASE_PATH}/projects/answeriq`),
-      page.getByTestId("showcase-project-link-answeriq").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "answeriq");
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "AnswerIQ",
     );
@@ -112,16 +91,11 @@ test.describe("project details routing", () => {
     ).toContainText("Admin Dashboard");
   });
 
-  test("Given case study layout, when user opens AnswerIQ case study, then detail loads with Stripe stack", async ({
+  test("Given carousel showcase, when user opens AnswerIQ, then detail loads with Stripe stack", async ({
     page,
   }) => {
     await gotoHome(page);
-    await setWorkLayout(page, "caseStudyLed");
-    await scrollToTestId(page, selectors.work.section);
-    await Promise.all([
-      page.waitForURL(`**${PAGES_BASE_PATH}/projects/answeriq`),
-      page.getByTestId("case-study-link-answeriq").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "answeriq");
     await expect(page.getByTestId("project-detail-tech-stack")).toContainText(
       "Stripe",
     );
@@ -134,7 +108,7 @@ test.describe("project details routing", () => {
     page,
   }) => {
     await gotoHome(page);
-    await navigateToProjectViaGrid(page, "queue", "personal");
+    await navigateToProjectViaCarousel(page, "queue");
     await page.getByTestId("project-detail-back-link").click();
     await page.waitForURL(new RegExp(`${PAGES_BASE_PATH}/?$`));
     await expect(page.getByTestId(selectors.hero.title)).toBeVisible();

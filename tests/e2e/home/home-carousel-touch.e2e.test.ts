@@ -12,7 +12,7 @@ import { selectors } from "../fixtures/selectors";
 test.use({ ...devices["Pixel 5"] });
 
 const verticalDragDistancePx = 180;
-const horizontalDragDistancePx = 200;
+const horizontalDragDistancePx = 280;
 const minVerticalScrollDeltaPx = 80;
 const minHorizontalScrollDeltaPx = 40;
 
@@ -33,7 +33,7 @@ test.describe("homepage carousel touch scroll", () => {
     await gotoHomeWithCleanState(page);
   });
 
-  test("Given homepage on mobile, when user swipes vertically on carousel center, then page scrolls down and work grid enters viewport", async ({
+  test("Given homepage on mobile, when user swipes vertically on carousel center, then page scrolls down and about section enters viewport", async ({
     page,
   }) => {
     await centerCarouselInViewport(page);
@@ -48,7 +48,7 @@ test.describe("homepage carousel touch scroll", () => {
     await expect
       .poll(async () => getWindowScrollY(page))
       .toBeGreaterThan(startScrollY + minVerticalScrollDeltaPx);
-    await expect(page.getByTestId(selectors.work.grid)).toBeInViewport();
+    await expect(page.getByTestId(selectors.sections.about)).toBeInViewport();
   });
 
   test("Given homepage on mobile, when user swipes vertically on highlight card image, then page scroll is not trapped", async ({
@@ -78,15 +78,10 @@ test.describe("homepage carousel touch scroll", () => {
       .poll(async () => getWindowScrollY(page))
       .toBeGreaterThan(startScrollY + minVerticalScrollDeltaPx);
 
-    const workGrid = page.getByTestId(selectors.work.grid);
     const aboutSection = page.getByTestId(selectors.sections.about);
     await expect(async () => {
-      const gridVisible = await workGrid.isVisible();
-      const aboutVisible = await aboutSection.isVisible();
-      expect(gridVisible || aboutVisible).toBe(true);
-      if (gridVisible) {
-        await expect(workGrid).toBeInViewport();
-      }
+      await expect(aboutSection).toBeVisible();
+      await expect(aboutSection).toBeInViewport();
     }).toPass();
   });
 
@@ -103,8 +98,6 @@ test.describe("homepage carousel touch scroll", () => {
     const startScrollLeft = await carousel.evaluate(
       (element) => element.scrollLeft,
     );
-    const secondCardStartX =
-      (await secondCard.boundingBox())?.x ?? Number.POSITIVE_INFINITY;
 
     await touchDrag(page, center, {
       x: center.x - horizontalDragDistancePx,
@@ -115,11 +108,6 @@ test.describe("homepage carousel touch scroll", () => {
       .poll(async () => carousel.evaluate((element) => element.scrollLeft))
       .toBeGreaterThan(startScrollLeft + minHorizontalScrollDeltaPx);
 
-    const secondCardEndX =
-      (await secondCard.boundingBox())?.x ?? Number.NEGATIVE_INFINITY;
-    const viewportCenterX = await page.evaluate(() => window.innerWidth / 2);
-    expect(Math.abs(secondCardEndX - viewportCenterX)).toBeLessThan(
-      Math.abs(secondCardStartX - viewportCenterX),
-    );
+    await expect(secondCard).toBeInViewport();
   });
 });

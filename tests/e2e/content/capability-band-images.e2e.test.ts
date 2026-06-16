@@ -118,6 +118,57 @@ test.describe("capability band images", () => {
     );
   });
 
+  test("Given grouped capability layout, when user views product foundations, then PWA split visual renders", async ({
+    page,
+  }) => {
+    await page.addInitScript(
+      ({ capabilityKey, mode }) => {
+        localStorage.setItem(capabilityKey, mode);
+      },
+      { capabilityKey: capabilityLayoutStorageKey, mode: "groupedBands" },
+    );
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.sections.approach);
+
+    const productFoundations = page.getByTestId("highlight-band-0");
+    await expect(
+      productFoundations.getByTestId("capability-band-visual-split"),
+    ).toBeVisible();
+    await expect(bandImage(page, 0, 0)).toHaveAttribute(
+      "src",
+      /pwa-queue-desktop.*\.webp/,
+    );
+  });
+
+  test("Given grouped monetization band, when auto-rotate runs, then screenshot source switches", async ({
+    page,
+  }) => {
+    await page.addInitScript(
+      ({ capabilityKey, mode }) => {
+        localStorage.setItem(capabilityKey, mode);
+      },
+      { capabilityKey: capabilityLayoutStorageKey, mode: "groupedBands" },
+    );
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.sections.approach);
+
+    const monetizationBand = page.getByTestId("highlight-band-1");
+    await monetizationBand.scrollIntoViewIfNeeded();
+    const activeImage = monetizationBand.locator(
+      '[data-testid="capability-band-visual-carousel"] .opacity-100 img',
+    );
+    await expect(activeImage).toHaveAttribute(
+      "src",
+      /lemonsqueezy-dashboard.*\.webp/,
+    );
+
+    await expect
+      .poll(async () => activeImage.getAttribute("src"), {
+        timeout: 5_000,
+      })
+      .toMatch(/answeriq-5-admin-dashboard.*\.webp/);
+  });
+
   test("Given grouped capability layout, when user switches from preview settings, then grouped bands render without detailed band six", async ({
     page,
   }) => {

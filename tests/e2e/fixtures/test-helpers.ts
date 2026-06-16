@@ -2,10 +2,8 @@ import { expect, type Page } from "@playwright/test";
 import { PAGES_HOME_PATH } from "./pages-env";
 import { selectors } from "./selectors";
 
-export const workLayoutStorageKey = "portfolio-work-layout-mode";
 export const capabilityLayoutStorageKey = "capability-band-layout-mode";
 
-export type WorkLayoutMode = "featuredGrid" | "caseStudyLed";
 export type CapabilityLayoutMode = "sevenBands" | "groupedBands";
 
 export async function waitForPageLoad(page: Page): Promise<void> {
@@ -49,12 +47,12 @@ export async function scrollToTestId(
 
 export async function resetPortfolioLocalStorage(page: Page): Promise<void> {
   await page.evaluate(
-    ({ workKey, capabilityKey }) => {
-      localStorage.removeItem(workKey);
+    ({ capabilityKey, legacyWorkKey }) => {
+      localStorage.removeItem(legacyWorkKey);
       localStorage.removeItem(capabilityKey);
     },
     {
-      workKey: workLayoutStorageKey,
+      legacyWorkKey: "portfolio-work-layout-mode",
       capabilityKey: capabilityLayoutStorageKey,
     },
   );
@@ -85,18 +83,6 @@ export async function openPreviewSettings(page: Page): Promise<void> {
   }).toPass({ timeout: 15_000 });
 }
 
-export async function setWorkLayout(
-  page: Page,
-  mode: WorkLayoutMode,
-): Promise<void> {
-  await openPreviewSettings(page);
-  const testId =
-    mode === "caseStudyLed"
-      ? selectors.previewSettings.workCaseStudies
-      : selectors.previewSettings.workGrid;
-  await page.getByTestId(testId).click();
-}
-
 export async function setCapabilityLayout(
   page: Page,
   mode: CapabilityLayoutMode,
@@ -109,23 +95,17 @@ export async function setCapabilityLayout(
   await page.getByTestId(testIdMap[mode]).click();
 }
 
-export async function navigateToProjectViaGrid(
+export async function navigateToProjectViaCarousel(
   page: Page,
   slug: string,
-  filter?: "all" | "client" | "personal",
 ): Promise<void> {
   await scrollToTestId(page, selectors.work.section);
-  if (filter === "client") {
-    await page.getByTestId(selectors.work.filterClient).click();
-  } else if (filter === "personal") {
-    await page.getByTestId(selectors.work.filterPersonal).click();
-  } else if (filter === "all") {
-    await page.getByTestId(selectors.work.filterAll).click();
-  }
+  const card = page.locator(`[data-highlight-slug="${slug}"]`);
+  await card.scrollIntoViewIfNeeded();
+  await expect(card).toBeVisible();
 
-  const projectLink = page.getByTestId(`project-details-link-${slug}`);
+  const projectLink = page.getByTestId(`showcase-project-link-${slug}`);
   await expect(projectLink).toBeVisible();
-  await projectLink.scrollIntoViewIfNeeded();
   await Promise.all([
     page.waitForURL(`**/projects/${slug}`),
     projectLink.click(),

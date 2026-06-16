@@ -3,6 +3,7 @@ import { PAGES_BASE_PATH, PAGES_SITE_URL } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
 import {
   gotoHome,
+  navigateToProjectViaCarousel,
   scrollToTestId,
   setCapabilityLayout,
 } from "../fixtures/test-helpers";
@@ -12,13 +13,7 @@ test.describe("seo navigation metadata", () => {
     page,
   }) => {
     await gotoHome(page);
-
-    await scrollToTestId(page, selectors.work.section);
-    await page.getByTestId(selectors.work.filterPersonal).click();
-    await Promise.all([
-      page.waitForURL("**/projects/queue"),
-      page.getByTestId("project-link-queue").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "queue");
 
     await expect(page).toHaveTitle(/Queue.*Zeddrix Fabian/i);
     const projectCanonical = `${PAGES_SITE_URL}/projects/queue`;

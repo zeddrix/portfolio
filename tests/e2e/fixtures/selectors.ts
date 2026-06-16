@@ -28,8 +28,6 @@ export const selectors = {
   previewSettings: {
     toggle: "portfolio-preview-settings",
     panel: "portfolio-preview-settings-panel",
-    workGrid: "work-layout-option-featured-grid",
-    workCaseStudies: "work-layout-option-case-studies",
     capabilityDetailed: "capability-layout-option-detailed",
     capabilityGrouped: "capability-layout-option-grouped",
   },

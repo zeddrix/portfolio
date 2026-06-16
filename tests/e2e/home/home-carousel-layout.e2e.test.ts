@@ -15,6 +15,25 @@ async function getPageWidth(page: Page) {
 }
 
 test.describe("homepage carousel layout", () => {
+  test("Given homepage at desktop, when user lands without scrolling, then second carousel card peeks at right edge", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+
+    const secondCard = page.getByTestId("highlight-card-1");
+    const box = await secondCard.boundingBox();
+    const viewportWidth = await page.evaluate(() => window.innerWidth);
+
+    if (!box) {
+      throw new Error("Expected second carousel card bounding box.");
+    }
+
+    expect(box.x).toBeLessThan(viewportWidth);
+    expect(box.x + box.width).toBeGreaterThan(viewportWidth * 0.85);
+  });
+
   test("Given homepage at desktop, when user lands without scrolling, then first carousel card peeks into viewport", async ({
     page,
   }) => {
@@ -84,7 +103,7 @@ test.describe("homepage carousel layout", () => {
     );
     await scrollCarouselToPosition(page, endScrollLeft);
 
-    const lastCard = page.getByTestId("highlight-card-5");
+    const lastCard = page.getByTestId("highlight-card-8");
     const lastCardBox = await lastCard.boundingBox();
     const aboutBoxAtEnd = await aboutSection.boundingBox();
     if (!lastCardBox || !aboutBoxAtEnd) {

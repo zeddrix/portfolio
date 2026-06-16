@@ -3,6 +3,7 @@ import { PAGES_BASE_PATH } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
 import {
   gotoHome,
+  navigateToProjectViaCarousel,
   scrollCarouselNext,
   scrollToTestId,
   waitForCarouselImageChange,
@@ -128,16 +129,11 @@ test.describe("project image mapping", () => {
     ).toHaveAttribute("src", /adverio-tools-2-forecasting.*\.webp/);
   });
 
-  test("Given UseDelight grid journey, when user filters client and opens project, then gallery renders", async ({
+  test("Given UseDelight carousel journey, when user opens project, then gallery renders", async ({
     page,
   }) => {
     await gotoHome(page);
-    await scrollToTestId(page, "work-section");
-    await page.getByTestId("work-filter-client").click();
-    await Promise.all([
-      page.waitForURL("**/projects/usedelight"),
-      page.getByTestId("project-details-link-usedelight").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "usedelight");
 
     await expect(
       detailImage(page, "project-detail-hero-image"),
@@ -159,12 +155,7 @@ test.describe("project image mapping", () => {
     const expectedAspectRatio = 1840 / 1127;
 
     await gotoHome(page);
-    await scrollToTestId(page, selectors.work.section);
-    await page.getByTestId("work-filter-client").click();
-    await Promise.all([
-      page.waitForURL("**/projects/usedelight"),
-      page.getByTestId("project-details-link-usedelight").click(),
-    ]);
+    await navigateToProjectViaCarousel(page, "usedelight");
 
     const heroImage = detailImage(page, "project-detail-hero-image");
     await expect(heroImage).toBeVisible();

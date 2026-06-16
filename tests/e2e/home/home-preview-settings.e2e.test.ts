@@ -5,27 +5,11 @@ import {
   openPreviewSettings,
   scrollToTestId,
   setCapabilityLayout,
-  setWorkLayout,
 } from "../fixtures/test-helpers";
 
 test.describe("homepage preview settings", () => {
   test.beforeEach(async ({ page }) => {
     await gotoHomeWithCleanState(page);
-  });
-
-  test("Given homepage, when user toggles work layouts, then grid and case studies swap", async ({
-    page,
-  }) => {
-    await scrollToTestId(page, selectors.work.section);
-    await expect(page.getByTestId(selectors.work.grid)).toBeVisible();
-
-    await setWorkLayout(page, "caseStudyLed");
-    await expect(page.getByTestId("case-study-queue")).toBeVisible();
-    await expect(page.getByTestId(selectors.work.grid)).toHaveCount(0);
-
-    await setWorkLayout(page, "featuredGrid");
-    await expect(page.getByTestId(selectors.work.grid)).toBeVisible();
-    await expect(page.getByTestId("case-study-queue")).toBeHidden();
   });
 
   test("Given homepage, when user selects each capability layout, then matching band structure renders", async ({
@@ -44,29 +28,28 @@ test.describe("homepage preview settings", () => {
     await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
   });
 
-  test("Given fresh homepage, when user opens preview settings, then detailed approach layout is selected", async ({
+  test("Given fresh homepage, when user opens preview settings, then grouped approach layout is selected", async ({
     page,
   }) => {
     await openPreviewSettings(page);
     await expect(
-      page.getByTestId(selectors.previewSettings.capabilityDetailed),
+      page.getByTestId(selectors.previewSettings.capabilityGrouped),
     ).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("Given preview settings changed, when page reloads, then case study and detailed layouts persist", async ({
+  test("Given preview settings changed, when page reloads, then capability layout persists", async ({
     page,
   }) => {
-    await setWorkLayout(page, "caseStudyLed");
     await setCapabilityLayout(page, "sevenBands");
-    await expect(page.getByTestId("case-study-queue")).toBeVisible();
+    await scrollToTestId(page, selectors.sections.approach);
+    await expect(page.getByTestId("highlight-band-6")).toBeVisible();
     await page.reload();
-
-    await scrollToTestId(page, selectors.work.section);
-    await expect(page.getByTestId("case-study-queue")).toBeVisible();
-    await expect(page.getByTestId(selectors.work.grid)).toHaveCount(0);
 
     await scrollToTestId(page, selectors.sections.approach);
     await expect(page.getByTestId("highlight-band-6")).toBeVisible();
+    await expect(page.getByTestId(selectors.sections.approach)).toContainText(
+      "Docker Containerization",
+    );
   });
 
   test("Given homepage, when user opens and closes preview panel, then panel toggles visibility", async ({
