@@ -29,5 +29,18 @@ test.describe("homepage shell", () => {
       "https://github.com/zeddrix",
     );
     await expect(githubLink).toHaveAttribute("target", "_blank");
+
+    const iconGap = await page.evaluate(() => {
+      const cta = document.querySelector('[data-testid="hero-cta"]');
+      if (!cta) return null;
+      const icon = cta.querySelector(".get-in-touch__icon");
+      const label = cta.querySelector(".get-in-touch__label");
+      if (!icon || !label) return null;
+      const iconBox = icon.getBoundingClientRect();
+      const labelBox = label.getBoundingClientRect();
+      return labelBox.left - iconBox.right;
+    });
+    expect(iconGap).not.toBeNull();
+    expect(iconGap ?? 0).toBeGreaterThanOrEqual(8);
   });
 });
