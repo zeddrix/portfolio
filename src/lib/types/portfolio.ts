@@ -70,6 +70,7 @@ export interface CapabilityBandVisual {
   image?: string;
   images?: string[];
   imageLayout?: CapabilityBandImageLayout;
+  autoRotate?: boolean;
   icons?: string[];
   badges?: string[];
 }
@@ -87,6 +88,7 @@ export interface CapabilityBandGroup {
   id: string;
   title: string;
   description?: string;
+  visual?: CapabilityBandVisual;
   bands: CapabilityBand[];
 }
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   capabilityBands,
+  carouselProjects,
   caseStudyProjectSlugs,
   clientProjectCount,
   getBandsForProject,
@@ -187,5 +188,20 @@ describe("portfolio data", () => {
     expect(highlightProjects.some((project) => project.slug === "iaso")).toBe(
       false,
     );
+  });
+
+  it("orders carousel projects with highlights first then remaining visible projects", () => {
+    expect(carouselProjects.map((project) => project.slug)).toEqual([
+      "usedelight",
+      "adverio-tools",
+      "queue",
+      "jw-tabs",
+      "merns-shop",
+      "answeriq",
+      "trulyhappy",
+      "articulearn",
+      "bolt-to-github",
+    ]);
+    expect(carouselProjects.every(isPortfolioProjectVisible)).toBe(true);
   });
 });

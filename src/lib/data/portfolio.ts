@@ -5,7 +5,6 @@ import type {
   PortfolioProject,
   ToolStripGroup,
   ToolStripItem,
-  WorkSectionLayoutMode,
   WorkProjectFilter,
 } from "$lib/types/portfolio";
 import { filterProjectsByWorkFilter } from "$lib/utils/portfolio-display";
@@ -457,10 +456,7 @@ export const projects: PortfolioProject[] = [
 ];
 
 export const defaultCapabilityBandLayoutMode: CapabilityBandLayoutMode =
-  "sevenBands";
-
-export const defaultWorkSectionLayoutMode: WorkSectionLayoutMode =
-  "featuredGrid";
+  "groupedBands";
 
 export const caseStudyProjectSlugs = [
   "usedelight",
@@ -671,12 +667,15 @@ export const capabilityBands: CapabilityBand[] = [
   },
 ];
 
+const pwaBandVisual = capabilityBands.find((band) => band.id === "pwa")!.visual;
+
 export const capabilityBandGroups: CapabilityBandGroup[] = [
   {
     id: "product-foundations",
     title: "Product foundations",
     description:
       "Core product engineering from full-stack delivery to installable PWA experiences.",
+    visual: pwaBandVisual,
     bands: capabilityBands.filter((band) =>
       ["fullstack", "pwa"].includes(band.id),
     ),
@@ -686,6 +685,15 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
     title: "Monetization and operations",
     description:
       "Billing, admin control, and AI-assisted support built into shipped products.",
+    visual: {
+      type: "screenshot",
+      images: [
+        "/lemonsqueezy-dashboard.webp",
+        "/answeriq-5-admin-dashboard.webp",
+      ],
+      imageLayout: "carousel",
+      autoRotate: true,
+    },
     bands: capabilityBands.filter((band) =>
       ["billing", "admin-dashboard", "chatbot"].includes(band.id),
     ),
@@ -846,6 +854,13 @@ export const highlightProjects = highlightProjectSlugs
   .map((slug) => projects.find((project) => project.slug === slug))
   .filter((project): project is PortfolioProject => project !== undefined)
   .filter(isPortfolioProjectVisible);
+
+const highlightSlugSet = new Set<string>(highlightProjectSlugs);
+
+export const carouselProjects = [
+  ...highlightProjects,
+  ...visibleProjects.filter((project) => !highlightSlugSet.has(project.slug)),
+];
 
 export const caseStudyProjects = caseStudyProjectSlugs
   .map((slug) => projects.find((project) => project.slug === slug))
