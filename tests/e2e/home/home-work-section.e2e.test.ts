@@ -31,6 +31,7 @@ test.describe("homepage work section", () => {
     await page.getByTestId(selectors.work.filterAll).click();
     await expect(grid.getByTestId("project-card-merns-shop")).toBeVisible();
     await expect(grid.getByTestId("project-card-trulyhappy")).toBeVisible();
+    await expect(grid.getByTestId("project-card-iaso")).toHaveCount(0);
   });
 
   test("Given case study layout, when user opens case study link, then project detail loads", async ({

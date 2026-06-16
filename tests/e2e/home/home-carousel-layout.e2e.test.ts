@@ -15,6 +15,15 @@ async function getPageWidth(page: Page) {
 }
 
 test.describe("homepage carousel layout", () => {
+  test("Given homepage at desktop, when user lands without scrolling, then first carousel card peeks into viewport", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+
+    await expect(page.getByTestId("highlight-card-0")).toBeInViewport();
+  });
+
   test("Given homepage, when user scrolls carousel with controls and positions, then margins exist only at ends", async ({
     page,
   }) => {
@@ -75,7 +84,7 @@ test.describe("homepage carousel layout", () => {
     );
     await scrollCarouselToPosition(page, endScrollLeft);
 
-    const lastCard = page.getByTestId("highlight-card-6");
+    const lastCard = page.getByTestId("highlight-card-5");
     const lastCardBox = await lastCard.boundingBox();
     const aboutBoxAtEnd = await aboutSection.boundingBox();
     if (!lastCardBox || !aboutBoxAtEnd) {

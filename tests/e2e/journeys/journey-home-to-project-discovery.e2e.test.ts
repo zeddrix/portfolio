@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { PAGES_BASE_PATH } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
 import {
+  clickNavLink,
   gotoHome,
   navigateToProjectViaGrid,
   scrollToTestId,
@@ -11,7 +12,7 @@ test.describe.serial("Journey: home to project discovery", () => {
   test("Hero → work filter → Queue detail → back home", async ({ page }) => {
     await gotoHome(page);
 
-    await page.getByTestId(selectors.hero.workCta).click();
+    await clickNavLink(page, "work");
     await expect(page).toHaveURL(/#work$/);
 
     await navigateToProjectViaGrid(page, "queue", "personal");

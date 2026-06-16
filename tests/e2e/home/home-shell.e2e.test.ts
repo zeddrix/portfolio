@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { selectors } from "../fixtures/selectors";
-import { assertSectionInViewport, gotoHome } from "../fixtures/test-helpers";
+import {
+  assertSectionInViewport,
+  clickNavLink,
+  gotoHome,
+} from "../fixtures/test-helpers";
 
 test.describe("homepage shell", () => {
   test("Given homepage, when user uses hero CTA and inspects github link, then work section and identity links resolve", async ({
@@ -8,7 +12,7 @@ test.describe("homepage shell", () => {
   }) => {
     await gotoHome(page);
 
-    await page.getByTestId(selectors.hero.workCta).click();
+    await clickNavLink(page, "work");
     await expect(page).toHaveURL(/#work$/);
     await assertSectionInViewport(page, selectors.work.section);
 

@@ -42,13 +42,15 @@ test.describe("homepage preview settings", () => {
     await scrollToTestId(page, selectors.sections.approach);
     await expect(page.getByTestId("highlight-band-1")).toBeVisible();
     await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
+  });
 
-    await setCapabilityLayout(page, "singleStack");
-    await scrollToTestId(page, selectors.sections.approach);
-    await expect(page.getByTestId("highlight-band-0")).toBeVisible();
-    await expect(page.getByTestId(selectors.sections.approach)).toContainText(
-      "End-to-end product delivery",
-    );
+  test("Given fresh homepage, when user opens preview settings, then detailed approach layout is selected", async ({
+    page,
+  }) => {
+    await openPreviewSettings(page);
+    await expect(
+      page.getByTestId(selectors.previewSettings.capabilityDetailed),
+    ).toHaveAttribute("aria-pressed", "true");
   });
 
   test("Given preview settings changed, when page reloads, then case study and detailed layouts persist", async ({

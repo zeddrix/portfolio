@@ -51,15 +51,6 @@ test.describe("homepage navigation", () => {
     expect(approachIndex).toBeGreaterThan(aboutIndex);
   });
 
-  test("Given homepage, when user clicks hero work CTA, then work section scrolls into view", async ({
-    page,
-  }) => {
-    await gotoHome(page);
-    await page.getByTestId(selectors.hero.workCta).click();
-    await expect(page).toHaveURL(/#work$/);
-    await assertSectionInViewport(page, selectors.work.section);
-  });
-
   test("Given homepage scrolled to contact, when user clicks header name, then hero title returns to view", async ({
     page,
   }) => {

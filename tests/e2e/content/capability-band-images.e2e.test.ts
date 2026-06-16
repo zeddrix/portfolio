@@ -132,15 +132,45 @@ test.describe("capability band images", () => {
     await expect(page.getByTestId("highlight-band-6")).toBeVisible();
   });
 
-  test("Given compact capability layout, when user selects compact mode, then single stack band renders", async ({
+  test("Given chatbot carousel in detailed layout, when slide loads, then image fills most of visual frame", async ({
     page,
   }) => {
-    await setCapabilityLayout(page, "singleStack");
-    await scrollToTestId(page, selectors.sections.approach);
-    await expect(page.getByTestId("highlight-band-0")).toBeVisible();
-    await expect(page.getByTestId(selectors.sections.approach)).toContainText(
-      "End-to-end product delivery",
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    const visual = chatbotBand.getByTestId("capability-band-visual");
+    const image = bandImage(page, 4, 0);
+
+    await expect(image).toHaveAttribute("src", /chatbot-start.*\.webp/);
+    await expect(
+      chatbotBand.getByTestId("capability-band-image-0"),
+    ).toHaveAttribute("data-image-state", /^(lqip|loaded)$/);
+
+    const visualBox = await visual.boundingBox();
+    const imageBox = await image.boundingBox();
+    if (!visualBox || !imageBox) {
+      throw new Error("Expected chatbot visual and image bounding boxes.");
+    }
+
+    expect(imageBox.height / visualBox.height).toBeGreaterThan(0.4);
+  });
+
+  test("Given deployment carousel in detailed layout, when slide loads, then image fills most of visual frame", async ({
+    page,
+  }) => {
+    const deploymentBand = page.getByTestId("highlight-band-6");
+    const visual = deploymentBand.getByTestId("capability-band-visual");
+    const image = bandImage(page, 6, 0);
+
+    await expect(image).toHaveAttribute(
+      "src",
+      /namecheap-dashboard-domain.*\.webp/,
     );
-    await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
+
+    const visualBox = await visual.boundingBox();
+    const imageBox = await image.boundingBox();
+    if (!visualBox || !imageBox) {
+      throw new Error("Expected deployment visual and image bounding boxes.");
+    }
+
+    expect(imageBox.height / visualBox.height).toBeGreaterThan(0.4);
   });
 });

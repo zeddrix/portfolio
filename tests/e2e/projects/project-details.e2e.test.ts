@@ -140,6 +140,18 @@ test.describe("project details routing", () => {
     await expect(page.getByTestId(selectors.hero.title)).toBeVisible();
   });
 
+  test("Given hidden iaso slug, when user opens direct project URL, then detail page still loads", async ({
+    page,
+  }) => {
+    await page.goto(pagesPath("/projects/iaso"));
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "Iaso",
+    );
+    await expect(page.getByTestId("project-detail-type")).toContainText(
+      "Concept",
+    );
+  });
+
   test("Given unknown slug, when route loads and user returns home, then not found and homepage resolve", async ({
     page,
   }) => {

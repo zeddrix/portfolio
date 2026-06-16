@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { selectors } from "../fixtures/selectors";
-import { gotoHome, scrollToTestId } from "../fixtures/test-helpers";
+import {
+  clickNavLink,
+  gotoHome,
+  scrollToTestId,
+} from "../fixtures/test-helpers";
 
 test.describe("homepage hero and about", () => {
   test("Given homepage, when user reads intro and navigates to work, then identity and section rhythm are clear", async ({
@@ -25,13 +29,16 @@ test.describe("homepage hero and about", () => {
     );
     await expect(page.getByTestId("hero-glance-proof")).toContainText("10");
 
+    await expect(page.getByTestId(selectors.hero.cta)).toContainText(
+      "Get in touch",
+    );
     await page.getByTestId(selectors.hero.cta).click();
     await expect(page.getByTestId(selectors.hero.cta)).toHaveAttribute(
       "href",
       /mailto:zeddrix/i,
     );
 
-    await page.getByTestId(selectors.hero.workCta).click();
+    await clickNavLink(page, "work");
     await expect(page).toHaveURL(/#work$/);
 
     await scrollToTestId(page, selectors.sections.about);

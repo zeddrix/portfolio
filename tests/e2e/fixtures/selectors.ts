@@ -5,7 +5,6 @@ export const selectors = {
     title: "hero-title",
     subtitle: "hero-subtitle",
     cta: "hero-cta",
-    workCta: "hero-work-cta",
     glanceCard: "hero-glance-card",
   },
   nav: {
@@ -33,7 +32,6 @@ export const selectors = {
     workCaseStudies: "work-layout-option-case-studies",
     capabilityDetailed: "capability-layout-option-detailed",
     capabilityGrouped: "capability-layout-option-grouped",
-    capabilityCompact: "capability-layout-option-compact",
   },
   sections: {
     about: "about-section",

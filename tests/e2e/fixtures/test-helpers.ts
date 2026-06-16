@@ -6,10 +6,7 @@ export const workLayoutStorageKey = "portfolio-work-layout-mode";
 export const capabilityLayoutStorageKey = "capability-band-layout-mode";
 
 export type WorkLayoutMode = "featuredGrid" | "caseStudyLed";
-export type CapabilityLayoutMode =
-  | "sevenBands"
-  | "groupedBands"
-  | "singleStack";
+export type CapabilityLayoutMode = "sevenBands" | "groupedBands";
 
 export async function waitForPageLoad(page: Page): Promise<void> {
   await page.waitForLoadState("domcontentloaded");
@@ -108,7 +105,6 @@ export async function setCapabilityLayout(
   const testIdMap: Record<CapabilityLayoutMode, string> = {
     sevenBands: selectors.previewSettings.capabilityDetailed,
     groupedBands: selectors.previewSettings.capabilityGrouped,
-    singleStack: selectors.previewSettings.capabilityCompact,
   };
   await page.getByTestId(testIdMap[mode]).click();
 }

@@ -153,6 +153,41 @@ test.describe("project image mapping", () => {
     ).toHaveAttribute("src", /usedelight-5-subscription.*\.webp/);
   });
 
+  test("Given UseDelight detail, when hero image loads, then natural aspect is preserved with contain fit", async ({
+    page,
+  }) => {
+    const expectedAspectRatio = 1840 / 1127;
+
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.work.section);
+    await page.getByTestId("work-filter-client").click();
+    await Promise.all([
+      page.waitForURL("**/projects/usedelight"),
+      page.getByTestId("project-details-link-usedelight").click(),
+    ]);
+
+    const heroImage = detailImage(page, "project-detail-hero-image");
+    await expect(heroImage).toBeVisible();
+    await expect
+      .poll(async () =>
+        heroImage.evaluate(
+          (img: HTMLImageElement) =>
+            img.complete && img.naturalWidth > 0 && img.naturalHeight > 0,
+        ),
+      )
+      .toBe(true);
+
+    const measuredAspect = await heroImage.evaluate(
+      (img: HTMLImageElement) => img.naturalWidth / img.naturalHeight,
+    );
+    const objectFit = await heroImage.evaluate(
+      (img: HTMLImageElement) => getComputedStyle(img).objectFit,
+    );
+
+    expect(Math.abs(measuredAspect - expectedAspectRatio)).toBeLessThan(0.02);
+    expect(objectFit).toBe("contain");
+  });
+
   test("Given MERN's Shop carousel journey, when user opens detail, then mapped gallery assets render", async ({
     page,
   }) => {

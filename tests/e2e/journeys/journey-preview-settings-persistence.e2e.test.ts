@@ -11,20 +11,19 @@ import {
 } from "../fixtures/test-helpers";
 
 test.describe.serial("Journey: preview settings persistence", () => {
-  test("Case study + compact → reload → open project via case study link", async ({
+  test("Case study + grouped → reload → open project via case study link", async ({
     page,
   }) => {
     await gotoHomeWithCleanState(page);
     await setWorkLayout(page, "caseStudyLed");
-    await setCapabilityLayout(page, "singleStack");
+    await setCapabilityLayout(page, "groupedBands");
     await page.reload();
 
     await scrollToTestId(page, selectors.work.section);
     await expect(page.getByTestId("case-study-queue")).toBeVisible();
     await scrollToTestId(page, selectors.sections.approach);
-    await expect(page.getByTestId(selectors.sections.approach)).toContainText(
-      "End-to-end product delivery",
-    );
+    await expect(page.getByTestId("highlight-band-0")).toBeVisible();
+    await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
 
     await Promise.all([
       page.waitForURL(`**${PAGES_BASE_PATH}/projects/queue`),
@@ -53,13 +52,13 @@ test.describe.serial("Journey: preview settings persistence", () => {
     );
   });
 
-  test("Reset to defaults → verify grid and grouped restored", async ({
+  test("Reset to defaults → verify grid and detailed approach restored", async ({
     page,
   }) => {
     await gotoHomeWithCleanState(page);
     await scrollToTestId(page, selectors.work.section);
     await expect(page.getByTestId(selectors.work.grid)).toBeVisible();
     await scrollToTestId(page, selectors.sections.approach);
-    await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
+    await expect(page.getByTestId("highlight-band-6")).toBeVisible();
   });
 });
