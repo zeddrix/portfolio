@@ -110,18 +110,26 @@
 			{/each}
 		</div>
 	{:else if hasVisualMedia && imageLayout === 'carousel'}
-		<div class="relative h-full min-h-[260px] sm:min-h-[300px] lg:min-h-[340px]" data-testid="capability-band-visual-carousel">
+		<div
+			class="relative flex min-h-[260px] items-center justify-center sm:min-h-[300px] lg:min-h-[340px]"
+			data-testid="capability-band-visual-carousel"
+		>
 			{#each displayImages as imagePath, index (imagePath)}
-				<OptimizedImage
-					src={imagePath}
-					alt={screenshotAlt + ' slide ' + (index + 1)}
-					className={'absolute inset-0 h-full w-full p-4 transition-opacity duration-300 ' +
+				<div
+					class={'absolute inset-0 flex items-center justify-center p-4 transition-opacity duration-300 ' +
 						(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
-					fit="contain"
-					sizes="(max-width: 1024px) 100vw, 600px"
-					loading={index === 0 ? 'eager' : 'lazy'}
-					testId={'capability-band-image-' + index}
-				/>
+				>
+					<OptimizedImage
+						src={imagePath}
+						alt={screenshotAlt + ' slide ' + (index + 1)}
+						className="h-full w-full"
+						fit="contain"
+						preserveNaturalAspect={true}
+						sizes="(max-width: 1024px) 100vw, 600px"
+						loading={index === 0 ? 'eager' : 'lazy'}
+						testId={'capability-band-image-' + index}
+					/>
+				</div>
 			{/each}
 
 			<div

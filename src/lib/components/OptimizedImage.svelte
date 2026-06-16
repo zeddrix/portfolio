@@ -28,6 +28,8 @@
 	export let fadeOnMount = false;
 	/** @type {'cover' | 'contain'} */
 	export let fit = 'cover';
+	/** @type {boolean} */
+	export let preserveNaturalAspect = false;
 
 	/** @type {'lqip' | 'loaded'} */
 	let imageState = 'lqip';
@@ -51,7 +53,7 @@
 	$: dimensions = getImageDimensions(logicalPath);
 	$: lqip = getImageLqip(logicalPath);
 	$: aspectRatio =
-		dimensions && dimensions.width > 0
+		!preserveNaturalAspect && dimensions && dimensions.width > 0
 			? `${dimensions.width} / ${dimensions.height}`
 			: undefined;
 	$: imageOpacity = imageState === 'loaded' ? '1' : '0';
@@ -62,10 +64,20 @@
 	$: wrapperStyle = lqip
 		? `background-image:url(${lqip});background-size:cover;background-position:center;`
 		: '';
+	$: imageClass =
+		preserveNaturalAspect
+			? 'max-h-full max-w-full ' + transitionClass + ' ' +
+				(fit === 'contain' ? 'object-contain' : 'object-cover')
+			: 'h-full w-full ' + transitionClass + ' ' +
+				(fit === 'contain' ? 'object-contain' : 'object-cover');
+	$: wrapperClass =
+		'optimized-image relative overflow-hidden ' +
+		(preserveNaturalAspect ? 'flex h-full w-full items-center justify-center ' : 'w-full ') +
+		className;
 </script>
 
 <div
-	class={'optimized-image relative w-full overflow-hidden ' + className}
+	class={wrapperClass}
 	style={aspectRatio ? `aspect-ratio:${aspectRatio};${wrapperStyle}` : wrapperStyle}
 	data-testid={testId || undefined}
 	data-image-state={imageState}
@@ -81,8 +93,7 @@
 		decoding="async"
 		width={dimensions?.width}
 		height={dimensions?.height}
-		class={'h-full w-full ' + transitionClass + ' ' +
-			(fit === 'contain' ? 'object-contain' : 'object-cover')}
+		class={imageClass}
 		style={`opacity:${imageOpacity};`}
 		on:load={handleLoad}
 	/>

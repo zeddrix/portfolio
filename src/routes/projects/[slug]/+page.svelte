@@ -106,7 +106,7 @@
 							testId="project-detail-hero-image"
 							src={data.project.primaryImage}
 							alt={data.project.name + ' hero preview'}
-							className="max-h-[640px]"
+							fit="contain"
 							sizes="(max-width: 768px) 100vw, 920px"
 							loading="eager"
 							fetchpriority="high"
@@ -122,6 +122,7 @@
 									testId={'project-detail-gallery-image-' + (index + 1)}
 									src={image}
 									alt={data.project.name + ' gallery image ' + (index + 1)}
+									fit="contain"
 									sizes="(max-width: 768px) 100vw, 50vw"
 									loading="lazy"
 								/>
