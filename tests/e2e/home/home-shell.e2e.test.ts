@@ -2,8 +2,8 @@ import { expect, test } from "@playwright/test";
 import { selectors } from "../fixtures/selectors";
 import {
   assertSectionInViewport,
-  clickNavLink,
   gotoHome,
+  scrollToTestId,
 } from "../fixtures/test-helpers";
 
 test.describe("homepage shell", () => {
@@ -12,9 +12,18 @@ test.describe("homepage shell", () => {
   }) => {
     await gotoHome(page);
 
-    await clickNavLink(page, "work");
-    await expect(page).toHaveURL(/#work$/);
-    await assertSectionInViewport(page, selectors.work.section);
+    const iconGap = await page.evaluate(() => {
+      const cta = document.querySelector('[data-testid="hero-cta"]');
+      if (!cta) return null;
+      const icon = cta.querySelector(".get-in-touch__icon");
+      const label = cta.querySelector(".get-in-touch__label");
+      if (!icon || !label) return null;
+      const iconBox = icon.getBoundingClientRect();
+      const labelBox = label.getBoundingClientRect();
+      return labelBox.left - iconBox.right;
+    });
+    expect(iconGap).not.toBeNull();
+    expect(iconGap ?? 0).toBeGreaterThanOrEqual(8);
 
     await page.getByTestId(selectors.hero.cta).click();
     await expect(page.getByTestId(selectors.hero.cta)).toHaveAttribute(
@@ -30,17 +39,7 @@ test.describe("homepage shell", () => {
     );
     await expect(githubLink).toHaveAttribute("target", "_blank");
 
-    const iconGap = await page.evaluate(() => {
-      const cta = document.querySelector('[data-testid="hero-cta"]');
-      if (!cta) return null;
-      const icon = cta.querySelector(".get-in-touch__icon");
-      const label = cta.querySelector(".get-in-touch__label");
-      if (!icon || !label) return null;
-      const iconBox = icon.getBoundingClientRect();
-      const labelBox = label.getBoundingClientRect();
-      return labelBox.left - iconBox.right;
-    });
-    expect(iconGap).not.toBeNull();
-    expect(iconGap ?? 0).toBeGreaterThanOrEqual(8);
+    await scrollToTestId(page, selectors.work.section);
+    await assertSectionInViewport(page, selectors.work.section);
   });
 });

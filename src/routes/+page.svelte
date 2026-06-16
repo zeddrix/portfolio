@@ -65,11 +65,7 @@
 	{#if clientReady}
 		<span data-testid="client-ready" class="sr-only">ready</span>
 	{/if}
-	<SiteHeader
-		{capabilityLayoutMode}
-		onCapabilityLayoutChange={(mode) =>
-			setCapabilityLayoutMode(/** @type {CapabilityBandLayoutMode} */ (mode))}
-	/>
+	<SiteHeader />
 
 	<main>
 		<section
@@ -152,17 +148,28 @@
 			</div>
 		</section>
 
-		<CapabilityBandsSection {capabilityLayoutMode} />
+		<CapabilityBandsSection
+			{capabilityLayoutMode}
+			onCapabilityLayoutChange={(mode) =>
+				setCapabilityLayoutMode(/** @type {CapabilityBandLayoutMode} */ (mode))}
+		/>
 
 		{#if ToolsStrip}
 			<svelte:component this={ToolsStrip} />
 		{/if}
 
+		<div class="h-12 shrink-0 sm:h-16" aria-hidden="true"></div>
+
 		<div
 			data-testid="page-terminal"
-			class="grid min-h-[calc(100vh+3rem)] grid-rows-[auto_1fr] bg-[#f5f5f5] sm:min-h-[calc(100vh+4rem)]"
+			class="grid min-h-screen grid-rows-[minmax(0,1fr)_minmax(0,1fr)] bg-[#f5f5f5]"
 		>
-			<ContactSection />
+			<div
+				data-testid="contact-terminal-zone"
+				class="flex min-h-0 flex-col justify-center"
+			>
+				<ContactSection />
+			</div>
 
 			<section
 				data-testid="footer-section"

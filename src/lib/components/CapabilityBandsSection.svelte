@@ -1,5 +1,6 @@
 <script>
 	import CapabilityBandVisual from '$lib/components/CapabilityBandVisual.svelte';
+	import CapabilityLayoutToggle from '$lib/components/CapabilityLayoutToggle.svelte';
 	import {
 		capabilityBandGroups,
 		capabilityBands,
@@ -8,6 +9,8 @@
 	import { appPath } from '$lib/utils/app-path';
 
 	export let capabilityLayoutMode = 'groupedBands';
+	/** @type {(mode: string) => void} */
+	export let onCapabilityLayoutChange = (_mode) => {};
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
@@ -30,8 +33,15 @@
 	class="bg-[#f5f5f5] py-20 sm:py-28 md:py-32"
 >
 	<div class="mx-auto w-[90%] max-w-[1400px]">
-		<div class="space-y-3">
-			<h2 class="{sectionHeadingClass} max-w-[20ch]">How I deliver</h2>
+		<div class="flex flex-col gap-6">
+			<div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+				<h2 class="{sectionHeadingClass} min-w-0 max-w-[20ch]">How I deliver</h2>
+				<CapabilityLayoutToggle
+					{capabilityLayoutMode}
+					{onCapabilityLayoutChange}
+					className="shrink-0"
+				/>
+			</div>
 			<p class="max-w-[52ch] text-lg font-medium leading-relaxed text-zinc-600">
 				What I build across products—from full-stack foundations through billing, operations, and
 				shipping infrastructure.

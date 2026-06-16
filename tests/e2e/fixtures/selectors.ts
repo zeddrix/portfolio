@@ -8,10 +8,6 @@ export const selectors = {
     glanceCard: "hero-glance-card",
   },
   nav: {
-    work: "nav-link-work",
-    about: "nav-link-about",
-    approach: "nav-link-approach",
-    contact: "nav-link-contact",
     github: "header-github-link",
   },
   work: {
@@ -25,9 +21,8 @@ export const selectors = {
     carouselNext: "carousel-control-next",
     carouselPrev: "carousel-control-prev",
   },
-  previewSettings: {
-    toggle: "portfolio-preview-settings",
-    panel: "portfolio-preview-settings-panel",
+  approachLayout: {
+    toggle: "capability-layout-toggle",
     capabilityDetailed: "capability-layout-option-detailed",
     capabilityGrouped: "capability-layout-option-grouped",
   },

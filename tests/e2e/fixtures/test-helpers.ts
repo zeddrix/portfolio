@@ -65,34 +65,20 @@ export async function gotoHomeWithCleanState(page: Page): Promise<void> {
   await waitForPageLoad(page);
 }
 
-export async function openPreviewSettings(page: Page): Promise<void> {
-  const toggle = page.getByTestId(selectors.previewSettings.toggle);
-  const panel = page.getByTestId(selectors.previewSettings.panel);
-
-  await toggle.scrollIntoViewIfNeeded();
-  await expect(toggle).toBeVisible();
-
-  await expect(async () => {
-    if ((await toggle.getAttribute("aria-expanded")) === "true") {
-      await expect(panel).toBeVisible();
-      return;
-    }
-    await toggle.click();
-    await expect(toggle).toHaveAttribute("aria-expanded", "true");
-    await expect(panel).toBeVisible();
-  }).toPass({ timeout: 15_000 });
-}
-
 export async function setCapabilityLayout(
   page: Page,
   mode: CapabilityLayoutMode,
 ): Promise<void> {
-  await openPreviewSettings(page);
+  await scrollToTestId(page, selectors.sections.approach);
   const testIdMap: Record<CapabilityLayoutMode, string> = {
-    sevenBands: selectors.previewSettings.capabilityDetailed,
-    groupedBands: selectors.previewSettings.capabilityGrouped,
+    sevenBands: selectors.approachLayout.capabilityDetailed,
+    groupedBands: selectors.approachLayout.capabilityGrouped,
   };
   await page.getByTestId(testIdMap[mode]).click();
+}
+
+export async function clickGithubLink(page: Page): Promise<void> {
+  await page.getByTestId(selectors.nav.github).click();
 }
 
 export async function navigateToProjectViaCarousel(
@@ -148,17 +134,6 @@ export async function scrollCarouselToPosition(
   await page.getByTestId(selectors.work.carousel).evaluate((element, left) => {
     element.scrollLeft = left;
   }, scrollLeft);
-}
-
-export async function clickNavLink(
-  page: Page,
-  link: keyof typeof selectors.nav,
-): Promise<void> {
-  if (link === "github") {
-    await page.getByTestId(selectors.nav.github).click();
-    return;
-  }
-  await page.getByTestId(selectors.nav[link]).click();
 }
 
 export async function assertSectionInViewport(

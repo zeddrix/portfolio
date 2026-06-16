@@ -2,26 +2,32 @@ import { expect, test } from "@playwright/test";
 import { selectors } from "../fixtures/selectors";
 import {
   assertSectionInViewport,
-  clickNavLink,
   gotoHome,
+  scrollToTestId,
 } from "../fixtures/test-helpers";
 
 test.describe("homepage navigation", () => {
-  test("Given homepage, when user clicks all header nav links, then each section scrolls into viewport in DOM order", async ({
+  test("Given homepage, when user scrolls through main sections, then work about and approach appear in DOM order", async ({
     page,
   }) => {
     await gotoHome(page);
 
-    await clickNavLink(page, "work");
+    await expect(page.getByTestId("nav-link-work")).toHaveCount(0);
+    await expect(page.getByTestId("nav-link-about")).toHaveCount(0);
+    await expect(page.getByTestId("nav-link-approach")).toHaveCount(0);
+    await expect(page.getByTestId("nav-link-contact")).toHaveCount(0);
+    await expect(page.getByTestId("portfolio-preview-settings")).toHaveCount(0);
+
+    await scrollToTestId(page, selectors.work.section);
     await assertSectionInViewport(page, selectors.work.section);
 
-    await clickNavLink(page, "about");
+    await scrollToTestId(page, selectors.sections.about);
     await assertSectionInViewport(page, selectors.sections.about);
 
-    await clickNavLink(page, "approach");
+    await scrollToTestId(page, selectors.sections.approach);
     await assertSectionInViewport(page, selectors.sections.approach);
 
-    await clickNavLink(page, "contact");
+    await scrollToTestId(page, selectors.sections.contact);
     await assertSectionInViewport(page, selectors.sections.contact);
 
     const workIndex = await page
@@ -56,7 +62,7 @@ test.describe("homepage navigation", () => {
   }) => {
     await gotoHome(page);
 
-    await clickNavLink(page, "contact");
+    await scrollToTestId(page, selectors.sections.contact);
     await assertSectionInViewport(page, selectors.sections.contact);
 
     await page.getByRole("link", { name: "Zeddrix Fabian" }).click();

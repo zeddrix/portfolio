@@ -3,8 +3,8 @@ import { PAGES_BASE_PATH } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
 import {
   gotoHome,
-  openPreviewSettings,
   scrollToTestId,
+  setCapabilityLayout,
 } from "../fixtures/test-helpers";
 
 test.describe("homepage tools strip", () => {
@@ -19,10 +19,7 @@ test.describe("homepage tools strip", () => {
     await expect(toolsSection).toContainText("SvelteKit");
     await expect(toolsSection).toContainText("Playwright");
 
-    await openPreviewSettings(page);
-    await page
-      .getByTestId(selectors.previewSettings.capabilityDetailed)
-      .click();
+    await setCapabilityLayout(page, "sevenBands");
 
     await scrollToTestId(page, selectors.sections.approach);
     await Promise.all([

@@ -3,7 +3,6 @@ import { selectors } from "../fixtures/selectors";
 import {
   capabilityLayoutStorageKey,
   gotoHome,
-  openPreviewSettings,
   scrollToTestId,
   setCapabilityLayout,
 } from "../fixtures/test-helpers";
@@ -176,10 +175,8 @@ test.describe("capability band images", () => {
     await scrollToTestId(page, selectors.sections.approach);
     await expect(page.getByTestId("highlight-band-0")).toBeVisible();
     await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
-    await openPreviewSettings(page);
-    await page
-      .getByTestId(selectors.previewSettings.capabilityDetailed)
-      .click();
+    await setCapabilityLayout(page, "sevenBands");
+    await scrollToTestId(page, selectors.sections.approach);
     await expect(page.getByTestId("highlight-band-6")).toBeVisible();
   });
 

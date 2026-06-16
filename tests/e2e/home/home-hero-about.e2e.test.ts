@@ -1,10 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { selectors } from "../fixtures/selectors";
-import {
-  clickNavLink,
-  gotoHome,
-  scrollToTestId,
-} from "../fixtures/test-helpers";
+import { gotoHome, scrollToTestId } from "../fixtures/test-helpers";
 
 test.describe("homepage hero and about", () => {
   test("Given homepage, when user reads intro and navigates to work, then identity and section rhythm are clear", async ({
@@ -38,8 +34,8 @@ test.describe("homepage hero and about", () => {
       /mailto:zeddrix/i,
     );
 
-    await clickNavLink(page, "work");
-    await expect(page).toHaveURL(/#work$/);
+    await scrollToTestId(page, selectors.work.section);
+    await expect(page.getByTestId(selectors.work.section)).toBeInViewport();
 
     await scrollToTestId(page, selectors.sections.about);
     await expect(page.getByTestId("about-description")).toContainText(

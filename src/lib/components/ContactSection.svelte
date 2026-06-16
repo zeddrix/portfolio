@@ -8,11 +8,11 @@
 <section
 	id="contact"
 	data-testid="contact-section"
-	class="mx-auto w-[90%] max-w-[1400px] shrink-0 py-6"
+	class="mx-auto w-[90%] max-w-[1400px] shrink-0 py-2 sm:py-4"
 >
 	<div
 		data-testid="contact-section-card"
-		class="flex min-h-0 flex-col items-center justify-center rounded-[2rem] border border-zinc-200 bg-white px-8 py-14 text-center shadow-sm sm:px-12 sm:py-20"
+		class="flex min-h-0 flex-col items-center justify-center rounded-[2rem] border border-zinc-200 bg-white px-8 py-10 text-center shadow-sm sm:px-12 sm:py-14"
 	>
 		<h2 class={sectionHeadingClass}>Let&apos;s work together</h2>
 		<p class="mx-auto mt-4 max-w-[42ch] text-lg font-medium leading-relaxed text-zinc-600">

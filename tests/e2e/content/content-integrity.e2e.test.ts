@@ -3,8 +3,8 @@ import { PAGES_BASE_PATH } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
 import {
   gotoHome,
-  openPreviewSettings,
   scrollToTestId,
+  setCapabilityLayout,
 } from "../fixtures/test-helpers";
 
 test.describe("content integrity", () => {
@@ -19,10 +19,7 @@ test.describe("content integrity", () => {
     await expect(toolsSection).toContainText("Playwright");
     await expect(toolsSection).toContainText("NestJS");
 
-    await openPreviewSettings(page);
-    await page
-      .getByTestId(selectors.previewSettings.capabilityDetailed)
-      .click();
+    await setCapabilityLayout(page, "sevenBands");
 
     await scrollToTestId(page, selectors.sections.approach);
     await expect(

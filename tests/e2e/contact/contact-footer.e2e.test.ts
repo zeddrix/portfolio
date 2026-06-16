@@ -2,7 +2,6 @@ import { expect, test } from "@playwright/test";
 import { selectors } from "../fixtures/selectors";
 import {
   assertSectionInViewport,
-  clickNavLink,
   gotoHome,
   scrollToTestId,
 } from "../fixtures/test-helpers";
@@ -18,7 +17,7 @@ test.describe("contact and footer", () => {
       "https://github.com/zeddrix",
     );
 
-    await clickNavLink(page, "contact");
+    await scrollToTestId(page, selectors.sections.contact);
     await assertSectionInViewport(page, selectors.sections.contact);
 
     const ctaDimensions = await page.evaluate(() => {
@@ -57,7 +56,7 @@ test.describe("contact and footer", () => {
     await gotoHome(page);
     await scrollToTestId(page, selectors.sections.approach);
     await expect(page.getByTestId(selectors.contact.approachCta)).toBeVisible();
-    await clickNavLink(page, "contact");
+    await scrollToTestId(page, selectors.sections.contact);
     await assertSectionInViewport(page, selectors.sections.contact);
     await page.getByTestId(selectors.contact.cta).click();
     await expect(page.getByTestId(selectors.contact.cta)).toHaveAttribute(
@@ -70,7 +69,7 @@ test.describe("contact and footer", () => {
     page,
   }) => {
     await gotoHome(page);
-    await clickNavLink(page, "contact");
+    await scrollToTestId(page, selectors.sections.contact);
     await scrollToTestId(page, selectors.sections.footer);
 
     const dimensions = await page.evaluate(() => {
@@ -135,6 +134,33 @@ test.describe("contact and footer", () => {
       terminalMetrics.viewportHeight * 0.95,
     );
     expect(terminalMetrics.centeringDelta).toBeLessThanOrEqual(0.15);
+
+    const contactVisibility = await page.evaluate(() => {
+      const card = document.querySelector(
+        '[data-testid="contact-section-card"]',
+      );
+      const contactZone = document.querySelector(
+        '[data-testid="contact-terminal-zone"]',
+      );
+      const cardRect = card?.getBoundingClientRect();
+      const zoneRect = contactZone?.getBoundingClientRect();
+      if (!cardRect || !zoneRect) {
+        return {
+          fullyVisible: false,
+          contactCenteringDelta: Number.POSITIVE_INFINITY,
+        };
+      }
+      const cardCenterY = cardRect.top + cardRect.height / 2;
+      const zoneCenterY = zoneRect.top + zoneRect.height / 2;
+      return {
+        fullyVisible:
+          cardRect.top >= -4 && cardRect.bottom <= window.innerHeight + 4,
+        contactCenteringDelta:
+          Math.abs(cardCenterY - zoneCenterY) / zoneRect.height,
+      };
+    });
+    expect(contactVisibility.fullyVisible).toBe(true);
+    expect(contactVisibility.contactCenteringDelta).toBeLessThanOrEqual(0.15);
   });
 
   test("Given homepage at max scroll on mobile, when user reaches page bottom, then contact and footer are visible without tools strip", async ({
@@ -156,5 +182,20 @@ test.describe("contact and footer", () => {
       return tools?.getBoundingClientRect().bottom ?? 0;
     });
     expect(toolsClear).toBeLessThanOrEqual(1);
+
+    const contactVisibility = await page.evaluate(() => {
+      const card = document.querySelector(
+        '[data-testid="contact-section-card"]',
+      );
+      const cardRect = card?.getBoundingClientRect();
+      if (!cardRect) {
+        return { fullyVisible: false };
+      }
+      return {
+        fullyVisible:
+          cardRect.top >= -4 && cardRect.bottom <= window.innerHeight + 4,
+      };
+    });
+    expect(contactVisibility.fullyVisible).toBe(true);
   });
 });
