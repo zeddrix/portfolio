@@ -216,6 +216,7 @@ export const projects: PortfolioProject[] = [
     name: "Iaso",
     category: "personal",
     status: "concept",
+    hiddenFromPortfolio: true,
     role: "Sole builder",
     outcome:
       "Explored a guided diagnostic UX that balances safety and clarity for at-home health assistance.",
@@ -456,7 +457,7 @@ export const projects: PortfolioProject[] = [
 ];
 
 export const defaultCapabilityBandLayoutMode: CapabilityBandLayoutMode =
-  "groupedBands";
+  "sevenBands";
 
 export const defaultWorkSectionLayoutMode: WorkSectionLayoutMode =
   "featuredGrid";
@@ -833,12 +834,18 @@ export const highlightProjectSlugs = [
   "jw-tabs",
   "merns-shop",
   "answeriq",
-  "iaso",
 ] as const;
+
+export function isPortfolioProjectVisible(project: PortfolioProject): boolean {
+  return !project.hiddenFromPortfolio;
+}
+
+export const visibleProjects = projects.filter(isPortfolioProjectVisible);
 
 export const highlightProjects = highlightProjectSlugs
   .map((slug) => projects.find((project) => project.slug === slug))
-  .filter((project): project is PortfolioProject => project !== undefined);
+  .filter((project): project is PortfolioProject => project !== undefined)
+  .filter(isPortfolioProjectVisible);
 
 export const caseStudyProjects = caseStudyProjectSlugs
   .map((slug) => projects.find((project) => project.slug === slug))
@@ -867,10 +874,10 @@ export function getBandsForProject(slug: string): CapabilityBand[] {
 export function getProjectsForWorkFilter(
   filter: WorkProjectFilter,
 ): PortfolioProject[] {
-  return filterProjectsByWorkFilter(projects, filter);
+  return filterProjectsByWorkFilter(visibleProjects, filter);
 }
 
 export function getMoreProjectsForCaseStudies(): PortfolioProject[] {
   const caseStudySet = new Set<string>(caseStudyProjectSlugs);
-  return projects.filter((project) => !caseStudySet.has(project.slug));
+  return visibleProjects.filter((project) => !caseStudySet.has(project.slug));
 }

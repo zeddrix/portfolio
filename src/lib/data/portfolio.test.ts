@@ -7,6 +7,8 @@ import {
   getProjectBySlug,
   getProjectsForWorkFilter,
   highlightProjectSlugs,
+  highlightProjects,
+  isPortfolioProjectVisible,
   personalProjectCount,
   projects,
 } from "./portfolio";
@@ -84,8 +86,13 @@ describe("portfolio data", () => {
       "jw-tabs",
       "merns-shop",
       "answeriq",
-      "iaso",
     ]);
+  });
+
+  it("keeps hidden projects out of highlight carousel", () => {
+    const iaso = getProjectBySlug("iaso");
+    expect(iaso?.hiddenFromPortfolio).toBe(true);
+    expect([...highlightProjectSlugs]).not.toContain("iaso");
   });
 
   it("ships ten portfolio projects total", () => {
@@ -169,6 +176,16 @@ describe("portfolio data", () => {
     const clientOnly = getProjectsForWorkFilter("client");
     expect(clientOnly.every((project) => project.category === "client")).toBe(
       true,
+    );
+    expect(clientOnly.every(isPortfolioProjectVisible)).toBe(true);
+    expect(getProjectsForWorkFilter("all").some((p) => p.slug === "iaso")).toBe(
+      false,
+    );
+  });
+
+  it("excludes hidden projects from highlight carousel list", () => {
+    expect(highlightProjects.some((project) => project.slug === "iaso")).toBe(
+      false,
     );
   });
 });

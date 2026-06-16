@@ -7,7 +7,7 @@
 	} from '$lib/data/portfolio';
 	import { appPath } from '$lib/utils/app-path';
 
-	export let capabilityLayoutMode = 'groupedBands';
+	export let capabilityLayoutMode = 'sevenBands';
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';

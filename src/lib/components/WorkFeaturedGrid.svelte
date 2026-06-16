@@ -1,5 +1,5 @@
 <script>
-	import { projects } from '$lib/data/portfolio';
+	import { visibleProjects } from '$lib/data/portfolio';
 	import ProjectCardCompact from '$lib/components/ProjectCardCompact.svelte';
 	import { filterProjectsByWorkFilter } from '$lib/utils/portfolio-display';
 
@@ -12,7 +12,7 @@
 		{ id: 'client', label: 'Client', testId: 'work-filter-client' }
 	];
 
-	$: visibleProjects = filterProjectsByWorkFilter(projects, activeFilter);
+	$: visibleProjectsList = filterProjectsByWorkFilter(visibleProjects, activeFilter);
 </script>
 
 <div data-testid="work-featured-grid" class="space-y-6">
@@ -32,8 +32,8 @@
 			</button>
 		{/each}
 	</div>
-	<ul class="grid gap-4 md:grid-cols-2">
-		{#each visibleProjects as project (project.slug)}
+	<ul class="grid gap-5 md:grid-cols-2">
+		{#each visibleProjectsList as project (project.slug)}
 			<li>
 				<ProjectCardCompact {project} />
 			</li>

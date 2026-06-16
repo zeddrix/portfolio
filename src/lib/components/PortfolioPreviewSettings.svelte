@@ -1,6 +1,6 @@
 <script>
 	export let workLayoutMode = 'featuredGrid';
-	export let capabilityLayoutMode = 'groupedBands';
+	export let capabilityLayoutMode = 'sevenBands';
 
 	/** @type {(mode: string) => void} */
 	export let onWorkLayoutChange = (_mode) => {};
@@ -17,8 +17,7 @@
 
 	const capabilityLayoutOptions = [
 		{ mode: 'sevenBands', label: 'Detailed', testId: 'capability-layout-option-detailed' },
-		{ mode: 'groupedBands', label: 'Grouped', testId: 'capability-layout-option-grouped' },
-		{ mode: 'singleStack', label: 'Compact', testId: 'capability-layout-option-compact' }
+		{ mode: 'groupedBands', label: 'Grouped', testId: 'capability-layout-option-grouped' }
 	];
 
 	/** @param {string} mode */

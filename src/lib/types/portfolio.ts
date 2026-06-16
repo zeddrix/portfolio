@@ -42,6 +42,7 @@ export interface PortfolioProject {
   galleryImages: string[];
   links: ProjectLink[];
   detailSections: ProjectDetailSection[];
+  hiddenFromPortfolio?: boolean;
 }
 
 export interface ToolStripItem {

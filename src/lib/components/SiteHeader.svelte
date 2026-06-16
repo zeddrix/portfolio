@@ -4,7 +4,7 @@
 	import PortfolioPreviewSettings from '$lib/components/PortfolioPreviewSettings.svelte';
 
 	export let workLayoutMode = 'featuredGrid';
-	export let capabilityLayoutMode = 'groupedBands';
+	export let capabilityLayoutMode = 'sevenBands';
 	/** @type {(mode: string) => void} */
 	export let onWorkLayoutChange = (_mode) => {};
 	/** @type {(mode: string) => void} */
