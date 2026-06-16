@@ -158,13 +158,19 @@
 			<svelte:component this={ToolsStrip} />
 		{/if}
 
-		<div class="min-h-screen bg-[#f5f5f5] flex flex-col justify-end">
+		<div
+			data-testid="page-terminal"
+			class="grid min-h-[calc(100vh+3rem)] grid-rows-[auto_1fr] bg-[#f5f5f5] sm:min-h-[calc(100vh+4rem)]"
+		>
 			<ContactSection />
 
-			<footer data-testid="footer-section" class="bg-[#f5f5f5] py-10 sm:py-12">
-				<div class="{pageContainerClass} text-center">
+			<section
+				data-testid="footer-section"
+				class="flex min-h-0 flex-col justify-center bg-[#f5f5f5]"
+			>
+				<div data-testid="footer-section-content" class="{pageContainerClass} text-center">
 					<span class="footer-wave block text-3xl leading-none sm:text-4xl" aria-hidden="true">👋</span>
-					<p class="mt-4 text-[clamp(1.75rem,calc(0.25rem+3vw),2.25rem)] font-semibold leading-[1.35] text-zinc-950">
+					<p class="mt-6 text-[clamp(1.75rem,calc(0.25rem+3vw),2.25rem)] font-semibold leading-[1.35] text-zinc-950">
 						Thanks for checking my work.
 					</p>
 					<div class="mt-5 space-y-1.5 text-base font-medium leading-relaxed text-zinc-500 sm:text-lg">
@@ -190,7 +196,7 @@
 						</p>
 					</div>
 				</div>
-			</footer>
+			</section>
 		</div>
 	</main>
 </div>
