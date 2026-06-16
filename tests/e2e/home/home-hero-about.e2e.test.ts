@@ -64,6 +64,14 @@ test.describe("homepage hero and about", () => {
     );
     expect(heroLayout.ctaToCarouselGap).toBeGreaterThanOrEqual(48);
 
+    const heroTitleSingleLine = await page
+      .getByTestId(selectors.hero.title)
+      .evaluate((el) => {
+        const lineHeight = Number.parseFloat(getComputedStyle(el).lineHeight);
+        return el.getBoundingClientRect().height <= lineHeight * 1.15;
+      });
+    expect(heroTitleSingleLine).toBe(true);
+
     await expect(page.getByTestId(selectors.hero.cta)).toContainText(
       "Get in touch",
     );

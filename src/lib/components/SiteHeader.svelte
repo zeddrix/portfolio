@@ -1,8 +1,9 @@
 <script>
+	import { pageShellClass } from '$lib/constants/layout';
 	import { profile } from '$lib/data/profile';
 </script>
 
-<header class="mx-auto w-[90%] max-w-[1400px] pt-3 sm:pt-4 md:pt-5">
+<header class="{pageShellClass} pt-3 sm:pt-4 md:pt-5">
 	<div class="flex items-center justify-end gap-4">
 		<a
 			data-testid="header-github-link"

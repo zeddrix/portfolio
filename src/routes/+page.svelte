@@ -11,12 +11,13 @@
 	import {
 		defaultCapabilityBandLayoutMode
 	} from '$lib/data/portfolio';
+	import { pageShellClass } from '$lib/constants/layout';
 
 	/** @typedef {import('$lib/types/portfolio').CapabilityBandLayoutMode} CapabilityBandLayoutMode */
 	/** @type {typeof import('$lib/components/ToolsStrip.svelte').default | null} */
 	let ToolsStrip = null;
 
-	const pageContainerClass = 'mx-auto w-[90%] max-w-[1400px]';
+	const pageContainerClass = pageShellClass;
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
 
@@ -76,7 +77,7 @@
 				<div class="min-w-0 lg:col-span-2">
 					<h1
 						data-testid="hero-title"
-						class="text-[clamp(3rem,calc(0.25rem+5.5vw),5rem)] font-bold leading-[1.1] tracking-[-0.04em] text-black"
+						class="max-lg:whitespace-normal text-[clamp(3rem,calc(0.25rem+5.5vw),5rem)] font-bold leading-[1.1] tracking-[-0.04em] text-black lg:whitespace-nowrap lg:text-[clamp(2.75rem,4.5vw,5rem)]"
 					>
 						{profile.heroTitle}
 					</h1>

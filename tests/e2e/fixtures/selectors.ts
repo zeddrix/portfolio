@@ -18,8 +18,6 @@ export const selectors = {
     filterPersonal: "work-filter-personal",
     carousel: "highlights-carousel",
     carouselTrack: "highlights-carousel-track",
-    carouselNext: "carousel-control-next",
-    carouselPrev: "carousel-control-prev",
   },
   approachLayout: {
     toggle: "capability-layout-toggle",

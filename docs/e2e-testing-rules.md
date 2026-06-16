@@ -60,12 +60,12 @@ Deep home `<head>` assertions (JSON-LD shape, default og:image, favicon) belong 
 
 Do **not** use `page.waitForTimeout()`.
 
-| Instead of                  | Use                                                             |
-| --------------------------- | --------------------------------------------------------------- |
-| Fixed delay after click     | `expect(locator).toBeVisible()` / `toBeInViewport()`            |
-| Carousel image auto-advance | `waitForCarouselImageChange()` or click `carousel-control-next` |
-| List/filter refresh         | `expect.poll()`                                                 |
-| Navigation after click      | `Promise.all([page.waitForURL(...), click()])`                  |
+| Instead of                  | Use                                                      |
+| --------------------------- | -------------------------------------------------------- |
+| Fixed delay after click     | `expect(locator).toBeVisible()` / `toBeInViewport()`     |
+| Carousel image auto-advance | `waitForCarouselImageChange()` or `scrollCarouselNext()` |
+| List/filter refresh         | `expect.poll()`                                          |
+| Navigation after click      | `Promise.all([page.waitForURL(...), click()])`           |
 
 Helpers: [`tests/e2e/fixtures/test-helpers.ts`](../tests/e2e/fixtures/test-helpers.ts)
 
@@ -131,7 +131,7 @@ Use `openPreviewSettings()`, `setWorkLayout()`, `setCapabilityLayout()` from tes
 
 ### Carousel interaction
 
-Use `carousel-control-next` / `carousel-control-prev` on [`FeaturedProjectCarousel.svelte`](../src/lib/components/FeaturedProjectCarousel.svelte), or `scrollCarouselToCard()` helper.
+Use `scrollCarouselNext()`, `scrollCarouselPrev()`, or `scrollCarouselToPosition()` from test-helpers on `[data-testid="highlights-carousel"]`.
 
 ## Prevention Rules
 

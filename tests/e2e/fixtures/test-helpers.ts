@@ -120,11 +120,43 @@ export async function waitForCarouselImageChange(
 }
 
 export async function scrollCarouselNext(page: Page): Promise<void> {
-  await page.getByTestId(selectors.work.carouselNext).click();
+  await page.getByTestId(selectors.work.carousel).evaluate((element) => {
+    const track = element.querySelector(
+      '[data-testid="highlights-carousel-track"]',
+    );
+    const firstCard = track?.firstElementChild;
+    let scrollAmount = Math.max(element.clientWidth * 0.72, 320);
+
+    if (firstCard instanceof HTMLElement && track instanceof HTMLElement) {
+      const cardWidth = firstCard.getBoundingClientRect().width;
+      const gapValue =
+        getComputedStyle(track).columnGap || getComputedStyle(track).gap;
+      const gap = Number.parseFloat(gapValue) || 16;
+      scrollAmount = cardWidth + gap;
+    }
+
+    element.scrollBy({ left: scrollAmount, behavior: "instant" });
+  });
 }
 
 export async function scrollCarouselPrev(page: Page): Promise<void> {
-  await page.getByTestId(selectors.work.carouselPrev).click();
+  await page.getByTestId(selectors.work.carousel).evaluate((element) => {
+    const track = element.querySelector(
+      '[data-testid="highlights-carousel-track"]',
+    );
+    const firstCard = track?.firstElementChild;
+    let scrollAmount = Math.max(element.clientWidth * 0.72, 320);
+
+    if (firstCard instanceof HTMLElement && track instanceof HTMLElement) {
+      const cardWidth = firstCard.getBoundingClientRect().width;
+      const gapValue =
+        getComputedStyle(track).columnGap || getComputedStyle(track).gap;
+      const gap = Number.parseFloat(gapValue) || 16;
+      scrollAmount = cardWidth + gap;
+    }
+
+    element.scrollBy({ left: -scrollAmount, behavior: "instant" });
+  });
 }
 
 export async function scrollCarouselToPosition(

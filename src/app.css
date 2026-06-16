@@ -43,7 +43,7 @@
 @tailwind utilities;
 
 .highlights-carousel-scroll {
-  --carousel-page-gutter: max(0px, calc((100% - min(90%, 1400px)) / 2));
+  --carousel-page-gutter: max(0px, calc((100% - min(94%, 1440px)) / 2));
   width: 100%;
   max-width: none;
   margin-right: calc(50% - 50vw);

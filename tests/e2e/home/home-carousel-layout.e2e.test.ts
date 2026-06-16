@@ -62,6 +62,33 @@ test.describe("homepage carousel layout", () => {
     await expect(page.getByTestId("highlight-card-0")).toBeInViewport();
   });
 
+  test("Given homepage at desktop, when user lands without scrolling, then carousel has no nav chevrons and tighter card gap", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+
+    await expect(page.getByTestId("carousel-control-prev")).toHaveCount(0);
+    await expect(page.getByTestId("carousel-control-next")).toHaveCount(0);
+
+    const interCardGap = await page.evaluate(() => {
+      const firstCard = document.querySelector(
+        '[data-testid="highlight-card-0"]',
+      );
+      const secondCard = document.querySelector(
+        '[data-testid="highlight-card-1"]',
+      );
+      if (!firstCard || !secondCard) return 0;
+      const firstRect = firstCard.getBoundingClientRect();
+      const secondRect = secondCard.getBoundingClientRect();
+      return secondRect.left - firstRect.right;
+    });
+
+    expect(interCardGap).toBeGreaterThanOrEqual(12);
+    expect(interCardGap).toBeLessThanOrEqual(22);
+  });
+
   test("Given homepage, when user scrolls carousel with controls and positions, then margins exist only at ends", async ({
     page,
   }) => {

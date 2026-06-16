@@ -1,5 +1,6 @@
 <script>
-	import { profile } from '$lib/data/portfolio';
+	import { pageShellClass } from '$lib/constants/layout';
+	import { profile } from '$lib/data/profile';
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
@@ -8,7 +9,7 @@
 <section
 	id="contact"
 	data-testid="contact-section"
-	class="mx-auto w-[90%] max-w-[1400px] shrink-0 py-2 sm:py-4"
+	class="{pageShellClass} shrink-0 py-2 sm:py-4"
 >
 	<div
 		data-testid="contact-section-card"

@@ -27,8 +27,8 @@
 
 <style>
 	.get-in-touch {
-		--motion-duration: 0.3s;
-		--motion-ease: cubic-bezier(0.4, 0, 0.2, 1);
+		--motion-duration: 0.52s;
+		--motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 		--icon-hover-shift: 4.5rem;
 	}
 
@@ -51,7 +51,7 @@
 
 	.get-in-touch:hover .get-in-touch__icon,
 	.get-in-touch:focus-visible .get-in-touch__icon {
-		transform: translateX(var(--icon-hover-shift)) scale(1.12);
+		transform: translateX(var(--icon-hover-shift)) scale(1.24);
 	}
 
 	.get-in-touch:hover .get-in-touch__label,

@@ -1,11 +1,12 @@
 <script>
+	import { pageShellClass } from '$lib/constants/layout';
 	import { toolStripGroups } from '$lib/data/portfolio';
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
 </script>
 
-<section data-testid="tools-strip-section" class="mx-auto w-[90%] max-w-[1400px] pt-12 pb-8 sm:pt-16 sm:pb-10">
+<section data-testid="tools-strip-section" class="{pageShellClass} pt-12 pb-8 sm:pt-16 sm:pb-10">
 	<div
 		class="rounded-3xl border border-zinc-200 bg-white px-6 py-10 shadow-sm sm:px-10 sm:py-12"
 	>

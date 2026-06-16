@@ -6,6 +6,7 @@
 		capabilityBands,
 		profile
 	} from '$lib/data/portfolio';
+	import { pageShellClass } from '$lib/constants/layout';
 	import { appPath } from '$lib/utils/app-path';
 
 	export let capabilityLayoutMode = 'groupedBands';
@@ -32,7 +33,7 @@
 	data-testid="capability-bands-section"
 	class="bg-[#f5f5f5] py-20 sm:py-28 md:py-32"
 >
-	<div class="mx-auto w-[90%] max-w-[1400px]">
+	<div class={pageShellClass}>
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
 				<h2 class="{sectionHeadingClass} min-w-0 max-w-[20ch]">How I deliver</h2>

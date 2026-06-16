@@ -154,34 +154,12 @@
 
 	/** @type {HTMLElement | null} */
 	let carouselElement = null;
-
-	/** @param {'prev' | 'next'} direction */
-	function scrollCarouselHorizontally(direction) {
-		if (!carouselElement) return;
-
-		const track = carouselElement.querySelector('[data-testid="highlights-carousel-track"]');
-		const firstCard = track?.firstElementChild;
-		let scrollAmount = Math.max(carouselElement.clientWidth * 0.72, 320);
-
-		if (firstCard instanceof HTMLElement && track instanceof HTMLElement) {
-			const cardWidth = firstCard.getBoundingClientRect().width;
-			const gapValue = getComputedStyle(track).columnGap || getComputedStyle(track).gap;
-			const gap = Number.parseFloat(gapValue) || 24;
-			scrollAmount = cardWidth + gap;
-		}
-
-		carouselElement.scrollBy({
-			left: direction === 'next' ? scrollAmount : -scrollAmount,
-			behavior: 'smooth'
-		});
-	}
 </script>
 
-<div class="relative">
 <div bind:this={carouselElement} data-testid="highlights-carousel" class={carouselScrollClass}>
 	<div
 		data-testid="highlights-carousel-track"
-		class="highlights-carousel-track flex w-max gap-6 md:gap-8"
+		class="highlights-carousel-track flex w-max gap-4 md:gap-5"
 	>
 		{#each carouselProjects as project, index (project.slug)}
 			<div class="w-[min(88vw,920px)] shrink-0 snap-start space-y-4 sm:w-[min(90vw,920px)]">
@@ -189,7 +167,7 @@
 					data-testid={'highlight-card-' + index}
 					data-highlight-slug={project.slug}
 					bind:this={highlightSlideElements[project.slug]}
-					class="group overflow-hidden rounded-2xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10 sm:rounded-[1.85rem]"
+					class="group overflow-hidden rounded-xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10"
 				>
 					<div class="flex h-11 items-center gap-3 border-b border-white/5 px-4">
 						<div class="flex gap-1.5">
@@ -247,43 +225,4 @@
 			</div>
 		{/each}
 	</div>
-</div>
-<div class="mt-4 flex justify-center gap-3 sm:justify-end sm:gap-2">
-	<button
-		type="button"
-		data-testid="carousel-control-prev"
-		class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white text-zinc-700 shadow-sm ring-1 ring-zinc-200/80 transition hover:bg-zinc-50 hover:text-zinc-900"
-		aria-label="Previous highlight project"
-		title="Previous project"
-		on:click={() => scrollCarouselHorizontally('prev')}
-	>
-		<svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-			<path
-				d="M12.5 15 7.5 10l5-5"
-				stroke="currentColor"
-				stroke-width="1.75"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			/>
-		</svg>
-	</button>
-	<button
-		type="button"
-		data-testid="carousel-control-next"
-		class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white text-zinc-700 shadow-sm ring-1 ring-zinc-200/80 transition hover:bg-zinc-50 hover:text-zinc-900"
-		aria-label="Next highlight project"
-		title="Next project"
-		on:click={() => scrollCarouselHorizontally('next')}
-	>
-		<svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-			<path
-				d="m7.5 15 5-5-5-5"
-				stroke="currentColor"
-				stroke-width="1.75"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			/>
-		</svg>
-	</button>
-</div>
 </div>
