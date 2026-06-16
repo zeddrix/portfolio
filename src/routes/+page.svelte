@@ -4,6 +4,7 @@
 	import WorkSection from '$lib/components/WorkSection.svelte';
 	import CapabilityBandsSection from '$lib/components/CapabilityBandsSection.svelte';
 	import ContactSection from '$lib/components/ContactSection.svelte';
+	import GetInTouchButton from '$lib/components/GetInTouchButton.svelte';
 	import SeoHead from '$lib/components/SeoHead.svelte';
 	import { homeSeo } from '$lib/data/seo';
 	import { profile } from '$lib/data/profile';
@@ -37,7 +38,10 @@
 		}
 
 		const storedCapabilityMode = localStorage.getItem(capabilityBandLayoutStorageKey);
-		if (storedCapabilityMode && isCapabilityBandLayoutMode(storedCapabilityMode)) {
+		if (storedCapabilityMode === 'singleStack') {
+			capabilityLayoutMode = 'sevenBands';
+			localStorage.setItem(capabilityBandLayoutStorageKey, 'sevenBands');
+		} else if (storedCapabilityMode && isCapabilityBandLayoutMode(storedCapabilityMode)) {
 			capabilityLayoutMode = /** @type {CapabilityBandLayoutMode} */ (storedCapabilityMode);
 		}
 	}
@@ -49,7 +53,7 @@
 
 	/** @param {string} mode */
 	function isCapabilityBandLayoutMode(mode) {
-		return mode === 'sevenBands' || mode === 'groupedBands' || mode === 'singleStack';
+		return mode === 'sevenBands' || mode === 'groupedBands';
 	}
 
 	/** @param {WorkSectionLayoutMode} mode */
@@ -96,7 +100,7 @@
 	<main>
 		<section
 			data-testid="hero-section"
-			class="{pageContainerClass} pb-16 pt-2 sm:pb-24 sm:pt-3 md:pb-32 md:pt-4 lg:min-h-[min(78vh,880px)] lg:pb-32 lg:pt-6"
+			class="{pageContainerClass} pb-8 pt-2 sm:pb-10 sm:pt-3 md:pb-12 md:pt-4 lg:min-h-0 lg:pb-12 lg:pt-6"
 		>
 			<div class="grid items-center gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 xl:gap-16">
 				<div class="min-w-0">
@@ -112,21 +116,8 @@
 					>
 						{profile.heroSubtitle}
 					</p>
-					<div class="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center lg:mt-12">
-						<a
-							data-testid="hero-cta"
-							href={'mailto:' + profile.contactEmail}
-							class="inline-flex w-full min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-black px-8 py-3.5 text-lg font-semibold text-white shadow-sm transition-opacity hover:opacity-90 sm:w-auto sm:px-9 sm:text-xl"
-						>
-							Contact me
-						</a>
-						<a
-							data-testid="hero-work-cta"
-							href="#work"
-							class="inline-flex w-full min-h-[52px] items-center justify-center rounded-full border border-zinc-300 bg-white px-8 py-3.5 text-lg font-semibold text-zinc-900 transition-colors hover:border-zinc-400 sm:w-auto sm:px-9 sm:text-xl"
-						>
-							See work
-						</a>
+					<div class="mt-8 sm:mt-10 lg:mt-12">
+						<GetInTouchButton href={'mailto:' + profile.contactEmail} />
 					</div>
 				</div>
 				<div
