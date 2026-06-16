@@ -8,11 +8,11 @@
 		getVariantSrc
 	} from '$lib/utils/optimized-image';
 
-	const carouselSizes = '(max-width: 640px) 78vw, 720px';
+	const carouselSizes = '(max-width: 640px) 88vw, 920px';
 
 	$: preloadPath = getHighlightPreloadPaths()[0];
 	$: preloadSrc640 = getVariantSrc(preloadPath, 640);
-	$: preloadSrc720 = getDefaultImageSrc(preloadPath, 720);
+	$: preloadSrc920 = getDefaultImageSrc(preloadPath, 920);
 	$: preloadSrcSet = buildSrcSet(preloadPath);
 	$: prefetchPaths = highlightPrimaryImages.slice(1, 4);
 </script>
@@ -21,17 +21,17 @@
 	{#if preloadSrc640}
 		<link rel="preload" as="image" href={preloadSrc640} />
 	{/if}
-	{#if preloadSrc720}
+	{#if preloadSrc920}
 		<link
 			rel="preload"
 			as="image"
-			href={preloadSrc720}
+			href={preloadSrc920}
 			imagesrcset={preloadSrcSet}
 			imagesizes={carouselSizes}
 		/>
 	{/if}
 	{#each prefetchPaths as imagePath (imagePath)}
-		<link rel="prefetch" as="image" href={getDefaultImageSrc(imagePath, 720)} />
+		<link rel="prefetch" as="image" href={getDefaultImageSrc(imagePath, 920)} />
 	{/each}
 </svelte:head>
 

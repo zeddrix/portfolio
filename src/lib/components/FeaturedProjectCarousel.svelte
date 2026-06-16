@@ -16,8 +16,8 @@
 	const carouselScrollClass =
 		'highlights-carousel-scroll snap-x overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
 
-	const carouselSizes = '(max-width: 640px) 78vw, 720px';
-	const carouselImageWidth = 720;
+	const carouselSizes = '(max-width: 640px) 88vw, 920px';
+	const carouselImageWidth = 920;
 
 	/** @type {Record<string, SlideState>} */
 	const slideStates = {};
@@ -184,7 +184,7 @@
 		class="highlights-carousel-track flex w-max gap-6 md:gap-8"
 	>
 		{#each carouselProjects as project, index (project.slug)}
-			<div class="w-[min(78vw,680px)] shrink-0 snap-start space-y-4 sm:w-[min(72vw,720px)]">
+			<div class="w-[min(88vw,920px)] shrink-0 snap-start space-y-4 sm:w-[min(90vw,920px)]">
 				<article
 					data-testid={'highlight-card-' + index}
 					data-highlight-slug={project.slug}

@@ -15,6 +15,25 @@ async function getPageWidth(page: Page) {
 }
 
 test.describe("homepage carousel layout", () => {
+  test("Given homepage at desktop, when user lands without scrolling, then first carousel card is large relative to viewport", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+
+    const firstCard = page.getByTestId("highlight-card-0");
+    const box = await firstCard.boundingBox();
+    const viewportWidth = await page.evaluate(() => window.innerWidth);
+
+    if (!box) {
+      throw new Error("Expected first carousel card bounding box.");
+    }
+
+    const expectedMinWidth = Math.min(viewportWidth * 0.88, 920) - 8;
+    expect(box.width).toBeGreaterThanOrEqual(expectedMinWidth);
+  });
+
   test("Given homepage at desktop, when user lands without scrolling, then second carousel card peeks at right edge", async ({
     page,
   }) => {
@@ -31,7 +50,7 @@ test.describe("homepage carousel layout", () => {
     }
 
     expect(box.x).toBeLessThan(viewportWidth);
-    expect(box.x + box.width).toBeGreaterThan(viewportWidth * 0.85);
+    expect(box.x + box.width).toBeGreaterThan(viewportWidth * 0.92);
   });
 
   test("Given homepage at desktop, when user lands without scrolling, then first carousel card peeks into viewport", async ({
@@ -97,6 +116,9 @@ test.describe("homepage carousel layout", () => {
     expect(startCardBoxAtMiddle.x).toBeLessThan(
       aboutBoxAtMiddle.x - alignmentTolerancePx,
     );
+
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await expect(page.getByTestId(selectors.work.carousel)).toBeVisible();
 
     const endScrollLeft = await carousel.evaluate(
       (element) => element.scrollWidth - element.clientWidth,
