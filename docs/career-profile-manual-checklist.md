@@ -62,4 +62,5 @@ Outputs:
 - `resume/Zeddrix-Fabian-Resume-LinkedIn.docx` — LinkedIn upload fallback
 - `exports/linkedin-certificates.md` — copy-paste aid for LinkedIn certs
 - `exports/github-readme-projects.md` — project periods for GitHub README paste
+- `exports/github-readme-manatal-coop.md` — Manatal Coop screenshot block for profile README paste
 - `exports/certificate-urls.json` — machine-readable verify URLs
