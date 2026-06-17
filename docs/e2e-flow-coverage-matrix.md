@@ -1,9 +1,10 @@
 # E2E Flow Coverage Matrix
 
-Generated: 2026-06-15
+Generated: 2026-06-17
 
 | Spec file                                                             | Domain   | MinActions | BranchesCovered                    | JourneyTier |
 | --------------------------------------------------------------------- | -------- | ---------- | ---------------------------------- | ----------- |
+| `tests/e2e/certificates/certificate-routes.e2e.test.ts`               | other    | 2          | —                                  | focused     |
 | `tests/e2e/contact/contact-footer.e2e.test.ts`                        | contact  | 2          | contact,nav                        | focused     |
 | `tests/e2e/content/capability-band-images.e2e.test.ts`                | content  | 2          | capability-layouts                 | focused     |
 | `tests/e2e/content/content-integrity.e2e.test.ts`                     | content  | 2          | content                            | focused     |
@@ -26,4 +27,4 @@ Generated: 2026-06-15
 | `tests/e2e/seo/seo-navigation.e2e.test.ts`                            | seo      | 2          | seo                                | focused     |
 | `tests/e2e/seo/seo-sitemap-robots.e2e.test.ts`                        | seo      | 2          | seo,sitemap                        | focused     |
 
-Total specs: **21**
+Total specs: **22**

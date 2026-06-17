@@ -47,7 +47,11 @@ test.describe("contact and footer", () => {
     ).toHaveAttribute("href", "mailto:zeddrix.fabian@gmail.com");
     await expect(
       page.getByTestId(selectors.contact.footerWebsite),
-    ).toHaveAttribute("href", "https://github.com/zeddrix");
+    ).toHaveAttribute("href", "https://zeddrix.github.io/portfolio");
+    await expect(page.getByTestId("footer-certificates-link")).toHaveAttribute(
+      "href",
+      expect.stringContaining("/certificates"),
+    );
   });
 
   test("Given approach section, when user uses contact path from approach, then contact section is reachable", async ({

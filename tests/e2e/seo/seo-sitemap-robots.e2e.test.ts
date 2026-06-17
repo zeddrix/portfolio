@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { certificates } from "../../../src/lib/data/certificates";
 import { projects } from "../../../src/lib/data/portfolio";
 import { PAGES_SITE_URL, pagesPath } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
@@ -12,10 +13,17 @@ test.describe("seo sitemap and robots", () => {
 
     const body = await sitemapResponse.text();
     expect(body).toContain(`<loc>${PAGES_SITE_URL}/</loc>`);
+    expect(body).toContain(`<loc>${PAGES_SITE_URL}/certificates</loc>`);
 
     for (const project of projects) {
       expect(body).toContain(
         `<loc>${PAGES_SITE_URL}/projects/${project.slug}</loc>`,
+      );
+    }
+
+    for (const certificate of certificates) {
+      expect(body).toContain(
+        `<loc>${PAGES_SITE_URL}/certificates/${certificate.slug}</loc>`,
       );
     }
   });
