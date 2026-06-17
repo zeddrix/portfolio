@@ -18,6 +18,7 @@ import {
   formatResumeProjectRoleLine,
   projectBullets,
   buildSkillsText,
+  splitExperienceForApplicationResume,
   type CertificateSnapshot,
   type ExperienceSnapshot,
   type ProfileSnapshot,
@@ -121,12 +122,21 @@ function buildSidebarCertsHtml(certificates: CertificateSnapshot[]): string {
 
 function buildExperienceHtmlApplication(
   experience: ExperienceSnapshot[],
+  compact = false,
 ): string {
   return experience
     .map((role) => {
       const titleLine = role.employmentType
         ? `${role.title} (${role.employmentType})`
         : role.title;
+      if (compact) {
+        return `
+      <article class="role resume-card compact">
+        <h3>${escapeHtml(titleLine)}</h3>
+        <p class="company">${escapeHtml(role.company)}</p>
+        <p class="meta">${escapeHtml(formatExperienceRange(role))} · ${escapeHtml(role.location)}</p>
+      </article>`;
+      }
       const bullet = role.bullets[0] ?? "";
       return `
       <article class="role resume-card">
@@ -141,12 +151,24 @@ function buildExperienceHtmlApplication(
 
 function buildProjectHtmlApplication(
   project: ProjectSnapshot,
-  compact = false,
+  mode: "full" | "compact" | "minimal" = "full",
 ): string {
-  const bullets = projectBullets(project, compact ? 1 : 2);
-  const tech = project.techStack.slice(0, compact ? 5 : 7).join(" · ");
+  const bullets = projectBullets(project, mode === "full" ? 2 : 1);
+  const tech = project.techStack
+    .slice(0, mode === "minimal" ? 4 : mode === "compact" ? 5 : 7)
+    .join(" · ");
 
-  if (compact) {
+  if (mode === "minimal") {
+    return `
+      <p class="more-project-line">
+        <strong>${escapeHtml(project.name)}</strong> —
+        ${escapeHtml(formatResumeProjectRoleLine(project))}.
+        ${escapeHtml(project.outcome || project.tagline)}.
+        <span class="tech">${escapeHtml(tech)}</span>
+      </p>`;
+  }
+
+  if (mode === "compact") {
     return `
       <article class="project compact resume-card">
         <h3>${escapeHtml(project.name)}</h3>
@@ -271,6 +293,8 @@ export async function buildApplicationResumeHtml(
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
+  const { firstPageExperience, secondPageExperience } =
+    splitExperienceForApplicationResume(experience, 8);
   const summary = buildSummary(snapshot);
   const fontCss = await buildInterFontFaceCss();
 
@@ -281,138 +305,161 @@ export async function buildApplicationResumeHtml(
     <title>${escapeHtml(profile.name)} — Resume</title>
     <style>
       ${fontCss}
+      :root {
+        --accent-dark: #5c4a3a;
+        --accent-mid: #a67c6a;
+        --accent-soft: #f3ebe3;
+        --text-body: #2c2420;
+        --text-muted: #6b5b4f;
+        --rail-text: #faf7f4;
+        --rail-meta: #ede4dc;
+      }
       @page { size: letter; margin: 0; }
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: Inter, "Segoe UI", Arial, sans-serif;
-        font-size: 8.6pt;
-        line-height: 1.24;
-        color: #18181b;
-        background: #f5f5f5;
+        font-size: 8.4pt;
+        line-height: 1.22;
+        color: var(--text-body);
+        background: var(--accent-soft);
       }
       h1, h2, h3, p, ul { margin: 0; }
       .page {
-        min-height: 10.5in;
         break-after: page;
         page-break-after: always;
-        padding: 0.38in 0.42in;
       }
       .page:last-child {
         break-after: auto;
         page-break-after: auto;
       }
+      .page-with-rail {
+        padding: 0.34in 0.4in 0.34in 0;
+      }
+      .page-full-width {
+        padding: 0.34in 0.4in;
+      }
       .page-one-grid {
         display: grid;
-        grid-template-columns: 0.82fr 2.18fr;
-        gap: 14px;
-        min-height: 9.7in;
+        grid-template-columns: 0.78fr 2.22fr;
+        gap: 12px;
         align-items: stretch;
       }
       .resume-rail {
-        background: #1e3a5f;
-        color: #f8fafc;
-        border-radius: 12px 0 0 12px;
-        padding: 14px 11px 14px 13px;
-        min-height: 100%;
+        background: var(--accent-mid);
+        color: var(--rail-text);
+        border-radius: 0;
+        margin: 0;
+        padding: 0.34in 11px 0.34in 0.4in;
       }
       .resume-rail h2 {
-        color: #ffffff;
-        border-bottom-color: rgba(255,255,255,0.25);
+        color: var(--rail-text);
+        border-bottom-color: rgba(255, 255, 255, 0.28);
       }
       .resume-rail .sidebar-group h3 {
-        color: #dbeafe;
+        color: var(--rail-meta);
       }
       .resume-rail .sidebar-group p,
       .resume-rail .cert-title,
       .resume-rail .cert-meta,
       .resume-rail .languages {
-        color: #e2e8f0;
+        color: var(--rail-meta);
       }
       .resume-main {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 7px;
       }
       .header {
-        border-bottom: 2px solid #1e3a5f;
-        padding-bottom: 8px;
+        border-bottom: 2px solid var(--accent-mid);
+        padding-bottom: 7px;
       }
       h1 {
-        font-size: 26pt;
+        font-size: 25pt;
         font-weight: 800;
-        color: #1e3a5f;
+        color: var(--accent-dark);
         letter-spacing: 0.01em;
       }
       .title {
         margin-top: 3px;
-        font-size: 11.5pt;
+        font-size: 11pt;
         font-weight: 600;
-        color: #334155;
+        color: var(--text-muted);
       }
       .contact-footer {
-        margin-top: 7px;
-        font-size: 8.4pt;
-        color: #64748b;
+        margin-top: 6px;
+        font-size: 8.2pt;
+        color: var(--text-muted);
         letter-spacing: 0.01em;
       }
       h2 {
-        font-size: 8.8pt;
+        font-size: 8.6pt;
         text-transform: uppercase;
         letter-spacing: 0.12em;
-        color: #1e3a5f;
+        color: var(--accent-dark);
         margin: 0 0 4px;
-        border-bottom: 1px solid #cbd5e1;
+        border-bottom: 1px solid var(--accent-mid);
         padding-bottom: 2px;
       }
       .resume-card {
-        border: 1px solid #e4e4e7;
+        border: 1px solid #e8ddd3;
         border-radius: 10px;
         background: #ffffff;
-        padding: 7px 9px;
-        margin-bottom: 5px;
+        padding: 6px 8px;
+        margin-bottom: 4px;
         break-inside: avoid;
+        box-shadow: 0 1px 0 rgba(92, 74, 58, 0.06);
       }
-      .summary { color: #334155; }
+      .summary { color: var(--text-muted); }
       .role h3, .project h3 {
-        font-size: 9.2pt;
+        font-size: 9pt;
         font-weight: 700;
-        color: #0f172a;
+        color: var(--text-body);
       }
       .company, .role-line {
         margin-top: 1px;
-        font-size: 8.6pt;
+        font-size: 8.4pt;
         font-weight: 600;
-        color: #475569;
+        color: var(--text-muted);
       }
       .meta, .tech, .role-bullet {
         margin-top: 1px;
-        font-size: 8.2pt;
-        color: #64748b;
+        font-size: 8pt;
+        color: var(--text-muted);
       }
       ul {
         margin: 2px 0 0 14px;
         padding: 0;
       }
       li { margin-bottom: 1px; }
-      .project.compact { margin-bottom: 4px; }
-      .sidebar-group { margin-bottom: 7px; break-inside: avoid; }
+      .project.compact { margin-bottom: 3px; }
+      .sidebar-group { margin-bottom: 6px; break-inside: avoid; }
       .sidebar-group h3 {
-        font-size: 7.8pt;
+        font-size: 7.6pt;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         margin-bottom: 2px;
       }
-      .sidebar-group p { font-size: 7.8pt; }
-      .sidebar-cert { margin-bottom: 5px; }
-      .cert-title { font-size: 7.8pt; font-weight: 600; }
-      .cert-meta { font-size: 7.4pt; }
-      .languages { font-size: 8pt; }
-      .experience-grid .role { margin-bottom: 4px; }
+      .sidebar-group p { font-size: 7.6pt; }
+      .sidebar-cert { margin-bottom: 4px; }
+      .cert-title { font-size: 7.6pt; font-weight: 600; }
+      .cert-meta { font-size: 7.2pt; }
+      .languages { font-size: 7.8pt; }
+      .experience-grid .role { margin-bottom: 3px; }
+      .experience-grid .role.compact { margin-bottom: 2px; padding: 5px 7px; }
+      .page-two-section { margin-bottom: 7px; }
+      .more-project-line {
+        margin: 0 0 3px;
+        font-size: 8pt;
+        line-height: 1.2;
+        color: var(--text-body);
+        break-inside: avoid;
+      }
+      .more-project-line .tech { color: var(--text-muted); }
     </style>
   </head>
   <body>
-    <section class="page" data-testid="resume-page-1">
+    <section class="page page-with-rail" data-testid="resume-page-1">
       <div class="page-one-grid">
         <aside class="resume-rail" data-testid="resume-page-1-sidebar">
           <section>
@@ -448,22 +495,27 @@ export async function buildApplicationResumeHtml(
 
           <section class="experience-grid">
             <h2>Experience</h2>
-            ${buildExperienceHtmlApplication(experience)}
-          </section>
-
-          <section>
-            <h2>Selected Projects</h2>
-            ${selectedProjects.map((project) => buildProjectHtmlApplication(project)).join("")}
+            ${buildExperienceHtmlApplication(firstPageExperience)}
           </section>
         </div>
       </div>
     </section>
 
-    <section class="page" data-testid="resume-page-2">
-      <div data-testid="resume-more-projects">
+    <section class="page page-full-width" data-testid="resume-page-2">
+      <section class="page-two-section experience-grid">
+        <h2>Experience (continued)</h2>
+        ${buildExperienceHtmlApplication(secondPageExperience, true)}
+      </section>
+
+      <section class="page-two-section">
+        <h2>Selected Projects</h2>
+        ${selectedProjects.map((project) => buildProjectHtmlApplication(project, "compact")).join("")}
+      </section>
+
+      <section class="page-two-section" data-testid="resume-more-projects">
         <h2>More Projects</h2>
-        ${additionalProjects.map((project) => buildProjectHtmlApplication(project, true)).join("")}
-      </div>
+        ${additionalProjects.map((project) => buildProjectHtmlApplication(project, "minimal")).join("")}
+      </section>
     </section>
   </body>
 </html>`;

@@ -204,4 +204,17 @@ export function buildAdditionalProjectsBlocks(
   return partitionProjects(snapshot).additionalProjects;
 }
 
+export function splitExperienceForApplicationResume(
+  experience: ExperienceSnapshot[],
+  firstPageCount = 6,
+): {
+  firstPageExperience: ExperienceSnapshot[];
+  secondPageExperience: ExperienceSnapshot[];
+} {
+  return {
+    firstPageExperience: experience.slice(0, firstPageCount),
+    secondPageExperience: experience.slice(firstPageCount),
+  };
+}
+
 export { formatResumeProjectHeader, formatResumeProjectRoleLine };

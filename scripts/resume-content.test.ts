@@ -5,6 +5,7 @@ import {
   buildEngagementExperienceBlocks,
   buildSelectedProjectsBlocks,
   partitionProjects,
+  splitExperienceForApplicationResume,
 } from "./resume-content";
 
 describe("resume-content builders", () => {
@@ -44,5 +45,17 @@ describe("resume-content builders", () => {
     for (const project of selectedProjects) {
       expect(additional.some((item) => item.slug === project.slug)).toBe(false);
     }
+  });
+
+  it("splits experience into eight rows for page one and four for page two", () => {
+    const experience = buildEngagementExperienceBlocks(snapshot);
+
+    const { firstPageExperience, secondPageExperience } =
+      splitExperienceForApplicationResume(experience, 8);
+
+    expect(firstPageExperience).toHaveLength(8);
+    expect(secondPageExperience).toHaveLength(4);
+    expect(firstPageExperience[0]?.id).toBe("independent-queue");
+    expect(secondPageExperience[0]?.id).toBe("codefrost-trulyhappy");
   });
 });
