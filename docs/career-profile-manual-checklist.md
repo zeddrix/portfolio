@@ -1,0 +1,61 @@
+# Career profile manual checklist
+
+Tasks the agent cannot complete — do these yourself after deploying the portfolio.
+
+## 1. Deploy portfolio first
+
+Certificate verify URLs only work after GitHub Pages deploy:
+
+`https://zeddrix.github.io/portfolio/certificates/{slug}`
+
+## 2. LinkedIn — fix Education
+
+Remove the **Udemy Alumni / MCA** entry. It reads like a formal degree.
+
+Use **Licenses & Certifications** only (see step 3).
+
+## 3. LinkedIn — update 5 certificates
+
+After deploy, open `exports/linkedin-certificates.md` (run `pnpm generate:resume` locally) and for each cert set:
+
+- **Credential URL** → `https://zeddrix.github.io/portfolio/certificates/{slug}`
+- Skills from the export block
+
+## 4. LinkedIn — upload resume
+
+Upload `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf`.
+
+Review parsed Experience, Projects, and Skills manually — LinkedIn’s parser is imperfect.
+
+**There is no JSON/CSV import** for LinkedIn profile sections.
+
+## 5. LinkedIn — refresh profile content
+
+- Rewrite **About** to match portfolio (2018+, ATDD, AI-accelerated delivery)
+- Add/update **Projects** from portfolio case studies
+- Pin top skills: SvelteKit, TypeScript, React (or your target stack)
+
+## 6. Push Zeddrix GitHub profile README
+
+The `zeddrix/zeddrix` repo README was updated with a certifications table linking to the portfolio. Commit and push that repo after deploy.
+
+## 7. zeddrix.com migration (future)
+
+When ready to retire WordPress, redirect legacy cert paths to portfolio URLs. Legacy paths are stored in `src/lib/data/certificates.ts` as `legacyZeddrixPath`.
+
+## 8. Job applications
+
+Use `resume/Zeddrix-Fabian-Resume.pdf` (styled two-page version), not the LinkedIn variant.
+
+## Regenerating local exports
+
+```bash
+pnpm generate:resume
+```
+
+Outputs:
+
+- `resume/Zeddrix-Fabian-Resume.pdf` — job applications
+- `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf` — LinkedIn upload
+- `exports/linkedin-certificates.md` — copy-paste aid for LinkedIn certs
+- `exports/certificate-urls.json` — machine-readable verify URLs
