@@ -25,6 +25,15 @@ test.describe("homepage polish visual capture", () => {
       fullPage: false,
     });
 
+    await page.getByTestId("tools-strip-section").scrollIntoViewIfNeeded();
+    await page
+      .getByTestId("tools-strip-footer-note")
+      .waitFor({ state: "visible" });
+    await page.screenshot({
+      path: path.join(outDir, "tools-strip-1440.png"),
+      fullPage: false,
+    });
+
     await page.evaluate(() => {
       window.scrollTo(0, document.documentElement.scrollHeight);
     });
@@ -35,6 +44,16 @@ test.describe("homepage polish visual capture", () => {
     });
 
     await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.getByTestId("tools-strip-section").scrollIntoViewIfNeeded();
+    await page
+      .getByTestId("tools-strip-footer-note")
+      .waitFor({ state: "visible" });
+    await page.screenshot({
+      path: path.join(outDir, "tools-strip-390.png"),
+      fullPage: false,
+    });
+
     await page.evaluate(() => {
       window.scrollTo(0, document.documentElement.scrollHeight);
     });

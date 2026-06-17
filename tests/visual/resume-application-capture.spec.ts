@@ -16,6 +16,9 @@ test.describe("application resume visual capture", () => {
     await page.setViewportSize({ width: 816, height: 1056 });
     await page.goto(`file://${resumeHtmlPath}`, { waitUntil: "load" });
     await page.getByTestId("resume-page-1").waitFor({ state: "visible" });
+    await page
+      .getByTestId("resume-skills-footer-note")
+      .waitFor({ state: "visible" });
 
     await page.getByTestId("resume-page-1").screenshot({
       path: path.join(outDir, "application-page-1.png"),
