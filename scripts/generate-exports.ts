@@ -19,8 +19,17 @@ interface CertificateExport {
   udemyCredentialId?: string;
 }
 
+interface ProjectExport {
+  slug: string;
+  name: string;
+  displayPeriod?: string;
+  links: Array<{ label: string; url: string }>;
+}
+
 interface Snapshot {
   certificates: CertificateExport[];
+  selectedProjects: ProjectExport[];
+  moreProjects: ProjectExport[];
 }
 
 function buildLinkedInCertificatesMd(
@@ -61,6 +70,24 @@ ${rows}
 All certifications: [portfolio certificates](https://zeddrix.github.io/portfolio/certificates)`;
 }
 
+function buildGithubReadmeProjectsTable(projects: ProjectExport[]): string {
+  const rows = projects
+    .map((project) => {
+      const period = project.displayPeriod ?? "—";
+      const link =
+        project.links[0]?.url ??
+        `https://zeddrix.github.io/portfolio/projects/${project.slug}`;
+      return `| ${project.name} | ${period} | [View](${link}) |`;
+    })
+    .join("\n");
+
+  return `## Portfolio projects (resume periods)
+
+| Project | Period | Link |
+|---------|--------|------|
+${rows}`;
+}
+
 async function main() {
   const snapshotRaw = await readFile(snapshotPath, "utf8");
   const snapshot = JSON.parse(snapshotRaw) as Snapshot;
@@ -86,6 +113,10 @@ async function main() {
   await writeFile(
     join(exportsDir, "github-readme-certifications.md"),
     `${buildGithubReadmeTable(snapshot.certificates)}\n`,
+  );
+  await writeFile(
+    join(exportsDir, "github-readme-projects.md"),
+    `${buildGithubReadmeProjectsTable([...snapshot.selectedProjects, ...snapshot.moreProjects])}\n`,
   );
 
   console.log(`Wrote exports to ${exportsDir}`);
