@@ -23,7 +23,9 @@ After deploy, open `exports/linkedin-certificates.md` (run `pnpm generate:resume
 
 ## 4. LinkedIn — upload resume
 
-Upload `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf`.
+Upload `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf` first.
+
+If LinkedIn’s parser misses Experience or Projects, upload `resume/Zeddrix-Fabian-Resume-LinkedIn.docx` instead (same content, Word-friendly).
 
 Review parsed Experience, Projects, and Skills manually — LinkedIn’s parser is imperfect.
 
@@ -56,6 +58,8 @@ pnpm generate:resume
 Outputs:
 
 - `resume/Zeddrix-Fabian-Resume.pdf` — job applications
-- `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf` — LinkedIn upload
+- `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf` — LinkedIn upload (try first)
+- `resume/Zeddrix-Fabian-Resume-LinkedIn.docx` — LinkedIn upload fallback
 - `exports/linkedin-certificates.md` — copy-paste aid for LinkedIn certs
+- `exports/github-readme-projects.md` — project periods for GitHub README paste
 - `exports/certificate-urls.json` — machine-readable verify URLs

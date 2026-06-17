@@ -23,9 +23,10 @@ Generated: 2026-06-17
 | `tests/e2e/playwright-dev-server-preflight.e2e.test.ts`               | infra    | 1          | infra                              | focused     |
 | `tests/e2e/projects/manatal-coop.e2e.test.ts`                         | projects | 2          | —                                  | focused     |
 | `tests/e2e/projects/project-all-slugs.e2e.test.ts`                    | projects | 2          | project-routing,404                | focused     |
+| `tests/e2e/projects/project-detail-period.e2e.test.ts`                | projects | 2          | —                                  | focused     |
 | `tests/e2e/projects/project-details.e2e.test.ts`                      | projects | 2          | project-routing                    | focused     |
 | `tests/e2e/projects/project-images.e2e.test.ts`                       | projects | 2          | project-routing                    | focused     |
 | `tests/e2e/seo/seo-navigation.e2e.test.ts`                            | seo      | 2          | seo                                | focused     |
 | `tests/e2e/seo/seo-sitemap-robots.e2e.test.ts`                        | seo      | 2          | seo,sitemap                        | focused     |
 
-Total specs: **23**
+Total specs: **24**
