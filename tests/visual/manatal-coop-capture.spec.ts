@@ -31,6 +31,15 @@ test.describe("manatal coop visual capture", () => {
       .getByTestId("project-detail-title")
       .waitFor({ state: "visible" });
     await page.getByTestId("project-detail-type").waitFor({ state: "visible" });
+    await page
+      .getByTestId("project-detail-hero-image")
+      .waitFor({ state: "visible" });
+    await page
+      .getByTestId("project-detail-gallery-image-1")
+      .waitFor({ state: "visible" });
+    await page
+      .getByTestId("project-detail-gallery-image-2")
+      .waitFor({ state: "visible" });
     await page.screenshot({
       path: path.join(outDir, "detail-desktop-top-1280.png"),
     });
