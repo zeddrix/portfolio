@@ -152,7 +152,7 @@ test.describe("homepage carousel layout", () => {
     );
     await scrollCarouselToPosition(page, endScrollLeft);
 
-    const lastCard = page.getByTestId("highlight-card-8");
+    const lastCard = page.getByTestId("highlight-card-9");
     const lastCardBox = await lastCard.boundingBox();
     const aboutBoxAtEnd = await aboutSection.boundingBox();
     if (!lastCardBox || !aboutBoxAtEnd) {

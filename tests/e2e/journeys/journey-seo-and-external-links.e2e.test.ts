@@ -75,6 +75,28 @@ test.describe("Journey: seo and external links", () => {
     );
   });
 
+  test("Sitemap slug → manatal-coop → member app link", async ({
+    page,
+    request,
+  }) => {
+    const sitemapResponse = await request.get(pagesPath("/sitemap.xml"));
+    expect(sitemapResponse.ok()).toBeTruthy();
+    const body = await sitemapResponse.text();
+    expect(body).toContain(
+      `<loc>${PAGES_SITE_URL}/projects/manatal-coop</loc>`,
+    );
+
+    await page.goto(pagesPath("/projects/manatal-coop"));
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "Manatal Coop",
+    );
+    await expect(page.getByTestId("project-external-link-0")).toHaveAttribute(
+      "href",
+      "https://manatalcoop.app/",
+    );
+    await expect(page.locator("body")).not.toContainText("Codefrost");
+  });
+
   test("404 → home → sitemap project", async ({ page, request }) => {
     await page.goto(pagesPath("/projects/not-a-real-slug"));
     await expect(page.getByTestId(selectors.project.notFound)).toBeVisible();

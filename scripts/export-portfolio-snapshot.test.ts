@@ -30,6 +30,22 @@ describe("export-portfolio-snapshot output", () => {
     expect(snapshot.highlightProjects.map((project) => project.slug)).toEqual([
       ...highlightProjectSlugs,
     ]);
-    expect(snapshot.moreProjects.length).toBeGreaterThan(0);
+    for (const project of [
+      ...snapshot.highlightProjects,
+      ...snapshot.moreProjects,
+    ]) {
+      expect(project.resumeContext).toBeDefined();
+    }
+    expect(snapshot.moreProjects.map((project) => project.slug)).toEqual([
+      "manatal-coop",
+      "trulyhappy",
+      "articulearn",
+      "bolt-to-github",
+    ]);
+    expect(snapshot.moreProjects[0]?.resumeContext).toEqual({
+      employer: "Codefrost",
+      productOwner: "client",
+      clientBrand: "Manatal Cooperative",
+    });
   });
 });

@@ -13,6 +13,7 @@ import {
   personalProjectCount,
   projects,
 } from "./portfolio";
+import { getProjectTypeLabel } from "$lib/utils/portfolio-display";
 
 describe("portfolio data", () => {
   it("returns known project by slug", () => {
@@ -96,8 +97,13 @@ describe("portfolio data", () => {
     expect([...highlightProjectSlugs]).not.toContain("iaso");
   });
 
-  it("ships ten portfolio projects total", () => {
-    expect(projects.length).toBe(10);
+  it("ships eleven portfolio projects total", () => {
+    expect(projects.length).toBe(11);
+  });
+
+  it("assigns resumeContext to hidden concept projects", () => {
+    const iaso = getProjectBySlug("iaso");
+    expect(iaso?.resumeContext).toEqual({ productOwner: "personal" });
   });
 
   it("returns MERN's Shop project with mapped assets and bands", () => {
@@ -201,7 +207,53 @@ describe("portfolio data", () => {
       "trulyhappy",
       "articulearn",
       "bolt-to-github",
+      "manatal-coop",
     ]);
     expect(carouselProjects.every(isPortfolioProjectVisible)).toBe(true);
+  });
+
+  it("assigns resumeContext to visible client projects without exposing Codefrost on site labels", () => {
+    const clientProjects = projects.filter(
+      (project) =>
+        project.category === "client" && isPortfolioProjectVisible(project),
+    );
+
+    expect(clientProjects.length).toBeGreaterThan(0);
+    for (const project of clientProjects) {
+      expect(project.resumeContext).toBeDefined();
+      expect(getProjectTypeLabel(project)).toBe("Client work");
+      expect(getProjectTypeLabel(project)).not.toContain("Codefrost");
+    }
+  });
+
+  it("describes TrulyHappy as a mental wellbeing product", () => {
+    const project = getProjectBySlug("trulyhappy");
+
+    expect(project?.tagline).toMatch(/wellbeing/i);
+    expect(project?.description).toMatch(/mood tracking/i);
+    expect(project?.resumeContext).toEqual({
+      employer: "Codefrost",
+      productOwner: "codefrost",
+    });
+  });
+
+  it("describes ArticuLearn as speaking practice without Claude in stack", () => {
+    const project = getProjectBySlug("articulearn");
+
+    expect(project?.tagline).toMatch(/speaking practice/i);
+    expect(project?.techStack).not.toContain("Anthropic Claude");
+    expect(project?.techStack).toContain("WaveSurfer.js");
+  });
+
+  it("includes Manatal Coop with external client resume context", () => {
+    const project = getProjectBySlug("manatal-coop");
+
+    expect(project?.displayDomain).toBe("manatalcoop.app");
+    expect(project?.primaryImage).toBe("/project-screenshot-placeholder.webp");
+    expect(project?.resumeContext).toEqual({
+      employer: "Codefrost",
+      productOwner: "client",
+      clientBrand: "Manatal Cooperative",
+    });
   });
 });

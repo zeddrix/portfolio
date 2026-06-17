@@ -12,12 +12,12 @@ test.describe("homepage work section", () => {
     await gotoHomeWithCleanState(page);
   });
 
-  test("Given homepage carousel, when user loads work section, then nine project cards render without grid or case studies", async ({
+  test("Given homepage carousel, when user loads work section, then ten project cards render without grid or case studies", async ({
     page,
   }) => {
     await scrollToTestId(page, selectors.work.section);
     await expect(page.getByTestId(selectors.work.carousel)).toBeVisible();
-    await expect(page.getByTestId("highlight-card-8")).toBeVisible();
+    await expect(page.getByTestId("highlight-card-9")).toBeVisible();
     await expect(page.getByTestId("highlight-card-0")).toHaveAttribute(
       "data-highlight-slug",
       "usedelight",

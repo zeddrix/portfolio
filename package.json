@@ -35,7 +35,8 @@
     "screenshots:cta-hover": "playwright test tests/visual/hero-cta-hover-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:polish": "playwright test tests/visual/homepage-polish-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:certificates": "playwright test tests/visual/certificates-capture.spec.ts --config playwright.visual.config.ts",
-    "screenshots:resume": "playwright test tests/visual/resume-application-capture.spec.ts tests/visual/resume-linkedin-capture.spec.ts --config playwright.visual.config.ts"
+    "screenshots:resume": "playwright test tests/visual/resume-application-capture.spec.ts tests/visual/resume-linkedin-capture.spec.ts --config playwright.visual.config.ts",
+    "screenshots:manatal": "playwright test tests/visual/manatal-coop-capture.spec.ts --config playwright.visual.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

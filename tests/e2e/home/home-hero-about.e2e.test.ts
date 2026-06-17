@@ -24,7 +24,7 @@ test.describe("homepage hero and about", () => {
     await expect(page.getByTestId("hero-glance-experience")).toContainText(
       "2018",
     );
-    await expect(page.getByTestId("hero-glance-proof")).toContainText("10");
+    await expect(page.getByTestId("hero-glance-proof")).toContainText("11");
 
     const heroLayout = await page.evaluate(() => {
       const heroSection = document.querySelector(
