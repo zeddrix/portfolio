@@ -24,6 +24,28 @@ export interface ProjectResumeContext {
   clientBrand?: string;
 }
 
+export interface ProjectResumePeriod {
+  startDate: string;
+  endDate?: string;
+  note?: string;
+}
+
+export type ResumeEngagementKind = "employment" | "independent" | "client";
+
+export interface ResumeEngagement {
+  id: string;
+  projectSlug?: string;
+  title: string;
+  company: string;
+  contextLabel?: string;
+  employmentType?: string;
+  location: string;
+  startDate: string;
+  endDate?: string;
+  bullets: string[];
+  kind: ResumeEngagementKind;
+}
+
 export interface PortfolioProject {
   slug: string;
   name: string;
@@ -51,6 +73,8 @@ export interface PortfolioProject {
   detailSections: ProjectDetailSection[];
   hiddenFromPortfolio?: boolean;
   resumeContext?: ProjectResumeContext;
+  resumePeriod?: ProjectResumePeriod;
+  displayPeriod?: string;
 }
 
 export interface ToolStripItem {
