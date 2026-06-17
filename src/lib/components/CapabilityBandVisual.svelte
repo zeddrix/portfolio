@@ -160,14 +160,14 @@
 >
 	{#if hasVisualMedia && imageLayout === 'split'}
 		<div
-			class="grid h-full min-h-[260px] grid-cols-1 items-center gap-3 p-4 sm:min-h-[300px] lg:min-h-[340px] lg:grid-cols-[1.35fr_0.65fr]"
+			class="grid h-full min-h-[220px] grid-cols-[1.35fr_0.65fr] items-center gap-2 p-4 sm:min-h-[260px] sm:gap-3 lg:min-h-[340px]"
 			data-testid="capability-band-visual-split"
 		>
 			{#each displayImages as imagePath, index (imagePath)}
 				<OptimizedImage
 					src={imagePath}
 					alt={screenshotAlt + (index === 0 ? ' desktop' : ' mobile')}
-					className={'w-full ' + (index === 1 ? 'mx-auto max-w-[220px] lg:max-w-none' : '')}
+					className="w-full"
 					fit="contain"
 					sizes="(max-width: 1024px) 100vw, 600px"
 					loading="lazy"

@@ -117,6 +117,54 @@ test.describe("capability band images", () => {
     );
   });
 
+  test("Given grouped capability layout on mobile, when user views product foundations PWA split, then desktop and mobile screenshots render side-by-side", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.addInitScript(
+      ({ capabilityKey, mode }) => {
+        localStorage.setItem(capabilityKey, mode);
+      },
+      { capabilityKey: capabilityLayoutStorageKey, mode: "groupedBands" },
+    );
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.sections.approach);
+
+    const productFoundations = page.getByTestId("highlight-band-0");
+    await productFoundations.scrollIntoViewIfNeeded();
+    await expect(
+      productFoundations.getByTestId("capability-band-visual-split"),
+    ).toBeVisible();
+
+    const desktopImage = bandImage(page, 0, 0);
+    const mobileImage = bandImage(page, 0, 1);
+    await expect(desktopImage).toHaveAttribute(
+      "src",
+      /pwa-queue-desktop.*\.webp/,
+    );
+    await expect(mobileImage).toHaveAttribute(
+      "src",
+      /pwa-queue-mobile.*\.webp/,
+    );
+
+    const desktopBox = await desktopImage.boundingBox();
+    const mobileBox = await mobileImage.boundingBox();
+    if (!desktopBox || !mobileBox) {
+      throw new Error("Expected PWA split image bounding boxes.");
+    }
+
+    expect(mobileBox.x).toBeGreaterThanOrEqual(
+      desktopBox.x + desktopBox.width - 2,
+    );
+    expect(
+      Math.abs(
+        mobileBox.y +
+          mobileBox.height / 2 -
+          (desktopBox.y + desktopBox.height / 2),
+      ),
+    ).toBeLessThanOrEqual(8);
+  });
+
   test("Given grouped capability layout, when user views product foundations, then PWA split visual renders", async ({
     page,
   }) => {
