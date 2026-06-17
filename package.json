@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "optimize:images": "node scripts/optimize-images.mjs",
-    "assets:prepare": "node scripts/copy-fonts.mjs && node scripts/optimize-images.mjs",
+    "assets:prepare": "node scripts/copy-fonts.mjs && node scripts/copy-certificate-sources.mjs && node scripts/optimize-images.mjs",
+    "assets:certificates-source": "node scripts/copy-certificate-sources.mjs",
     "generate:favicon": "node scripts/generate-favicon.mjs",
     "generate:snapshot": "tsx scripts/export-portfolio-snapshot.ts",
     "generate:exports": "tsx scripts/generate-exports.ts",
@@ -36,6 +37,7 @@
     "screenshots:polish": "playwright test tests/visual/homepage-polish-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:certificates": "playwright test tests/visual/certificates-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:resume": "playwright test tests/visual/resume-application-capture.spec.ts tests/visual/resume-linkedin-capture.spec.ts --config playwright.visual.config.ts",
+    "screenshots:project-periods": "playwright test tests/visual/project-period-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:manatal": "playwright test tests/visual/manatal-coop-capture.spec.ts --config playwright.visual.config.ts"
   },
   "devDependencies": {
@@ -50,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^8.46.0",
     "@typescript-eslint/parser": "^8.46.0",
     "autoprefixer": "^10.4.21",
+    "docx": "^9.7.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
