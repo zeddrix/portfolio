@@ -197,6 +197,38 @@ test.describe("project image mapping", () => {
     ).toHaveAttribute("src", /atdd-playwright-e2e.*\.webp/);
   });
 
+  test("Given Manatal carousel card, when user opens detail, then hero and gallery webp assets render", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+
+    const manatalCarouselImage = carouselImage(page, "manatal-coop");
+    await expect(manatalCarouselImage).toHaveAttribute(
+      "src",
+      /manatal-coop-homepage.*\.webp/,
+    );
+    await expect(manatalCarouselImage).toHaveAttribute(
+      "srcset",
+      basePathPattern,
+    );
+
+    await Promise.all([
+      page.waitForURL("**/projects/manatal-coop"),
+      page.getByTestId("showcase-project-link-manatal-coop").click(),
+    ]);
+
+    await expect(
+      detailImage(page, "project-detail-hero-image"),
+    ).toHaveAttribute("src", /manatal-coop-homepage.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-1"),
+    ).toHaveAttribute("src", /manatal-coop-signin.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-2"),
+    ).toHaveAttribute("src", /manatal-coop-chatbot.*\.webp/);
+  });
+
   test("Given AnswerIQ carousel card, when user opens detail, then hero and admin gallery assets render", async ({
     page,
   }) => {

@@ -88,6 +88,22 @@ function buildGithubReadmeProjectsTable(projects: ProjectExport[]): string {
 ${rows}`;
 }
 
+function buildGithubReadmeManatalCoop(): string {
+  return `### [Manatal Coop](https://zeddrix.github.io/portfolio/projects/manatal-coop)
+
+<p align="left">
+  <img src="./manatal-coop-homepage.png" width="220" alt="Manatal Cooperative member home screen" />
+  <img src="./manatal-coop-signin.png" width="220" alt="Manatal Cooperative sign-in screen" />
+  <img src="./manatal-coop-chatbot.png" width="220" alt="Manatal Cooperative assistant screen" />
+</p>
+
+**Full-stack contributor** — Cooperative member banking PWA with financial request workflows, offline caching, and push notifications.
+
+Member banking PWA for a Philippine credit union
+
+[Portfolio case study](https://zeddrix.github.io/portfolio/projects/manatal-coop) · [Member app](https://manatalcoop.app/)`;
+}
+
 async function main() {
   const snapshotRaw = await readFile(snapshotPath, "utf8");
   const snapshot = JSON.parse(snapshotRaw) as Snapshot;
@@ -117,6 +133,10 @@ async function main() {
   await writeFile(
     join(exportsDir, "github-readme-projects.md"),
     `${buildGithubReadmeProjectsTable([...snapshot.selectedProjects, ...snapshot.moreProjects])}\n`,
+  );
+  await writeFile(
+    join(exportsDir, "github-readme-manatal-coop.md"),
+    `${buildGithubReadmeManatalCoop()}\n`,
   );
 
   console.log(`Wrote exports to ${exportsDir}`);

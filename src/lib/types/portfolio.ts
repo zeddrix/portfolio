@@ -69,6 +69,7 @@ export interface PortfolioProject {
   techStack: string[];
   primaryImage?: string;
   galleryImages: string[];
+  galleryColumns?: 2 | 3;
   links: ProjectLink[];
   detailSections: ProjectDetailSection[];
   hiddenFromPortfolio?: boolean;

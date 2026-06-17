@@ -779,5 +779,38 @@
       }
     ],
     "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwBACdASogABgAPv1irE6rJSQiN/VYAWAfiWUAyNQQ8OU85Tzo2SXrRPknm98cHAAA/u3ajVzYzvLKRU3JKcLanEhi3oqrjHYEI9jx8eg8wrCR11QEzcF7yQC0PrUAX7HEhIAA"
+  },
+  "/manatal-coop-chatbot.webp": {
+    "width": 720,
+    "height": 1524,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/manatal-coop-chatbot-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAADwBQCdASogAEQAPwGAslUrKKQtJngJAaAgCWUA0nAGQ86h5YJgqRa4n15ipZyhAamnFiwsS1FVMAD2nsEkj+ahS7q2ruxjP0mgzoBtmWzJvcZGVeoHv2GRTacTl3N6UDBVoYdaqIW2FP8UqINrUdUAhJwbTgnbXtxl/DSJ7YgsfvA4ogAAAA=="
+  },
+  "/manatal-coop-homepage.webp": {
+    "width": 722,
+    "height": 1520,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/manatal-coop-homepage-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRtYAAABXRUJQVlA4IMoAAAAwCACdASogAEMAPwF4rVErJ6QiqbqskWAgCWUAz2RF/60FkyTCh7+qjT67q08nMRUymjcgrBxHzgPg52VD+cLuW/FDwo2nb5HYlAD+CoFjOZlXS/+dyHbKdujUZu4+OfhUHHMCvITK8vSWuZlRnwEZGxu2b6B0FN5VX6YAByXzbVu8LL790snfjXyQaRLMr2sYVTiiEInghUa0+PFfGZ6+E6L4VSZK5Si3QQ4VUSJCrLnlI+rc9YRKYpxQJDhF/okCta7SkYeCC9AA"
+  },
+  "/manatal-coop-signin.webp": {
+    "width": 732,
+    "height": 1524,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/manatal-coop-signin-640w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAACwBwCdASogAEMAPwFuq1KrJiOiqbqskWAgCWMAwzRF/1QJJ9xG69uq2DCCdRAgmrBYjWnCMWN1E7j7/suHex56+P11FqgAAPa96prYnOEoSJ1TJBiiVinNwzzVm1c3+oc7EZS8Ur/23weJRA3zLdjgxn2CwjBJFLot67+6hLvu4EmxC553e+CiHD6C47kIRxFr+X31sD3EAQI+ai4bFKmi3JrSfasK6/JVpPetV1JgAtPCValu5csVJxv0Fm8fNT1FyXXhY2JfK0DrLZ0FzQH6AAA="
   }
 }

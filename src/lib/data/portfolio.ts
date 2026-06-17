@@ -553,8 +553,9 @@ export const projects: PortfolioProject[] = [
       "AWS Amplify",
       "PWA",
     ],
-    primaryImage: "/project-screenshot-placeholder.webp",
-    galleryImages: [],
+    primaryImage: "/manatal-coop-homepage.webp",
+    galleryImages: ["/manatal-coop-signin.webp", "/manatal-coop-chatbot.webp"],
+    galleryColumns: 3,
     links: [
       {
         label: "Member app",

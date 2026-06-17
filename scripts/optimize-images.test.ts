@@ -22,6 +22,7 @@ describe("optimize-images sharpen profiles", () => {
   it("returns mild profile for other screenshots", () => {
     expect(getSharpenProfile("usedelight-1-new-tab.png")).toBe("mild");
     expect(getSharpenProfile("queue-1-dashboard.png")).toBe("mild");
+    expect(getSharpenProfile("manatal-coop-homepage.png")).toBe("mild");
   });
 });
 
@@ -33,6 +34,11 @@ describe("optimize-images optimization profiles", () => {
       maxWidth: 1024,
     });
     expect(getOptimizationProfile("chatbot-start.png")).toEqual({
+      variantWidths: [640],
+      quality: 72,
+      maxWidth: 1024,
+    });
+    expect(getOptimizationProfile("manatal-coop-homepage.png")).toEqual({
       variantWidths: [640],
       quality: 72,
       maxWidth: 1024,

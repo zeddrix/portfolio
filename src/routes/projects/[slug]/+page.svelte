@@ -123,7 +123,11 @@
 				{/if}
 
 				{#if data.project.galleryImages.length > 0}
-					<section class="grid gap-5 md:grid-cols-2">
+					<section
+						class="grid gap-5 {data.project.galleryColumns === 3
+							? 'md:grid-cols-3'
+							: 'md:grid-cols-2'}"
+					>
 						{#each data.project.galleryImages as image, index (image)}
 							<figure class="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
 								<OptimizedImage

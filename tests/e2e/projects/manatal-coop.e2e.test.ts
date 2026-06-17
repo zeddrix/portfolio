@@ -11,7 +11,7 @@ test.describe("manatal coop project", () => {
     await gotoHomeWithCleanState(page);
   });
 
-  test("Given homepage carousel, when user opens Manatal Coop showcase, then detail page loads with placeholder", async ({
+  test("Given homepage carousel, when user opens Manatal Coop showcase, then detail shows homepage screenshot", async ({
     page,
   }) => {
     await scrollToTestId(page, selectors.work.carousel);
@@ -19,6 +19,15 @@ test.describe("manatal coop project", () => {
     await expect(page.getByTestId("highlight-card-9")).toHaveAttribute(
       "data-highlight-slug",
       "manatal-coop",
+    );
+
+    const manatalCarouselImage = page
+      .getByTestId("carousel-project-image-manatal-coop")
+      .first()
+      .locator("img");
+    await expect(manatalCarouselImage).toHaveAttribute(
+      "src",
+      /manatal-coop-homepage.*\.webp/,
     );
 
     await Promise.all([
@@ -29,7 +38,22 @@ test.describe("manatal coop project", () => {
     await expect(page.getByTestId("project-detail-title")).toContainText(
       "Manatal Coop",
     );
-    await expect(page.getByTestId("project-detail-hero-image")).toBeVisible();
+    await expect(
+      page.getByTestId("project-detail-hero-image").locator("img"),
+    ).toHaveAttribute("src", /manatal-coop-homepage.*\.webp/);
+  });
+
+  test("Given Manatal detail route, when page loads, then hero uses homepage webp not placeholder", async ({
+    page,
+  }) => {
+    await page.goto(pagesPath("/projects/manatal-coop"));
+
+    await expect(
+      page.getByTestId("project-detail-hero-image").locator("img"),
+    ).toHaveAttribute("src", /manatal-coop-homepage.*\.webp/);
+    await expect(
+      page.getByTestId("project-detail-hero-image").locator("img"),
+    ).not.toHaveAttribute("src", /placeholder/);
   });
 
   test("Given Manatal detail, when page loads, then type label is Client work without Codefrost", async ({

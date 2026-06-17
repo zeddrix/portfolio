@@ -257,7 +257,12 @@ describe("portfolio data", () => {
     const project = getProjectBySlug("manatal-coop");
 
     expect(project?.displayDomain).toBe("manatalcoop.app");
-    expect(project?.primaryImage).toBe("/project-screenshot-placeholder.webp");
+    expect(project?.primaryImage).toBe("/manatal-coop-homepage.webp");
+    expect(project?.galleryImages).toEqual([
+      "/manatal-coop-signin.webp",
+      "/manatal-coop-chatbot.webp",
+    ]);
+    expect(project?.galleryColumns).toBe(3);
     expect(project?.resumeContext).toEqual({
       employer: "Codefrost",
       productOwner: "client",
