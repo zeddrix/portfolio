@@ -77,4 +77,47 @@ test.describe("seo navigation metadata", () => {
     );
     await expect(page.getByTestId("project-external-link-1")).toHaveCount(0);
   });
+
+  test("Given homepage footer, when user opens certifications, then canonical and title update", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await page.evaluate(() => {
+      window.scrollTo(0, document.documentElement.scrollHeight);
+    });
+    await page.getByTestId("footer-certificates-link").click();
+
+    await expect(page).toHaveURL(`${PAGES_SITE_URL}/certificates`);
+    await expect(page).toHaveTitle(/Certifications.*Zeddrix Fabian/i);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/certificates`,
+    );
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /Udemy|JavaScript/i,
+    );
+  });
+
+  test("Given certifications index, when user opens MERN certificate, then detail SEO meta resolves", async ({
+    page,
+  }) => {
+    await page.goto(`${PAGES_SITE_URL}/certificates`);
+    await page
+      .getByTestId("certificate-card-mern-ecommerce-from-scratch")
+      .click();
+
+    await expect(page).toHaveTitle(/MERN eCommerce.*Certificate/i);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/certificates/mern-ecommerce-from-scratch`,
+    );
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /.+/,
+    );
+    await expect(page.getByTestId("certificate-detail-title")).toContainText(
+      "MERN",
+    );
+  });
 });
