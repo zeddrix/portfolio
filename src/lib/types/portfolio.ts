@@ -17,6 +17,13 @@ export interface ProjectDetailSection {
   body: string;
 }
 
+/** Used by resume export only — never rendered on portfolio site or GitHub README */
+export interface ProjectResumeContext {
+  employer?: "Codefrost";
+  productOwner?: "codefrost" | "client" | "personal";
+  clientBrand?: string;
+}
+
 export interface PortfolioProject {
   slug: string;
   name: string;
@@ -43,6 +50,7 @@ export interface PortfolioProject {
   links: ProjectLink[];
   detailSections: ProjectDetailSection[];
   hiddenFromPortfolio?: boolean;
+  resumeContext?: ProjectResumeContext;
 }
 
 export interface ToolStripItem {

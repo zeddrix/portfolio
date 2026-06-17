@@ -6,7 +6,7 @@ export const profile: PortfolioProfile = {
   heroTitle: "Hello, I'm Zeddrix Fabian",
   heroSubtitle:
     "Full-stack web app developer shipping production apps with AI-accelerated workflows.",
-  heroProof: "10",
+  heroProof: "11",
   about: [
     "I have been developing since 2018 and I enjoy turning complex requirements into simple user experiences with reliable engineering underneath.",
     "I like to work smart, not hard. So I utilize AI tools like Cursor and Claude Code to move quickly without sacrificing quality, using the Acceptance Test-Driven Development (ATDD) approach.",

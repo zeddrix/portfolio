@@ -53,6 +53,7 @@ export const projects: PortfolioProject[] = [
         body: "I designed a modular PWA architecture with shared scheduling, billing, and messaging capabilities so each business mode can grow independently. Embedded Support Chat uses Groq-backed guidance to answer owner questions in context without leaving the dashboard.",
       },
     ],
+    resumeContext: { productOwner: "personal" },
   },
   {
     slug: "jw-tabs",
@@ -90,6 +91,7 @@ export const projects: PortfolioProject[] = [
         body: "I focused on rendering performance and moderation workflows while integrating billing and admin controls for sustainable growth.",
       },
     ],
+    resumeContext: { productOwner: "personal" },
   },
   {
     slug: "merns-shop",
@@ -148,6 +150,7 @@ export const projects: PortfolioProject[] = [
         body: "I built a deployable MERN app with a rich gadget catalog, PayPal checkout, httpOnly cookie auth, admin workflows, PWA + push notifications, and ATDD — acceptance tests first, then integration and unit layers, with CI gates on every push.",
       },
     ],
+    resumeContext: { productOwner: "personal" },
   },
   {
     slug: "answeriq",
@@ -209,6 +212,10 @@ export const projects: PortfolioProject[] = [
         body: "I contributed to the end-to-end SaaS across workspace isolation, the keyword-to-publish pipeline, Stripe billing, and the admin console — with Playwright journeys, integration tests, and unit coverage.",
       },
     ],
+    resumeContext: {
+      productOwner: "client",
+      clientBrand: "AnswerIQ",
+    },
   },
   {
     slug: "iaso",
@@ -244,6 +251,7 @@ export const projects: PortfolioProject[] = [
         body: "I explored a guided diagnostic flow that balances confidence and safety while keeping interface complexity low.",
       },
     ],
+    resumeContext: { productOwner: "personal" },
   },
   {
     slug: "usedelight",
@@ -284,6 +292,11 @@ export const projects: PortfolioProject[] = [
         body: "I delivered reusable UI patterns and backend-friendly integration points to keep the ecosystem maintainable.",
       },
     ],
+    resumeContext: {
+      employer: "Codefrost",
+      productOwner: "client",
+      clientBrand: "UseDelight",
+    },
   },
   {
     slug: "adverio-tools",
@@ -330,6 +343,11 @@ export const projects: PortfolioProject[] = [
         body: "I helped shape workflows that combine scraping, AI analysis, forecasting, and proposal output in one system.",
       },
     ],
+    resumeContext: {
+      employer: "Codefrost",
+      productOwner: "client",
+      clientBrand: "Adverio",
+    },
   },
   {
     slug: "trulyhappy",
@@ -338,11 +356,11 @@ export const projects: PortfolioProject[] = [
     status: "live",
     role: "Full-stack contributor",
     outcome:
-      "Subscription-ready PWA with Redis-backed services and a maintainable BFF architecture.",
+      "Mental wellbeing PWA with guided habits, mood tracking, missions, and subscription-ready billing.",
     displayDomain: "trulyhappy.app",
-    tagline: "PWA with BFF-oriented architecture",
+    tagline: "Mental wellbeing PWA with guided habits and subscriptions",
     description:
-      "PWA platform delivered with billing, Redis-backed services, and Backend for Frontend architecture.",
+      "Angular SSR PWA for happiness journeys — mood tracking, missions (timer, checklist, and text), journal, streaks, AI-generated missions (Claude), and Lemon Squeezy billing. NestJS BFF + Django API + Redis in an Nx monorepo.",
     techStack: [
       "Angular",
       "NestJS",
@@ -371,13 +389,17 @@ export const projects: PortfolioProject[] = [
     detailSections: [
       {
         title: "Problem",
-        body: "The product needed a responsive, subscription-ready experience that remains reliable as feature demand changes.",
+        body: "A subscription-ready wellbeing product needed reliable mobile UX as feature demand grew across habits, mood tracking, and guided missions.",
       },
       {
         title: "Approach",
-        body: "I contributed to implementation decisions across frontend flows and backend integrations to support scaling.",
+        body: "I contributed across Angular flows and backend integrations using a BFF pattern that isolates Django and Redis services from the PWA.",
       },
     ],
+    resumeContext: {
+      employer: "Codefrost",
+      productOwner: "codefrost",
+    },
   },
   {
     slug: "articulearn",
@@ -386,11 +408,11 @@ export const projects: PortfolioProject[] = [
     status: "live",
     role: "Full-stack contributor",
     outcome:
-      "Learning UX patterns that support rapid iteration with billing and BFF integrations.",
+      "Language speaking practice PWA with audio shadowing, segmented sessions, and subscription billing.",
     displayDomain: "articulearn.app",
-    tagline: "Learning-focused PWA platform",
+    tagline: "AI-assisted language speaking practice PWA",
     description:
-      "PWA project delivered with billing integrations, Redis, and a BFF architecture pattern.",
+      "Angular SSR PWA for listen-and-repeat audio shadowing — segmented practice sessions, library filters (category, difficulty, voice), profile uploads, and Lemon Squeezy subscriptions. NestJS BFF + Django + Redis with WaveSurfer.js waveforms.",
     techStack: [
       "Angular",
       "NestJS",
@@ -409,7 +431,7 @@ export const projects: PortfolioProject[] = [
       "DigitalOcean",
       "AWS S3",
       "Lemon Squeezy",
-      "Anthropic Claude",
+      "WaveSurfer.js",
     ],
     primaryImage: "/articulearn.webp",
     galleryImages: [],
@@ -419,13 +441,17 @@ export const projects: PortfolioProject[] = [
     detailSections: [
       {
         title: "Problem",
-        body: "The product required a maintainable learning UX with room for rapid feature iteration.",
+        body: "Language learners needed a maintainable speaking-practice UX with segmented audio, library discovery, and room for rapid iteration.",
       },
       {
         title: "Approach",
-        body: "I helped establish implementation patterns that keep product updates fast and consistent.",
+        body: "I helped establish BFF-backed practice flows and waveform-driven shadowing sessions that keep product updates fast and consistent.",
       },
     ],
+    resumeContext: {
+      employer: "Codefrost",
+      productOwner: "codefrost",
+    },
   },
   {
     slug: "bolt-to-github",
@@ -434,24 +460,98 @@ export const projects: PortfolioProject[] = [
     status: "live",
     role: "Full-stack contributor",
     outcome:
-      "Shipped a live workflow that moves prototypes to production-ready GitHub repositories with AI-assisted automation.",
-    tagline: "Live tooling workflow for shipping from idea to repo",
+      "Chrome extension that intercepts Bolt.new ZIP exports and pushes projects to GitHub with PAT or App auth.",
+    displayDomain: "bolt2github.com",
+    tagline: "Chrome extension bridging Bolt.new exports to GitHub repos",
     description:
-      "Live client workflow for accelerating project creation and delivery from rapid prototyping to production-ready GitHub repositories.",
-    techStack: ["TypeScript", "Automation Workflows", "GitHub"],
+      "Manifest V3 Chrome extension (Svelte + TypeScript) intercepts Bolt.new ZIP downloads, extracts in-browser, and pushes to GitHub via PAT or GitHub App auth. Includes diff preview, project dashboard, issues panel, Supabase-backed premium tier, and a Vitest + Playwright test suite — published on the Chrome Web Store.",
+    techStack: [
+      "Svelte",
+      "TypeScript",
+      "Chrome Extension (MV3)",
+      "Vite",
+      "Supabase",
+      "GitHub API",
+      "Vitest",
+      "Playwright",
+      "Tailwind CSS",
+    ],
     primaryImage: "/bolt2github.webp",
     galleryImages: [],
-    links: [],
+    links: [
+      { label: "Website", url: "https://bolt2github.com/", external: true },
+      {
+        label: "Chrome Extension",
+        url: "https://chromewebstore.google.com/detail/pikdepbilbnnpgdkdaaoeekgflljmame",
+        external: true,
+      },
+    ],
     detailSections: [
       {
         title: "Problem",
-        body: "Early-stage project setup can be repetitive and slow, especially when context-switching across tooling.",
+        body: "Bolt.new exports full project ZIPs, but developers still repeat manual unzip-and-push steps before code lands in version control.",
       },
       {
         title: "Approach",
-        body: "I use AI-assisted automation to streamline repetitive setup and focus on product-critical decisions.",
+        body: "I contributed to a Manifest V3 extension that intercepts exports client-side, respects .gitignore rules, and automates GitHub pushes with diff preview and project sync.",
       },
     ],
+    resumeContext: {
+      employer: "Codefrost",
+      productOwner: "codefrost",
+    },
+  },
+  {
+    slug: "manatal-coop",
+    name: "Manatal Coop",
+    category: "client",
+    status: "live",
+    role: "Full-stack contributor",
+    outcome:
+      "Cooperative member banking PWA with financial request workflows, offline caching, and push notifications.",
+    displayDomain: "manatalcoop.app",
+    tagline: "Member banking PWA for a Philippine credit union",
+    description:
+      "Production fintech platform for Manatal Cooperative — Django REST API (OAuth2, PostgreSQL, Celery, S3, FCM) and a Svelte PWA member app with account dashboards, cash withdrawal and transfer requests, loan applications, store orders, CMS content, calculators, QR/barcode tools, offline caching, and push notifications. Deployed on DigitalOcean (API) and AWS Amplify (PWA).",
+    techStack: [
+      "Svelte",
+      "TypeScript",
+      "Django",
+      "Django REST Framework",
+      "PostgreSQL",
+      "Celery",
+      "Redis",
+      "OAuth2",
+      "AWS S3",
+      "Firebase FCM",
+      "Docker",
+      "AWS Amplify",
+      "PWA",
+    ],
+    primaryImage: "/project-screenshot-placeholder.webp",
+    galleryImages: [],
+    links: [
+      {
+        label: "Member app",
+        url: "https://manatalcoop.app/",
+        external: true,
+      },
+    ],
+    detailSections: [
+      {
+        title: "Problem",
+        body: "A credit union needed a mobile-first member portal for account visibility, financial requests, and policy content without forcing branch visits for routine transactions.",
+      },
+      {
+        title: "Approach",
+        body: "I contributed to the Svelte member app and Django API — wiring financial request forms (withdrawal, transfer, express loan), shared transfer-method components, and form validation UX across light and dark themes.",
+      },
+    ],
+    resumeContext: {
+      employer: "Codefrost",
+      productOwner: "client",
+      clientBrand: "Manatal Cooperative",
+    },
   },
 ];
 
@@ -493,6 +593,7 @@ export const capabilityBands: CapabilityBand[] = [
       "adverio-tools",
       "trulyhappy",
       "articulearn",
+      "manatal-coop",
     ],
     visual: {
       type: "screenshot",
@@ -518,6 +619,7 @@ export const capabilityBands: CapabilityBand[] = [
       "merns-shop",
       "trulyhappy",
       "articulearn",
+      "manatal-coop",
     ],
     visual: {
       type: "screenshot",
@@ -600,6 +702,7 @@ export const capabilityBands: CapabilityBand[] = [
       "adverio-tools",
       "trulyhappy",
       "articulearn",
+      "manatal-coop",
     ],
     visual: {
       type: "screenshot",
@@ -629,6 +732,7 @@ export const capabilityBands: CapabilityBand[] = [
       "answeriq",
       "trulyhappy",
       "articulearn",
+      "manatal-coop",
     ],
     visual: {
       type: "hybrid",
