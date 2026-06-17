@@ -3,6 +3,11 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
+import {
+  formatResumeProjectHeader,
+  formatResumeProjectRoleLine,
+  type ResumeProjectContext,
+} from "./resume-project-header.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
@@ -30,6 +35,7 @@ interface ProjectSnapshot {
   links: ProjectLink[];
   detailSections: DetailSection[];
   displayDomain?: string;
+  resumeContext?: ResumeProjectContext;
 }
 
 interface ExperienceSnapshot {
@@ -193,7 +199,7 @@ function buildProjectHtmlLinkedIn(
   if (compact) {
     return `
       <article class="project compact">
-        <h3>${escapeHtml(project.name)} — ${escapeHtml(project.role)}</h3>
+        <h3>${escapeHtml(formatResumeProjectHeader(project))}</h3>
         <p>${escapeHtml(project.outcome || project.tagline)}</p>
         <p class="tech">${escapeHtml(tech)}</p>
       </article>`;
@@ -201,7 +207,7 @@ function buildProjectHtmlLinkedIn(
 
   return `
     <article class="project">
-      <h3>${escapeHtml(project.name)} — ${escapeHtml(project.role)}</h3>
+      <h3>${escapeHtml(formatResumeProjectHeader(project))}</h3>
       <ul>
         ${bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}
       </ul>
@@ -376,7 +382,7 @@ function buildProjectHtmlApplication(
     return `
       <article class="project compact">
         <h3>${escapeHtml(project.name)}</h3>
-        <p class="role-line">${escapeHtml(project.role)}</p>
+        <p class="role-line">${escapeHtml(formatResumeProjectRoleLine(project))}</p>
         <p>${escapeHtml(project.outcome || project.tagline)}</p>
         <p class="tech">${escapeHtml(tech)}</p>
       </article>`;
@@ -385,7 +391,7 @@ function buildProjectHtmlApplication(
   return `
     <article class="project">
       <h3>${escapeHtml(project.name)}</h3>
-      <p class="role-line">${escapeHtml(project.role)}</p>
+      <p class="role-line">${escapeHtml(formatResumeProjectRoleLine(project))}</p>
       <ul>
         ${bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}
       </ul>
@@ -619,14 +625,14 @@ function buildResumeMarkdown(snapshot: ProfileSnapshot): string {
       const bullets = projectBullets(project)
         .map((bullet) => `  - ${bullet}`)
         .join("\n");
-      return `### ${project.name} (${project.role})\n${project.tagline}\n${bullets}\n- **Stack:** ${project.techStack.join(", ")}`;
+      return `### ${formatResumeProjectHeader(project)}\n${project.tagline}\n${bullets}\n- **Stack:** ${project.techStack.join(", ")}`;
     })
     .join("\n\n");
 
   const additional = additionalProjects
     .map(
       (project) =>
-        `- **${project.name}** (${project.role}) — ${project.outcome || project.tagline}. Stack: ${project.techStack.slice(0, 6).join(", ")}`,
+        `- **${formatResumeProjectHeader(project)}** — ${project.outcome || project.tagline}. Stack: ${project.techStack.slice(0, 6).join(", ")}`,
     )
     .join("\n");
 

@@ -10,7 +10,7 @@ export const workExperience: WorkExperience[] = [
     startDate: "2023-12",
     bullets: [
       "Build frontend and backend features for Codefrost progressive web apps in production.",
-      "Ship Django REST APIs, SASS-based UI, and SvelteKit surfaces for client-facing products.",
+      "Contribute to Codefrost-owned PWAs (TrulyHappy, ArticuLearn, Bolt to GitHub) and client deliveries (UseDelight, Adverio, Manatal Cooperative) as a full-stack developer.",
     ],
   },
   {
@@ -23,7 +23,7 @@ export const workExperience: WorkExperience[] = [
     endDate: "2023-12",
     bullets: [
       "Grew from internship into sustained production web development across company products.",
-      "Delivered SvelteKit and SASS implementations while learning full product delivery workflows.",
+      "Shipped Manatal Cooperative member PWA and Django API financial request flows (Dec 2023) as a client delivery — first production work after Udemy coursework.",
     ],
   },
 ];

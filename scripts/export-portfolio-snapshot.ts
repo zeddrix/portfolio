@@ -23,6 +23,7 @@ const GITHUB_URL = profile.githubUrl;
 const LINKEDIN_URL = "https://www.linkedin.com/in/zeddrix-fabian-30a18029a/";
 
 const moreProjectSlugs = [
+  "manatal-coop",
   "trulyhappy",
   "articulearn",
   "bolt-to-github",
@@ -48,6 +49,7 @@ function projectSnapshot(slug: string) {
     links: project.links,
     detailSections: project.detailSections,
     primaryImage: project.primaryImage,
+    resumeContext: project.resumeContext,
   };
 }
 
