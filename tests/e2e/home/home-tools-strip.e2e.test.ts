@@ -19,6 +19,11 @@ test.describe("homepage tools strip", () => {
     await expect(toolsSection).toContainText("SvelteKit");
     await expect(toolsSection).toContainText("Playwright");
 
+    const footerNote = page.getByTestId("tools-strip-footer-note");
+    await expect(footerNote).toBeVisible();
+    await expect(footerNote).toContainText("Primary depth in the stacks above");
+    await expect(footerNote).toContainText("AI-accelerated workflows");
+
     await setCapabilityLayout(page, "sevenBands");
 
     await scrollToTestId(page, selectors.sections.approach);
