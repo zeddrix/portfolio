@@ -12,6 +12,7 @@
 		defaultCapabilityBandLayoutMode
 	} from '$lib/data/portfolio';
 	import { pageShellClass } from '$lib/constants/layout';
+	import { appPath } from '$lib/utils/app-path';
 
 	/** @typedef {import('$lib/types/portfolio').CapabilityBandLayoutMode} CapabilityBandLayoutMode */
 	/** @type {typeof import('$lib/components/ToolsStrip.svelte').default | null} */
@@ -189,6 +190,15 @@
 								href={'mailto:' + profile.contactEmail}
 							>
 								{profile.contactEmail}
+							</a>
+						</p>
+						<p>
+							<a
+								data-testid="footer-certificates-link"
+								class="break-words transition-colors hover:text-zinc-900"
+								href={appPath('/certificates')}
+							>
+								Certifications
 							</a>
 						</p>
 						<p>

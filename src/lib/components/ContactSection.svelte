@@ -1,6 +1,7 @@
 <script>
 	import { pageShellClass } from '$lib/constants/layout';
 	import { profile } from '$lib/data/profile';
+	import { appPath } from '$lib/utils/app-path';
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
@@ -25,6 +26,13 @@
 			class="mt-10 inline-flex w-fit max-w-full self-center min-h-[52px] items-center justify-center rounded-full bg-black px-8 py-3.5 text-lg font-semibold text-white transition-opacity hover:opacity-90"
 		>
 			{profile.contactEmail}
+		</a>
+		<a
+			data-testid="contact-certifications-link"
+			href={appPath('/certificates')}
+			class="mt-4 hidden text-sm font-semibold text-[#136ef6] transition-colors hover:text-[#0f5dcc] sm:inline-flex"
+		>
+			View certifications →
 		</a>
 	</div>
 </section>

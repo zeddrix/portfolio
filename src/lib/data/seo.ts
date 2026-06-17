@@ -1,6 +1,6 @@
 import { PUBLIC_SITE_URL } from "$env/static/public";
 import { profile } from "$lib/data/portfolio";
-import type { PortfolioProject } from "$lib/types/portfolio";
+import type { Certificate, PortfolioProject } from "$lib/types/portfolio";
 
 const devFallbackSiteUrl = "http://127.0.0.1:7212";
 
@@ -52,6 +52,27 @@ export function buildProjectMeta(project: PortfolioProject): PageSeoMeta {
       : getDefaultOgImageUrl(),
   };
 }
+
+export function buildCertificateMeta(certificate: Certificate): PageSeoMeta {
+  const description =
+    certificate.summary.length > 160
+      ? `${certificate.summary.slice(0, 157)}...`
+      : certificate.summary;
+
+  return {
+    title: `${certificate.title} Certificate | Zeddrix Fabian`,
+    description,
+    path: `/certificates/${certificate.slug}`,
+    ogImage: buildAbsoluteUrl(certificate.imagePath),
+  };
+}
+
+export const certificatesIndexSeo: PageSeoMeta = {
+  title: "Certifications | Zeddrix Fabian Portfolio",
+  description:
+    "Udemy professional development certificates in JavaScript, React, CSS, Node.js, and the MERN stack.",
+  path: "/certificates",
+};
 
 export function buildPersonJsonLd(): Record<string, unknown> {
   return {

@@ -65,6 +65,19 @@ describe("seo URL helpers", () => {
     expect(meta.description.length).toBeGreaterThan(0);
   });
 
+  it("buildCertificateMeta produces certificate paths and og image", async () => {
+    const { buildCertificateMeta, buildAbsoluteUrl } = await import("./seo");
+    const { getCertificateBySlug } = await import("./certificates");
+    const certificate = getCertificateBySlug("mern-ecommerce-from-scratch");
+    expect(certificate).toBeDefined();
+    if (!certificate) return;
+
+    const meta = buildCertificateMeta(certificate);
+    expect(meta.title).toMatch(/MERN eCommerce/i);
+    expect(meta.path).toBe("/certificates/mern-ecommerce-from-scratch");
+    expect(meta.ogImage).toBe(buildAbsoluteUrl(certificate.imagePath));
+  });
+
   it("buildProjectMeta produces AnswerIQ SEO fields from portfolio data", async () => {
     const { buildProjectMeta, buildAbsoluteUrl } = await import("./seo");
     const { getProjectBySlug } = await import("./portfolio");

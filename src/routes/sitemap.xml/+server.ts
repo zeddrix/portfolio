@@ -1,4 +1,5 @@
 import { projects } from "$lib/data/portfolio";
+import { certificates } from "$lib/data/certificates";
 import { buildAbsoluteUrl } from "$lib/data/seo";
 
 export const prerender = true;
@@ -15,7 +16,11 @@ function escapeXml(value: string): string {
 export function GET() {
   const urls = [
     buildAbsoluteUrl("/"),
+    buildAbsoluteUrl("/certificates"),
     ...projects.map((project) => buildAbsoluteUrl(`/projects/${project.slug}`)),
+    ...certificates.map((certificate) =>
+      buildAbsoluteUrl(`/certificates/${certificate.slug}`),
+    ),
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
