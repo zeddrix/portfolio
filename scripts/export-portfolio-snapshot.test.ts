@@ -4,17 +4,20 @@ import {
   certificates,
 } from "../src/lib/data/certificates";
 import { workExperience } from "../src/lib/data/experience";
+import { sortedResumeEngagements } from "../src/lib/data/resume-engagements";
+import { highlightProjectSlugs } from "../src/lib/data/portfolio";
 import {
-  caseStudyProjectSlugs,
-  highlightProjectSlugs,
-} from "../src/lib/data/portfolio";
-import { buildPortfolioSnapshot } from "./export-portfolio-snapshot";
+  buildPortfolioSnapshot,
+  resumeMoreProjectSlugs,
+  resumeSelectedProjectSlugs,
+} from "./export-portfolio-snapshot";
 
 describe("export-portfolio-snapshot output", () => {
   it("includes experience, certificates, and project slugs aligned with portfolio data", () => {
     const snapshot = buildPortfolioSnapshot();
 
     expect(snapshot.experience).toEqual(workExperience);
+    expect(snapshot.experience).toHaveLength(sortedResumeEngagements.length);
     expect(snapshot.certificates).toHaveLength(certificates.length);
 
     for (const certificate of certificates) {
@@ -26,23 +29,32 @@ describe("export-portfolio-snapshot output", () => {
       );
     }
 
-    expect(snapshot.caseStudySlugs).toEqual([...caseStudyProjectSlugs]);
+    expect(snapshot.resumeSelectedProjectSlugs).toEqual([
+      ...resumeSelectedProjectSlugs,
+    ]);
+    expect(snapshot.resumeMoreProjectSlugs).toEqual([
+      ...resumeMoreProjectSlugs,
+    ]);
+    expect(snapshot.selectedProjects.map((project) => project.slug)).toEqual([
+      ...resumeSelectedProjectSlugs,
+    ]);
+    expect(snapshot.moreProjects.map((project) => project.slug)).toEqual([
+      ...resumeMoreProjectSlugs,
+    ]);
     expect(snapshot.highlightProjects.map((project) => project.slug)).toEqual([
       ...highlightProjectSlugs,
     ]);
     for (const project of [
-      ...snapshot.highlightProjects,
+      ...snapshot.selectedProjects,
       ...snapshot.moreProjects,
     ]) {
       expect(project.resumeContext).toBeDefined();
+      expect(project.displayPeriod).toBeTruthy();
     }
-    expect(snapshot.moreProjects.map((project) => project.slug)).toEqual([
-      "manatal-coop",
-      "trulyhappy",
-      "articulearn",
-      "bolt-to-github",
-    ]);
-    expect(snapshot.moreProjects[0]?.resumeContext).toEqual({
+    expect(
+      snapshot.moreProjects.find((project) => project.slug === "manatal-coop")
+        ?.resumeContext,
+    ).toEqual({
       employer: "Codefrost",
       productOwner: "client",
       clientBrand: "Manatal Cooperative",

@@ -1,171 +1,48 @@
 #!/usr/bin/env tsx
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
+import { buildLinkedInDocxBuffer } from "./build-linkedin-docx.js";
 import {
+  buildAdditionalProjectsBlocks,
+  buildCertificatesText,
+  buildEngagementExperienceBlocks,
+  buildSelectedProjectsBlocks,
+  buildSummary,
+  escapeHtml,
+  formatCertificateMonthYear,
+  formatExperienceRange,
+  formatLinks,
   formatResumeProjectHeader,
   formatResumeProjectRoleLine,
-  type ResumeProjectContext,
-} from "./resume-project-header.js";
+  projectBullets,
+  buildSkillsText,
+  type CertificateSnapshot,
+  type ExperienceSnapshot,
+  type ProfileSnapshot,
+  type ProjectSnapshot,
+} from "./resume-content.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
 const snapshotPath = join(__dirname, "profile-snapshot.json");
 const resumeDir = join(rootDir, "resume");
+const fontDir = join(rootDir, "static", "fonts");
 
-interface ProjectLink {
-  label: string;
-  url: string;
-}
+async function buildInterFontFaceCss(): Promise<string> {
+  const weights = [400, 500, 600, 700, 800];
+  const rules: string[] = [];
 
-interface DetailSection {
-  title: string;
-  body: string;
-}
-
-interface ProjectSnapshot {
-  slug: string;
-  name: string;
-  role: string;
-  outcome: string;
-  tagline: string;
-  description: string;
-  techStack: string[];
-  links: ProjectLink[];
-  detailSections: DetailSection[];
-  displayDomain?: string;
-  resumeContext?: ResumeProjectContext;
-}
-
-interface ExperienceSnapshot {
-  id: string;
-  company: string;
-  title: string;
-  employmentType?: string;
-  location: string;
-  startDate: string;
-  endDate?: string;
-  bullets: string[];
-}
-
-interface CertificateSnapshot {
-  slug: string;
-  title: string;
-  issuer: string;
-  issuedAt: string;
-  skills: string[];
-  verifyUrl: string;
-  udemyCredentialId?: string;
-}
-
-interface ProfileSnapshot {
-  profile: {
-    name: string;
-    heroSubtitle: string;
-    about: string[];
-    contactEmail: string;
-    websiteUrl: string;
-    githubUrl: string;
-    linkedinUrl: string;
-    specialization: string;
-    experienceSince: string;
-    jobTitle: string;
-  };
-  experience: ExperienceSnapshot[];
-  certificates: CertificateSnapshot[];
-  highlightProjects: ProjectSnapshot[];
-  moreProjects: ProjectSnapshot[];
-  caseStudySlugs: string[];
-  toolStripGroups: Array<{ title: string; items: string[] }>;
-}
-
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function formatMonthYear(value: string): string {
-  const [year, month] = value.split("-");
-  const date = new Date(Number(year), Number(month) - 1, 1);
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
-
-function formatExperienceRange(experience: ExperienceSnapshot): string {
-  const start = formatMonthYear(experience.startDate);
-  const end = experience.endDate
-    ? formatMonthYear(experience.endDate)
-    : "Present";
-  return `${start} – ${end}`;
-}
-
-function formatCertificateMonthYear(isoDate: string): string {
-  const date = new Date(`${isoDate}T00:00:00`);
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
-
-function projectBullets(project: ProjectSnapshot, limit = 2): string[] {
-  const bullets: string[] = [];
-
-  if (project.outcome) {
-    bullets.push(project.outcome);
+  for (const weight of weights) {
+    const fontPath = join(fontDir, `inter-latin-${weight}-normal.woff2`);
+    const data = await readFile(fontPath);
+    rules.push(
+      `@font-face{font-family:'Inter';font-style:normal;font-weight:${weight};src:url(data:font/woff2;base64,${data.toString("base64")}) format('woff2');}`,
+    );
   }
 
-  const approach = project.detailSections.find(
-    (section) => section.title.toLowerCase() === "approach",
-  );
-  if (approach) {
-    bullets.push(approach.body);
-  }
-
-  if (project.displayDomain) {
-    bullets.push(`Deployed at ${project.displayDomain}.`);
-  }
-
-  return bullets.slice(0, limit);
-}
-
-function formatLinks(project: ProjectSnapshot): string {
-  if (project.links.length === 0) {
-    return "";
-  }
-
-  return project.links.map((link) => link.url).join(" · ");
-}
-
-function buildSummary(snapshot: ProfileSnapshot): string {
-  return [
-    snapshot.profile.heroSubtitle,
-    ...snapshot.profile.about.slice(0, 2),
-  ].join(" ");
-}
-
-function partitionProjects(snapshot: ProfileSnapshot): {
-  selectedProjects: ProjectSnapshot[];
-  additionalProjects: ProjectSnapshot[];
-  pageOneProjects: ProjectSnapshot[];
-  pageTwoProjects: ProjectSnapshot[];
-} {
-  const caseStudySet = new Set(snapshot.caseStudySlugs);
-  const selectedProjects = snapshot.highlightProjects.filter((project) =>
-    caseStudySet.has(project.slug),
-  );
-  const additionalProjects = [
-    ...snapshot.highlightProjects.filter(
-      (project) => !caseStudySet.has(project.slug),
-    ),
-    ...snapshot.moreProjects,
-  ];
-
-  return {
-    selectedProjects,
-    additionalProjects,
-    pageOneProjects: selectedProjects.slice(0, 3),
-    pageTwoProjects: selectedProjects.slice(3),
-  };
+  return rules.join("");
 }
 
 function buildExperienceHtmlLinkedIn(experience: ExperienceSnapshot[]): string {
@@ -192,7 +69,7 @@ function buildProjectHtmlLinkedIn(
   project: ProjectSnapshot,
   compact = false,
 ): string {
-  const bullets = projectBullets(project);
+  const bullets = projectBullets(project, compact ? 1 : 2);
   const links = formatLinks(project);
   const tech = project.techStack.slice(0, compact ? 6 : 8).join(" · ");
 
@@ -216,24 +93,85 @@ function buildProjectHtmlLinkedIn(
     </article>`;
 }
 
-function buildSkillsText(groups: ProfileSnapshot["toolStripGroups"]): string {
+function buildSidebarSkillsHtml(
+  groups: ProfileSnapshot["toolStripGroups"],
+): string {
   return groups
-    .map((group) => `${group.title}: ${group.items.join(", ")}`)
-    .join("\n");
+    .map(
+      (group) => `
+        <div class="sidebar-group">
+          <h3>${escapeHtml(group.title)}</h3>
+          <p>${escapeHtml(group.items.join(" · "))}</p>
+        </div>`,
+    )
+    .join("");
 }
 
-function buildCertificatesText(certificates: CertificateSnapshot[]): string {
+function buildSidebarCertsHtml(certificates: CertificateSnapshot[]): string {
   return certificates
     .map(
-      (certificate) =>
-        `${certificate.title} (${certificate.issuer}, ${formatCertificateMonthYear(certificate.issuedAt)}) — ${certificate.verifyUrl}`,
+      (certificate) => `
+        <div class="sidebar-cert">
+          <p class="cert-title">${escapeHtml(certificate.title)}</p>
+          <p class="cert-meta">${escapeHtml(certificate.issuer)} · ${escapeHtml(formatCertificateMonthYear(certificate.issuedAt))}</p>
+        </div>`,
     )
-    .join("\n");
+    .join("");
 }
 
-function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
-  const { profile, experience, certificates, toolStripGroups } = snapshot;
-  const { selectedProjects, additionalProjects } = partitionProjects(snapshot);
+function buildExperienceHtmlApplication(
+  experience: ExperienceSnapshot[],
+): string {
+  return experience
+    .map((role) => {
+      const titleLine = role.employmentType
+        ? `${role.title} (${role.employmentType})`
+        : role.title;
+      const bullet = role.bullets[0] ?? "";
+      return `
+      <article class="role resume-card">
+        <h3>${escapeHtml(titleLine)}</h3>
+        <p class="company">${escapeHtml(role.company)}</p>
+        <p class="meta">${escapeHtml(formatExperienceRange(role))} · ${escapeHtml(role.location)}</p>
+        <p class="role-bullet">${escapeHtml(bullet)}</p>
+      </article>`;
+    })
+    .join("");
+}
+
+function buildProjectHtmlApplication(
+  project: ProjectSnapshot,
+  compact = false,
+): string {
+  const bullets = projectBullets(project, compact ? 1 : 2);
+  const tech = project.techStack.slice(0, compact ? 5 : 7).join(" · ");
+
+  if (compact) {
+    return `
+      <article class="project compact resume-card">
+        <h3>${escapeHtml(project.name)}</h3>
+        <p class="role-line">${escapeHtml(formatResumeProjectRoleLine(project))}</p>
+        <p>${escapeHtml(project.outcome || project.tagline)}</p>
+        <p class="tech">${escapeHtml(tech)}</p>
+      </article>`;
+  }
+
+  return `
+    <article class="project resume-card">
+      <h3>${escapeHtml(project.name)}</h3>
+      <p class="role-line">${escapeHtml(formatResumeProjectRoleLine(project))}</p>
+      <ul>
+        ${bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}
+      </ul>
+      <p class="tech">${escapeHtml(tech)}</p>
+    </article>`;
+}
+
+export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
+  const { profile, certificates, toolStripGroups } = snapshot;
+  const experience = buildEngagementExperienceBlocks(snapshot);
+  const selectedProjects = buildSelectedProjectsBlocks(snapshot);
+  const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
   const summary = buildSummary(snapshot);
   const skillsText = buildSkillsText(toolStripGroups);
   const certsText = buildCertificatesText(certificates);
@@ -293,14 +231,18 @@ function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
       <p>${escapeHtml(summary)}</p>
     </section>
 
-    <section>
+    <section data-testid="resume-linkedin-experience">
       <h2>Experience</h2>
       ${buildExperienceHtmlLinkedIn(experience)}
     </section>
 
     <section>
-      <h2>Projects</h2>
+      <h2>Selected Projects</h2>
       ${selectedProjects.map((project) => buildProjectHtmlLinkedIn(project)).join("")}
+    </section>
+
+    <section>
+      <h2>Additional Projects</h2>
       ${additionalProjects.map((project) => buildProjectHtmlLinkedIn(project, true)).join("")}
     </section>
 
@@ -322,88 +264,15 @@ function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
 </html>`;
 }
 
-function buildSidebarSkillsHtml(
-  groups: ProfileSnapshot["toolStripGroups"],
-): string {
-  return groups
-    .map(
-      (group) => `
-        <div class="sidebar-group">
-          <h3>${escapeHtml(group.title)}</h3>
-          <p>${escapeHtml(group.items.join(" · "))}</p>
-        </div>`,
-    )
-    .join("");
-}
-
-function buildSidebarCertsHtml(certificates: CertificateSnapshot[]): string {
-  return certificates
-    .map(
-      (certificate) => `
-        <div class="sidebar-cert">
-          <p class="cert-title">${escapeHtml(certificate.title)}</p>
-          <p class="cert-meta">${escapeHtml(certificate.issuer)} · ${escapeHtml(formatCertificateMonthYear(certificate.issuedAt))}</p>
-        </div>`,
-    )
-    .join("");
-}
-
-function buildExperienceHtmlApplication(
-  experience: ExperienceSnapshot[],
-): string {
-  return experience
-    .map((role) => {
-      const titleLine = role.employmentType
-        ? `${role.title} (${role.employmentType})`
-        : role.title;
-      const bullets = role.bullets
-        .map((bullet) => `<li>${escapeHtml(bullet)}</li>`)
-        .join("");
-
-      return `
-      <article class="role">
-        <h3>${escapeHtml(titleLine)}</h3>
-        <p class="company">${escapeHtml(role.company)}</p>
-        <p class="meta">${escapeHtml(formatExperienceRange(role))} · ${escapeHtml(role.location)}</p>
-        <ul>${bullets}</ul>
-      </article>`;
-    })
-    .join("");
-}
-
-function buildProjectHtmlApplication(
-  project: ProjectSnapshot,
-  compact = false,
-): string {
-  const bullets = projectBullets(project, compact ? 1 : 2);
-  const tech = project.techStack.slice(0, compact ? 5 : 7).join(" · ");
-
-  if (compact) {
-    return `
-      <article class="project compact">
-        <h3>${escapeHtml(project.name)}</h3>
-        <p class="role-line">${escapeHtml(formatResumeProjectRoleLine(project))}</p>
-        <p>${escapeHtml(project.outcome || project.tagline)}</p>
-        <p class="tech">${escapeHtml(tech)}</p>
-      </article>`;
-  }
-
-  return `
-    <article class="project">
-      <h3>${escapeHtml(project.name)}</h3>
-      <p class="role-line">${escapeHtml(formatResumeProjectRoleLine(project))}</p>
-      <ul>
-        ${bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}
-      </ul>
-      <p class="tech">${escapeHtml(tech)}</p>
-    </article>`;
-}
-
-function buildApplicationResumeHtml(snapshot: ProfileSnapshot): string {
-  const { profile, experience, certificates, toolStripGroups } = snapshot;
-  const { pageOneProjects, pageTwoProjects, additionalProjects } =
-    partitionProjects(snapshot);
+export async function buildApplicationResumeHtml(
+  snapshot: ProfileSnapshot,
+): Promise<string> {
+  const { profile, certificates, toolStripGroups } = snapshot;
+  const experience = buildEngagementExperienceBlocks(snapshot);
+  const selectedProjects = buildSelectedProjectsBlocks(snapshot);
+  const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
   const summary = buildSummary(snapshot);
+  const fontCss = await buildInterFontFaceCss();
 
   return `<!doctype html>
 <html lang="en">
@@ -411,203 +280,205 @@ function buildApplicationResumeHtml(snapshot: ProfileSnapshot): string {
     <meta charset="utf-8" />
     <title>${escapeHtml(profile.name)} — Resume</title>
     <style>
-      @page { size: letter; margin: 0.45in 0.5in; }
+      ${fontCss}
+      @page { size: letter; margin: 0; }
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: Inter, "Segoe UI", Arial, sans-serif;
-        font-size: 9.2pt;
-        line-height: 1.28;
-        color: #1f2937;
+        font-size: 8.6pt;
+        line-height: 1.24;
+        color: #18181b;
+        background: #f5f5f5;
       }
       h1, h2, h3, p, ul { margin: 0; }
       .page {
+        min-height: 10.5in;
         break-after: page;
         page-break-after: always;
+        padding: 0.38in 0.42in;
       }
       .page:last-child {
         break-after: auto;
         page-break-after: auto;
       }
-      .page-one-main,
-      .page-two-main {
-        width: 100%;
-      }
-      .page-two-grid {
+      .page-one-grid {
         display: grid;
-        grid-template-columns: 1.05fr 2fr;
-        gap: 18px;
-        align-items: start;
+        grid-template-columns: 0.82fr 2.18fr;
+        gap: 14px;
+        min-height: 9.7in;
+        align-items: stretch;
+      }
+      .resume-rail {
+        background: #1e3a5f;
+        color: #f8fafc;
+        border-radius: 12px 0 0 12px;
+        padding: 14px 11px 14px 13px;
+        min-height: 100%;
+      }
+      .resume-rail h2 {
+        color: #ffffff;
+        border-bottom-color: rgba(255,255,255,0.25);
+      }
+      .resume-rail .sidebar-group h3 {
+        color: #dbeafe;
+      }
+      .resume-rail .sidebar-group p,
+      .resume-rail .cert-title,
+      .resume-rail .cert-meta,
+      .resume-rail .languages {
+        color: #e2e8f0;
+      }
+      .resume-main {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
       }
       .header {
         border-bottom: 2px solid #1e3a5f;
-        padding-bottom: 10px;
-        margin-bottom: 12px;
+        padding-bottom: 8px;
       }
       h1 {
-        font-size: 21pt;
+        font-size: 26pt;
+        font-weight: 800;
         color: #1e3a5f;
-        letter-spacing: 0.02em;
+        letter-spacing: 0.01em;
       }
       .title {
-        margin-top: 4px;
-        font-size: 11pt;
+        margin-top: 3px;
+        font-size: 11.5pt;
         font-weight: 600;
         color: #334155;
       }
-      .contact {
-        margin-top: 8px;
-        font-size: 9pt;
-        color: #475569;
+      .contact-footer {
+        margin-top: 7px;
+        font-size: 8.4pt;
+        color: #64748b;
+        letter-spacing: 0.01em;
       }
       h2 {
-        font-size: 9.5pt;
+        font-size: 8.8pt;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.12em;
         color: #1e3a5f;
-        margin: 10px 0 5px;
+        margin: 0 0 4px;
         border-bottom: 1px solid #cbd5e1;
         padding-bottom: 2px;
       }
+      .resume-card {
+        border: 1px solid #e4e4e7;
+        border-radius: 10px;
+        background: #ffffff;
+        padding: 7px 9px;
+        margin-bottom: 5px;
+        break-inside: avoid;
+      }
       .summary { color: #334155; }
-      .role, .project { margin-bottom: 7px; break-inside: avoid; }
       .role h3, .project h3 {
-        font-size: 10pt;
+        font-size: 9.2pt;
+        font-weight: 700;
         color: #0f172a;
       }
       .company, .role-line {
         margin-top: 1px;
-        font-size: 9.2pt;
+        font-size: 8.6pt;
         font-weight: 600;
         color: #475569;
       }
-      .meta {
+      .meta, .tech, .role-bullet {
         margin-top: 1px;
-        font-size: 8.8pt;
-        color: #64748b;
-      }
-      ul {
-        margin: 3px 0 0 16px;
-        padding: 0;
-      }
-      li { margin-bottom: 2px; }
-      .tech {
-        margin-top: 2px;
-        font-size: 8.8pt;
-        color: #64748b;
-      }
-      .project.compact { margin-bottom: 6px; }
-      .page-break { break-before: page; padding-top: 0; }
-      .sidebar {
-        background: #f8fafc;
-        border-left: 3px solid #1e3a5f;
-        border-radius: 0 8px 8px 0;
-        padding: 12px 10px 12px 12px;
-      }
-      .sidebar h2 {
-        margin-top: 0;
-      }
-      .sidebar-group {
-        margin-bottom: 8px;
-        break-inside: avoid;
-      }
-      .sidebar-group h3 {
-        font-size: 8.6pt;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #1e3a5f;
-        margin-bottom: 2px;
-      }
-      .sidebar-group p {
-        font-size: 8.5pt;
-        color: #475569;
-      }
-      .sidebar-cert {
-        margin-bottom: 6px;
-      }
-      .cert-title {
-        font-size: 8.6pt;
-        font-weight: 600;
-        color: #0f172a;
-      }
-      .cert-meta {
         font-size: 8.2pt;
         color: #64748b;
       }
-      .languages {
-        font-size: 8.8pt;
-        color: #475569;
+      ul {
+        margin: 2px 0 0 14px;
+        padding: 0;
       }
+      li { margin-bottom: 1px; }
+      .project.compact { margin-bottom: 4px; }
+      .sidebar-group { margin-bottom: 7px; break-inside: avoid; }
+      .sidebar-group h3 {
+        font-size: 7.8pt;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 2px;
+      }
+      .sidebar-group p { font-size: 7.8pt; }
+      .sidebar-cert { margin-bottom: 5px; }
+      .cert-title { font-size: 7.8pt; font-weight: 600; }
+      .cert-meta { font-size: 7.4pt; }
+      .languages { font-size: 8pt; }
+      .experience-grid .role { margin-bottom: 4px; }
     </style>
   </head>
   <body>
     <section class="page" data-testid="resume-page-1">
-        <div class="page-one-main" data-testid="resume-main">
+      <div class="page-one-grid">
+        <aside class="resume-rail" data-testid="resume-page-1-sidebar">
+          <section>
+            <h2>Core Skills</h2>
+            ${buildSidebarSkillsHtml(toolStripGroups)}
+          </section>
+          <section>
+            <h2>Professional Development</h2>
+            ${buildSidebarCertsHtml(certificates)}
+          </section>
+          <section>
+            <h2>Languages</h2>
+            <p class="languages">Tagalog (Native)<br />English (Professional)</p>
+          </section>
+        </aside>
+
+        <div class="resume-main" data-testid="resume-main">
           <header class="header">
             <h1>${escapeHtml(profile.name)}</h1>
             <p class="title">${escapeHtml(profile.jobTitle)}</p>
-            <p class="contact">
+            <p class="contact-footer">
               ${escapeHtml(profile.contactEmail)} ·
               ${escapeHtml(profile.websiteUrl.replace("https://", ""))} ·
               ${escapeHtml(profile.githubUrl.replace("https://", ""))} ·
-              LinkedIn
+              ${escapeHtml(profile.linkedinUrl.replace("https://www.linkedin.com/in/", "linkedin.com/in/"))}
             </p>
           </header>
 
-          <section>
+          <section class="resume-card">
             <h2>Summary</h2>
             <p class="summary">${escapeHtml(summary)}</p>
           </section>
 
-          <section>
+          <section class="experience-grid">
             <h2>Experience</h2>
             ${buildExperienceHtmlApplication(experience)}
           </section>
 
           <section>
             <h2>Selected Projects</h2>
-            ${pageOneProjects.map((project) => buildProjectHtmlApplication(project)).join("")}
+            ${selectedProjects.map((project) => buildProjectHtmlApplication(project)).join("")}
           </section>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="page" data-testid="resume-page-2">
-        <div class="page-two-grid">
-          <aside class="sidebar" data-testid="resume-sidebar">
-            <section>
-              <h2>Core Skills</h2>
-              ${buildSidebarSkillsHtml(toolStripGroups)}
-            </section>
-            <section>
-              <h2>Professional Development</h2>
-              ${buildSidebarCertsHtml(certificates)}
-            </section>
-            <section>
-              <h2>Languages</h2>
-              <p class="languages">Tagalog (Native)<br />English (Professional)</p>
-            </section>
-          </aside>
-
-          <div class="page-two-main" data-testid="resume-main-page-2">
-            <section>
-              <h2>More Projects</h2>
-              ${pageTwoProjects.map((project) => buildProjectHtmlApplication(project)).join("")}
-              ${additionalProjects.map((project) => buildProjectHtmlApplication(project, true)).join("")}
-            </section>
-          </div>
-        </div>
-      </section>
+    <section class="page" data-testid="resume-page-2">
+      <div data-testid="resume-more-projects">
+        <h2>More Projects</h2>
+        ${additionalProjects.map((project) => buildProjectHtmlApplication(project, true)).join("")}
+      </div>
+    </section>
   </body>
 </html>`;
 }
 
 function buildResumeMarkdown(snapshot: ProfileSnapshot): string {
-  const { profile, experience, certificates, toolStripGroups } = snapshot;
-  const { selectedProjects, additionalProjects } = partitionProjects(snapshot);
+  const { profile, certificates, toolStripGroups } = snapshot;
+  const experience = buildEngagementExperienceBlocks(snapshot);
+  const selectedProjects = buildSelectedProjectsBlocks(snapshot);
+  const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
   const summary = buildSummary(snapshot);
 
-  const skills = toolStripGroups
-    .map((group) => `- **${group.title}:** ${group.items.join(", ")}`)
+  const skills = buildSkillsText(toolStripGroups)
+    .split("\n")
+    .map((line) => `- ${line}`)
     .join("\n");
 
   const experienceMd = experience
@@ -657,10 +528,6 @@ ${summary}
 
 ${experienceMd}
 
-## Core Skills
-
-${skills}
-
 ## Selected Projects
 
 ${selected}
@@ -668,6 +535,10 @@ ${selected}
 ## Additional Projects
 
 ${additional}
+
+## Core Skills
+
+${skills}
 
 ## Professional Development
 
@@ -679,7 +550,11 @@ Tagalog (Native), English (Professional Working Proficiency)
 `;
 }
 
-async function writePdf(html: string, outputPath: string): Promise<void> {
+async function writePdf(
+  html: string,
+  outputPath: string,
+  margin = "0.45in",
+): Promise<void> {
   const browser = await chromium.launch();
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: "load" });
@@ -689,10 +564,10 @@ async function writePdf(html: string, outputPath: string): Promise<void> {
     printBackground: true,
     scale: 0.96,
     margin: {
-      top: "0.45in",
-      right: "0.5in",
-      bottom: "0.45in",
-      left: "0.5in",
+      top: margin,
+      right: margin,
+      bottom: margin,
+      left: margin,
     },
   });
   await browser.close();
@@ -703,8 +578,9 @@ async function main() {
   const snapshot = JSON.parse(snapshotRaw) as ProfileSnapshot;
 
   const linkedInHtml = buildLinkedInResumeHtml(snapshot);
-  const applicationHtml = buildApplicationResumeHtml(snapshot);
+  const applicationHtml = await buildApplicationResumeHtml(snapshot);
   const markdown = buildResumeMarkdown(snapshot);
+  const linkedInDocx = await buildLinkedInDocxBuffer(snapshot);
 
   await mkdir(resumeDir, { recursive: true });
 
@@ -713,22 +589,34 @@ async function main() {
   const markdownPath = join(resumeDir, "resume.md");
   const linkedInPdfPath = join(resumeDir, "Zeddrix-Fabian-Resume-LinkedIn.pdf");
   const applicationPdfPath = join(resumeDir, "Zeddrix-Fabian-Resume.pdf");
+  const linkedInDocxPath = join(
+    resumeDir,
+    "Zeddrix-Fabian-Resume-LinkedIn.docx",
+  );
 
   await writeFile(linkedInHtmlPath, linkedInHtml);
   await writeFile(applicationHtmlPath, applicationHtml);
   await writeFile(markdownPath, markdown);
+  await writeFile(linkedInDocxPath, linkedInDocx);
 
-  await writePdf(linkedInHtml, linkedInPdfPath);
-  await writePdf(applicationHtml, applicationPdfPath);
+  await writePdf(linkedInHtml, linkedInPdfPath, "0.55in");
+  await writePdf(applicationHtml, applicationPdfPath, "0");
 
   console.log(`Wrote ${linkedInHtmlPath}`);
   console.log(`Wrote ${applicationHtmlPath}`);
   console.log(`Wrote ${markdownPath}`);
   console.log(`Wrote ${linkedInPdfPath}`);
   console.log(`Wrote ${applicationPdfPath}`);
+  console.log(`Wrote ${linkedInDocxPath}`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+const isCli =
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isCli) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

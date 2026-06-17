@@ -8,7 +8,6 @@ import {
 } from "../src/lib/data/certificates.js";
 import { workExperience } from "../src/lib/data/experience.js";
 import {
-  caseStudyProjectSlugs,
   highlightProjectSlugs,
   profile,
   projects,
@@ -22,7 +21,16 @@ const PORTFOLIO_URL = profile.websiteUrl;
 const GITHUB_URL = profile.githubUrl;
 const LINKEDIN_URL = "https://www.linkedin.com/in/zeddrix-fabian-30a18029a/";
 
-const moreProjectSlugs = [
+export const resumeSelectedProjectSlugs = [
+  "adverio-tools",
+  "usedelight",
+  "merns-shop",
+] as const;
+
+export const resumeMoreProjectSlugs = [
+  "queue",
+  "answeriq",
+  "jw-tabs",
   "manatal-coop",
   "trulyhappy",
   "articulearn",
@@ -46,6 +54,8 @@ function projectSnapshot(slug: string) {
     description: project.description,
     techStack: project.techStack,
     displayDomain: project.displayDomain,
+    displayPeriod: project.displayPeriod,
+    resumePeriod: project.resumePeriod,
     links: project.links,
     detailSections: project.detailSections,
     primaryImage: project.primaryImage,
@@ -76,10 +86,14 @@ export function buildPortfolioSnapshot() {
     highlightProjects: highlightProjectSlugs
       .map((slug) => projectSnapshot(slug))
       .filter((project) => project !== null),
-    moreProjects: moreProjectSlugs
+    selectedProjects: resumeSelectedProjectSlugs
       .map((slug) => projectSnapshot(slug))
       .filter((project) => project !== null),
-    caseStudySlugs: [...caseStudyProjectSlugs],
+    moreProjects: resumeMoreProjectSlugs
+      .map((slug) => projectSnapshot(slug))
+      .filter((project) => project !== null),
+    resumeSelectedProjectSlugs: [...resumeSelectedProjectSlugs],
+    resumeMoreProjectSlugs: [...resumeMoreProjectSlugs],
     toolStripGroups: toolStripGroups.map((group) => ({
       id: group.id,
       title: group.title,
