@@ -5,7 +5,10 @@ import {
 } from "../src/lib/data/certificates";
 import { workExperience } from "../src/lib/data/experience";
 import { sortedResumeEngagements } from "../src/lib/data/resume-engagements";
-import { highlightProjectSlugs } from "../src/lib/data/portfolio";
+import {
+  highlightProjectSlugs,
+  toolStripFooterNote,
+} from "../src/lib/data/portfolio";
 import {
   buildPortfolioSnapshot,
   resumeMoreProjectSlugs,
@@ -44,6 +47,7 @@ describe("export-portfolio-snapshot output", () => {
     expect(snapshot.highlightProjects.map((project) => project.slug)).toEqual([
       ...highlightProjectSlugs,
     ]);
+    expect(snapshot.toolStripFooterNote).toBe(toolStripFooterNote);
     for (const project of [
       ...snapshot.selectedProjects,
       ...snapshot.moreProjects,

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { toolStripFooterNote } from "../src/lib/data/portfolio";
 import { buildPortfolioSnapshot } from "./export-portfolio-snapshot";
 import {
   buildAdditionalProjectsBlocks,
@@ -57,5 +58,12 @@ describe("resume-content builders", () => {
     expect(secondPageExperience).toHaveLength(4);
     expect(firstPageExperience[0]?.id).toBe("independent-queue");
     expect(secondPageExperience[0]?.id).toBe("codefrost-trulyhappy");
+  });
+
+  it("includes toolStripFooterNote in the portfolio snapshot", () => {
+    const built = buildPortfolioSnapshot();
+
+    expect(built.toolStripFooterNote).toBe(toolStripFooterNote);
+    expect(built.toolStripFooterNote).toContain("AI-accelerated workflows");
   });
 });

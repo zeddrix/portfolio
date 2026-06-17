@@ -71,6 +71,7 @@ export interface ProfileSnapshot {
   resumeSelectedProjectSlugs: string[];
   resumeMoreProjectSlugs: string[];
   toolStripGroups: Array<{ title: string; items: string[] }>;
+  toolStripFooterNote: string;
 }
 
 export function escapeHtml(text: string): string {

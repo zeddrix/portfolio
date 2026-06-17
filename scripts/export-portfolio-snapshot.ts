@@ -11,6 +11,7 @@ import {
   highlightProjectSlugs,
   profile,
   projects,
+  toolStripFooterNote,
   toolStripGroups,
 } from "../src/lib/data/portfolio.js";
 
@@ -99,6 +100,7 @@ export function buildPortfolioSnapshot() {
       title: group.title,
       items: group.items.map((item) => item.label),
     })),
+    toolStripFooterNote,
   };
 }
 
