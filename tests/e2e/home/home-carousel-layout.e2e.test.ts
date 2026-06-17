@@ -14,6 +14,26 @@ async function getPageWidth(page: Page) {
   return page.evaluate(() => document.documentElement.clientWidth);
 }
 
+/** @param {import('@playwright/test').Locator} card @param {import('@playwright/test').Locator} url */
+async function expectUrlCenteredInCard(
+  card: import("@playwright/test").Locator,
+  url: import("@playwright/test").Locator,
+) {
+  const cardBox = await card.boundingBox();
+  const urlBox = await url.boundingBox();
+
+  if (!cardBox || !urlBox) {
+    throw new Error("Expected carousel card and URL bounding boxes.");
+  }
+
+  const cardCenterX = cardBox.x + cardBox.width / 2;
+  const urlCenterX = urlBox.x + urlBox.width / 2;
+
+  expect(Math.abs(urlCenterX - cardCenterX)).toBeLessThanOrEqual(
+    alignmentTolerancePx,
+  );
+}
+
 test.describe("homepage carousel layout", () => {
   test("Given homepage at desktop, when user lands without scrolling, then first carousel card is large relative to viewport", async ({
     page,
@@ -165,5 +185,38 @@ test.describe("homepage carousel layout", () => {
       alignmentTolerancePx,
     );
     expect(pageWidth).toBeGreaterThan(0);
+  });
+
+  test("Given homepage carousel on mobile, when user scrolls to UseDelight card, then project URL is centered within card edges", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-0").scrollIntoViewIfNeeded();
+
+    const card = page.getByTestId("highlight-card-0");
+    const url = page.getByTestId("carousel-project-url-usedelight");
+
+    await expect(card).toBeVisible();
+    await expect(url).toHaveText("usedelight.com");
+    await expectUrlCenteredInCard(card, url);
+    await assertNoHorizontalOverflow(page);
+  });
+
+  test("Given homepage carousel on desktop, when user scrolls to UseDelight card, then project URL is centered within card edges", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-0").scrollIntoViewIfNeeded();
+
+    const card = page.getByTestId("highlight-card-0");
+    const url = page.getByTestId("carousel-project-url-usedelight");
+
+    await expect(card).toBeVisible();
+    await expect(url).toHaveText("usedelight.com");
+    await expectUrlCenteredInCard(card, url);
   });
 });

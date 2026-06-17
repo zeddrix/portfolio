@@ -169,14 +169,15 @@
 					bind:this={highlightSlideElements[project.slug]}
 					class="group overflow-hidden rounded-xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10"
 				>
-					<div class="flex h-11 items-center gap-3 border-b border-white/5 px-4">
-						<div class="flex gap-1.5">
+					<div class="relative flex h-11 items-center justify-center border-b border-white/5 px-4">
+						<div class="absolute left-4 flex gap-1.5">
 							<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
 							<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
 							<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
 						</div>
 						<div
-							class="mx-auto flex h-7 min-w-0 max-w-md flex-1 items-center justify-center rounded-lg bg-black/40 px-3 text-xs text-zinc-300"
+							data-testid={'carousel-project-url-' + project.slug}
+							class="flex h-7 min-w-0 max-w-[min(100%,28rem)] items-center justify-center truncate rounded-lg bg-black/40 px-3 text-xs text-zinc-300"
 						>
 							{getProjectDisplayUrl(project)}
 						</div>
