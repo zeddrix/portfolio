@@ -19,6 +19,8 @@ describe("buildLinkedInDocxBuffer", () => {
     expect(documentText).toContain("Experience");
     expect(documentText).toContain("Selected Projects");
     expect(documentText).toContain("Additional Projects");
+    expect(documentText).toContain("Primary depth in the stacks above");
+    expect(documentText).toContain("AI-accelerated workflows");
     expect(documentText.indexOf("Queue")).toBeLessThan(
       documentText.indexOf("Adverio"),
     );

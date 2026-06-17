@@ -190,7 +190,8 @@ function buildProjectHtmlApplication(
 }
 
 export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
-  const { profile, certificates, toolStripGroups } = snapshot;
+  const { profile, certificates, toolStripGroups, toolStripFooterNote } =
+    snapshot;
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
@@ -233,6 +234,12 @@ export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
       li { margin-bottom: 2px; }
       .tech, .links { margin-top: 3px; font-size: 10.5pt; color: #333333; }
       .plain-block { white-space: pre-wrap; font-size: 10.5pt; }
+      .skills-footer {
+        margin-top: 6px;
+        font-size: 10pt;
+        line-height: 1.35;
+        color: #333333;
+      }
       .page-break { break-before: page; padding-top: 2px; }
     </style>
   </head>
@@ -268,9 +275,10 @@ export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
       ${additionalProjects.map((project) => buildProjectHtmlLinkedIn(project, true)).join("")}
     </section>
 
-    <section class="page-break">
+    <section class="page-break" data-testid="resume-linkedin-skills">
       <h2>Skills</h2>
       <p class="plain-block">${escapeHtml(skillsText)}</p>
+      <p class="skills-footer" data-testid="resume-linkedin-skills-footer">${escapeHtml(toolStripFooterNote)}</p>
     </section>
 
     <section>
@@ -289,7 +297,8 @@ export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
 export async function buildApplicationResumeHtml(
   snapshot: ProfileSnapshot,
 ): Promise<string> {
-  const { profile, certificates, toolStripGroups } = snapshot;
+  const { profile, certificates, toolStripGroups, toolStripFooterNote } =
+    snapshot;
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
@@ -360,6 +369,7 @@ export async function buildApplicationResumeHtml(
         color: var(--rail-meta);
       }
       .resume-rail .sidebar-group p,
+      .resume-rail .sidebar-skills-footer,
       .resume-rail .cert-title,
       .resume-rail .cert-meta,
       .resume-rail .languages {
@@ -441,6 +451,14 @@ export async function buildApplicationResumeHtml(
         margin-bottom: 2px;
       }
       .sidebar-group p { font-size: 7.6pt; }
+      .sidebar-skills-footer {
+        margin-top: 5px;
+        padding-top: 4px;
+        border-top: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: 6.8pt;
+        line-height: 1.28;
+        color: var(--rail-meta);
+      }
       .sidebar-cert { margin-bottom: 4px; }
       .cert-title { font-size: 7.6pt; font-weight: 600; }
       .cert-meta { font-size: 7.2pt; }
@@ -465,6 +483,7 @@ export async function buildApplicationResumeHtml(
           <section>
             <h2>Core Skills</h2>
             ${buildSidebarSkillsHtml(toolStripGroups)}
+            <p class="sidebar-skills-footer" data-testid="resume-skills-footer-note">${escapeHtml(toolStripFooterNote)}</p>
           </section>
           <section>
             <h2>Professional Development</h2>
@@ -522,7 +541,8 @@ export async function buildApplicationResumeHtml(
 }
 
 function buildResumeMarkdown(snapshot: ProfileSnapshot): string {
-  const { profile, certificates, toolStripGroups } = snapshot;
+  const { profile, certificates, toolStripGroups, toolStripFooterNote } =
+    snapshot;
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
@@ -591,6 +611,8 @@ ${additional}
 ## Core Skills
 
 ${skills}
+
+*${toolStripFooterNote}*
 
 ## Professional Development
 

@@ -11,6 +11,10 @@ describe("buildApplicationResumeHtml", () => {
       2,
     );
     expect(html).toContain('data-testid="resume-page-1-sidebar"');
+    expect(html).toContain('data-testid="resume-skills-footer-note"');
+    expect(html).toContain("Primary depth in the stacks above");
+    expect(html).toContain("AI-accelerated workflows");
+    expect(html).toContain(".sidebar-skills-footer");
     expect(html).toContain("resume-rail");
     expect(html).toContain("page-with-rail");
     expect(html).toContain("page-full-width");
