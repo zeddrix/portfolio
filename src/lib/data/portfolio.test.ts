@@ -101,6 +101,14 @@ describe("portfolio data", () => {
     expect(projects.length).toBe(11);
   });
 
+  it("assigns displayPeriod to every visible portfolio project", () => {
+    const visible = projects.filter((project) => !project.hiddenFromPortfolio);
+
+    for (const project of visible) {
+      expect(project.displayPeriod, project.slug).toBeTruthy();
+    }
+  });
+
   it("assigns resumeContext to hidden concept projects", () => {
     const iaso = getProjectBySlug("iaso");
     expect(iaso?.resumeContext).toEqual({ productOwner: "personal" });

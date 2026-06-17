@@ -75,6 +75,14 @@
 					<p data-testid="project-detail-role" class="text-base font-semibold text-zinc-600">
 						{data.project.role}
 					</p>
+					{#if data.project.displayPeriod}
+						<p
+							data-testid="project-detail-period"
+							class="text-base font-medium text-zinc-500"
+						>
+							{data.project.displayPeriod}
+						</p>
+					{/if}
 					<h1
 						data-testid="project-detail-title"
 						class="text-[clamp(2.7rem,calc(0.35rem+4.8vw),4.5rem)] font-bold leading-[1.1] tracking-[-0.04em] text-black"

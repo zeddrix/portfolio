@@ -54,6 +54,8 @@ export const projects: PortfolioProject[] = [
       },
     ],
     resumeContext: { productOwner: "personal" },
+    resumePeriod: { startDate: "2026-01" },
+    displayPeriod: "Jan 2026 – present",
   },
   {
     slug: "jw-tabs",
@@ -92,6 +94,12 @@ export const projects: PortfolioProject[] = [
       },
     ],
     resumeContext: { productOwner: "personal" },
+    resumePeriod: {
+      startDate: "2021-05",
+      endDate: "2021-10",
+      note: "MVP shipped Oct 2021",
+    },
+    displayPeriod: "May 2021 – present (MVP Oct 2021)",
   },
   {
     slug: "merns-shop",
@@ -151,6 +159,11 @@ export const projects: PortfolioProject[] = [
       },
     ],
     resumeContext: { productOwner: "personal" },
+    resumePeriod: {
+      startDate: "2026-06",
+      note: "Modernization; Apr 2021 Udemy course build",
+    },
+    displayPeriod: "Apr 2021 (course) · Modernized Jun 2026 – present",
   },
   {
     slug: "answeriq",
@@ -216,6 +229,8 @@ export const projects: PortfolioProject[] = [
       productOwner: "client",
       clientBrand: "AnswerIQ",
     },
+    resumePeriod: { startDate: "2025-09", endDate: "2025-10" },
+    displayPeriod: "Sep–Oct 2025",
   },
   {
     slug: "iaso",
@@ -297,6 +312,8 @@ export const projects: PortfolioProject[] = [
       productOwner: "client",
       clientBrand: "UseDelight",
     },
+    resumePeriod: { startDate: "2025-01", endDate: "2025-07" },
+    displayPeriod: "Jan–Jul 2025",
   },
   {
     slug: "adverio-tools",
@@ -348,6 +365,8 @@ export const projects: PortfolioProject[] = [
       productOwner: "client",
       clientBrand: "Adverio",
     },
+    resumePeriod: { startDate: "2025-08", endDate: "2026-05" },
+    displayPeriod: "Aug 2025 – May 2026",
   },
   {
     slug: "trulyhappy",
@@ -400,6 +419,8 @@ export const projects: PortfolioProject[] = [
       employer: "Codefrost",
       productOwner: "codefrost",
     },
+    resumePeriod: { startDate: "2024-01", endDate: "2024-06" },
+    displayPeriod: "Jan–Jun 2024",
   },
   {
     slug: "articulearn",
@@ -452,6 +473,8 @@ export const projects: PortfolioProject[] = [
       employer: "Codefrost",
       productOwner: "codefrost",
     },
+    resumePeriod: { startDate: "2024-07", endDate: "2024-12" },
+    displayPeriod: "Jul–Dec 2024",
   },
   {
     slug: "bolt-to-github",
@@ -500,6 +523,8 @@ export const projects: PortfolioProject[] = [
       employer: "Codefrost",
       productOwner: "codefrost",
     },
+    resumePeriod: { startDate: "2025-09", endDate: "2025-12" },
+    displayPeriod: "Sep–Dec 2025",
   },
   {
     slug: "manatal-coop",
@@ -552,6 +577,12 @@ export const projects: PortfolioProject[] = [
       productOwner: "client",
       clientBrand: "Manatal Cooperative",
     },
+    resumePeriod: {
+      startDate: "2021-11",
+      endDate: "2021-12",
+      note: "Returned Jun 2026",
+    },
+    displayPeriod: "Nov–Dec 2021 · Jun 2026 – present",
   },
 ];
 
