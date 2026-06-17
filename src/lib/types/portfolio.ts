@@ -103,4 +103,5 @@ export interface PortfolioProfile {
   specialization: string;
   contactEmail: string;
   websiteUrl: string;
+  githubUrl: string;
 }

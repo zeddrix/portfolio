@@ -60,7 +60,7 @@ export function buildPersonJsonLd(): Record<string, unknown> {
     name: profile.name,
     jobTitle: "Full-Stack Web App Developer",
     url: getSiteUrl(),
-    sameAs: [profile.websiteUrl],
+    sameAs: [profile.websiteUrl, profile.githubUrl],
     email: profile.contactEmail,
     knowsAbout: profile.specialization.split(", ").map((item) => item.trim()),
   };

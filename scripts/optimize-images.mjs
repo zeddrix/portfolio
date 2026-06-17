@@ -12,7 +12,14 @@ const manifestPath = join(rootDir, "src/lib/data/image-manifest.json");
 
 const MAX_WIDTH = 1840;
 const DEFAULT_VARIANT_WIDTHS = [640, 920, 1280];
-const SKIP_FILES = new Set(["me.png", "favicon.svg", ".nojekyll"]);
+const SKIP_FILES = new Set([
+  "me.png",
+  "favicon.ico",
+  "favicon-16.png",
+  "favicon-32.png",
+  "apple-touch-icon.png",
+  ".nojekyll",
+]);
 const DELETE_ORPHANS = ["pwa-jwtabs-desktop.png"];
 const COMPACT_PREFIXES = ["answeriq-", "chatbot-"];
 
