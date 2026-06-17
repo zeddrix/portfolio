@@ -1,7 +1,12 @@
 #!/usr/bin/env tsx
 import { writeFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  buildCertificatePublicUrl,
+  certificates,
+} from "../src/lib/data/certificates.js";
+import { workExperience } from "../src/lib/data/experience.js";
 import {
   caseStudyProjectSlugs,
   highlightProjectSlugs,
@@ -46,28 +51,48 @@ function projectSnapshot(slug: string) {
   };
 }
 
-const snapshot = {
-  generatedAt: new Date().toISOString(),
-  profile: {
-    ...profile,
-    websiteUrl: PORTFOLIO_URL,
-    githubUrl: GITHUB_URL,
-    linkedinUrl: LINKEDIN_URL,
-    jobTitle: "Full-Stack Web App Developer",
-  },
-  highlightProjects: highlightProjectSlugs
-    .map((slug) => projectSnapshot(slug))
-    .filter((project) => project !== null),
-  moreProjects: moreProjectSlugs
-    .map((slug) => projectSnapshot(slug))
-    .filter((project) => project !== null),
-  caseStudySlugs: [...caseStudyProjectSlugs],
-  toolStripGroups: toolStripGroups.map((group) => ({
-    id: group.id,
-    title: group.title,
-    items: group.items.map((item) => item.label),
-  })),
-};
+export function buildPortfolioSnapshot() {
+  return {
+    generatedAt: new Date().toISOString(),
+    profile: {
+      ...profile,
+      websiteUrl: PORTFOLIO_URL,
+      githubUrl: GITHUB_URL,
+      linkedinUrl: LINKEDIN_URL,
+      jobTitle: "Full-Stack Web App Developer",
+    },
+    experience: workExperience,
+    certificates: certificates.map((certificate) => ({
+      slug: certificate.slug,
+      title: certificate.title,
+      issuer: certificate.issuer,
+      issuedAt: certificate.issuedAt,
+      skills: certificate.skills,
+      verifyUrl: buildCertificatePublicUrl(certificate.slug),
+      udemyCredentialId: certificate.udemyCredentialId,
+    })),
+    highlightProjects: highlightProjectSlugs
+      .map((slug) => projectSnapshot(slug))
+      .filter((project) => project !== null),
+    moreProjects: moreProjectSlugs
+      .map((slug) => projectSnapshot(slug))
+      .filter((project) => project !== null),
+    caseStudySlugs: [...caseStudyProjectSlugs],
+    toolStripGroups: toolStripGroups.map((group) => ({
+      id: group.id,
+      title: group.title,
+      items: group.items.map((item) => item.label),
+    })),
+  };
+}
 
-await writeFile(outputPath, `${JSON.stringify(snapshot, null, 2)}\n`);
-console.log(`Wrote ${outputPath}`);
+const snapshot = buildPortfolioSnapshot();
+
+const isCli =
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isCli) {
+  await writeFile(outputPath, `${JSON.stringify(snapshot, null, 2)}\n`);
+  console.log(`Wrote ${outputPath}`);
+}
