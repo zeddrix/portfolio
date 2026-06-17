@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
-import { basename, dirname, extname, join } from "node:path";
+import { basename, dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
@@ -22,6 +22,7 @@ const SKIP_FILES = new Set([
 ]);
 const DELETE_ORPHANS = ["pwa-jwtabs-desktop.png"];
 const COMPACT_PREFIXES = ["answeriq-", "chatbot-"];
+const CERTIFICATE_PREFIX = "certificate-";
 
 /** @typedef {'strong' | 'mild' | 'none'} SharpenProfile */
 /** @typedef {{ variantWidths: number[]; quality: number; maxWidth: number }} OptimizationProfile */
@@ -30,6 +31,7 @@ const COMPACT_PREFIXES = ["answeriq-", "chatbot-"];
 const SHARPEN_PREFIXES = {
   "answeriq-": "strong",
   "chatbot-": "strong",
+  [CERTIFICATE_PREFIX]: "strong",
 };
 
 /**
@@ -50,6 +52,9 @@ export function getSharpenProfile(filename) {
  * @returns {OptimizationProfile}
  */
 export function getOptimizationProfile(filename) {
+  if (filename.startsWith(CERTIFICATE_PREFIX)) {
+    return { variantWidths: [640, 920], quality: 78, maxWidth: 1200 };
+  }
   if (COMPACT_PREFIXES.some((prefix) => filename.startsWith(prefix))) {
     return { variantWidths: [640], quality: 72, maxWidth: 1024 };
   }
@@ -264,6 +269,18 @@ async function reoptimizeFromBackup(prefixFilter) {
   return manifest;
 }
 
+/**
+ * @param {Record<string, unknown>} existing
+ * @param {string} logicalPath
+ * @param {{ width: number; height: number; variants: { width: number; path: string }[]; lqip: string }} entry
+ */
+export function mergeManifestEntry(existing, logicalPath, entry) {
+  return {
+    ...existing,
+    [logicalPath]: entry,
+  };
+}
+
 async function main() {
   const prefixArg = process.argv.find((arg) => arg.startsWith("--prefix="));
   const prefixFilter = prefixArg?.split("=")[1];
@@ -289,17 +306,22 @@ async function main() {
   }
 
   /** @type {Record<string, { width: number; height: number; variants: { width: number; path: string }[]; lqip: string }>} */
-  const manifest = {};
+  let manifest = {};
+  try {
+    manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+  } catch {
+    manifest = {};
+  }
 
   for (const filename of imageFiles) {
     console.log(`Optimizing ${filename}...`);
     const result = await optimizeImage(filename);
-    manifest[result.logicalPath] = {
+    manifest = mergeManifestEntry(manifest, result.logicalPath, {
       width: result.width,
       height: result.height,
       variants: result.variants,
       lqip: result.lqip,
-    };
+    });
   }
 
   for (const orphan of DELETE_ORPHANS) {
@@ -319,10 +341,18 @@ async function main() {
   }
 
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(`Wrote manifest with ${Object.keys(manifest).length} images.`);
+  console.log(
+    `Wrote manifest with ${Object.keys(manifest).length} images (${imageFiles.length} newly optimized).`,
+  );
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+const isCli =
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isCli) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

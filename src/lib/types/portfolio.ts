@@ -105,3 +105,30 @@ export interface PortfolioProfile {
   websiteUrl: string;
   githubUrl: string;
 }
+
+export interface Certificate {
+  slug: string;
+  title: string;
+  issuer: "Udemy";
+  issuedAt: string;
+  hours?: number;
+  sections?: number;
+  lectures?: number;
+  durationLabel?: string;
+  skills: string[];
+  imagePath: string;
+  udemyCredentialId?: string;
+  legacyZeddrixPath: string;
+  summary: string;
+}
+
+export interface WorkExperience {
+  id: string;
+  company: string;
+  title: string;
+  employmentType?: string;
+  location: string;
+  startDate: string;
+  endDate?: string;
+  bullets: string[];
+}

@@ -704,5 +704,80 @@
       }
     ],
     "lqip": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAACQBACdASogABQAPvVmqk6qpaQiN/VYAVAeiWUAALvrs3ls70Ny2dTjBuweMAAA/vVsIHpBhUKd99stwdngLGQkpi8egAAA"
+  },
+  "/certificate-css-complete-guide.webp": {
+    "width": 1200,
+    "height": 893,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/certificate-css-complete-guide-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/certificate-css-complete-guide-920w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADwBACdASogABgAPu1kpk6ppaOiN/qoATAdiWUAw6wh4cpuOEg+urkaF98S6DDLSAAA/vA9M4jeXGD9XwtoswObY0BrPtE17Yqer8SMRt/e1T51fCD2EWbLGVZfw9Q4ziQ2TraQAAA="
+  },
+  "/certificate-mern-ecommerce.webp": {
+    "width": 1200,
+    "height": 893,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/certificate-mern-ecommerce-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/certificate-mern-ecommerce-920w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwBACdASogABgAPwForE8rJaQiMBgMAWAgCWUAw6wQ8Or6g5LclckcsbVqPVNDiAAA/ush8gMc4Shd5CF9sbaqcjqy1D3U3i8BbdT53wUyvEGcLcT+srTJkvnp34xLWvDYAAAA"
+  },
+  "/certificate-modern-javascript.webp": {
+    "width": 1200,
+    "height": 893,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/certificate-modern-javascript-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/certificate-modern-javascript-920w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwBQCdASogABgAPwFqq08rJiOiMBgMAWAgCWUAyNQQ8Orye+LDBV8UyyTpKAzanExQAAD+6yHyAxzt1WuLK8qPkg+E1pPwAWUFhYOcpFjVKTCKXxhWEjTWzVfAI3K2rqZDgaXVS8KAAAAA"
+  },
+  "/certificate-nodejs-api-masterclass.webp": {
+    "width": 1200,
+    "height": 893,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/certificate-nodejs-api-masterclass-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/certificate-nodejs-api-masterclass-920w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwBACdASogABgAPvFcqU6ppKQiN/qoATAeCWUAyRAiH8ZuxTaSAqFSPITc0sMlwAAA/u3ckFtP3yT47iy312s+qnIgr50C9EyYoP0EO+MlPt7ez4mUtXoqhe/fQDyiOcUY22cFXwAAAA=="
+  },
+  "/certificate-reactjs-front-to-back.webp": {
+    "width": 1200,
+    "height": 893,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/certificate-reactjs-front-to-back-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/certificate-reactjs-front-to-back-920w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwBACdASogABgAPv1irE6rJSQiN/VYAWAfiWUAyNQQ8OU85Tzo2SXrRPknm98cHAAA/u3ajVzYzvLKRU3JKcLanEhi3oqrjHYEI9jx8eg8wrCR11QEzcF7yQC0PrUAX7HEhIAA"
   }
 }
