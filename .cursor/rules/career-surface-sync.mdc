@@ -1,0 +1,62 @@
+---
+description: Sync mandatory career content across portfolio, resumes, GitHub profile README, and LinkedIn exports when substantive copy or data changes.
+alwaysApply: true
+---
+
+# Career surface sync (portfolio → resumes → profile)
+
+When portfolio work changes **resume-worthy or README-worthy** facts, keep all public career surfaces aligned before marking the task done.
+
+## Mandatory sync — do this
+
+Applies when you add or change any of:
+
+- Projects (slug, role, outcome, stack, links, periods, screenshots)
+- Experience / engagements (`src/lib/data/experience.ts`, `resume-engagements.ts`)
+- Profile copy (`src/lib/data/profile.ts`, `portfolio.ts` — about, specialization, hero, motto)
+- Skills / tools (`toolStripGroups`, `toolStripFooterNote`, capability bands)
+- Certificates (`src/lib/data/certificates.ts`)
+- Contact URLs, job title, or specialization strings
+
+### Surfaces to update
+
+| Surface | Where |
+|--------|--------|
+| Portfolio site | `src/lib/data/*`, Svelte routes/components |
+| Resume HTML/PDF/DOCX/md | `scripts/generate-resume.ts`, `scripts/build-linkedin-docx.ts` — driven by snapshot |
+| GitHub profile README | `~/Documents/zeddrix/README.md` (sibling repo; manual paste or edit) |
+| Export paste-aids | `exports/*` via `pnpm generate:resume` |
+
+### Required finish steps
+
+1. Edit **single source of truth** in `src/lib/data/` (prefer shared constants like `toolStripFooterNote`, not duplicated strings).
+2. Run `pnpm generate:resume` (snapshot + resumes + `exports/`).
+3. Mirror README changes in `zeddrix/README.md` — use `exports/github-readme-*.md` when available.
+4. Run related tests (`scripts/resume-*.test.ts`, affected E2E) and resume page-count if application layout touched.
+5. Tell the user if LinkedIn profile or README push is still manual (`docs/career-profile-manual-checklist.md`).
+
+**Do not** leave portfolio updated while resumes or README still show stale copy.
+
+## Optional sync — skip when appropriate
+
+Skip resume/README/profile updates when the change is **only**:
+
+- UI/UX layout, spacing, colors, typography, animations
+- Refactors with no user-visible copy or data change
+- Test/CI/tooling-only work
+- Visual screenshot regen with identical content
+
+If unsure, ask: *Would a recruiter reading my resume or GitHub README care about this change?* No → optional. Yes → mandatory sync.
+
+## Anti-patterns
+
+- Hardcoding career copy in Svelte or resume scripts when it belongs in `src/lib/data/`.
+- Updating `ToolsStrip` or `profile.about` without checking resumes and `zeddrix/README.md`.
+- Forgetting `pnpm generate:resume` after data changes (`resume/` is gitignored).
+
+## Quick reference
+
+```bash
+pnpm generate:resume   # snapshot, PDFs, DOCX, exports/
+pnpm quality           # before commit
+```

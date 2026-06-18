@@ -64,3 +64,13 @@ Outputs:
 - `exports/github-readme-projects.md` — project periods for GitHub README paste
 - `exports/github-readme-manatal-coop.md` — Manatal Coop screenshot block for profile README paste
 - `exports/certificate-urls.json` — machine-readable verify URLs
+
+## 9. Keep career surfaces in sync
+
+When you change **projects, experience, skills, profile copy, certificates, or contact info** in this repo, also:
+
+1. Run `pnpm generate:resume`
+2. Update `~/Documents/zeddrix/README.md` (paste from `exports/github-readme-*.md` where applicable)
+3. Re-upload LinkedIn resume if PDF content changed (steps 4–5 above)
+
+**UI-only or refactor changes** do not require README/resume updates. See `.cursor/rules/career-surface-sync.mdc` for the full mandatory vs optional decision guide.
