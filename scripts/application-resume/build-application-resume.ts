@@ -13,6 +13,7 @@ import {
   buildSummary,
   splitExperienceForApplicationResume,
   type ProfileSnapshot,
+  type ProjectSnapshot,
 } from "../resume-content.js";
 import { buildExecutiveResumeHtml } from "./layouts/executive.js";
 import { buildPortfolioLedResumeHtml } from "./layouts/portfolio-led.js";
@@ -38,6 +39,21 @@ async function buildInterFontFaceCss(): Promise<string> {
   return rules.join("");
 }
 
+function resolveOnePageProjects(
+  snapshot: ProfileSnapshot,
+  slugs: readonly string[],
+): ProjectSnapshot[] {
+  const pool = [
+    ...buildSelectedProjectsBlocks(snapshot),
+    ...buildAdditionalProjectsBlocks(snapshot),
+  ];
+  const bySlug = new Map(pool.map((project) => [project.slug, project]));
+
+  return slugs
+    .map((slug) => bySlug.get(slug))
+    .filter((project): project is ProjectSnapshot => project !== undefined);
+}
+
 function buildContext(
   snapshot: ProfileSnapshot,
   layout: ApplicationResumeLayout,
@@ -53,16 +69,13 @@ function buildContext(
       experience,
       config.firstPageExperienceCount,
     );
-  const featuredProjects = selectedProjects.slice(
-    0,
-    config.featuredProjectCount,
-  );
-  const remainingSelectedProjects = selectedProjects.slice(
-    config.featuredProjectCount,
-  );
+  const onePageProjects = config.onePageProjectSlugs
+    ? resolveOnePageProjects(snapshot, config.onePageProjectSlugs)
+    : [];
 
   return {
     layout,
+    config,
     profile,
     certificates,
     toolStripGroups,
@@ -72,8 +85,7 @@ function buildContext(
     secondPageExperience,
     selectedProjects,
     additionalProjects,
-    featuredProjects,
-    remainingSelectedProjects,
+    onePageProjects,
     fontCss,
   };
 }
@@ -101,5 +113,6 @@ export async function buildApplicationResumeHtml(
 export {
   APPLICATION_RESUME_LAYOUTS,
   DEFAULT_APPLICATION_RESUME_LAYOUT,
+  getExpectedPageCount,
   type ApplicationResumeLayout,
 } from "../application-resume-config.js";

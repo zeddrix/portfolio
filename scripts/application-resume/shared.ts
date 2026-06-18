@@ -3,6 +3,7 @@ import {
   formatCertificateMonthYear,
   formatExperienceRange,
   formatResumeProjectRoleLine,
+  projectBullets,
   type CertificateSnapshot,
   type ExperienceSnapshot,
   type ProfileSnapshot,
@@ -81,6 +82,59 @@ export function buildSkillsBandHtml(
     </section>`;
 }
 
+export function buildCompactSkillsBandHtml(
+  groups: ProfileSnapshot["toolStripGroups"],
+): string {
+  return `
+    <section class="skills-band skills-band-compact" data-testid="resume-skills-band">
+      <div class="skills-band-grid">
+        ${groups
+          .map(
+            (group) => `
+          <div class="skills-band-group">
+            <h3>${escapeHtml(group.title)}</h3>
+            <p>${escapeHtml(group.items.join(" · "))}</p>
+          </div>`,
+          )
+          .join("")}
+      </div>
+    </section>`;
+}
+
+export function buildSkillsInlineHtml(
+  groups: ProfileSnapshot["toolStripGroups"],
+): string {
+  const line = groups
+    .map((group) => `${group.title}: ${group.items.join(", ")}`)
+    .join(" · ");
+  return `<p class="skills-inline" data-testid="resume-skills-inline">${escapeHtml(line)}</p>`;
+}
+
+export function buildFooterLanguagesHtml(): string {
+  return `
+    <footer class="page-two-footer page-two-footer-languages" data-testid="resume-page-2-languages">
+      <p class="footer-languages">Languages: Tagalog (Native) · English (Professional)</p>
+    </footer>`;
+}
+
+export function buildFooterCertsHtml(
+  certificates: CertificateSnapshot[],
+): string {
+  const certs = certificates
+    .map(
+      (certificate) =>
+        `${certificate.title} (${certificate.issuer}, ${formatCertificateMonthYear(certificate.issuedAt)})`,
+    )
+    .join(" · ");
+
+  return `
+    <footer class="page-two-footer" data-testid="resume-page-2-footer">
+      <h3 class="footer-heading">Professional Development</h3>
+      <p class="footer-certs">${escapeHtml(certs)}</p>
+      <p class="footer-languages">Languages: Tagalog (Native) · English (Professional)</p>
+    </footer>`;
+}
+
 export function buildSidebarCertsHtml(
   certificates: CertificateSnapshot[],
 ): string {
@@ -101,10 +155,16 @@ function buildRoleTitle(role: ExperienceSnapshot): string {
     : role.title;
 }
 
+export interface TimelineOptions {
+  compact?: boolean;
+  bulletCount?: 1 | 2;
+}
+
 export function buildTimelineRow(
   role: ExperienceSnapshot,
-  compact = false,
+  options: TimelineOptions = {},
 ): string {
+  const { compact = false, bulletCount = 1 } = options;
   const roleTitle = buildRoleTitle(role);
   const dateLine = formatExperienceRange(role);
 
@@ -120,7 +180,11 @@ export function buildTimelineRow(
       </article>`;
   }
 
-  const bullet = role.bullets[0] ?? "";
+  const bullets = role.bullets.slice(0, bulletCount);
+  const bulletHtml = bullets
+    .map((bullet) => `<p class="timeline-bullet">${escapeHtml(bullet)}</p>`)
+    .join("");
+
   return `
       <article class="timeline-row">
         <p class="timeline-dates">${escapeHtml(dateLine)}</p>
@@ -128,16 +192,31 @@ export function buildTimelineRow(
         <div class="timeline-body">
           <p class="timeline-role"><strong>${escapeHtml(roleTitle)}</strong></p>
           <p class="timeline-company">${escapeHtml(role.company)}</p>
-          <p class="timeline-bullet">${escapeHtml(bullet)}</p>
+          ${bulletHtml}
         </div>
       </article>`;
 }
 
 export function buildTimelineHtml(
   experience: ExperienceSnapshot[],
-  compact = false,
+  options: TimelineOptions = {},
 ): string {
-  return `<div class="timeline">${experience.map((role) => buildTimelineRow(role, compact)).join("")}</div>`;
+  return `<div class="timeline">${experience.map((role) => buildTimelineRow(role, options)).join("")}</div>`;
+}
+
+export function buildProjectExpandedHtml(project: ProjectSnapshot): string {
+  const tech = project.techStack.slice(0, 6).join(" · ");
+  const detailLines = projectBullets(project, 2)
+    .map(
+      (bullet) => `<p class="project-expanded-body">${escapeHtml(bullet)}</p>`,
+    )
+    .join("");
+  return `
+      <article class="project-expanded">
+        <p class="project-expanded-title"><strong>${escapeHtml(project.name)}</strong> — ${escapeHtml(formatResumeProjectRoleLine(project))}</p>
+        ${detailLines}
+        <p class="tech">${escapeHtml(tech)}</p>
+      </article>`;
 }
 
 export function buildProjectCompactHtml(project: ProjectSnapshot): string {
@@ -151,7 +230,7 @@ export function buildProjectCompactHtml(project: ProjectSnapshot): string {
 }
 
 export function buildMoreProjectCardHtml(project: ProjectSnapshot): string {
-  const tech = project.techStack.slice(0, 4).join(" · ");
+  const tech = project.techStack.slice(0, 5).join(" · ");
   return `
         <article class="more-project-card">
           <p class="more-project-name"><strong>${escapeHtml(project.name)}</strong></p>
@@ -189,8 +268,9 @@ export function wrapApplicationResumeHtml(
   profile: ProfileSnapshot["profile"],
   fontCss: string,
   bodyContent: string,
-  extraCss = "",
+  options: { extraCss?: string; bodyClass?: string } = {},
 ): string {
+  const bodyClass = options.bodyClass ? ` class="${options.bodyClass}"` : "";
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -199,14 +279,132 @@ export function wrapApplicationResumeHtml(
     <style>
       ${fontCss}
       ${SHARED_APPLICATION_RESUME_CSS}
-      ${extraCss}
+      ${options.extraCss ?? ""}
     </style>
   </head>
-  <body>
+  <body${bodyClass}>
     ${bodyContent}
   </body>
 </html>`;
 }
+
+export const DENSITY_MAXIMIZED_CSS = `
+      body.density-maximized {
+        font-size: 8.6pt;
+        line-height: 1.3;
+      }
+      body.density-maximized .timeline-row { margin-bottom: 6px; }
+      body.density-maximized .timeline-row.compact { margin-bottom: 5px; }
+      body.density-maximized .page-two-section { margin-bottom: 8px; }
+      body.density-maximized .project-expanded {
+        margin-bottom: 8px;
+        padding-bottom: 7px;
+        border-bottom: 1px solid var(--rule-color);
+      }
+      body.density-maximized .project-expanded-title { font-size: 8.5pt; }
+      body.density-maximized .project-expanded-body {
+        font-size: 8pt;
+        line-height: 1.3;
+        color: var(--text-muted);
+      }
+      body.density-maximized .more-project-card { padding-bottom: 7px; }
+      body.density-maximized .more-projects-grid { gap: 5px 10px; }
+      body.density-maximized .skills-band-compact { padding: 4px 6px; margin-bottom: 3px; }
+      body.density-maximized .page-two-footer {
+        margin-top: 8px;
+        padding-top: 6px;
+        border-top: 1px solid var(--rule-color);
+      }
+      body.layout-executive .page-one .timeline-row {
+        margin-bottom: 12px;
+      }
+      body.layout-executive .page-one .summary {
+        margin-bottom: 4px;
+      }
+      body.layout-executive .page-one .experience-section {
+        margin-top: 2px;
+      }
+      body.layout-executive .page-one .executive-section-title {
+        margin-bottom: 8px;
+      }
+      body.density-maximized .page-two .page-two-section {
+        margin-bottom: 11px;
+      }
+      body.density-maximized .page-two .project-expanded {
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+      }
+      body.density-maximized .page-two .more-project-card {
+        padding-bottom: 8px;
+      }
+      body.density-maximized .page-two .project-expanded-body {
+        font-size: 8.1pt;
+        line-height: 1.32;
+        margin-bottom: 2px;
+      }
+      body.density-maximized .page-two .more-projects-grid {
+        gap: 7px 12px;
+      }
+      body.density-maximized .page-two .more-project-outcome {
+        font-size: 7.5pt;
+        line-height: 1.3;
+      }
+      body.density-maximized .page-two-footer-languages {
+        margin-top: 10px;
+        padding-top: 6px;
+      }
+      body.layout-executive .page-one .timeline-bullet {
+        line-height: 1.32;
+      }
+      body.layout-refined-lorna .page-two .page-two-section {
+        margin-bottom: 10px;
+      }
+      body.layout-refined-lorna .page-two .timeline-row.compact {
+        margin-bottom: 6px;
+      }
+      body.density-maximized .footer-heading {
+        font-size: 7.2pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 2px;
+      }
+      body.density-maximized .footer-certs,
+      body.density-maximized .footer-languages {
+        font-size: 7.1pt;
+        line-height: 1.26;
+        color: var(--text-muted);
+      }
+`;
+
+export const DENSITY_COMPACT_ONE_PAGE_CSS = `
+      body.density-compact-one-page {
+        font-size: 8pt;
+        line-height: 1.26;
+      }
+      body.density-compact-one-page .page-full-width {
+        padding: 0.25in 0.32in;
+      }
+      body.density-compact-one-page h1 { font-size: 18pt; }
+      body.density-compact-one-page .title { font-size: 9.5pt; }
+      body.density-compact-one-page .summary { font-size: 7.8pt; line-height: 1.22; }
+      body.density-compact-one-page .sidebar-ribbon,
+      body.density-compact-one-page .main-section-ribbon {
+        font-size: 6.8pt;
+        padding: 3px 7px 3px 8px;
+        margin-bottom: 4px;
+      }
+      body.density-compact-one-page .timeline-row.compact { margin-bottom: 4px; }
+      body.density-compact-one-page .project-line.compact { margin-bottom: 4px; }
+      body.density-compact-one-page .skills-inline {
+        font-size: 6.8pt;
+        line-height: 1.22;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
+      body.density-compact-one-page .resume-main,
+      body.density-compact-one-page .featured-projects { gap: 4px; }
+`;
 
 export const SHARED_APPLICATION_RESUME_CSS = `
       :root {
@@ -358,13 +556,16 @@ export const SHARED_APPLICATION_RESUME_CSS = `
         color: var(--text-muted);
         line-height: 1.28;
       }
-      .skills-band-footer {
-        margin-top: 4px;
-        padding-top: 3px;
-        border-top: 1px solid var(--rule-color);
-        font-size: 6.6pt;
-        line-height: 1.26;
+      .skills-band-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2px 8px;
+      }
+      .skills-inline {
+        font-size: 7pt;
+        line-height: 1.24;
         color: var(--text-muted);
+        margin-bottom: 4px;
       }
       .timeline-row {
         display: grid;
@@ -451,7 +652,7 @@ export const SHARED_APPLICATION_RESUME_CSS = `
       .more-project-card,
       .project-index-row {
         break-inside: avoid;
-        padding-bottom: 3px;
+        padding-bottom: 4px;
       }
       .more-project-name,
       .project-index-name { font-size: 7.9pt; }

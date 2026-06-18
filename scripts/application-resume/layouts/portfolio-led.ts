@@ -4,22 +4,26 @@ import {
   buildContactBandHtml,
   buildMainSectionRibbon,
   buildProjectCompactHtml,
-  buildProjectIndexGridHtml,
+  buildSkillsInlineHtml,
   buildTimelineHtml,
+  DENSITY_COMPACT_ONE_PAGE_CSS,
   wrapApplicationResumeHtml,
 } from "../shared.js";
+
+function buildShortSummary(summary: string): string {
+  const match = summary.match(/^[^.!?]+[.!?]/);
+  return match?.[0]?.trim() ?? summary;
+}
 
 export function buildPortfolioLedResumeHtml(
   context: ApplicationResumeBuildContext,
 ): string {
   const {
     profile,
+    toolStripGroups,
     summary,
     firstPageExperience,
-    secondPageExperience,
-    featuredProjects,
-    remainingSelectedProjects,
-    additionalProjects,
+    onePageProjects,
     fontCss,
   } = context;
 
@@ -31,42 +35,25 @@ export function buildPortfolioLedResumeHtml(
         ${buildContactBandHtml(profile)}
       </header>
 
-      <p class="summary">${escapeHtml(summary)}</p>
+      <p class="summary">${escapeHtml(buildShortSummary(summary))}</p>
+
+      ${buildSkillsInlineHtml(toolStripGroups)}
 
       <section class="experience-section">
         ${buildMainSectionRibbon("Professional Experience")}
-        ${buildTimelineHtml(firstPageExperience)}
+        ${buildTimelineHtml(firstPageExperience, { compact: true })}
       </section>
 
       <section class="featured-section" data-testid="resume-featured-projects">
         ${buildMainSectionRibbon("Featured Projects")}
         <div class="featured-projects">
-          ${featuredProjects.map((project) => buildProjectCompactHtml(project)).join("")}
+          ${onePageProjects.map((project) => buildProjectCompactHtml(project)).join("")}
         </div>
-      </section>
-    </section>
-
-    <section class="page page-full-width" data-testid="resume-page-2">
-      <section class="page-two-section experience-section">
-        ${buildMainSectionRibbon("Professional Experience (continued)")}
-        ${buildTimelineHtml(secondPageExperience, true)}
-      </section>
-
-      ${
-        remainingSelectedProjects.length > 0
-          ? `
-      <section class="page-two-section">
-        ${buildMainSectionRibbon("Selected Projects")}
-        ${remainingSelectedProjects.map((project) => buildProjectCompactHtml(project)).join("")}
-      </section>`
-          : ""
-      }
-
-      <section class="page-two-section">
-        ${buildMainSectionRibbon("Project Index")}
-        ${buildProjectIndexGridHtml(additionalProjects)}
       </section>
     </section>`;
 
-  return wrapApplicationResumeHtml(profile, fontCss, body);
+  return wrapApplicationResumeHtml(profile, fontCss, body, {
+    bodyClass: "density-compact-one-page",
+    extraCss: DENSITY_COMPACT_ONE_PAGE_CSS,
+  });
 }

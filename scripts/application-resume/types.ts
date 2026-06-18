@@ -1,4 +1,7 @@
-import type { ApplicationResumeLayout } from "../application-resume-config.js";
+import type {
+  ApplicationResumeLayout,
+  ApplicationResumeLayoutConfig,
+} from "../application-resume-config.js";
 import type {
   CertificateSnapshot,
   ExperienceSnapshot,
@@ -8,6 +11,7 @@ import type {
 
 export interface ApplicationResumeBuildContext {
   layout: ApplicationResumeLayout;
+  config: ApplicationResumeLayoutConfig;
   profile: ProfileSnapshot["profile"];
   certificates: CertificateSnapshot[];
   toolStripGroups: ProfileSnapshot["toolStripGroups"];
@@ -17,7 +21,6 @@ export interface ApplicationResumeBuildContext {
   secondPageExperience: ExperienceSnapshot[];
   selectedProjects: ProjectSnapshot[];
   additionalProjects: ProjectSnapshot[];
-  featuredProjects: ProjectSnapshot[];
-  remainingSelectedProjects: ProjectSnapshot[];
+  onePageProjects: ProjectSnapshot[];
   fontCss: string;
 }

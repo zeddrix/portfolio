@@ -7,8 +7,10 @@ import {
   buildSidebarRibbon,
   buildSidebarSkillsHtml,
   buildMoreProjectsGridHtml,
-  buildProjectCompactHtml,
+  buildProjectExpandedHtml,
   buildTimelineHtml,
+  buildFooterLanguagesHtml,
+  DENSITY_MAXIMIZED_CSS,
   wrapApplicationResumeHtml,
 } from "../shared.js";
 
@@ -19,6 +21,7 @@ export function buildRefinedLornaResumeHtml(
     profile,
     certificates,
     toolStripGroups,
+    config,
     summary,
     firstPageExperience,
     secondPageExperience,
@@ -28,7 +31,7 @@ export function buildRefinedLornaResumeHtml(
   } = context;
 
   const body = `
-    <section class="page page-with-rail" data-testid="resume-page-1">
+    <section class="page page-with-rail page-one" data-testid="resume-page-1">
       <div class="page-one-grid">
         <aside class="resume-rail" data-testid="resume-page-1-sidebar">
           <section class="sidebar-section">
@@ -59,28 +62,33 @@ export function buildRefinedLornaResumeHtml(
 
           <section class="experience-section">
             ${buildMainSectionRibbon("Professional Experience")}
-            ${buildTimelineHtml(firstPageExperience)}
+            ${buildTimelineHtml(firstPageExperience, { bulletCount: config.pageOneBulletCount })}
           </section>
         </div>
       </div>
     </section>
 
-    <section class="page page-full-width" data-testid="resume-page-2">
+    <section class="page page-full-width page-two" data-testid="resume-page-2">
       <section class="page-two-section experience-section">
         ${buildMainSectionRibbon("Professional Experience (continued)")}
-        ${buildTimelineHtml(secondPageExperience, true)}
+        ${buildTimelineHtml(secondPageExperience, { compact: true })}
       </section>
 
       <section class="page-two-section">
         ${buildMainSectionRibbon("Selected Projects")}
-        ${selectedProjects.map((project) => buildProjectCompactHtml(project)).join("")}
+        ${selectedProjects.map((project) => buildProjectExpandedHtml(project)).join("")}
       </section>
 
       <section class="page-two-section">
         ${buildMainSectionRibbon("More Projects")}
         ${buildMoreProjectsGridHtml(additionalProjects)}
       </section>
+
+      ${buildFooterLanguagesHtml()}
     </section>`;
 
-  return wrapApplicationResumeHtml(profile, fontCss, body);
+  return wrapApplicationResumeHtml(profile, fontCss, body, {
+    bodyClass: "density-maximized layout-refined-lorna",
+    extraCss: DENSITY_MAXIMIZED_CSS,
+  });
 }
