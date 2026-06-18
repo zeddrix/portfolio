@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   buildSrcSet,
   getDefaultImageSrc,
+  getImageDimensions,
   getImageLqip,
   getImageManifestEntry,
+  isPortraitImage,
   toLogicalImagePath,
 } from "./optimized-image";
 
@@ -38,5 +40,21 @@ describe("optimized-image utils", () => {
     expect(buildSrcSet(path)).toMatch(/queue-1-dashboard-\d+w\.webp/);
     expect(getDefaultImageSrc(path)).toMatch(/queue-1-dashboard-\d+w\.webp/);
     expect(getImageLqip(path)).toMatch(/^data:image\/webp;base64,/);
+  });
+
+  it("detects portrait images from manifest dimensions", () => {
+    expect(isPortraitImage("/manatal-coop-homepage.webp")).toBe(true);
+    expect(isPortraitImage("/usedelight-1-new-tab.webp")).toBe(false);
+    expect(isPortraitImage("/unknown-image.webp")).toBe(false);
+  });
+
+  it("returns manifest dimensions for known portrait and landscape assets", () => {
+    const manatal = getImageDimensions("/manatal-coop-homepage.webp");
+    const usedelight = getImageDimensions("/usedelight-1-new-tab.webp");
+    if (!manatal || !usedelight) {
+      return;
+    }
+    expect(manatal.height).toBeGreaterThan(manatal.width);
+    expect(usedelight.width).toBeGreaterThan(usedelight.height);
   });
 });

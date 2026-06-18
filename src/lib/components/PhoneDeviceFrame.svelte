@@ -1,0 +1,62 @@
+<script>
+	import {
+		getManatalPhoneScreenWidthCss,
+		MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS,
+	} from '$lib/constants/carousel';
+
+	/** @type {string} */
+	export let domain = '';
+	/** @type {'nested' | 'card'} */
+	export let fillMode = 'nested';
+	/** @type {string | undefined} */
+	export let screenAspectRatio = undefined;
+
+	$: contentSizedCard = fillMode === 'card' && Boolean(screenAspectRatio);
+
+	$: rootClass = contentSizedCard
+		? 'relative w-fit shrink-0 rounded-[2rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-white/10'
+		: fillMode === 'card'
+			? 'relative aspect-[9/19.5] w-auto shrink-0 rounded-[2.25rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-white/10'
+			: 'relative max-h-[min(72vw,640px)] w-[min(42vw,280px)] shrink-0 rounded-[2.25rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_24px_48px_-20px_rgba(0,0,0,0.65)] ring-1 ring-white/10';
+
+	$: innerClass = contentSizedCard
+		? 'relative flex w-full flex-col overflow-hidden rounded-[1.5rem] bg-black'
+		: 'relative flex h-full w-full flex-col overflow-hidden rounded-[1.85rem] bg-black';
+
+	$: screenClass = contentSizedCard
+		? 'relative max-w-full overflow-hidden bg-black'
+		: 'relative min-h-0 flex-1 overflow-hidden bg-black';
+
+	$: screenStyle = screenAspectRatio
+		? `aspect-ratio:${screenAspectRatio};max-height:${MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS};width:${getManatalPhoneScreenWidthCss()}`
+		: undefined;
+</script>
+
+<div
+	data-testid="carousel-device-frame-phone"
+	class={rootClass}
+>
+	<div class={innerClass}>
+		<div class="relative z-10 flex shrink-0 items-center justify-center px-4 pb-1 pt-2.5">
+			<div
+				class="h-[18px] w-[72px] rounded-full bg-black/85 ring-1 ring-white/10"
+				aria-hidden="true"
+			></div>
+		</div>
+		{#if domain}
+			<p
+				data-testid="phone-device-frame-domain"
+				class="pointer-events-none absolute left-0 right-0 top-2 z-20 text-center text-[10px] font-medium tracking-wide text-zinc-400"
+			>
+				{domain}
+			</p>
+		{/if}
+		<div
+			data-testid="phone-device-screen"
+			class={screenClass}
+			style={screenStyle}
+		>
+			<slot />
+		</div>
+	</div>
+</div>

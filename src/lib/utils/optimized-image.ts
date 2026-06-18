@@ -91,6 +91,11 @@ export function getImageDimensions(path: string):
   return { width: entry.width, height: entry.height };
 }
 
+export function isPortraitImage(path: string): boolean {
+  const dimensions = getImageDimensions(path);
+  return dimensions ? dimensions.height > dimensions.width : false;
+}
+
 export function getImageLqip(path: string): string | undefined {
   return getImageManifestEntry(path)?.lqip;
 }

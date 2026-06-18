@@ -26,10 +26,16 @@
 	export let preferredWidth = 920;
 	/** @type {boolean} */
 	export let fadeOnMount = false;
-	/** @type {'cover' | 'contain'} */
+	/** @type {'cover' | 'contain' | 'fill'} */
 	export let fit = 'cover';
 	/** @type {boolean} */
 	export let preserveNaturalAspect = false;
+	/** @type {string} */
+	export let objectPosition = '50% 50%';
+	/** @type {number} */
+	export let fillScale = 1;
+	/** @type {number} */
+	export let fillScaleX = 1;
 
 	/** @type {'lqip' | 'loaded'} */
 	let imageState = 'lqip';
@@ -53,7 +59,10 @@
 	$: dimensions = getImageDimensions(logicalPath);
 	$: lqip = getImageLqip(logicalPath);
 	$: aspectRatio =
-		!preserveNaturalAspect && dimensions && dimensions.width > 0
+		fit !== 'fill' &&
+		!preserveNaturalAspect &&
+		dimensions &&
+		dimensions.width > 0
 			? `${dimensions.width} / ${dimensions.height}`
 			: undefined;
 	$: imageOpacity = imageState === 'loaded' ? '1' : '0';
@@ -69,10 +78,36 @@
 			? 'max-h-full max-w-full ' + transitionClass + ' ' +
 				(fit === 'contain' ? 'object-contain' : 'object-cover')
 			: 'h-full w-full ' + transitionClass + ' ' +
-				(fit === 'contain' ? 'object-contain' : 'object-cover');
+				(fit === 'fill'
+					? 'object-fill'
+					: fit === 'contain'
+						? 'object-contain'
+						: 'object-cover');
+	$: imageTransform =
+		fillScaleX > 1
+			? `scaleX(${fillScaleX})`
+			: fillScale > 1
+				? `scale(${fillScale})`
+				: undefined;
+	$: transformOrigin = objectPosition;
+	$: imageStyle =
+		fit === 'fill'
+			? `opacity:${imageOpacity}`
+			: [
+					`opacity:${imageOpacity}`,
+					`object-position:${objectPosition}`,
+					imageTransform ? `transform:${imageTransform}` : '',
+					imageTransform ? `transform-origin:${transformOrigin}` : '',
+				]
+					.filter(Boolean)
+					.join(';');
 	$: wrapperClass =
 		'optimized-image relative overflow-hidden ' +
-		(preserveNaturalAspect ? 'flex h-full w-full items-center justify-center ' : 'w-full ') +
+		(fit === 'fill'
+			? 'h-full w-full '
+			: preserveNaturalAspect
+				? 'flex h-full w-full items-center justify-center '
+				: 'w-full ') +
 		className;
 </script>
 
@@ -94,7 +129,7 @@
 		width={dimensions?.width}
 		height={dimensions?.height}
 		class={imageClass}
-		style={`opacity:${imageOpacity};`}
+		style={imageStyle}
 		on:load={handleLoad}
 	/>
 </div>

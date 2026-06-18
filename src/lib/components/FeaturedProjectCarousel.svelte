@@ -1,11 +1,8 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
-	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
+	import CarouselDevicePreview from '$lib/components/CarouselDevicePreview.svelte';
 	import { carouselProjects } from '$lib/data/portfolio';
-	import {
-		getProjectDisplayUrl,
-		getProjectTypeLabel
-	} from '$lib/utils/portfolio-display';
+	import { getProjectTypeLabel } from '$lib/utils/portfolio-display';
 	import { getDefaultImageSrc } from '$lib/utils/optimized-image';
 	import { prefetchImageUrl, scheduleIdlePrefetch } from '$lib/utils/prefetch-images';
 	import { appPath } from '$lib/utils/app-path';
@@ -48,16 +45,6 @@
 			}
 		}
 		return uniqueImages;
-	}
-
-	/** @param {number} cardIndex */
-	function getCardLoading(cardIndex) {
-		return cardIndex <= 2 ? 'eager' : 'lazy';
-	}
-
-	/** @param {number} cardIndex */
-	function getCardFetchPriority(cardIndex) {
-		return cardIndex === 0 ? 'high' : '';
 	}
 
 	function initHighlightSlides() {
@@ -159,45 +146,31 @@
 <div bind:this={carouselElement} data-testid="highlights-carousel" class={carouselScrollClass}>
 	<div
 		data-testid="highlights-carousel-track"
-		class="highlights-carousel-track flex w-max gap-4 md:gap-5"
+		class="highlights-carousel-track flex w-max items-start gap-4 md:gap-5"
 	>
 		{#each carouselProjects as project, index (project.slug)}
-			<div class="w-[min(88vw,920px)] shrink-0 snap-start space-y-4 sm:w-[min(90vw,920px)]">
+			{@const phoneOnlyCard = project.slug === 'manatal-coop'}
+			<div
+				class="{phoneOnlyCard
+					? 'w-fit shrink-0 snap-start space-y-4'
+					: 'w-[min(88vw,920px)] shrink-0 snap-start space-y-4 sm:w-[min(90vw,920px)]'}"
+			>
 				<article
 					data-testid={'highlight-card-' + index}
 					data-highlight-slug={project.slug}
 					bind:this={highlightSlideElements[project.slug]}
-					class="group overflow-hidden rounded-xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10"
+					class={phoneOnlyCard
+						? 'group overflow-hidden rounded-xl bg-transparent shadow-none ring-0'
+						: 'group overflow-hidden rounded-xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10'}
 				>
-					<div class="relative flex h-11 items-center justify-center border-b border-white/5 px-4">
-						<div class="absolute left-4 flex gap-1.5">
-							<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
-							<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
-							<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
-						</div>
-						<div
-							data-testid={'carousel-project-url-' + project.slug}
-							class="flex h-7 min-w-0 max-w-[min(100%,28rem)] items-center justify-center truncate rounded-lg bg-black/40 px-3 text-xs text-zinc-300"
-						>
-							{getProjectDisplayUrl(project)}
-						</div>
-					</div>
 					{#if (highlightImageSets[project.slug] ?? []).length > 0}
-						<div class="grid w-full overflow-hidden bg-black/20">
-							{#key highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
-								<OptimizedImage
-									testId={'carousel-project-image-' + project.slug}
-									src={highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
-									alt={project.name + ' preview image'}
-									loading={getCardLoading(index)}
-									fetchpriority={getCardFetchPriority(index)}
-									sizes={carouselSizes}
-									fit="contain"
-									fadeOnMount={(slideStates[project.slug]?.current ?? 0) > 0}
-									className="col-start-1 row-start-1 transition-transform duration-500 ease-out motion-reduce:transform-none motion-reduce:transition-none group-hover:scale-[1.01]"
-								/>
-							{/key}
-						</div>
+						<CarouselDevicePreview
+							{project}
+							imagePath={highlightImageSets[project.slug][slideStates[project.slug]?.current ?? 0]}
+							cardIndex={index}
+							fadeOnMount={(slideStates[project.slug]?.current ?? 0) > 0}
+							{carouselSizes}
+						/>
 					{:else}
 						<div
 							class="flex h-[280px] w-full items-center justify-center bg-gradient-to-br from-white/5 via-white/[0.03] to-transparent text-sm font-medium text-zinc-500"
