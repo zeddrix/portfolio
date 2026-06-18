@@ -66,4 +66,15 @@ describe("resume-content builders", () => {
     expect(built.toolStripFooterNote).toBe(toolStripFooterNote);
     expect(built.toolStripFooterNote).toContain("AI-accelerated workflows");
   });
+
+  it("includes PayPal in devops tool strip group snapshot", () => {
+    const built = buildPortfolioSnapshot();
+    const devopsGroup = built.toolStripGroups.find(
+      (group) => group.title === "DevOps, platforms & workflow",
+    );
+
+    expect(devopsGroup?.items).toContain("PayPal");
+    expect(devopsGroup?.items).toContain("Stripe");
+    expect(devopsGroup?.items).toContain("Lemon Squeezy");
+  });
 });

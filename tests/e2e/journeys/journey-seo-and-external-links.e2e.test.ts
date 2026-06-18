@@ -31,6 +31,27 @@ test.describe("Journey: seo and external links", () => {
     );
   });
 
+  test("Home → billing band → merns-shop → canonical + live demo", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await setCapabilityLayout(page, "sevenBands");
+    await scrollToTestId(page, selectors.sections.approach);
+    await Promise.all([
+      page.waitForURL(`**${PAGES_BASE_PATH}/projects/merns-shop`),
+      page.getByTestId("band-project-link-billing-merns-shop").click(),
+    ]);
+
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/projects/merns-shop`,
+    );
+    await expect(page.getByTestId("project-external-link-0")).toHaveAttribute(
+      "href",
+      "https://merns-shop.onrender.com/",
+    );
+  });
+
   test("Home → billing band → AnswerIQ → canonical + live demo only", async ({
     page,
   }) => {

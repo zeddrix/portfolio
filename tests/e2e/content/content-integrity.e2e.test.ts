@@ -33,4 +33,19 @@ test.describe("content integrity", () => {
       "MERN's Shop",
     );
   });
+
+  test("Given sevenBands layout, when user views billing band, then PayPal badge and merns-shop link are visible", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await setCapabilityLayout(page, "sevenBands");
+    await scrollToTestId(page, selectors.sections.approach);
+
+    const billingBand = page.getByTestId("highlight-band-2");
+    await billingBand.scrollIntoViewIfNeeded();
+    await expect(billingBand).toContainText(/PayPal/);
+    await expect(
+      page.getByTestId("band-project-link-billing-merns-shop"),
+    ).toBeVisible();
+  });
 });

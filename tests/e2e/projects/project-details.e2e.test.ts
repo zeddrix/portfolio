@@ -55,6 +55,22 @@ test.describe("project details routing", () => {
     ).toContainText("Acceptance-test-driven development");
   });
 
+  test("Given carousel showcase, when user opens MERN's Shop, then detail shows billing capability", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await navigateToProjectViaCarousel(page, "merns-shop");
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "MERN's Shop",
+    );
+    await expect(
+      page.getByTestId("project-detail-related-capabilities"),
+    ).toContainText("Billing integration");
+    await expect(page.getByTestId("project-detail-tech-stack")).toContainText(
+      "PayPal",
+    );
+  });
+
   test("Given carousel showcase, when user opens Queue, then detail page loads", async ({
     page,
   }) => {

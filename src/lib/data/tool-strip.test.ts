@@ -39,6 +39,7 @@ describe("tool strip groups", () => {
     expect(labels.has("Supertest")).toBe(true);
     expect(labels.has("Render")).toBe(true);
     expect(labels.has("Stripe")).toBe(true);
+    expect(labels.has("PayPal")).toBe(true);
     expect(labels.has("AWS EC2")).toBe(true);
   });
 });

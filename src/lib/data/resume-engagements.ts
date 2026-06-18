@@ -35,7 +35,7 @@ export const resumeEngagements: ResumeEngagement[] = [
     startDate: "2026-06",
     kind: "independent",
     bullets: [
-      "Modernized the 2021 Udemy storefront with TypeScript, Express 5, React 19, ATDD (Playwright/Vitest), PWA, CI, and Render deployment.",
+      "Modernized the 2021 Udemy storefront with TypeScript, Express 5, React 19, PayPal checkout, guest/registered order flows, ATDD (Playwright/Vitest), PWA, CI, and Render deployment.",
     ],
   },
   {

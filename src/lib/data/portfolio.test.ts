@@ -69,6 +69,26 @@ describe("portfolio data", () => {
     expect(chatbotBand?.visual.badges).toEqual(["Groq", "Anthropic Claude"]);
   });
 
+  it("maps billing capability band to PayPal and MERN's Shop", () => {
+    const billingBand = capabilityBands.find((band) => band.id === "billing");
+
+    expect(billingBand?.description).toContain("PayPal");
+    expect(billingBand?.relatedProjectSlugs).toContain("merns-shop");
+    expect(billingBand?.highlights).toContain("PayPal");
+    expect(billingBand?.highlights).toContain("MERN's Shop");
+    expect(billingBand?.visual.type).toBe("hybrid");
+    expect(billingBand?.visual.imageLayout).toBe("carousel");
+    expect(billingBand?.visual.images).toEqual([
+      "/lemonsqueezy-dashboard.webp",
+      "/merns-shop-4-checkout.webp",
+    ]);
+    expect(billingBand?.visual.badges).toEqual([
+      "Stripe",
+      "Lemon Squeezy",
+      "PayPal",
+    ]);
+  });
+
   it("contains at least one personal and one client project", () => {
     expect(personalProjectCount).toBeGreaterThan(0);
     expect(clientProjectCount).toBeGreaterThan(0);
@@ -147,6 +167,7 @@ describe("portfolio data", () => {
 
     expect(bandIds).toContain("fullstack");
     expect(bandIds).toContain("pwa");
+    expect(bandIds).toContain("billing");
     expect(bandIds).toContain("admin-dashboard");
     expect(bandIds).toContain("deployment");
     expect(bandIds).toContain("atdd");
