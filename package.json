@@ -39,7 +39,8 @@
     "screenshots:resume": "playwright test tests/visual/resume-application-capture.spec.ts tests/visual/resume-linkedin-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:resume:variants": "playwright test tests/visual/resume-application-variants-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:project-periods": "playwright test tests/visual/project-period-capture.spec.ts --config playwright.visual.config.ts",
-    "screenshots:manatal": "playwright test tests/visual/manatal-coop-capture.spec.ts --config playwright.visual.config.ts"
+    "screenshots:manatal": "playwright test tests/visual/manatal-coop-capture.spec.ts --config playwright.visual.config.ts",
+    "screenshots:chatbot-band": "playwright test tests/visual/chatbot-band-capture.spec.ts --config playwright.visual.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
