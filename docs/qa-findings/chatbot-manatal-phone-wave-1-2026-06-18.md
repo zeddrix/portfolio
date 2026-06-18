@@ -13,15 +13,15 @@ Replace Chatbot capability band slide 1 (`highlight-band-4`) from Queue `chatbot
 
 ## Verification
 
-| Surface               | Check                                                                       | Result                |
-| --------------------- | --------------------------------------------------------------------------- | --------------------- |
+| Surface               | Check                                                                        | Result                |
+| --------------------- | ---------------------------------------------------------------------------- | --------------------- |
 | Chatbot band slide 1  | `manatal-coop-chatbot` src, `manatalcoop.app` domain, Manatal fill tolerance | Pass — E2E            |
-| Chatbot band slide 2  | `chatbot-placement-in-full-dashboard` browser frame unchanged               | Pass — E2E            |
-| Shown in pills        | `band-project-link-chatbot-manatal-coop` visible with correct href            | Pass — E2E            |
-| Queue carousel/detail | no `chatbot-*` assets                                                       | Pass — E2E regression |
-| Unit tests            | portfolio, slides, optimize-images, carousel                                | Pass                  |
-| Quality               | `pnpm quality`                                                              | Pass                  |
-| Visual capture        | `reference/screenshots/chatbot-band/` (390 + 768 + 1280)                    | Pass                  |
+| Chatbot band slide 2  | `chatbot-placement-in-full-dashboard` browser frame unchanged                | Pass — E2E            |
+| Shown in pills        | `band-project-link-chatbot-manatal-coop` visible with correct href           | Pass — E2E            |
+| Queue carousel/detail | no `chatbot-*` assets                                                        | Pass — E2E regression |
+| Unit tests            | portfolio, slides, optimize-images, carousel                                 | Pass                  |
+| Quality               | `pnpm quality`                                                               | Pass                  |
+| Visual capture        | `reference/screenshots/chatbot-band/` (390 + 768 + 1280)                     | Pass                  |
 
 ## Findings
 

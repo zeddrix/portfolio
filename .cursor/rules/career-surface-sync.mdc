@@ -14,7 +14,7 @@ Applies when you add or change any of:
 - Projects (slug, role, outcome, stack, links, periods, screenshots)
 - Experience / engagements (`src/lib/data/experience.ts`, `resume-engagements.ts`)
 - Profile copy (`src/lib/data/profile.ts`, `portfolio.ts` — about, specialization, hero, motto)
-- Skills / tools (`toolStripGroups`, `toolStripFooterNote`, capability bands)
+- Skills / tools (`toolStripGroups`, capability bands)
 - Certificates (`src/lib/data/certificates.ts`)
 - Contact URLs, job title, or specialization strings
 
@@ -29,7 +29,7 @@ Applies when you add or change any of:
 
 ### Required finish steps
 
-1. Edit **single source of truth** in `src/lib/data/` (prefer shared constants like `toolStripFooterNote`, not duplicated strings).
+1. Edit **single source of truth** in `src/lib/data/` (prefer shared constants like `toolStripGroups`, not duplicated strings).
 2. Run `pnpm generate:resume` (snapshot + resumes + `exports/`).
 3. Mirror README changes in `zeddrix/README.md` — use `exports/github-readme-*.md` when available.
 4. Run related tests (`scripts/resume-*.test.ts`, affected E2E) and resume page-count if application layout touched.

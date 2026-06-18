@@ -177,7 +177,7 @@ E2E is run locally via `pnpm test:e2e`. `pnpm quality` runs format, lint, and sv
 
 Required `data-testid` for:
 
-- Main sections: hero, work, about, tools strip, approach, contact, footer
+- Main sections: hero, work, approach, tools strip, about, contact, footer
 - Primary CTAs and nav links
 - Project cards, carousel controls, preview settings options
 - Project detail hero, gallery, links, back link

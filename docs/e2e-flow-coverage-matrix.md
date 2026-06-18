@@ -1,6 +1,6 @@
 # E2E Flow Coverage Matrix
 
-Generated: 2026-06-17
+Generated: 2026-06-18
 
 | Spec file                                                             | Domain   | MinActions | BranchesCovered                    | JourneyTier |
 | --------------------------------------------------------------------- | -------- | ---------- | ---------------------------------- | ----------- |
