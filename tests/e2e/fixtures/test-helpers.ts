@@ -256,3 +256,46 @@ export async function emulateSlow3G(page: Page): Promise<void> {
     latency: 400,
   });
 }
+
+export const manatalCarouselPhoneMinHeightPx = 400;
+
+export async function delayManatalCarouselAsset(
+  page: Page,
+  pattern: RegExp,
+  delayMs: number,
+): Promise<void> {
+  await page.route(pattern, async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    await route.continue();
+  });
+}
+
+export async function measureManatalPhoneFrame(
+  page: Page,
+): Promise<{ width: number; height: number }> {
+  const phone = page
+    .getByTestId("highlight-card-3")
+    .getByTestId("carousel-device-frame-phone");
+  const box = await phone.boundingBox();
+  if (!box) {
+    throw new Error("Expected Manatal phone frame bounding box.");
+  }
+  return { width: box.width, height: box.height };
+}
+
+export async function expectManatalPhoneFrameMinHeight(
+  page: Page,
+  minHeightPx: number,
+): Promise<void> {
+  const { height } = await measureManatalPhoneFrame(page);
+  expect(height).toBeGreaterThanOrEqual(minHeightPx);
+}
+
+export async function expectManatalPhoneFrameHeightNearBaseline(
+  page: Page,
+  baselineHeight: number,
+  tolerancePx: number,
+): Promise<void> {
+  const { height } = await measureManatalPhoneFrame(page);
+  expect(Math.abs(height - baselineHeight)).toBeLessThanOrEqual(tolerancePx);
+}
