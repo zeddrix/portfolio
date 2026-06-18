@@ -12,8 +12,8 @@ import {
 
 describe("optimize-images sharpen profiles", () => {
   it("returns strong profile for AnswerIQ screenshots", () => {
-    expect(getSharpenProfile("answeriq-1-dashboard.png")).toBe("strong");
-    expect(getSharpenProfile("answeriq-6-admin-users.png")).toBe("strong");
+    expect(getSharpenProfile("answeriq-1-landingpage.png")).toBe("strong");
+    expect(getSharpenProfile("answeriq-7-admin-users.png")).toBe("strong");
   });
 
   it("returns strong profile for chatbot screenshots", () => {
@@ -32,12 +32,20 @@ describe("optimize-images sharpen profiles", () => {
 });
 
 describe("optimize-images optimization profiles", () => {
-  it("uses compact variants for AnswerIQ and chatbot UI screenshots", () => {
-    expect(getOptimizationProfile("answeriq-1-dashboard.png")).toEqual({
-      variantWidths: [640],
-      quality: 72,
-      maxWidth: 1024,
+  it("uses default variants for AnswerIQ screenshots", () => {
+    expect(getOptimizationProfile("answeriq-1-landingpage.png")).toEqual({
+      variantWidths: [640, 920, 1280],
+      quality: 82,
+      maxWidth: 1840,
     });
+    expect(getOptimizationProfile("answeriq-6-admin-dashboard.png")).toEqual({
+      variantWidths: [640, 920, 1280],
+      quality: 82,
+      maxWidth: 1840,
+    });
+  });
+
+  it("uses compact variants for chatbot and Manatal UI screenshots", () => {
     expect(getOptimizationProfile("chatbot-start.png")).toEqual({
       variantWidths: [640],
       quality: 72,

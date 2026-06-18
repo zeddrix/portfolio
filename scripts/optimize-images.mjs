@@ -21,7 +21,7 @@ const SKIP_FILES = new Set([
   ".nojekyll",
 ]);
 const DELETE_ORPHANS = ["pwa-jwtabs-desktop.png"];
-const COMPACT_PREFIXES = ["answeriq-", "chatbot-", "manatal-coop-"];
+const COMPACT_PREFIXES = ["chatbot-", "manatal-coop-"];
 const CERTIFICATE_PREFIX = "certificate-";
 
 /** @typedef {'strong' | 'mild' | 'none'} SharpenProfile */
