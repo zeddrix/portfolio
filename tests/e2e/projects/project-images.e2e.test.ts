@@ -75,7 +75,44 @@ test.describe("project image mapping", () => {
       .not.toBe(firstSrc);
   });
 
-  test("Given Queue carousel journey, when user opens detail, then chatbot gallery assets render", async ({
+  test("Given Queue highlight card visible, when carousel rotates through slides, then image src never matches chatbot assets", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.work.carousel);
+    const queueCard = page.getByTestId("highlight-card-2");
+    await queueCard.scrollIntoViewIfNeeded();
+
+    await expect(
+      queueCard.getByTestId("carousel-device-frame-browser"),
+    ).toBeVisible();
+    await expect(
+      queueCard.getByTestId("carousel-device-frame-phone"),
+    ).toHaveCount(0);
+
+    const queueImage = carouselImage(page, "queue");
+    const observedSrcs = new Set<string>();
+    const firstSrc = await queueImage.getAttribute("src");
+    expect(firstSrc).toMatch(/queue-.*\.webp/);
+    expect(firstSrc).not.toMatch(/chatbot-/);
+    if (firstSrc) {
+      observedSrcs.add(firstSrc);
+    }
+
+    for (let rotation = 0; rotation < 4; rotation += 1) {
+      await waitForCarouselImageChange(page, "queue");
+      const nextSrc = await queueImage.getAttribute("src");
+      expect(nextSrc).toMatch(/queue-.*\.webp/);
+      expect(nextSrc).not.toMatch(/chatbot-/);
+      if (nextSrc) {
+        observedSrcs.add(nextSrc);
+      }
+    }
+
+    expect(observedSrcs.size).toBeGreaterThan(1);
+  });
+
+  test("Given Queue project detail, when user opens gallery, then only Queue product screenshots render", async ({
     page,
   }) => {
     await gotoHome(page);
@@ -89,23 +126,33 @@ test.describe("project image mapping", () => {
       detailImage(page, "project-detail-hero-image"),
     ).toHaveAttribute("src", /queue-1-dashboard.*\.webp/);
     await expect(
-      detailImage(page, "project-detail-gallery-image-4"),
-    ).toHaveAttribute("src", /chatbot-start.*\.webp/);
+      detailImage(page, "project-detail-gallery-image-1"),
+    ).toHaveAttribute("src", /queue-2-analytics.*\.webp/);
     await expect(
-      detailImage(page, "project-detail-gallery-image-5"),
-    ).toHaveAttribute("src", /chatbot-placement-in-full-dashboard.*\.webp/);
+      detailImage(page, "project-detail-gallery-image-2"),
+    ).toHaveAttribute("src", /queue-3-events.*\.webp/);
+    await expect(
+      detailImage(page, "project-detail-gallery-image-3"),
+    ).toHaveAttribute("src", /queue-4-listings.*\.webp/);
+    await expect(
+      page.getByTestId("project-detail-gallery-image-4"),
+    ).toHaveCount(0);
 
     const galleryUrls = [
-      await detailImage(page, "project-detail-gallery-image-4").getAttribute(
+      await detailImage(page, "project-detail-gallery-image-1").getAttribute(
         "src",
       ),
-      await detailImage(page, "project-detail-gallery-image-5").getAttribute(
+      await detailImage(page, "project-detail-gallery-image-2").getAttribute(
+        "src",
+      ),
+      await detailImage(page, "project-detail-gallery-image-3").getAttribute(
         "src",
       ),
     ];
 
     for (const imageUrl of galleryUrls) {
       expect(imageUrl).not.toBeNull();
+      expect(imageUrl).not.toMatch(/chatbot-/);
       const resolvedUrl = new URL(imageUrl ?? "", page.url()).href;
       expect((await page.request.get(resolvedUrl)).ok()).toBeTruthy();
     }

@@ -45,8 +45,13 @@ describe("portfolio data", () => {
       "/usedelight-5-subscription.webp",
     );
     expect(queue?.primaryImage).toBe("/queue-1-dashboard.webp");
-    expect(queue?.galleryImages).toContain("/chatbot-start.webp");
-    expect(queue?.galleryImages).toContain(
+    expect(queue?.galleryImages).toEqual([
+      "/queue-2-analytics.webp",
+      "/queue-3-events.webp",
+      "/queue-4-listings.webp",
+    ]);
+    expect(queue?.galleryImages).not.toContain("/chatbot-start.webp");
+    expect(queue?.galleryImages).not.toContain(
       "/chatbot-placement-in-full-dashboard.webp",
     );
     expect(jwTabs?.primaryImage).toBe("/jw-tabs-1-homepage.webp");
