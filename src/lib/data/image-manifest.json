@@ -56,104 +56,24 @@
     ],
     "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASogABQAPwFssFErJaSnMBgIAWAgCWUAt7gWiSDIkihNY3rAAP7to/EkHEdlr2Xf0bTj5tv36JhUeyqhwhAiq6cesoRQm7gA"
   },
-  "/answeriq-1-dashboard.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
-      {
-        "width": 640,
-        "path": "/answeriq-1-dashboard-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAwCdASogABQAPwF0r1KrJqQiqAqpYCAJZwAALnhE33H9Cih6cAAA/s17UtoC8uY9kiDTerW7e3lMMikG+evwFpbLMqESYxTMaoggAAA="
-  },
-  "/answeriq-2-articles.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
-      {
-        "width": 640,
-        "path": "/answeriq-2-articles-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADwAwCdASogABQAPwFwsVGrJiSiqAqpYCAJZwDG9BWEr4svR4Z6Zi4AAP7t3Vgq/m34SM8GN2SHQkY1j5MbaXg0tmfkPkF9I+wAAA=="
-  },
-  "/answeriq-3-profile.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
-      {
-        "width": 640,
-        "path": "/answeriq-3-profile-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAACwAwCdASogABQAPwF2s1QrJySjKAgBYCAJZwAARTr8vZZZali9KAD+7nwt8Rh7MnymO/RiO16c6/Ux/33wBkHhtSwLSoANzYkQAA=="
-  },
-  "/answeriq-4-settings.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
-      {
-        "width": 640,
-        "path": "/answeriq-4-settings-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASogABQAPwF0rlKrJqQiqAqpYCAJZwDDcBWEkSLPZJX0oAD+7hzrw74kL2gKB4K8pqww7cHLj1rcPTQYgAA="
-  },
-  "/answeriq-5-admin-dashboard.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
-      {
-        "width": 640,
-        "path": "/answeriq-5-admin-dashboard-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAwCdASogABQAPwF4tVQrJyUjKAgBYCAJZ2apVdaH31GgGpmlJiaAAP68VuNWLWVHtVEPyUixv5+AqyxP/9Mm4fGvS7jet3c0xGRg1dKMP7L15RNbXIWAAAA="
-  },
-  "/answeriq-6-admin-users.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
-      {
-        "width": 640,
-        "path": "/answeriq-6-admin-users-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABwBACdASogABQAPwFysFIrJqSiqAqpYCAJZwDImBI/+t7IWbXoUIaKOyIOGAD+vGQwRmP0FVMZ/SBrJlbYA723MaC/tPswlRtQMWoMAAA="
-  },
-  "/answeriq-7-admin-subscriptions.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
-      {
-        "width": 640,
-        "path": "/answeriq-7-admin-subscriptions-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwBACdASogABQAPwFqsFErJaSisBgIAWAgCWcAyrQYPM8cvPwx1r744oAA/u6qN+L3YdLe2kovKbgxTD9E+tpCICkhxsqASjHVcQEHbtOncqXTFnFA0G7D2AAAAA=="
-  },
   "/answeriq-8-admin-workspaces.webp": {
-    "width": 1024,
-    "height": 640,
+    "width": 1840,
+    "height": 1152,
     "variants": [
       {
         "width": 640,
         "path": "/answeriq-8-admin-workspaces-640w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQBACdASogABQAPwF0r1KrJqQiqAqpYCAJZwDGQBI/7Ef99+dVjzPT0RCAAP7N2g456K5jgdKtR4rvL8/nmx0zbRs0XG0t2t1u0rIAAAA="
-  },
-  "/answeriq-9-admin-system-settings.webp": {
-    "width": 1024,
-    "height": 640,
-    "variants": [
+      },
       {
-        "width": 640,
-        "path": "/answeriq-9-admin-system-settings-640w.webp"
+        "width": 920,
+        "path": "/answeriq-8-admin-workspaces-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-8-admin-workspaces-1280w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAwCdASogABQAPwFurlArJiQiqA1RYCAJZwDKABXzS5M/Y1d+JagA/u9eTpkFEJhW0lGY0GnYSYNiwFATRCUtF06AgJUaBzd8MY/wAAA="
+    "lqip": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwBACdASogABQAPwFyslIrJqSjqAqpYCAJZwDBzBI/Qc/Nz/MRX52CkIAA/s37WbEN5Dtc+5HQ9sXNCV3me+KJHWjy4NPU+igjg912OxiAAA=="
   },
   "/articulearn.webp": {
     "width": 1840,
@@ -812,5 +732,138 @@
       }
     ],
     "lqip": "data:image/webp;base64,UklGRtIAAABXRUJQVlA4IMYAAACQBwCdASogAEgAPvFmpk6ppaOiMzqt+TAeCWUAyNRpVwuiQ7uDQSPvDK/F3jYfnxjl99OjdsWGAU5wzAsVvS2PqGBZqPAA/u1Mm2mYEg/M/hRjmeIrE5i5ecfvYRpaMopVOjKPBP0hItcEXw+mkq7E4f0NfwDbmkFNbQ3iOoBO3IQzO05vfO+o6yENaujReYLjA0aXvWruSae3eiKoPMQSxYnPSy+zGqBGhdxIX1mO0XSiUF12c2KTphEZsh/ky/4hkIET+AA="
+  },
+  "/answeriq-1-landingpage.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-1-landingpage-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/answeriq-1-landingpage-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-1-landingpage-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASogABQAPvFqq06ppqQiMAwBMB4JQBf9hDv4BA1EJiTY9rMAAP7ufz8mAkZ8BZGktZf2Pt0vCdIG9blgSSPe1OdaYyvEwAAA"
+  },
+  "/answeriq-2-dashboard.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-2-dashboard-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/answeriq-2-dashboard-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-2-dashboard-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAACQBACdASogABQAPwFkq0+rJSOiMBgMAWAgCWcAyNQWGJFZWIMu6BabylLMRgAA/u1jlh1ldEuur3jhnT6bMKwr/lclA4Sn+anDw66jNCG0f4i3AAA="
+  },
+  "/answeriq-3-articles.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-3-articles-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/answeriq-3-articles-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-3-articles-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACwAwCdASogABQAPwFws1GrJiSiqAqpYCAJZwDO7BWEXRL4aZvS6AD+7d1YWRKfSAlqpK7GLX0q3p72OwrImnwmljQMXKSAAAA="
+  },
+  "/answeriq-4-profile.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-4-profile-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/answeriq-4-profile-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-4-profile-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAwCdASogABQAPwFytFGrJqUiqAqpYCAJZ2DrWs6HY5jVZidIgdzgAP7ZTPB0cjFWULtoEkDyQezOkKSWFPSrhLS3rzsQkoyruBGZzDgAAAAA"
+  },
+  "/answeriq-5-settings.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-5-settings-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/answeriq-5-settings-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-5-settings-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAwCdASogABQAPwFysFIrJqSiqAqpYCAJZwDGQBbJeTl/rKc5c3RoAP7uHVbC0f6eWN3T0NJ15Ro72wVLINLMEYJIv3TQwAA="
+  },
+  "/answeriq-6-admin-dashboard.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-6-admin-dashboard-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/answeriq-6-admin-dashboard-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-6-admin-dashboard-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQBACdASogABQAPwF0r1KrJqQiqAqpYCAJZwDBzBI/+dv+AzgJnI0m1tcAAP68Y+UQgnzH6kbXX5jg6QIzh1TuYn8kl249Zp8FaugAAAA="
+  },
+  "/answeriq-7-admin-users.webp": {
+    "width": 1840,
+    "height": 1150,
+    "variants": [
+      {
+        "width": 640,
+        "path": "/answeriq-7-admin-users-640w.webp"
+      },
+      {
+        "width": 920,
+        "path": "/answeriq-7-admin-users-920w.webp"
+      },
+      {
+        "width": 1280,
+        "path": "/answeriq-7-admin-users-1280w.webp"
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAABQBACdASogABQAPwFurlCrJiQiqA1RYCAJZwDLLBI/60n/0x9xTpXYsZcAAP68ZC8NR/5b3rWH53EyG/o8ijAjxyqqLIQqRiQeBd08MzkAAAAA"
   }
 }
