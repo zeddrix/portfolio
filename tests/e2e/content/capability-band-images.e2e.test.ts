@@ -77,6 +77,23 @@ test.describe("capability band images", () => {
     }
   });
 
+  test("Given billing carousel, when user advances slide, then checkout screenshot loads", async ({
+    page,
+  }) => {
+    const billingBand = page.getByTestId("highlight-band-2");
+    await expect(bandImage(page, 2, 0)).toHaveAttribute(
+      "src",
+      /lemonsqueezy-dashboard.*\.webp/,
+    );
+
+    await billingBand.getByTestId("capability-carousel-next").click();
+
+    await expect(bandImage(page, 2, 1)).toHaveAttribute(
+      "src",
+      /merns-shop-4-checkout.*\.webp/,
+    );
+  });
+
   test("Given chatbot carousel, when user advances slides, then screenshot source updates", async ({
     page,
   }) => {
@@ -86,9 +103,7 @@ test.describe("capability band images", () => {
       /chatbot-start.*\.webp/,
     );
 
-    await chatbotBand
-      .getByRole("button", { name: "Next Chatbot screenshot" })
-      .click();
+    await chatbotBand.getByTestId("capability-carousel-next").click();
 
     await expect(bandImage(page, 4, 1)).toHaveAttribute(
       "src",
@@ -105,11 +120,7 @@ test.describe("capability band images", () => {
       /namecheap-dashboard-domain.*\.webp/,
     );
 
-    await deploymentBand
-      .getByRole("button", {
-        name: "Next Website Domain and Deployment screenshot",
-      })
-      .click();
+    await deploymentBand.getByTestId("capability-carousel-next").click();
 
     await expect(bandImage(page, 6, 1)).toHaveAttribute(
       "src",
@@ -268,5 +279,29 @@ test.describe("capability band images", () => {
     }
 
     expect(imageBox.height / visualBox.height).toBeGreaterThan(0.4);
+  });
+
+  test("Given chatbot carousel chevrons, when controls render, then nav buttons sit outside screenshot area", async ({
+    page,
+  }) => {
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    const image = bandImage(page, 4, 0);
+    const prevButton = chatbotBand.getByTestId("capability-carousel-prev");
+    const nextButton = chatbotBand.getByTestId("capability-carousel-next");
+
+    await expect(prevButton).toBeVisible();
+    await expect(nextButton).toBeVisible();
+    await expect(chatbotBand.getByText("Prev")).toHaveCount(0);
+    await expect(chatbotBand.getByText("Next")).toHaveCount(0);
+
+    const imageBox = await image.boundingBox();
+    const prevBox = await prevButton.boundingBox();
+    const nextBox = await nextButton.boundingBox();
+    if (!imageBox || !prevBox || !nextBox) {
+      throw new Error("Expected chatbot carousel bounding boxes.");
+    }
+
+    expect(prevBox.x + prevBox.width).toBeLessThanOrEqual(imageBox.x + 2);
+    expect(nextBox.x).toBeGreaterThanOrEqual(imageBox.x + imageBox.width - 2);
   });
 });

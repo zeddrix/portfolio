@@ -177,61 +177,89 @@
 		</div>
 	{:else if hasVisualMedia && imageLayout === 'carousel'}
 		<div
-			class="relative flex min-h-[260px] items-center justify-center sm:min-h-[300px] lg:min-h-[340px]"
+			class="flex min-h-[260px] flex-col sm:min-h-[300px] lg:min-h-[340px]"
 			data-testid="capability-band-visual-carousel"
 		>
-			{#each displayImages as imagePath, index (imagePath)}
-				<div
-					class={'absolute inset-0 flex items-center justify-center p-4 transition-opacity duration-300 ' +
-						(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
-				>
-					<OptimizedImage
-						src={imagePath}
-						alt={screenshotAlt + ' slide ' + (index + 1)}
-						className="h-full w-full"
-						fit="contain"
-						preserveNaturalAspect={true}
-						sizes="(max-width: 1024px) 100vw, 600px"
-						loading={index === 0 ? 'eager' : 'lazy'}
-						testId={'capability-band-image-' + index}
-					/>
-				</div>
-			{/each}
-
-			{#if showCarouselControls}
-				<div
-					class={'absolute inset-x-0 z-20 flex items-center justify-center gap-3 px-4 ' +
-						(visual.type === 'hybrid' && badges.length > 0 ? 'bottom-14' : 'bottom-3')}
-				>
+			<div
+				class="flex min-h-[220px] flex-1 items-stretch sm:min-h-[260px] lg:min-h-[300px]"
+			>
+				{#if showCarouselControls}
 					<button
 						type="button"
-						class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
+						class="mx-1 flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full bg-zinc-950/70 text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900 sm:mx-2 sm:h-11 sm:w-11"
 						aria-label={'Previous ' + title + ' screenshot'}
+						data-testid="capability-carousel-prev"
 						on:click={showPreviousSlide}
 					>
-						Prev
+						<svg
+							class="h-5 w-5"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.75"
+							aria-hidden="true"
+						>
+							<path d="M15 6l-6 6 6 6" />
+						</svg>
 					</button>
-					<div class="flex items-center gap-2" role="tablist" aria-label={title + ' screenshot slides'}>
-						{#each displayImages as imagePath, index (imagePath)}
-							<button
-								type="button"
-								class={'h-2.5 w-2.5 rounded-full transition ' +
-									(index === safeCarouselIndex ? 'bg-white' : 'bg-white/35 hover:bg-white/55')}
-								aria-label={'Show slide ' + (index + 1)}
-								aria-selected={index === safeCarouselIndex}
-								role="tab"
-								on:click={() => setCarouselIndex(index)}
-							></button>
-						{/each}
-					</div>
+				{/if}
+				<div class="relative min-w-0 flex-1">
+					{#each displayImages as imagePath, index (imagePath)}
+						<div
+							class={'absolute inset-0 flex items-center justify-center px-2 py-4 transition-opacity duration-300 sm:px-3 ' +
+								(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
+						>
+							<OptimizedImage
+								src={imagePath}
+								alt={screenshotAlt + ' slide ' + (index + 1)}
+								className="h-full w-full"
+								fit="contain"
+								preserveNaturalAspect={true}
+								sizes="(max-width: 1024px) 100vw, 600px"
+								loading={index === 0 ? 'eager' : 'lazy'}
+								testId={'capability-band-image-' + index}
+							/>
+						</div>
+					{/each}
+				</div>
+				{#if showCarouselControls}
 					<button
 						type="button"
-						class="rounded-full bg-zinc-950/70 px-3 py-1.5 text-sm font-medium text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900"
+						class="mx-1 flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full bg-zinc-950/70 text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900 sm:mx-2 sm:h-11 sm:w-11"
 						aria-label={'Next ' + title + ' screenshot'}
+						data-testid="capability-carousel-next"
 						on:click={showNextSlide}
 					>
-						Next
+						<svg
+							class="h-5 w-5"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.75"
+							aria-hidden="true"
+						>
+							<path d="M9 6l6 6-6 6" />
+						</svg>
 					</button>
+				{/if}
+			</div>
+			{#if showCarouselControls}
+				<div
+					class="flex items-center justify-center gap-2 pb-3 pt-1"
+					role="tablist"
+					aria-label={title + ' screenshot slides'}
+				>
+					{#each displayImages as imagePath, index (imagePath)}
+						<button
+							type="button"
+							class={'h-2.5 w-2.5 rounded-full transition ' +
+								(index === safeCarouselIndex ? 'bg-white' : 'bg-white/35 hover:bg-white/55')}
+							aria-label={'Show slide ' + (index + 1)}
+							aria-selected={index === safeCarouselIndex}
+							role="tab"
+							on:click={() => setCarouselIndex(index)}
+						></button>
+					{/each}
 				</div>
 			{/if}
 		</div>
