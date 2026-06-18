@@ -9,19 +9,19 @@ Refactored capability band device frames to match featured-carousel polish: shar
 
 ## Verified
 
-| Check | Result |
-| ----- | ------ |
-| No absolute badge scrim overlay on screenshots | Pass |
-| Hybrid bands show badges in fixed footer (Stripe/LS/PayPal, Groq/Claude, Playwright/Vitest) | Pass (E2E) |
-| Chevrons vertically centered on `capability-band-stage` | Pass (E2E) |
-| 2-slide carousels: no dot row, chevrons only | Pass (E2E) |
-| 4-slide deployment: footer counter `1 / 4` → `2 / 4` on advance | Pass (E2E) |
-| ATDD single image: footer badges below screenshot | Pass (E2E) |
-| Shared `DEVICE_CARD_GRADIENT` in featured carousel + capability bands | Pass (code) |
-| `device-frame.test.ts` unit guard | Pass |
-| `capability-band-images.e2e.test.ts` (15 tests) | Pass |
-| `content-integrity.e2e.test.ts` billing PayPal via footer badges | Pass |
-| `pnpm quality` (format, lint, svelte-check) | Pass |
+| Check                                                                                       | Result      |
+| ------------------------------------------------------------------------------------------- | ----------- |
+| No absolute badge scrim overlay on screenshots                                              | Pass        |
+| Hybrid bands show badges in fixed footer (Stripe/LS/PayPal, Groq/Claude, Playwright/Vitest) | Pass (E2E)  |
+| Chevrons vertically centered on `capability-band-stage`                                     | Pass (E2E)  |
+| 2-slide carousels: no dot row, chevrons only                                                | Pass (E2E)  |
+| 4-slide deployment: footer counter `1 / 4` → `2 / 4` on advance                             | Pass (E2E)  |
+| ATDD single image: footer badges below screenshot                                           | Pass (E2E)  |
+| Shared `DEVICE_CARD_GRADIENT` in featured carousel + capability bands                       | Pass (code) |
+| `device-frame.test.ts` unit guard                                                           | Pass        |
+| `capability-band-images.e2e.test.ts` (15 tests)                                             | Pass        |
+| `content-integrity.e2e.test.ts` billing PayPal via footer badges                            | Pass        |
+| `pnpm quality` (format, lint, svelte-check)                                                 | Pass        |
 
 ## New testids / registry delta
 
