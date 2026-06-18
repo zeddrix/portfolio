@@ -727,7 +727,13 @@ export const capabilityBands: CapabilityBand[] = [
     description:
       "AI-assisted support and guided workflows that help users move faster without adding UI complexity.",
     highlights: ["Groq", "Anthropic Claude", "Queue", "JW Tabs", "Iaso"],
-    relatedProjectSlugs: ["queue", "jw-tabs", "iaso", "trulyhappy"],
+    relatedProjectSlugs: [
+      "queue",
+      "jw-tabs",
+      "iaso",
+      "trulyhappy",
+      "manatal-coop",
+    ],
     visual: {
       type: "hybrid",
       imageLayout: "carousel",
@@ -735,9 +741,9 @@ export const capabilityBands: CapabilityBand[] = [
       badges: ["Groq", "Anthropic Claude"],
       slides: [
         {
-          src: "/chatbot-start.webp",
+          src: "/manatal-coop-chatbot.webp",
           frame: "phone",
-          domain: "queue.place",
+          domain: "manatalcoop.app",
         },
         {
           src: "/chatbot-placement-in-full-dashboard.webp",

@@ -2,6 +2,10 @@
 	import BrowserDeviceFrame from '$lib/components/BrowserDeviceFrame.svelte';
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import PhoneDeviceFrame from '$lib/components/PhoneDeviceFrame.svelte';
+	import {
+		MANATAL_PHONE_SCREEN_ASPECT_CSS,
+		getManatalCarouselSlideMeta
+	} from '$lib/constants/carousel';
 	import { DEVICE_BLUR_BACKDROP, DEVICE_CARD_GRADIENT } from '$lib/constants/device-frame';
 
 	/** @type {string} */
@@ -18,6 +22,11 @@
 	export let loading = 'lazy';
 	/** @type {string} */
 	export let sizes = '(max-width: 1024px) 100vw, 600px';
+
+	$: isManatalPhoneSlide = frame === 'phone' && src.startsWith('/manatal-coop-');
+	$: manatalSlideMeta = isManatalPhoneSlide
+		? getManatalCarouselSlideMeta(src)
+		: { objectPosition: '50% 50%' };
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl">
@@ -37,18 +46,37 @@
 		<div class="relative z-10">
 			{#if frame === 'phone'}
 				<div class="mx-auto w-full max-w-[280px]">
-					<PhoneDeviceFrame domain={domain ?? ''}>
-						<OptimizedImage
-							{src}
-							{alt}
-							className="h-full w-full"
-							fit="cover"
-							preserveNaturalAspect={true}
-							{sizes}
-							{loading}
-							testId={'capability-band-image-' + imageIndex}
-						/>
-					</PhoneDeviceFrame>
+					{#if isManatalPhoneSlide}
+						<PhoneDeviceFrame
+							fillMode="card"
+							domain={domain ?? ''}
+							screenAspectRatio={MANATAL_PHONE_SCREEN_ASPECT_CSS}
+						>
+							<OptimizedImage
+								{src}
+								{alt}
+								className="absolute inset-0 h-full w-full"
+								fit="cover"
+								objectPosition={manatalSlideMeta.objectPosition}
+								{sizes}
+								{loading}
+								testId={'capability-band-image-' + imageIndex}
+							/>
+						</PhoneDeviceFrame>
+					{:else}
+						<PhoneDeviceFrame domain={domain ?? ''}>
+							<OptimizedImage
+								{src}
+								{alt}
+								className="h-full w-full"
+								fit="cover"
+								preserveNaturalAspect={true}
+								{sizes}
+								{loading}
+								testId={'capability-band-image-' + imageIndex}
+							/>
+						</PhoneDeviceFrame>
+					{/if}
 				</div>
 			{:else if frame === 'browser'}
 				<BrowserDeviceFrame domain={domain ?? ''}>
