@@ -1,6 +1,7 @@
 <script>
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import PhoneDeviceFrame from '$lib/components/PhoneDeviceFrame.svelte';
+	import BrowserDeviceFrame from '$lib/components/BrowserDeviceFrame.svelte';
 	import { MANATAL_PHONE_SCREEN_ASPECT_CSS } from '$lib/constants/carousel';
 	import { getProjectDisplayUrl } from '$lib/utils/portfolio-display';
 	import { isPortraitImage } from '$lib/utils/optimized-image';
@@ -84,20 +85,7 @@
 	</div>
 {:else}
 	<div data-testid="carousel-device-frame-browser">
-		<div class="relative flex h-11 items-center justify-center border-b border-white/5 px-4">
-			<div class="absolute left-4 flex gap-1.5">
-				<span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56]"></span>
-				<span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]"></span>
-				<span class="h-2.5 w-2.5 rounded-full bg-[#27c93f]"></span>
-			</div>
-			<div
-				data-testid={'carousel-project-url-' + project.slug}
-				class="flex h-7 min-w-0 max-w-[min(100%,28rem)] items-center justify-center truncate rounded-lg bg-black/40 px-3 text-xs text-zinc-300"
-			>
-				{displayUrl}
-			</div>
-		</div>
-		<div class="aspect-[16/10] w-full overflow-hidden bg-black/20">
+		<BrowserDeviceFrame domain={displayUrl} urlTestId={'carousel-project-url-' + project.slug}>
 			{#key imagePath}
 				<OptimizedImage
 					testId={'carousel-project-image-' + project.slug}
@@ -112,6 +100,6 @@
 					className={`h-full w-full ${hoverZoomClass}`}
 				/>
 			{/key}
-		</div>
+		</BrowserDeviceFrame>
 	</div>
 {/if}

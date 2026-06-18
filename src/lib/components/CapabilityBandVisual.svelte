@@ -1,18 +1,18 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
+	import CapabilityBandSlideSurface from '$lib/components/CapabilityBandSlideSurface.svelte';
 	import CarouselChevronButton from '$lib/components/CarouselChevronButton.svelte';
-	import DeviceBadgeFooter from '$lib/components/DeviceBadgeFooter.svelte';
-	import DeviceStageSurface from '$lib/components/DeviceStageSurface.svelte';
+	import CapabilityBandSlideSurfaceWide from '$lib/components/CapabilityBandSlideSurfaceWide.svelte';
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
-	import {
-		DEVICE_CARD_GRADIENT,
-		DEVICE_FRAME_SHELL,
-	} from '$lib/constants/device-frame';
+	import { DEVICE_FRAME_SHELL } from '$lib/constants/device-frame';
+	import { normalizeBandSlides } from '$lib/utils/capability-band-slides';
 
 	/** @type {import('$lib/types/portfolio').CapabilityBandVisual} */
 	export let visual;
 	/** @type {string} */
 	export let title;
+	/** @type {number} */
+	export let activeCarouselIndex = 0;
 
 	let carouselIndex = 0;
 	/** @type {HTMLElement | null} */
@@ -47,17 +47,17 @@
 		}
 	}
 
-	/** @param {string[]} images */
-	function getImageLayout(images) {
+	/** @param {import('$lib/types/portfolio').CapabilityBandSlide[]} slides */
+	function getImageLayout(slides) {
 		if (visual.imageLayout) {
 			return visual.imageLayout;
 		}
 
-		if (images.length > 2) {
+		if (slides.length > 2) {
 			return 'carousel';
 		}
 
-		if (images.length === 2) {
+		if (slides.length === 2) {
 			return 'split';
 		}
 
@@ -65,34 +65,19 @@
 	}
 
 	$: iconIds = visual.icons ?? [];
-	$: badges = visual.badges ?? [];
+	$: slides = normalizeBandSlides(visual);
 	$: screenshotAlt = title + ' capability preview';
 	$: iconPanelAlt = title + ' capability illustration';
-	$: displayImages =
-		visual.images && visual.images.length > 0
-			? visual.images
-			: visual.image
-				? [visual.image]
-				: [];
-	$: imageLayout = getImageLayout(displayImages);
+	$: imageLayout = getImageLayout(slides);
 	$: hasVisualMedia =
-		(visual.type === 'screenshot' || visual.type === 'hybrid') && displayImages.length > 0;
-	$: carouselCount = displayImages.length;
+		(visual.type === 'screenshot' || visual.type === 'hybrid') && slides.length > 0;
+	$: carouselCount = slides.length;
 	$: safeCarouselIndex =
 		carouselCount > 0 ? ((carouselIndex % carouselCount) + carouselCount) % carouselCount : 0;
+	$: activeCarouselIndex = safeCarouselIndex;
 	$: autoRotate = visual.autoRotate === true && imageLayout === 'carousel' && carouselCount > 1;
 	$: showCarouselControls = imageLayout === 'carousel' && !autoRotate;
-	$: useCardGradient = visual.type === 'hybrid' || imageLayout === 'carousel';
-	$: showFooter =
-		badges.length > 0 || (imageLayout === 'carousel' && carouselCount >= 3);
-	$: frameShellClass =
-		(useCardGradient ? DEVICE_CARD_GRADIENT : 'bg-zinc-900') +
-		' relative min-h-[260px] w-full ' +
-		DEVICE_FRAME_SHELL +
-		' sm:min-h-[300px] lg:min-h-[340px]';
-	$: mediaColumnClass = showFooter
-		? 'grid min-h-[260px] grid-rows-[1fr_auto] sm:min-h-[300px] lg:min-h-[340px]'
-		: 'flex min-h-[260px] flex-col sm:min-h-[300px] lg:min-h-[340px]';
+	$: frameShellClass = 'relative w-full ' + DEVICE_FRAME_SHELL;
 
 	/** @param {number} nextIndex */
 	function setCarouselIndex(nextIndex) {
@@ -173,93 +158,91 @@
 
 <div bind:this={visualRoot} class={frameShellClass} data-testid="capability-band-visual">
 	{#if hasVisualMedia && imageLayout === 'split'}
-		<div class={mediaColumnClass}>
-			<DeviceStageSurface>
-				<div
-					class="grid h-full min-h-[220px] grid-cols-[1.35fr_0.65fr] items-center gap-2 p-4 sm:min-h-[260px] sm:gap-3 lg:min-h-[300px]"
-					data-testid="capability-band-visual-split"
-				>
-					{#each displayImages as imagePath, index (imagePath)}
-						<OptimizedImage
-							src={imagePath}
-							alt={screenshotAlt + (index === 0 ? ' desktop' : ' mobile')}
-							className="w-full"
-							fit="contain"
-							sizes="(max-width: 1024px) 100vw, 600px"
-							loading="lazy"
-							testId={'capability-band-image-' + index}
-						/>
-					{/each}
-				</div>
-			</DeviceStageSurface>
+		<div
+			class="grid min-h-[220px] grid-cols-[1.35fr_0.65fr] items-center gap-2 p-4 sm:min-h-[260px] sm:gap-3 lg:min-h-[300px]"
+			data-testid="capability-band-visual-split"
+		>
+			{#each slides as slide, index (slide.src)}
+				<OptimizedImage
+					src={slide.src}
+					alt={screenshotAlt + (index === 0 ? ' desktop' : ' mobile')}
+					className="w-full"
+					fit="contain"
+					sizes="(max-width: 1024px) 100vw, 600px"
+					loading="lazy"
+					testId={'capability-band-image-' + index}
+				/>
+			{/each}
 		</div>
 	{:else if hasVisualMedia && imageLayout === 'carousel'}
-		<div class={mediaColumnClass} data-testid="capability-band-visual-carousel">
-			<DeviceStageSurface>
-				{#each displayImages as imagePath, index (imagePath)}
-					<div
-						class={'absolute inset-0 flex items-center justify-center px-2 py-4 transition-opacity duration-300 sm:px-3 ' +
-							(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
-					>
-						<OptimizedImage
-							src={imagePath}
-							alt={screenshotAlt + ' slide ' + (index + 1)}
-							className="h-full w-full"
-							fit="contain"
-							preserveNaturalAspect={true}
-							sizes="(max-width: 1024px) 100vw, 600px"
-							loading={index === 0 ? 'eager' : 'lazy'}
-							testId={'capability-band-image-' + index}
-						/>
-					</div>
-				{/each}
+		<div class="group p-1 sm:p-2" data-testid="capability-band-visual-carousel">
+			<div
+				class="flex items-center gap-2 sm:gap-3"
+				data-testid="capability-band-carousel-row"
+			>
 				{#if showCarouselControls}
 					<CarouselChevronButton
+						variant="outside"
 						direction="prev"
 						ariaLabel={'Previous ' + title + ' screenshot'}
 						testId="capability-carousel-prev"
-						positionClass="left-1 sm:left-2"
 						on:click={showPreviousSlide}
 					/>
+				{/if}
+
+				<div class="relative min-w-0 flex-1">
+					{#each slides as slide, index (slide.src)}
+						<div
+							class={'transition-opacity duration-300 ' +
+								(index === safeCarouselIndex
+									? 'relative opacity-100'
+									: 'pointer-events-none absolute inset-0 opacity-0')}
+						>
+							<CapabilityBandSlideSurface
+								src={slide.src}
+								alt={screenshotAlt + ' slide ' + (index + 1)}
+								frame={slide.frame ?? 'browser'}
+								domain={slide.domain}
+								imageIndex={index}
+								loading={index === 0 ? 'eager' : 'lazy'}
+							/>
+						</div>
+					{/each}
+				</div>
+
+				{#if showCarouselControls}
 					<CarouselChevronButton
+						variant="outside"
 						direction="next"
 						ariaLabel={'Next ' + title + ' screenshot'}
 						testId="capability-carousel-next"
-						positionClass="right-1 sm:right-2"
 						on:click={showNextSlide}
 					/>
 				{/if}
-			</DeviceStageSurface>
-			{#if showFooter}
-				<DeviceBadgeFooter
-					{badges}
-					slideCount={carouselCount}
-					activeIndex={safeCarouselIndex}
-				/>
-			{/if}
+			</div>
 		</div>
 	{:else if hasVisualMedia}
-		<div class={mediaColumnClass}>
-			<DeviceStageSurface>
-				<div class="flex h-full min-h-[220px] items-center justify-center p-4 sm:min-h-[260px] lg:min-h-[300px]">
-					<OptimizedImage
-						src={displayImages[0]}
-						alt={screenshotAlt}
-						className="h-full w-full"
-						fit="contain"
-						sizes="(max-width: 1024px) 100vw, 600px"
-						loading="lazy"
-						testId="capability-band-image-0"
-					/>
-				</div>
-			</DeviceStageSurface>
-			{#if showFooter}
-				<DeviceBadgeFooter {badges} slideCount={0} activeIndex={0} />
+		<div class="p-1 sm:p-2">
+			{#if visual.type === 'hybrid'}
+				<CapabilityBandSlideSurface
+					src={slides[0].src}
+					alt={screenshotAlt}
+					frame={slides[0].frame ?? 'browser'}
+					domain={slides[0].domain}
+					imageIndex={0}
+					loading="lazy"
+				/>
+			{:else}
+				<CapabilityBandSlideSurfaceWide
+					src={slides[0].src}
+					alt={screenshotAlt}
+					imageIndex={0}
+				/>
 			{/if}
 		</div>
 	{:else}
 		<div
-			class="flex h-full min-h-[260px] flex-col items-center justify-center gap-6 p-8 sm:min-h-[300px] lg:min-h-[340px]"
+			class="flex min-h-[260px] flex-col items-center justify-center gap-6 p-8 sm:min-h-[300px] lg:min-h-[340px]"
 			role="img"
 			aria-label={iconPanelAlt}
 		>

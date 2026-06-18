@@ -7,11 +7,18 @@
 		profile
 	} from '$lib/data/portfolio';
 	import { pageShellClass } from '$lib/constants/layout';
+	import { DEVICE_BADGE_CHIP } from '$lib/constants/device-frame';
+	import { getBandCarouselSlideCount } from '$lib/utils/capability-band-slides';
 	import { appPath } from '$lib/utils/app-path';
 
 	export let capabilityLayoutMode = 'groupedBands';
 	/** @type {(mode: string) => void} */
 	export let onCapabilityLayoutChange = (_mode) => {};
+
+	/** @type {number[]} */
+	let sevenBandCarouselIndices = capabilityBands.map(() => 0);
+	/** @type {number[]} */
+	let groupedBandCarouselIndices = capabilityBandGroups.map(() => 0);
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
@@ -25,6 +32,28 @@
 	/** @param {number} index */
 	function getBandTestId(index) {
 		return 'highlight-band-' + index;
+	}
+
+	/** @param {import('$lib/types/portfolio').CapabilityBandVisual | undefined} visual */
+	function getSlideCount(visual) {
+		if (!visual) {
+			return 0;
+		}
+		return getBandCarouselSlideCount(visual);
+	}
+
+	/** @param {import('$lib/types/portfolio').CapabilityBandGroup} group */
+	function getGroupBadges(group) {
+		/** @type {string[]} */
+		const badges = [];
+		for (const band of group.bands) {
+			for (const badge of band.visual.badges ?? []) {
+				if (!badges.includes(badge)) {
+					badges.push(badge);
+				}
+			}
+		}
+		return badges;
 	}
 </script>
 
@@ -52,6 +81,8 @@
 		<div class="mt-14 space-y-20 sm:mt-16 sm:space-y-24 md:space-y-28">
 			{#if capabilityLayoutMode === 'sevenBands'}
 				{#each capabilityBands as band, index (band.id)}
+					{@const slideCount = getSlideCount(band.visual)}
+					{@const bandBadges = band.visual.badges ?? []}
 					<article
 						data-testid={getBandTestId(index)}
 						data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
@@ -60,14 +91,40 @@
 							class={'grid items-center gap-10 lg:grid-cols-2 lg:gap-16 ' +
 								(index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}
 						>
-							<CapabilityBandVisual visual={band.visual} title={band.title} />
-							<div class="space-y-5 lg:py-4">
+							<CapabilityBandVisual
+								visual={band.visual}
+								title={band.title}
+								bind:activeCarouselIndex={sevenBandCarouselIndices[index]}
+							/>
+							<div class="space-y-5 lg:py-4" data-testid="capability-band-text-column">
 								<h3
 									class="text-[clamp(1.75rem,calc(0.25rem+3vw),2.75rem)] font-bold leading-[1.12] tracking-[-0.03em] text-zinc-950"
 								>
 									{band.title}
 								</h3>
 								<p class="max-w-[46ch] text-lg leading-[1.65] text-zinc-600">{band.description}</p>
+								{#if bandBadges.length > 0 || slideCount >= 3}
+									<div class="flex flex-wrap items-center gap-2">
+										{#if bandBadges.length > 0}
+											<div
+												class="flex flex-wrap items-center gap-1.5 sm:gap-2"
+												data-testid="capability-band-badges"
+											>
+												{#each bandBadges as badge (badge)}
+													<span class={DEVICE_BADGE_CHIP + ' bg-zinc-900/90 text-zinc-100'}>{badge}</span>
+												{/each}
+											</div>
+										{/if}
+										{#if slideCount >= 3}
+											<p
+												class="text-sm font-medium tabular-nums text-zinc-500"
+												data-testid="capability-band-slide-counter"
+											>
+												{sevenBandCarouselIndices[index] + 1} / {slideCount}
+											</p>
+										{/if}
+									</div>
+								{/if}
 								{#if band.relatedProjectSlugs.length > 0}
 									<div class="flex flex-wrap items-center gap-2 pt-1">
 										<span class="text-sm font-semibold text-zinc-500">Shown in:</span>
@@ -88,6 +145,9 @@
 				{/each}
 			{:else if capabilityLayoutMode === 'groupedBands'}
 				{#each capabilityBandGroups as group, index (group.id)}
+					{@const groupVisual = group.visual ?? group.bands[0].visual}
+					{@const slideCount = getSlideCount(groupVisual)}
+					{@const groupBadges = getGroupBadges(group)}
 					<article
 						data-testid={getBandTestId(index)}
 						data-align={index % 2 === 0 ? 'left-media' : 'right-media'}
@@ -97,10 +157,11 @@
 								(index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')}
 						>
 							<CapabilityBandVisual
-								visual={group.visual ?? group.bands[0].visual}
+								visual={groupVisual}
 								title={group.title}
+								bind:activeCarouselIndex={groupedBandCarouselIndices[index]}
 							/>
-							<div class="space-y-6 lg:py-4">
+							<div class="space-y-6 lg:py-4" data-testid="capability-band-text-column">
 								<h3
 									class="text-[clamp(1.75rem,calc(0.25rem+3vw),2.75rem)] font-bold leading-[1.12] tracking-[-0.03em] text-zinc-950"
 								>
@@ -108,6 +169,24 @@
 								</h3>
 								{#if group.description}
 									<p class="max-w-[46ch] text-lg leading-[1.65] text-zinc-600">{group.description}</p>
+								{/if}
+								{#if groupBadges.length > 0}
+									<div
+										class="flex flex-wrap items-center gap-1.5 sm:gap-2"
+										data-testid="capability-band-badges"
+									>
+										{#each groupBadges as badge (badge)}
+											<span class={DEVICE_BADGE_CHIP + ' bg-zinc-900/90 text-zinc-100'}>{badge}</span>
+										{/each}
+									</div>
+								{/if}
+								{#if slideCount >= 3 && !groupVisual?.autoRotate}
+									<p
+										class="text-sm font-medium tabular-nums text-zinc-500"
+										data-testid="capability-band-slide-counter"
+									>
+										{groupedBandCarouselIndices[index] + 1} / {slideCount}
+									</p>
 								{/if}
 								<ul class="space-y-5 pt-1">
 									{#each group.bands as band (band.id)}
@@ -138,7 +217,7 @@
 				<article data-testid="highlight-band-0" data-align="left-media">
 					<div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
 						<CapabilityBandVisual visual={singleStackVisual} title="Technology stack" />
-						<div class="space-y-6 lg:py-4">
+						<div class="space-y-6 lg:py-4" data-testid="capability-band-text-column">
 							<h3
 								class="text-[clamp(1.75rem,calc(0.25rem+3vw),2.75rem)] font-bold leading-[1.12] tracking-[-0.03em] text-zinc-950"
 							>

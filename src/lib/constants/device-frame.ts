@@ -15,3 +15,11 @@ export const DEVICE_BADGE_CHIP =
 
 export const DEVICE_CAROUSEL_CHEVRON_BUTTON =
   "absolute top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-zinc-950/70 text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900 sm:h-11 sm:w-11";
+
+export const DEVICE_CAROUSEL_OUTSIDE_CHEVRON =
+  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-900/90 text-zinc-100 ring-1 ring-zinc-200/20 hover:bg-zinc-800 sm:h-9 sm:w-9 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:focus-visible:opacity-100 motion-reduce:opacity-100";
+
+export const CAPABILITY_BROWSER_ASPECT = "aspect-[16/10]";
+
+export const DEVICE_BLUR_BACKDROP =
+  "pointer-events-none absolute inset-0 scale-110 opacity-40 blur-2xl";

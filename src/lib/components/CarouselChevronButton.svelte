@@ -1,5 +1,8 @@
 <script>
-	import { DEVICE_CAROUSEL_CHEVRON_BUTTON } from '$lib/constants/device-frame';
+	import {
+		DEVICE_CAROUSEL_CHEVRON_BUTTON,
+		DEVICE_CAROUSEL_OUTSIDE_CHEVRON,
+	} from '$lib/constants/device-frame';
 
 	/** @type {'prev' | 'next'} */
 	export let direction;
@@ -7,21 +10,27 @@
 	export let ariaLabel;
 	/** @type {string} */
 	export let testId;
+	/** @type {'inside' | 'outside'} */
+	export let variant = 'inside';
 	/** @type {'left-1 sm:left-2' | 'right-1 sm:right-2'} */
-	export let positionClass;
+	export let positionClass = 'left-1 sm:left-2';
 
 	$: pathD = direction === 'prev' ? 'M15 6l-6 6 6 6' : 'M9 6l6 6-6 6';
+	$: buttonClass =
+		variant === 'outside'
+			? DEVICE_CAROUSEL_OUTSIDE_CHEVRON
+			: DEVICE_CAROUSEL_CHEVRON_BUTTON + ' ' + positionClass;
 </script>
 
 <button
 	type="button"
-	class={DEVICE_CAROUSEL_CHEVRON_BUTTON + ' ' + positionClass}
+	class={buttonClass}
 	aria-label={ariaLabel}
 	data-testid={testId}
 	on:click
 >
 	<svg
-		class="h-5 w-5"
+		class={variant === 'outside' ? 'h-4 w-4 sm:h-5 sm:w-5' : 'h-5 w-5'}
 		viewBox="0 0 24 24"
 		fill="none"
 		stroke="currentColor"
