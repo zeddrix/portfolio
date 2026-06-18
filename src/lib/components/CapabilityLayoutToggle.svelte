@@ -1,5 +1,5 @@
 <script>
-	export let capabilityLayoutMode = 'groupedBands';
+	export let capabilityLayoutMode = 'sevenBands';
 	/** @type {string} */
 	export let className = '';
 

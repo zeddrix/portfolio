@@ -585,7 +585,7 @@ export const projects: PortfolioProject[] = [
 ];
 
 export const defaultCapabilityBandLayoutMode: CapabilityBandLayoutMode =
-  "groupedBands";
+  "sevenBands";
 
 export const caseStudyProjectSlugs = [
   "usedelight",

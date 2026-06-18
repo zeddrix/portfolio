@@ -11,7 +11,7 @@
 	import { getBandCarouselSlideCount } from '$lib/utils/capability-band-slides';
 	import { appPath } from '$lib/utils/app-path';
 
-	export let capabilityLayoutMode = 'groupedBands';
+	export let capabilityLayoutMode = 'sevenBands';
 	/** @type {(mode: string) => void} */
 	export let onCapabilityLayoutChange = (_mode) => {};
 

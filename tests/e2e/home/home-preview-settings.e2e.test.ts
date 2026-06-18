@@ -27,13 +27,14 @@ test.describe("homepage approach layout toggle", () => {
     await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
   });
 
-  test("Given fresh homepage, when user scrolls to approach section, then grouped layout is selected", async ({
+  test("Given fresh homepage, when user scrolls to approach section, then detailed layout is selected", async ({
     page,
   }) => {
     await scrollToTestId(page, selectors.sections.approach);
     await expect(
-      page.getByTestId(selectors.approachLayout.capabilityGrouped),
+      page.getByTestId(selectors.approachLayout.capabilityDetailed),
     ).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByTestId("highlight-band-6")).toBeVisible();
     await expect(
       page.getByTestId(selectors.approachLayout.toggle),
     ).toBeVisible();
