@@ -285,7 +285,7 @@ test.describe("project image mapping", () => {
     const answeriqCarouselImage = carouselImage(page, "answeriq");
     await expect(answeriqCarouselImage).toHaveAttribute(
       "src",
-      /answeriq-1-dashboard.*\.webp/,
+      /answeriq-1-landingpage.*\.webp/,
     );
     await expect(answeriqCarouselImage).toHaveAttribute("src", basePathPattern);
 
@@ -296,9 +296,9 @@ test.describe("project image mapping", () => {
 
     await expect(
       detailImage(page, "project-detail-hero-image"),
-    ).toHaveAttribute("src", /answeriq-1-dashboard.*\.webp/);
+    ).toHaveAttribute("src", /answeriq-1-landingpage.*\.webp/);
     await expect(
-      detailImage(page, "project-detail-gallery-image-5"),
-    ).toHaveAttribute("src", /answeriq-6-admin-users.*\.webp/);
+      detailImage(page, "project-detail-gallery-image-6"),
+    ).toHaveAttribute("src", /answeriq-7-admin-users.*\.webp/);
   });
 });

@@ -51,7 +51,7 @@ test.describe("capability band images", () => {
     const adminDashboardImage = bandImage(page, 3, 0);
     await expect(adminDashboardImage).toHaveAttribute(
       "src",
-      /answeriq-5-admin-dashboard.*\.webp/,
+      /answeriq-6-admin-dashboard.*\.webp/,
     );
 
     const chatbotBand = page.getByTestId("highlight-band-4");
@@ -224,7 +224,7 @@ test.describe("capability band images", () => {
       .poll(async () => activeImage.getAttribute("src"), {
         timeout: 5_000,
       })
-      .toMatch(/answeriq-5-admin-dashboard.*\.webp/);
+      .toMatch(/answeriq-6-admin-dashboard.*\.webp/);
   });
 
   test("Given grouped capability layout, when user switches from preview settings, then grouped bands render without detailed band six", async ({
