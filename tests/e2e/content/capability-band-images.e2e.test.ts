@@ -243,7 +243,7 @@ test.describe("capability band images", () => {
     page,
   }) => {
     const chatbotBand = page.getByTestId("highlight-band-4");
-    const visual = chatbotBand.getByTestId("capability-band-visual");
+    const stage = chatbotBand.getByTestId("capability-band-stage");
     const image = bandImage(page, 4, 0);
 
     await expect(image).toHaveAttribute("src", /chatbot-start.*\.webp/);
@@ -251,20 +251,20 @@ test.describe("capability band images", () => {
       chatbotBand.getByTestId("capability-band-image-0"),
     ).toHaveAttribute("data-image-state", /^(lqip|loaded)$/);
 
-    const visualBox = await visual.boundingBox();
+    const stageBox = await stage.boundingBox();
     const imageBox = await image.boundingBox();
-    if (!visualBox || !imageBox) {
-      throw new Error("Expected chatbot visual and image bounding boxes.");
+    if (!stageBox || !imageBox) {
+      throw new Error("Expected chatbot stage and image bounding boxes.");
     }
 
-    expect(imageBox.height / visualBox.height).toBeGreaterThan(0.4);
+    expect(imageBox.height / stageBox.height).toBeGreaterThan(0.4);
   });
 
   test("Given deployment carousel in detailed layout, when slide loads, then image fills most of visual frame", async ({
     page,
   }) => {
     const deploymentBand = page.getByTestId("highlight-band-6");
-    const visual = deploymentBand.getByTestId("capability-band-visual");
+    const stage = deploymentBand.getByTestId("capability-band-stage");
     const image = bandImage(page, 6, 0);
 
     await expect(image).toHaveAttribute(
@@ -272,20 +272,87 @@ test.describe("capability band images", () => {
       /namecheap-dashboard-domain.*\.webp/,
     );
 
-    const visualBox = await visual.boundingBox();
+    const stageBox = await stage.boundingBox();
     const imageBox = await image.boundingBox();
-    if (!visualBox || !imageBox) {
-      throw new Error("Expected deployment visual and image bounding boxes.");
+    if (!stageBox || !imageBox) {
+      throw new Error("Expected deployment stage and image bounding boxes.");
     }
 
-    expect(imageBox.height / visualBox.height).toBeGreaterThan(0.4);
+    expect(imageBox.height / stageBox.height).toBeGreaterThan(0.4);
   });
 
-  test("Given chatbot carousel chevrons, when controls render, then nav buttons sit outside screenshot area", async ({
+  test("Given billing hybrid footer, when user views band, then badges render without slide dots", async ({
+    page,
+  }) => {
+    const billingBand = page.getByTestId("highlight-band-2");
+    await billingBand.scrollIntoViewIfNeeded();
+    const footer = billingBand.getByTestId("capability-band-footer");
+    const badges = billingBand.getByTestId("capability-band-badges");
+
+    await expect(footer).toBeVisible();
+    await expect(badges).toContainText("Stripe");
+    await expect(badges).toContainText("PayPal");
+    await expect(billingBand.getByRole("tab")).toHaveCount(0);
+    await expect(
+      billingBand.getByTestId("capability-band-slide-counter"),
+    ).toHaveCount(0);
+  });
+
+  test("Given chatbot hybrid footer, when user views band, then badges render without slide dots", async ({
     page,
   }) => {
     const chatbotBand = page.getByTestId("highlight-band-4");
-    const image = bandImage(page, 4, 0);
+    await chatbotBand.scrollIntoViewIfNeeded();
+    const badges = chatbotBand.getByTestId("capability-band-badges");
+
+    await expect(
+      chatbotBand.getByTestId("capability-band-footer"),
+    ).toBeVisible();
+    await expect(badges).toContainText("Groq");
+    await expect(badges).toContainText("Anthropic Claude");
+    await expect(chatbotBand.getByRole("tab")).toHaveCount(0);
+  });
+
+  test("Given deployment hybrid footer, when user advances slide, then slide counter updates", async ({
+    page,
+  }) => {
+    const deploymentBand = page.getByTestId("highlight-band-6");
+    await deploymentBand.scrollIntoViewIfNeeded();
+    const counter = deploymentBand.getByTestId("capability-band-slide-counter");
+
+    await expect(counter).toHaveText("1 / 4");
+    await deploymentBand.getByTestId("capability-carousel-next").click();
+    await expect(counter).toHaveText("2 / 4");
+  });
+
+  test("Given ATDD hybrid single image, when user views band, then footer badges render below screenshot", async ({
+    page,
+  }) => {
+    const atddBand = page.getByTestId("highlight-band-7");
+    await atddBand.scrollIntoViewIfNeeded();
+    const badges = atddBand.getByTestId("capability-band-badges");
+    const image = bandImage(page, 7, 0);
+
+    await expect(atddBand.getByTestId("capability-band-footer")).toBeVisible();
+    await expect(badges).toContainText("Playwright");
+    await expect(badges).toContainText("Vitest");
+
+    const imageBox = await image.boundingBox();
+    const badgesBox = await badges.boundingBox();
+    if (!imageBox || !badgesBox) {
+      throw new Error("Expected ATDD image and badge bounding boxes.");
+    }
+
+    expect(badgesBox.y).toBeGreaterThanOrEqual(
+      imageBox.y + imageBox.height - 4,
+    );
+  });
+
+  test("Given chatbot carousel chevrons, when controls render, then nav buttons anchor to stage edges", async ({
+    page,
+  }) => {
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    const stage = chatbotBand.getByTestId("capability-band-stage");
     const prevButton = chatbotBand.getByTestId("capability-carousel-prev");
     const nextButton = chatbotBand.getByTestId("capability-carousel-next");
 
@@ -294,14 +361,26 @@ test.describe("capability band images", () => {
     await expect(chatbotBand.getByText("Prev")).toHaveCount(0);
     await expect(chatbotBand.getByText("Next")).toHaveCount(0);
 
-    const imageBox = await image.boundingBox();
+    const stageBox = await stage.boundingBox();
     const prevBox = await prevButton.boundingBox();
     const nextBox = await nextButton.boundingBox();
-    if (!imageBox || !prevBox || !nextBox) {
+    if (!stageBox || !prevBox || !nextBox) {
       throw new Error("Expected chatbot carousel bounding boxes.");
     }
 
-    expect(prevBox.x + prevBox.width).toBeLessThanOrEqual(imageBox.x + 2);
-    expect(nextBox.x).toBeGreaterThanOrEqual(imageBox.x + imageBox.width - 2);
+    expect(prevBox.x).toBeGreaterThanOrEqual(stageBox.x - 4);
+    expect(prevBox.x + prevBox.width).toBeLessThanOrEqual(
+      stageBox.x + stageBox.width / 2 + 4,
+    );
+    expect(nextBox.x).toBeGreaterThanOrEqual(
+      stageBox.x + stageBox.width / 2 - 4,
+    );
+    expect(nextBox.x + nextBox.width).toBeLessThanOrEqual(
+      stageBox.x + stageBox.width + 4,
+    );
+
+    const prevCenterY = prevBox.y + prevBox.height / 2;
+    const stageCenterY = stageBox.y + stageBox.height / 2;
+    expect(Math.abs(prevCenterY - stageCenterY)).toBeLessThanOrEqual(12);
   });
 });

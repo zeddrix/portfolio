@@ -4,6 +4,7 @@
 	import { MANATAL_PHONE_SCREEN_ASPECT_CSS } from '$lib/constants/carousel';
 	import { getProjectDisplayUrl } from '$lib/utils/portfolio-display';
 	import { isPortraitImage } from '$lib/utils/optimized-image';
+	import { DEVICE_CARD_GRADIENT } from '$lib/constants/device-frame';
 
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 
@@ -61,7 +62,8 @@
 	</PhoneDeviceFrame>
 {:else if portraitPreview}
 	<div
-		class="aspect-[16/10] flex w-full items-center justify-center overflow-hidden bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black"
+		class={'aspect-[16/10] flex w-full items-center justify-center overflow-hidden ' +
+			DEVICE_CARD_GRADIENT}
 	>
 		<PhoneDeviceFrame domain={displayUrl}>
 			{#key imagePath}

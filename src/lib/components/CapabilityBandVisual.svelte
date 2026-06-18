@@ -1,6 +1,13 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
+	import CarouselChevronButton from '$lib/components/CarouselChevronButton.svelte';
+	import DeviceBadgeFooter from '$lib/components/DeviceBadgeFooter.svelte';
+	import DeviceStageSurface from '$lib/components/DeviceStageSurface.svelte';
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
+	import {
+		DEVICE_CARD_GRADIENT,
+		DEVICE_FRAME_SHELL,
+	} from '$lib/constants/device-frame';
 
 	/** @type {import('$lib/types/portfolio').CapabilityBandVisual} */
 	export let visual;
@@ -75,6 +82,17 @@
 		carouselCount > 0 ? ((carouselIndex % carouselCount) + carouselCount) % carouselCount : 0;
 	$: autoRotate = visual.autoRotate === true && imageLayout === 'carousel' && carouselCount > 1;
 	$: showCarouselControls = imageLayout === 'carousel' && !autoRotate;
+	$: useCardGradient = visual.type === 'hybrid' || imageLayout === 'carousel';
+	$: showFooter =
+		badges.length > 0 || (imageLayout === 'carousel' && carouselCount >= 3);
+	$: frameShellClass =
+		(useCardGradient ? DEVICE_CARD_GRADIENT : 'bg-zinc-900') +
+		' relative min-h-[260px] w-full ' +
+		DEVICE_FRAME_SHELL +
+		' sm:min-h-[300px] lg:min-h-[340px]';
+	$: mediaColumnClass = showFooter
+		? 'grid min-h-[260px] grid-rows-[1fr_auto] sm:min-h-[300px] lg:min-h-[340px]'
+		: 'flex min-h-[260px] flex-col sm:min-h-[300px] lg:min-h-[340px]';
 
 	/** @param {number} nextIndex */
 	function setCarouselIndex(nextIndex) {
@@ -153,126 +171,92 @@
 	}
 </script>
 
-<div
-	bind:this={visualRoot}
-	class="relative min-h-[260px] w-full overflow-hidden rounded-2xl bg-zinc-900 shadow-[0_24px_48px_-28px_rgba(0,0,0,0.45)] sm:min-h-[300px] lg:min-h-[340px]"
-	data-testid="capability-band-visual"
->
+<div bind:this={visualRoot} class={frameShellClass} data-testid="capability-band-visual">
 	{#if hasVisualMedia && imageLayout === 'split'}
-		<div
-			class="grid h-full min-h-[220px] grid-cols-[1.35fr_0.65fr] items-center gap-2 p-4 sm:min-h-[260px] sm:gap-3 lg:min-h-[340px]"
-			data-testid="capability-band-visual-split"
-		>
-			{#each displayImages as imagePath, index (imagePath)}
-				<OptimizedImage
-					src={imagePath}
-					alt={screenshotAlt + (index === 0 ? ' desktop' : ' mobile')}
-					className="w-full"
-					fit="contain"
-					sizes="(max-width: 1024px) 100vw, 600px"
-					loading="lazy"
-					testId={'capability-band-image-' + index}
-				/>
-			{/each}
-		</div>
-	{:else if hasVisualMedia && imageLayout === 'carousel'}
-		<div
-			class="flex min-h-[260px] flex-col sm:min-h-[300px] lg:min-h-[340px]"
-			data-testid="capability-band-visual-carousel"
-		>
-			<div
-				class="flex min-h-[220px] flex-1 items-stretch sm:min-h-[260px] lg:min-h-[300px]"
-			>
-				{#if showCarouselControls}
-					<button
-						type="button"
-						class="mx-1 flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full bg-zinc-950/70 text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900 sm:mx-2 sm:h-11 sm:w-11"
-						aria-label={'Previous ' + title + ' screenshot'}
-						data-testid="capability-carousel-prev"
-						on:click={showPreviousSlide}
-					>
-						<svg
-							class="h-5 w-5"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.75"
-							aria-hidden="true"
-						>
-							<path d="M15 6l-6 6 6 6" />
-						</svg>
-					</button>
-				{/if}
-				<div class="relative min-w-0 flex-1">
-					{#each displayImages as imagePath, index (imagePath)}
-						<div
-							class={'absolute inset-0 flex items-center justify-center px-2 py-4 transition-opacity duration-300 sm:px-3 ' +
-								(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
-						>
-							<OptimizedImage
-								src={imagePath}
-								alt={screenshotAlt + ' slide ' + (index + 1)}
-								className="h-full w-full"
-								fit="contain"
-								preserveNaturalAspect={true}
-								sizes="(max-width: 1024px) 100vw, 600px"
-								loading={index === 0 ? 'eager' : 'lazy'}
-								testId={'capability-band-image-' + index}
-							/>
-						</div>
-					{/each}
-				</div>
-				{#if showCarouselControls}
-					<button
-						type="button"
-						class="mx-1 flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full bg-zinc-950/70 text-zinc-100 ring-1 ring-white/15 hover:bg-zinc-900 sm:mx-2 sm:h-11 sm:w-11"
-						aria-label={'Next ' + title + ' screenshot'}
-						data-testid="capability-carousel-next"
-						on:click={showNextSlide}
-					>
-						<svg
-							class="h-5 w-5"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.75"
-							aria-hidden="true"
-						>
-							<path d="M9 6l6 6-6 6" />
-						</svg>
-					</button>
-				{/if}
-			</div>
-			{#if showCarouselControls}
+		<div class={mediaColumnClass}>
+			<DeviceStageSurface>
 				<div
-					class="flex items-center justify-center gap-2 pb-3 pt-1"
-					role="tablist"
-					aria-label={title + ' screenshot slides'}
+					class="grid h-full min-h-[220px] grid-cols-[1.35fr_0.65fr] items-center gap-2 p-4 sm:min-h-[260px] sm:gap-3 lg:min-h-[300px]"
+					data-testid="capability-band-visual-split"
 				>
 					{#each displayImages as imagePath, index (imagePath)}
-						<button
-							type="button"
-							class={'h-2.5 w-2.5 rounded-full transition ' +
-								(index === safeCarouselIndex ? 'bg-white' : 'bg-white/35 hover:bg-white/55')}
-							aria-label={'Show slide ' + (index + 1)}
-							aria-selected={index === safeCarouselIndex}
-							role="tab"
-							on:click={() => setCarouselIndex(index)}
-						></button>
+						<OptimizedImage
+							src={imagePath}
+							alt={screenshotAlt + (index === 0 ? ' desktop' : ' mobile')}
+							className="w-full"
+							fit="contain"
+							sizes="(max-width: 1024px) 100vw, 600px"
+							loading="lazy"
+							testId={'capability-band-image-' + index}
+						/>
 					{/each}
 				</div>
+			</DeviceStageSurface>
+		</div>
+	{:else if hasVisualMedia && imageLayout === 'carousel'}
+		<div class={mediaColumnClass} data-testid="capability-band-visual-carousel">
+			<DeviceStageSurface>
+				{#each displayImages as imagePath, index (imagePath)}
+					<div
+						class={'absolute inset-0 flex items-center justify-center px-2 py-4 transition-opacity duration-300 sm:px-3 ' +
+							(index === safeCarouselIndex ? 'opacity-100' : 'pointer-events-none opacity-0')}
+					>
+						<OptimizedImage
+							src={imagePath}
+							alt={screenshotAlt + ' slide ' + (index + 1)}
+							className="h-full w-full"
+							fit="contain"
+							preserveNaturalAspect={true}
+							sizes="(max-width: 1024px) 100vw, 600px"
+							loading={index === 0 ? 'eager' : 'lazy'}
+							testId={'capability-band-image-' + index}
+						/>
+					</div>
+				{/each}
+				{#if showCarouselControls}
+					<CarouselChevronButton
+						direction="prev"
+						ariaLabel={'Previous ' + title + ' screenshot'}
+						testId="capability-carousel-prev"
+						positionClass="left-1 sm:left-2"
+						on:click={showPreviousSlide}
+					/>
+					<CarouselChevronButton
+						direction="next"
+						ariaLabel={'Next ' + title + ' screenshot'}
+						testId="capability-carousel-next"
+						positionClass="right-1 sm:right-2"
+						on:click={showNextSlide}
+					/>
+				{/if}
+			</DeviceStageSurface>
+			{#if showFooter}
+				<DeviceBadgeFooter
+					{badges}
+					slideCount={carouselCount}
+					activeIndex={safeCarouselIndex}
+				/>
 			{/if}
 		</div>
 	{:else if hasVisualMedia}
-		<OptimizedImage
-			src={displayImages[0]}
-			alt={screenshotAlt}
-			className="h-full min-h-[260px] w-full p-4 sm:min-h-[300px] lg:min-h-[340px]"
-			fit="contain"
-			sizes="(max-width: 1024px) 100vw, 600px"
-			loading="lazy"
-			testId="capability-band-image-0"
-		/>
+		<div class={mediaColumnClass}>
+			<DeviceStageSurface>
+				<div class="flex h-full min-h-[220px] items-center justify-center p-4 sm:min-h-[260px] lg:min-h-[300px]">
+					<OptimizedImage
+						src={displayImages[0]}
+						alt={screenshotAlt}
+						className="h-full w-full"
+						fit="contain"
+						sizes="(max-width: 1024px) 100vw, 600px"
+						loading="lazy"
+						testId="capability-band-image-0"
+					/>
+				</div>
+			</DeviceStageSurface>
+			{#if showFooter}
+				<DeviceBadgeFooter {badges} slideCount={0} activeIndex={0} />
+			{/if}
+		</div>
 	{:else}
 		<div
 			class="flex h-full min-h-[260px] flex-col items-center justify-center gap-6 p-8 sm:min-h-[300px] lg:min-h-[340px]"
@@ -342,16 +326,6 @@
 					</div>
 				{/each}
 			</div>
-		</div>
-	{/if}
-
-	{#if hasVisualMedia && visual.type === 'hybrid' && badges.length > 0}
-		<div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex flex-wrap gap-2 bg-gradient-to-t from-zinc-950/90 to-transparent p-5 pt-12">
-			{#each badges as badge (badge)}
-				<span class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-zinc-100 ring-1 ring-white/15">
-					{badge}
-				</span>
-			{/each}
 		</div>
 	{/if}
 </div>

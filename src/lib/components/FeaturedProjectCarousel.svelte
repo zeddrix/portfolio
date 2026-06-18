@@ -6,6 +6,7 @@
 	import { getDefaultImageSrc } from '$lib/utils/optimized-image';
 	import { prefetchImageUrl, scheduleIdlePrefetch } from '$lib/utils/prefetch-images';
 	import { appPath } from '$lib/utils/app-path';
+	import { DEVICE_CARD_GRADIENT } from '$lib/constants/device-frame';
 
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
@@ -161,7 +162,9 @@
 					bind:this={highlightSlideElements[project.slug]}
 					class={phoneOnlyCard
 						? 'group overflow-hidden rounded-xl bg-transparent shadow-none ring-0'
-						: 'group overflow-hidden rounded-xl bg-gradient-to-b from-[#1e1033] via-[#120a1f] to-black shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10'}
+						: 'group overflow-hidden rounded-xl ' +
+							DEVICE_CARD_GRADIENT +
+							' shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10'}
 				>
 					{#if (highlightImageSets[project.slug] ?? []).length > 0}
 						<CarouselDevicePreview

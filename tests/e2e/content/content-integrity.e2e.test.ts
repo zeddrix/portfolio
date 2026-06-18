@@ -47,5 +47,8 @@ test.describe("content integrity", () => {
     await expect(
       page.getByTestId("band-project-link-billing-merns-shop"),
     ).toBeVisible();
+    await expect(
+      billingBand.getByTestId("capability-band-badges"),
+    ).toContainText("PayPal");
   });
 });
