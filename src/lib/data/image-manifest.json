@@ -781,36 +781,36 @@
     "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwBACdASogABgAPv1irE6rJSQiN/VYAWAfiWUAyNQQ8OU85Tzo2SXrRPknm98cHAAA/u3ajVzYzvLKRU3JKcLanEhi3oqrjHYEI9jx8eg8wrCR11QEzcF7yQC0PrUAX7HEhIAA"
   },
   "/manatal-coop-chatbot.webp": {
-    "width": 720,
-    "height": 1524,
+    "width": 650,
+    "height": 1459,
     "variants": [
       {
         "width": 640,
         "path": "/manatal-coop-chatbot-640w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAADwBQCdASogAEQAPwGAslUrKKQtJngJAaAgCWUA0nAGQ86h5YJgqRa4n15ipZyhAamnFiwsS1FVMAD2nsEkj+ahS7q2ruxjP0mgzoBtmWzJvcZGVeoHv2GRTacTl3N6UDBVoYdaqIW2FP8UqINrUdUAhJwbTgnbXtxl/DSJ7YgsfvA4ogAAAA=="
+    "lqip": "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADQBQCdASogAEgAPv1krU6rJSkiMzVcAWAfiWUAzcANrg58JwP5K7Y8OsaTkkZRiPEe/AXtSPuAAP6x0AFryHTMgVlf2H2Y9V2cg8HCxJaOYpbX3iFZjthovSG8rZcawFZ8bgBXSaUtYO2gCoYAAA=="
   },
   "/manatal-coop-homepage.webp": {
-    "width": 722,
-    "height": 1520,
+    "width": 650,
+    "height": 1459,
     "variants": [
       {
         "width": 640,
         "path": "/manatal-coop-homepage-640w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRtYAAABXRUJQVlA4IMoAAAAwCACdASogAEMAPwF4rVErJ6QiqbqskWAgCWUAz2RF/60FkyTCh7+qjT67q08nMRUymjcgrBxHzgPg52VD+cLuW/FDwo2nb5HYlAD+CoFjOZlXS/+dyHbKdujUZu4+OfhUHHMCvITK8vSWuZlRnwEZGxu2b6B0FN5VX6YAByXzbVu8LL790snfjXyQaRLMr2sYVTiiEInghUa0+PFfGZ6+E6L4VSZK5Si3QQ4VUSJCrLnlI+rc9YRKYpxQJDhF/okCta7SkYeCC9AA"
+    "lqip": "data:image/webp;base64,UklGRs4AAABXRUJQVlA4IMIAAADwBwCdASogAEgAPvVgqk6qpSQiMz1aAVAeiWMA00UgBtTwOWwjYG+UvR8ovkNhiG0SsxGjTXDdTJFOrhZlJiXn6ZYgYEaJHcAA/usx+uGfNW9wIYAYX0+5j6l/eCRGfNWtCVAf1Oa8NiFf+uj4Vcye31cHrE/TTwMY1ZaZD5a8vPcRijsxOqE1jriQREtJGLOgxO5jgysu4M0ckbskYTJ9tghcUey1i1nLYtmUeuC9ytgKWQUtc6YHorfymtw0VgAAAA=="
   },
   "/manatal-coop-signin.webp": {
-    "width": 732,
-    "height": 1524,
+    "width": 650,
+    "height": 1459,
     "variants": [
       {
         "width": 640,
         "path": "/manatal-coop-signin-640w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAACwBwCdASogAEMAPwFuq1KrJiOiqbqskWAgCWMAwzRF/1QJJ9xG69uq2DCCdRAgmrBYjWnCMWN1E7j7/suHex56+P11FqgAAPa96prYnOEoSJ1TJBiiVinNwzzVm1c3+oc7EZS8Ur/23weJRA3zLdjgxn2CwjBJFLot67+6hLvu4EmxC553e+CiHD6C47kIRxFr+X31sD3EAQI+ai4bFKmi3JrSfasK6/JVpPetV1JgAtPCValu5csVJxv0Fm8fNT1FyXXhY2JfK0DrLZ0FzQH6AAA="
+    "lqip": "data:image/webp;base64,UklGRtIAAABXRUJQVlA4IMYAAACQBwCdASogAEgAPvFmpk6ppaOiMzqt+TAeCWUAyNRpVwuiQ7uDQSPvDK/F3jYfnxjl99OjdsWGAU5wzAsVvS2PqGBZqPAA/u1Mm2mYEg/M/hRjmeIrE5i5ecfvYRpaMopVOjKPBP0hItcEXw+mkq7E4f0NfwDbmkFNbQ3iOoBO3IQzO05vfO+o6yENaujReYLjA0aXvWruSae3eiKoPMQSxYnPSy+zGqBGhdxIX1mO0XSiUF12c2KTphEZsh/ky/4hkIET+AA="
   }
 }

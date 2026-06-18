@@ -1,8 +1,13 @@
 import { describe, expect, it } from "vitest";
+import imageManifest from "../src/lib/data/image-manifest.json";
 import {
+  getImageCropConfig,
+  getManatalCanonicalCropSize,
   getOptimizationProfile,
   getSharpenProfile,
+  MANATAL_GUTTER_CROP,
   mergeManifestEntry,
+  resolveImageCropRect,
 } from "./optimize-images.mjs";
 
 describe("optimize-images sharpen profiles", () => {
@@ -59,6 +64,54 @@ describe("optimize-images optimization profiles", () => {
       quality: 78,
       maxWidth: 1200,
     });
+  });
+});
+
+describe("optimize-images crop rects", () => {
+  it("resolves percentage insets into pixel extract rect", () => {
+    const rect = resolveImageCropRect(720, 1520, {
+      top: 0.1,
+      left: 0.08,
+      right: 0.08,
+      bottom: 0.2,
+    });
+
+    expect(rect).toEqual({
+      left: 58,
+      top: 152,
+      width: 604,
+      height: 1064,
+    });
+  });
+
+  it("applies unified MANATAL_GUTTER_CROP to all Manatal screenshots", () => {
+    expect(getImageCropConfig("manatal-coop-homepage.png")).toEqual(
+      MANATAL_GUTTER_CROP,
+    );
+    expect(getImageCropConfig("manatal-coop-signin.png")).toEqual(
+      MANATAL_GUTTER_CROP,
+    );
+    expect(getImageCropConfig("manatal-coop-chatbot.png")).toEqual(
+      MANATAL_GUTTER_CROP,
+    );
+  });
+
+  it("defines canonical Manatal crop size from reference viewport", () => {
+    expect(getManatalCanonicalCropSize()).toEqual({
+      width: 650,
+      height: 1459,
+    });
+  });
+
+  it("keeps identical manifest dimensions for all Manatal carousel images", () => {
+    const homepage = imageManifest["/manatal-coop-homepage.webp"];
+    const signin = imageManifest["/manatal-coop-signin.webp"];
+    const chatbot = imageManifest["/manatal-coop-chatbot.webp"];
+
+    expect(homepage?.width).toBe(signin?.width);
+    expect(homepage?.height).toBe(signin?.height);
+    expect(homepage?.width).toBe(chatbot?.width);
+    expect(homepage?.height).toBe(chatbot?.height);
   });
 });
 
