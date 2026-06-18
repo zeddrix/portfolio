@@ -24,6 +24,12 @@ export const MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS =
 /** Caps portrait phone screen height on carousel mobile/tablet; width shrinks via aspect ratio. */
 export const MANATAL_PHONE_SCREEN_MAX_HEIGHT_MOBILE_CSS = "min(55vh, 420px)";
 
+/** Capability band phone frame max width inside gradient card. */
+export const MANATAL_PHONE_BAND_MAX_WIDTH_CSS = "min(100%, 280px)";
+
+/** Capability band phone screen max height across mobile, tablet, and desktop. */
+export const MANATAL_PHONE_BAND_MAX_HEIGHT_CSS = "min(50vh, 380px)";
+
 const MANATAL_REFERENCE_IMAGE_PATH = "/manatal-coop-homepage.webp";
 
 export type ManatalPhoneScreenLayout = "mobile" | "desktop";
@@ -61,6 +67,12 @@ export function getManatalPhoneScreenWidthCss(
 export function getManatalPhoneScreenMobileConstraintCss(): string {
   const { width, height } = getManatalReferenceDimensions();
   return `min(100%, 300px, calc(${MANATAL_PHONE_SCREEN_MAX_HEIGHT_MOBILE_CSS} * ${width} / ${height}))`;
+}
+
+/** Width-first capability band screen size, bounded by {@link MANATAL_PHONE_BAND_MAX_HEIGHT_CSS}. */
+export function getManatalPhoneScreenBandConstraintCss(): string {
+  const { width, height } = getManatalReferenceDimensions();
+  return `min(${MANATAL_PHONE_BAND_MAX_WIDTH_CSS}, calc(${MANATAL_PHONE_BAND_MAX_HEIGHT_CSS} * ${width} / ${height}))`;
 }
 
 export interface ManatalCarouselSlideMeta {

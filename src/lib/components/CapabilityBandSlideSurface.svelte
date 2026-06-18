@@ -30,7 +30,10 @@
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl">
-	<div class="relative overflow-hidden rounded-2xl {DEVICE_CARD_GRADIENT} p-3 sm:p-4">
+	<div
+		class="relative overflow-hidden rounded-2xl {DEVICE_CARD_GRADIENT} p-3 sm:p-4"
+		data-testid="capability-band-gradient-stage"
+	>
 		<div class={DEVICE_BLUR_BACKDROP} aria-hidden="true">
 			<OptimizedImage
 				src={src}
@@ -43,20 +46,27 @@
 			/>
 		</div>
 
-		<div class="relative z-10">
+		<div
+			class={'relative z-10 ' + (frame === 'phone' ? 'flex justify-center' : '')}
+		>
 			{#if frame === 'phone'}
-				<div class="mx-auto w-full max-w-[280px]">
+				<div
+					class="flex w-full justify-center"
+					data-testid="capability-band-phone-stage"
+				>
 					{#if isManatalPhoneSlide}
 						<PhoneDeviceFrame
 							fillMode="card"
+							layoutContext="capabilityBand"
 							domain={domain ?? ''}
 							screenAspectRatio={MANATAL_PHONE_SCREEN_ASPECT_CSS}
 						>
 							<OptimizedImage
 								{src}
 								{alt}
-								className="absolute inset-0 h-full w-full"
+								className="h-full w-full"
 								fit="cover"
+								preserveNaturalAspect={true}
 								objectPosition={manatalSlideMeta.objectPosition}
 								{sizes}
 								{loading}
