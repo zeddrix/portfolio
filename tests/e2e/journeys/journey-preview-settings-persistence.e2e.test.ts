@@ -49,13 +49,16 @@ test.describe.serial("Journey: preview settings persistence", () => {
     );
   });
 
-  test("Reset to defaults → verify grouped approach restored", async ({
+  test("Reset to defaults → verify detailed approach restored", async ({
     page,
   }) => {
     await gotoHomeWithCleanState(page);
     await scrollToTestId(page, selectors.sections.approach);
     await expect(page.getByTestId("highlight-band-0")).toBeVisible();
-    await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
+    await expect(page.getByTestId("highlight-band-6")).toBeVisible();
+    await expect(
+      page.getByTestId(selectors.approachLayout.capabilityDetailed),
+    ).toHaveAttribute("aria-pressed", "true");
     await scrollToTestId(page, selectors.work.section);
     await expect(page.getByTestId("highlight-card-9")).toBeVisible();
   });
