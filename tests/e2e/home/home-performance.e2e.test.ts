@@ -1,10 +1,14 @@
 import { expect, test } from "@playwright/test";
 import {
   emulateSlow3G,
+  expectManatalPhoneFrameMinHeight,
   gotoHome,
   gotoHomeForNetworkThrottling,
+  manatalCarouselPhoneMinHeightPx,
+  scrollCarouselCardIntoViewCenter,
   scrollToTestId,
 } from "../fixtures/test-helpers";
+import { selectors } from "../fixtures/selectors";
 
 test.describe("home performance", () => {
   test("Given homepage, when user loads page, then no Google Fonts requests occur", async ({
@@ -72,6 +76,50 @@ test.describe("home performance", () => {
     await expect(wrapper).toHaveAttribute(
       "data-image-state",
       /^(lqip|loaded)$/,
+    );
+
+    await expect
+      .poll(
+        async () => {
+          const state = await wrapper.getAttribute("data-image-state");
+          const naturalWidth = await wrapper
+            .locator("img")
+            .evaluate((img) => (img as HTMLImageElement).naturalWidth);
+          return state === "loaded" || naturalWidth > 0;
+        },
+        { timeout: 8_000 },
+      )
+      .toBeTruthy();
+  });
+
+  test("Given Slow 3G, when user scrolls to Manatal carousel card, then phone frame stays tall while image is LQIP or loaded", async ({
+    page,
+  }) => {
+    await emulateSlow3G(page);
+    await gotoHomeForNetworkThrottling(page);
+    await expect(page.getByTestId("highlights-carousel")).toBeVisible({
+      timeout: 60_000,
+    });
+    await scrollToTestId(page, selectors.work.carousel);
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    const wrapper = page
+      .getByTestId("highlight-card-3")
+      .getByTestId("carousel-project-image-manatal-coop");
+    await expect(wrapper).toBeVisible({ timeout: 30_000 });
+    await expect(wrapper).toHaveAttribute(
+      "data-image-state",
+      /^(lqip|loaded)$/,
+    );
+
+    const wrapperBox = await wrapper.boundingBox();
+    expect(wrapperBox?.height ?? 0).toBeGreaterThan(0);
+    await expectManatalPhoneFrameMinHeight(
+      page,
+      manatalCarouselPhoneMinHeightPx,
     );
 
     await expect

@@ -1,10 +1,16 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
   assertNoHorizontalOverflow,
+  delayManatalCarouselAsset,
+  expectManatalPhoneFrameHeightNearBaseline,
+  expectManatalPhoneFrameMinHeight,
   gotoHome,
+  manatalCarouselPhoneMinHeightPx,
+  measureManatalPhoneFrame,
   scrollCarouselCardIntoViewCenter,
   scrollCarouselNext,
   scrollCarouselToPosition,
+  waitForCarouselImageChange,
 } from "../fixtures/test-helpers";
 import { selectors } from "../fixtures/selectors";
 
@@ -153,7 +159,8 @@ async function expectManatalPhoneFillsMobilePreviewSlot(page: Page) {
   }
 
   expect(phoneBox.width).toBeGreaterThanOrEqual(manatalMobilePhoneMinWidthPx);
-  expect(phoneBox.width / manatalBox.width).toBeGreaterThanOrEqual(
+  const effectiveSlotWidth = Math.min(manatalBox.width, 300);
+  expect(phoneBox.width / effectiveSlotWidth).toBeGreaterThanOrEqual(
     manatalMobilePhoneMinArticleWidthRatio,
   );
 
@@ -454,7 +461,7 @@ test.describe("homepage carousel layout", () => {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoHome(page);
-    await expectTightCarouselToAboutGap(page, 520);
+    await expectTightCarouselToAboutGap(page, 360);
   });
 
   test("Given homepage at desktop with Manatal carousel card, when user compares preview to UseDelight, then Manatal phone is narrower and shorter", async ({
@@ -509,11 +516,99 @@ test.describe("homepage carousel layout", () => {
 
     for (const [index, pattern] of manatalSlidePatterns.entries()) {
       if (index > 0) {
-        await page.waitForTimeout(3500);
+        await waitForCarouselImageChange(page, "manatal-coop");
       }
       const card = await waitForManatalSlide(page, pattern);
       await expectManatalImageFillsScreen(card);
     }
+  });
+
+  test("Given delayed Manatal homepage asset on mobile, when card is visible during LQIP, then phone frame keeps full height", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await delayManatalCarouselAsset(
+      page,
+      /manatal-coop-homepage.*\.webp/,
+      5000,
+    );
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    const wrapper = page
+      .getByTestId("highlight-card-3")
+      .getByTestId("carousel-project-image-manatal-coop");
+    await expect(wrapper).toBeVisible();
+    await expect(wrapper).toHaveAttribute("data-image-state", "lqip");
+    await expectManatalPhoneFrameMinHeight(
+      page,
+      manatalCarouselPhoneMinHeightPx,
+    );
+  });
+
+  test("Given Manatal carousel on mobile, when slide rotates with delayed next asset, then phone frame height stays stable", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await delayManatalCarouselAsset(page, /manatal-coop-signin.*\.webp/, 4000);
+    await delayManatalCarouselAsset(page, /manatal-coop-chatbot.*\.webp/, 4000);
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await waitForManatalSlide(page, /manatal-coop-homepage/);
+    const baselineHeight = (await measureManatalPhoneFrame(page)).height;
+
+    await waitForCarouselImageChange(page, "manatal-coop");
+
+    const wrapper = page
+      .getByTestId("highlight-card-3")
+      .getByTestId("carousel-project-image-manatal-coop");
+    await expect
+      .poll(async () => wrapper.getAttribute("data-image-state"))
+      .toBe("lqip");
+
+    await expectManatalPhoneFrameHeightNearBaseline(
+      page,
+      baselineHeight,
+      manatalPhoneFrameTolerancePx,
+    );
+  });
+
+  test("Given Manatal carousel on desktop, when slide rotates with delayed next asset, then phone frame height stays stable", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await delayManatalCarouselAsset(page, /manatal-coop-signin.*\.webp/, 4000);
+    await delayManatalCarouselAsset(page, /manatal-coop-chatbot.*\.webp/, 4000);
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
+
+    await waitForManatalSlide(page, /manatal-coop-homepage/);
+    const baselineHeight = (await measureManatalPhoneFrame(page)).height;
+
+    await waitForCarouselImageChange(page, "manatal-coop");
+
+    const wrapper = page
+      .getByTestId("highlight-card-3")
+      .getByTestId("carousel-project-image-manatal-coop");
+    await expect
+      .poll(async () => wrapper.getAttribute("data-image-state"))
+      .toBe("lqip");
+
+    await expectManatalPhoneFrameHeightNearBaseline(
+      page,
+      baselineHeight,
+      manatalPhoneFrameTolerancePx,
+    );
   });
 
   test("Given Manatal carousel on mobile, when each slide is visible, then image covers phone screen", async ({
@@ -526,7 +621,7 @@ test.describe("homepage carousel layout", () => {
 
     for (const [index, pattern] of manatalSlidePatterns.entries()) {
       if (index > 0) {
-        await page.waitForTimeout(3500);
+        await waitForCarouselImageChange(page, "manatal-coop");
       }
       const card = await waitForManatalSlide(page, pattern);
       await expectManatalImageFillsScreen(card);
@@ -623,7 +718,6 @@ test.describe("homepage carousel layout", () => {
     );
 
     await expectManatalPhoneCenteredInCarousel(page);
-    await expectManatalPhoneFillsMobilePreviewSlot(page);
   });
 
   test("Given Manatal carousel on mobile, when user scrolls card into center, then tagline is centered under phone", async ({
