@@ -1,18 +1,18 @@
-# Resume layout variants — 2026-06-18
+# Resume layout variants — page density retune — 2026-06-18
 
 ## Scope
 
-Three application resume layout variants with shared tiered polish (typography, timeline v2, project grids). Default shipping PDF copies from `refined-lorna`.
+Per-layout page budgets: refined-lorna and executive maximized at 2 pages (8+4 experience); portfolio-led compact at 1 page (6 roles + 4 projects). Default shipping PDF copies from refined-lorna.
 
 ## Variant outputs
 
-| Layout        | HTML                                                    | PDF                                                       |
-| ------------- | ------------------------------------------------------- | --------------------------------------------------------- |
-| Refined Lorna | `resume/variants/refined-lorna/resume-application.html` | `resume/variants/refined-lorna/Zeddrix-Fabian-Resume.pdf` |
-| Executive     | `resume/variants/executive/resume-application.html`     | `resume/variants/executive/Zeddrix-Fabian-Resume.pdf`     |
-| Portfolio-led | `resume/variants/portfolio-led/resume-application.html` | `resume/variants/portfolio-led/Zeddrix-Fabian-Resume.pdf` |
+| Layout        | Pages | HTML                                                    | PDF                                                       |
+| ------------- | ----- | ------------------------------------------------------- | --------------------------------------------------------- |
+| Refined Lorna | 2     | `resume/variants/refined-lorna/resume-application.html` | `resume/variants/refined-lorna/Zeddrix-Fabian-Resume.pdf` |
+| Executive     | 2     | `resume/variants/executive/resume-application.html`     | `resume/variants/executive/Zeddrix-Fabian-Resume.pdf`     |
+| Portfolio-led | 1     | `resume/variants/portfolio-led/resume-application.html` | `resume/variants/portfolio-led/Zeddrix-Fabian-Resume.pdf` |
 
-Default: `resume/Zeddrix-Fabian-Resume.pdf` (refined-lorna copy). Change `DEFAULT_APPLICATION_RESUME_LAYOUT` in `scripts/application-resume-config.ts` after choosing.
+Default: `resume/Zeddrix-Fabian-Resume.pdf` (refined-lorna copy).
 
 ## Visual checkpoints
 
@@ -20,19 +20,26 @@ Default: `resume/Zeddrix-Fabian-Resume.pdf` (refined-lorna copy). Change `DEFAUL
 - `reference/screenshots/resumes/variants/refined-lorna-rail.png`
 - `reference/screenshots/resumes/variants/refined-lorna-main.png`
 - `reference/screenshots/resumes/variants/executive-page-{1,2}.png`
-- `reference/screenshots/resumes/variants/portfolio-led-page-{1,2}.png`
+- `reference/screenshots/resumes/variants/portfolio-led-page-1.png`
 - `reference/screenshots/resumes/application-page-{1,2}.png` (default copy)
 
-## Findings
+## Per-wave findings
 
-| Severity | Finding                                                                                    | Status                     |
-| -------- | ------------------------------------------------------------------------------------------ | -------------------------- |
-| None     | All three layouts print exactly 2 pages                                                    | Done                       |
-| None     | Refined Lorna: 6+6 split, ribbon headers, 2-col More Projects, timeline role/company split | Done                       |
-| None     | Executive: skills band, no sidebar, 7+5 experience                                         | Done                       |
-| None     | Portfolio-led: 2 featured projects on page 1, project index grid on page 2                 | Done                       |
-| Low      | Portfolio-led page 2 still has moderate whitespace at bottom                               | Accepted                   |
-| Low      | Executive page 1 is dense with skills band + 7 roles                                       | Accepted for 2-page target |
+| Wave          | Doc                                                                                                            | Open high/medium |
+| ------------- | -------------------------------------------------------------------------------------------------------------- | ---------------- |
+| Refined Lorna | [resume-page-density-wave-refined-lorna-2026-06-18.md](./resume-page-density-wave-refined-lorna-2026-06-18.md) | 0                |
+| Executive     | [resume-page-density-wave-executive-2026-06-18.md](./resume-page-density-wave-executive-2026-06-18.md)         | 0                |
+| Portfolio-led | [resume-page-density-wave-portfolio-led-2026-06-18.md](./resume-page-density-wave-portfolio-led-2026-06-18.md) | 0                |
+
+## Summary findings
+
+| Severity | Finding                                                                                              | Status   |
+| -------- | ---------------------------------------------------------------------------------------------------- | -------- |
+| None     | Page counts: refined-lorna 2, executive 2, portfolio-led 1                                           | Done     |
+| None     | Refined Lorna: 8+4 split (page-2 compact), expanded selected (2 lines), languages footer             | Done     |
+| None     | Executive: compact skills band, 8 non-compact page-1 rows (2 bullets), page-2 compact + certs footer | Done     |
+| None     | Portfolio-led: 6 compact roles + 4 flagship projects on single page                                  | Done     |
+| Low      | Executive page 1 ~1in bottom whitespace (skills band trade-off on 2-page budget)                     | Accepted |
 
 ## Verification
 
@@ -41,4 +48,5 @@ Default: `resume/Zeddrix-Fabian-Resume.pdf` (refined-lorna copy). Change `DEFAUL
 - `pnpm screenshots:resume:variants` — variant captures refreshed
 - `pnpm screenshots:resume` — default application captures refreshed
 - `pnpm quality` — green
-- `pnpm test:unit` — 112 passed
+- `pnpm test:unit` — 123 passed
+- `pnpm test:e2e` — all E2E files passed (one-by-one run)
