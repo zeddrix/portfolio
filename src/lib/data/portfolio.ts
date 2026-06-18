@@ -39,8 +39,6 @@ export const projects: PortfolioProject[] = [
       "/queue-2-analytics.webp",
       "/queue-3-events.webp",
       "/queue-4-listings.webp",
-      "/chatbot-start.webp",
-      "/chatbot-placement-in-full-dashboard.webp",
     ],
     links: [],
     detailSections: [
