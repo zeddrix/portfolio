@@ -37,7 +37,7 @@
 	$: portraitPreview = phoneOnlyCard || isPortraitImage(imagePath);
 	$: displayUrl = getProjectDisplayUrl(project);
 	$: imageClassName = phoneOnlyCard
-		? 'absolute inset-0 h-full w-full'
+		? 'h-full w-full'
 		: `h-full w-full ${hoverZoomClass}`;
 	$: manatalSlideMeta = phoneOnlyCard
 		? getManatalCarouselSlideMeta(imagePath)
@@ -61,6 +61,7 @@
 				fetchpriority={getCardFetchPriority(cardIndex)}
 				sizes={carouselSizes}
 				fit="cover"
+				preserveNaturalAspect={true}
 				objectPosition={manatalSlideMeta.objectPosition}
 				{fadeOnMount}
 				className={imageClassName}

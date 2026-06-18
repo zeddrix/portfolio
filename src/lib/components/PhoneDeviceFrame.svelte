@@ -38,8 +38,10 @@
 		: 'relative flex h-full w-full flex-col overflow-hidden rounded-[1.85rem] bg-black';
 
 	$: screenClass = contentSizedCard
-		? 'relative min-h-0 max-w-full overflow-hidden bg-black' +
-			(carouselCardFrame ? ' manatal-carousel-phone-screen' : '')
+		? 'relative max-w-full overflow-hidden bg-black ' +
+			(carouselCardFrame
+				? 'block w-full shrink-0 manatal-carousel-phone-screen'
+				: 'min-h-0')
 		: 'relative min-h-0 flex-1 overflow-hidden bg-black';
 
 	$: screenStyle = screenAspectRatio && !carouselCardFrame
