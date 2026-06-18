@@ -34,7 +34,7 @@ test.describe("linkedin resume visual capture", () => {
 
     await page.getByTestId("resume-linkedin-skills").scrollIntoViewIfNeeded();
     await page
-      .getByTestId("resume-linkedin-skills-footer")
+      .getByTestId("resume-linkedin-skills")
       .waitFor({ state: "visible" });
     await page.getByTestId("resume-linkedin-skills").screenshot({
       path: path.join(outDir, "linkedin-skills.png"),

@@ -82,8 +82,7 @@ function buildProjectHtmlLinkedIn(
 }
 
 export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
-  const { profile, certificates, toolStripGroups, toolStripFooterNote } =
-    snapshot;
+  const { profile, certificates, toolStripGroups } = snapshot;
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
@@ -126,12 +125,6 @@ export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
       li { margin-bottom: 2px; }
       .tech, .links { margin-top: 3px; font-size: 10.5pt; color: #333333; }
       .plain-block { white-space: pre-wrap; font-size: 10.5pt; }
-      .skills-footer {
-        margin-top: 6px;
-        font-size: 10pt;
-        line-height: 1.35;
-        color: #333333;
-      }
       .page-break { break-before: page; padding-top: 2px; }
     </style>
   </head>
@@ -170,7 +163,6 @@ export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
     <section class="page-break" data-testid="resume-linkedin-skills">
       <h2>Skills</h2>
       <p class="plain-block">${escapeHtml(skillsText)}</p>
-      <p class="skills-footer" data-testid="resume-linkedin-skills-footer">${escapeHtml(toolStripFooterNote)}</p>
     </section>
 
     <section>
@@ -189,8 +181,7 @@ export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
 export { buildApplicationResumeHtml } from "./application-resume/build-application-resume.js";
 
 function buildResumeMarkdown(snapshot: ProfileSnapshot): string {
-  const { profile, certificates, toolStripGroups, toolStripFooterNote } =
-    snapshot;
+  const { profile, certificates, toolStripGroups } = snapshot;
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
@@ -259,8 +250,6 @@ ${additional}
 ## Core Skills
 
 ${skills}
-
-*${toolStripFooterNote}*
 
 ## Professional Development
 

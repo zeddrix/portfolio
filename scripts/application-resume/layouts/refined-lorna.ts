@@ -19,7 +19,6 @@ export function buildRefinedLornaResumeHtml(
     profile,
     certificates,
     toolStripGroups,
-    toolStripFooterNote,
     summary,
     firstPageExperience,
     secondPageExperience,
@@ -39,7 +38,6 @@ export function buildRefinedLornaResumeHtml(
           <section class="sidebar-section">
             ${buildSidebarRibbon("Core Skills")}
             ${buildSidebarSkillsHtml(toolStripGroups, true)}
-            <p class="sidebar-skills-footer" data-testid="resume-skills-footer-note">${escapeHtml(toolStripFooterNote)}</p>
           </section>
           <section class="sidebar-section">
             ${buildSidebarRibbon("Professional Development")}

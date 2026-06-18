@@ -66,7 +66,6 @@ export function buildSidebarSkillsHtml(
 
 export function buildSkillsBandHtml(
   groups: ProfileSnapshot["toolStripGroups"],
-  footerNote: string,
 ): string {
   return `
     <section class="skills-band" data-testid="resume-skills-band">
@@ -79,7 +78,6 @@ export function buildSkillsBandHtml(
         </div>`,
         )
         .join("")}
-      <p class="skills-band-footer" data-testid="resume-skills-footer-note">${escapeHtml(footerNote)}</p>
     </section>`;
 }
 

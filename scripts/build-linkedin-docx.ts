@@ -30,8 +30,7 @@ function bodyParagraph(text: string): Paragraph {
 export async function buildLinkedInDocxBuffer(
   snapshot: ProfileSnapshot,
 ): Promise<Buffer> {
-  const { profile, certificates, toolStripGroups, toolStripFooterNote } =
-    snapshot;
+  const { profile, certificates, toolStripGroups } = snapshot;
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
@@ -122,7 +121,6 @@ export async function buildLinkedInDocxBuffer(
   children.push(
     heading("Skills"),
     bodyParagraph(buildSkillsText(toolStripGroups)),
-    bodyParagraph(toolStripFooterNote),
     heading("Professional Development"),
     bodyParagraph(buildCertificatesText(certificates)),
     heading("Languages"),

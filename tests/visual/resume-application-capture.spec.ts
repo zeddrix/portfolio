@@ -17,7 +17,7 @@ test.describe("application resume visual capture", () => {
     await page.goto(`file://${resumeHtmlPath}`, { waitUntil: "load" });
     await page.getByTestId("resume-page-1").waitFor({ state: "visible" });
     await page
-      .getByTestId("resume-skills-footer-note")
+      .getByTestId("resume-page-1-sidebar")
       .waitFor({ state: "visible" });
 
     await page.getByTestId("resume-page-1").screenshot({

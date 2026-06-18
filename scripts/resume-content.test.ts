@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { toolStripFooterNote } from "../src/lib/data/portfolio";
 import { buildPortfolioSnapshot } from "./export-portfolio-snapshot";
 import {
   buildAdditionalProjectsBlocks,
@@ -60,14 +59,7 @@ describe("resume-content builders", () => {
     expect(secondPageExperience[0]?.id).toBe("codefrost-trulyhappy");
   });
 
-  it("includes toolStripFooterNote in the portfolio snapshot", () => {
-    const built = buildPortfolioSnapshot();
-
-    expect(built.toolStripFooterNote).toBe(toolStripFooterNote);
-    expect(built.toolStripFooterNote).toContain("AI-accelerated workflows");
-  });
-
-  it("includes PayPal in devops tool strip group snapshot", () => {
+  it("includes devops payment tools in tool strip group snapshot", () => {
     const built = buildPortfolioSnapshot();
     const devopsGroup = built.toolStripGroups.find(
       (group) => group.title === "DevOps, platforms & workflow",

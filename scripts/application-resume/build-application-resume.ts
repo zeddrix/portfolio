@@ -43,8 +43,7 @@ function buildContext(
   layout: ApplicationResumeLayout,
   fontCss: string,
 ): ApplicationResumeBuildContext {
-  const { profile, certificates, toolStripGroups, toolStripFooterNote } =
-    snapshot;
+  const { profile, certificates, toolStripGroups } = snapshot;
   const experience = buildEngagementExperienceBlocks(snapshot);
   const selectedProjects = buildSelectedProjectsBlocks(snapshot);
   const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
@@ -67,7 +66,6 @@ function buildContext(
     profile,
     certificates,
     toolStripGroups,
-    toolStripFooterNote,
     summary: buildSummary(snapshot),
     experience,
     firstPageExperience,

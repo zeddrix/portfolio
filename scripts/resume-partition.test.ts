@@ -58,7 +58,6 @@ describe("partitionProjects", () => {
       "bolt-to-github",
     ],
     toolStripGroups: [],
-    toolStripFooterNote: "Primary depth in the stacks above.",
   };
 
   it("orders selected projects for resume page one", () => {

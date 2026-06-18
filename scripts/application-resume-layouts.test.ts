@@ -65,9 +65,9 @@ describe("buildApplicationResumeHtml layouts", () => {
 
       if (hasSkillsBand) {
         expect(html).toContain('data-testid="resume-skills-band"');
-        expect(html).toContain('data-testid="resume-skills-footer-note"');
+        expect(html).not.toContain('data-testid="resume-skills-footer-note"');
       } else if (layout === "refined-lorna") {
-        expect(html).toContain('data-testid="resume-skills-footer-note"');
+        expect(html).not.toContain('data-testid="resume-skills-footer-note"');
       }
 
       if (hasFeaturedProjects) {

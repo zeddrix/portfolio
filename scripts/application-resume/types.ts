@@ -11,7 +11,6 @@ export interface ApplicationResumeBuildContext {
   profile: ProfileSnapshot["profile"];
   certificates: CertificateSnapshot[];
   toolStripGroups: ProfileSnapshot["toolStripGroups"];
-  toolStripFooterNote: string;
   summary: string;
   experience: ExperienceSnapshot[];
   firstPageExperience: ExperienceSnapshot[];

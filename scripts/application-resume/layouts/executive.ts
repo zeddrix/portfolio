@@ -16,7 +16,6 @@ export function buildExecutiveResumeHtml(
   const {
     profile,
     toolStripGroups,
-    toolStripFooterNote,
     summary,
     firstPageExperience,
     secondPageExperience,
@@ -35,7 +34,7 @@ export function buildExecutiveResumeHtml(
 
       <p class="summary">${escapeHtml(summary)}</p>
 
-      ${buildSkillsBandHtml(toolStripGroups, toolStripFooterNote)}
+      ${buildSkillsBandHtml(toolStripGroups)}
 
       <section class="experience-section">
         ${buildExecutiveSectionTitle("Professional Experience")}

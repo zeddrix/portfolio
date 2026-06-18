@@ -15,9 +15,7 @@ describe("buildApplicationResumeHtml refined-lorna", () => {
     );
     expect(html).toContain('data-testid="resume-page-1-sidebar"');
     expect(html).toContain('data-testid="resume-sidebar-contact"');
-    expect(html).toContain('data-testid="resume-skills-footer-note"');
-    expect(html).toContain("Primary depth in the stacks above");
-    expect(html).toContain("AI-accelerated workflows");
+    expect(html).not.toContain("Primary depth in the stacks above");
     expect(html).toContain(".sidebar-ribbon");
     expect(html).toContain(".main-section-ribbon");
     expect(html).toContain("--sidebar-bg: #f0f0f0");
