@@ -1,7 +1,10 @@
 import { test } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 import path from "node:path";
-import { APPLICATION_RESUME_LAYOUTS } from "../../scripts/application-resume-config";
+import {
+  APPLICATION_RESUME_LAYOUTS,
+  APPLICATION_RESUME_LAYOUT_CONFIG,
+} from "../../scripts/application-resume-config";
 
 const outDir = path.join(
   process.cwd(),
@@ -23,6 +26,8 @@ test.describe("application resume variant visual capture", () => {
         layout,
         "resume-application.html",
       );
+      const targetPageCount =
+        APPLICATION_RESUME_LAYOUT_CONFIG[layout].targetPageCount;
 
       await page.setViewportSize({ width: 816, height: 1056 });
       await page.goto(`file://${resumeHtmlPath}`, { waitUntil: "load" });
@@ -42,9 +47,11 @@ test.describe("application resume variant visual capture", () => {
         });
       }
 
-      await page.getByTestId("resume-page-2").screenshot({
-        path: path.join(outDir, `${layout}-page-2.png`),
-      });
+      if (targetPageCount === 2) {
+        await page.getByTestId("resume-page-2").screenshot({
+          path: path.join(outDir, `${layout}-page-2.png`),
+        });
+      }
     });
   }
 });
