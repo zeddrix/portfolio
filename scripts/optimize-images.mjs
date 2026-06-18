@@ -32,12 +32,6 @@ const CERTIFICATE_PREFIX = "certificate-";
 export const CAPABILITY_BROWSER_ASPECT = 16 / 10;
 
 /** @type {CropInsets} */
-export const CHATBOT_START_GUTTER_CROP = {
-  left: 0.05,
-  right: 0.05,
-};
-
-/** @type {CropInsets} */
 export const MANATAL_GUTTER_CROP = {
   top: 0.03,
   left: 0.05,
@@ -149,9 +143,6 @@ export function resolveCropExtractRect(cropConfig, sourceWidth, sourceHeight) {
 export function getImageCropConfig(filename) {
   if (filename.startsWith("manatal-coop-")) {
     return { type: "insets", insets: MANATAL_GUTTER_CROP };
-  }
-  if (filename.startsWith("chatbot-start")) {
-    return { type: "insets", insets: CHATBOT_START_GUTTER_CROP };
   }
   if (
     filename.startsWith("chatbot-placement-in-full-dashboard") ||

@@ -18,7 +18,9 @@ describe("optimize-images sharpen profiles", () => {
   });
 
   it("returns strong profile for chatbot screenshots", () => {
-    expect(getSharpenProfile("chatbot-start.png")).toBe("strong");
+    expect(getSharpenProfile("chatbot-placement-in-full-dashboard.png")).toBe(
+      "strong",
+    );
   });
 
   it("returns strong profile for certificate scans", () => {
@@ -47,7 +49,9 @@ describe("optimize-images optimization profiles", () => {
   });
 
   it("uses compact variants for chatbot and Manatal UI screenshots", () => {
-    expect(getOptimizationProfile("chatbot-start.png")).toEqual({
+    expect(
+      getOptimizationProfile("chatbot-placement-in-full-dashboard.png"),
+    ).toEqual({
       variantWidths: [640],
       quality: 72,
       maxWidth: 1024,
@@ -118,13 +122,6 @@ describe("optimize-images crop rects", () => {
     ).toEqual({
       type: "aspect",
       ratio: 16 / 10,
-    });
-  });
-
-  it("trims chatbot-start side gutters while keeping portrait aspect", () => {
-    expect(getImageCropConfig("chatbot-start.png")).toEqual({
-      type: "insets",
-      insets: { left: 0.05, right: 0.05 },
     });
   });
 

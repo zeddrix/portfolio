@@ -143,17 +143,6 @@
     ],
     "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQBACdASogABQAPvVmqE6qpaOjMAwBUB6JZQAASoAgQKiK9GgM7lDCAAD+7WGpwqXbPHfi6q++mIvu4OJt9F42HhVPBjKlt0AAAA=="
   },
-  "/chatbot-start.webp": {
-    "width": 566,
-    "height": 828,
-    "variants": [
-      {
-        "width": 566,
-        "path": "/chatbot-start-566w.webp"
-      }
-    ],
-    "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAACwBACdASogAC8APv1osE6rJiUiMBqqqWAfiWMAxvQWZ7Uk7eWD4XB4DbLpL4WgAPyLXtxkHQYggh64KtIgF+vpy0wVy/BO5KcHM9PFaEC436vi1FxLLLGgmAXoz9fkl+Z6BQNyEmMUpoAA"
-  },
   "/cloudflare-dashboard.webp": {
     "width": 1280,
     "height": 800,
