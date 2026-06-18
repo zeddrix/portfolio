@@ -1,8 +1,10 @@
 <script>
 	import {
+		getManatalPhoneScreenMobileConstraintCss,
 		getManatalPhoneScreenWidthCss,
 		MANATAL_PHONE_SCREEN_ASPECT_CSS,
 		MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS,
+		MANATAL_PHONE_SCREEN_MAX_HEIGHT_MOBILE_CSS,
 	} from '$lib/constants/carousel';
 
 	/** @type {string} */
@@ -25,7 +27,7 @@
 	$: rootClass = contentSizedCard
 		? 'relative shrink-0 rounded-[2rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-white/10 ' +
 			(carouselCardFrame
-				? 'w-full max-w-[300px] lg:w-fit'
+				? 'w-fit max-w-[300px] lg:w-fit'
 				: 'w-fit')
 		: fillMode === 'card'
 			? 'relative aspect-[9/19.5] w-auto shrink-0 rounded-[2.25rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-white/10'
@@ -43,7 +45,7 @@
 	$: screenStyle = screenAspectRatio && !carouselCardFrame
 		? `aspect-ratio:${screenAspectRatio};max-height:${MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS};width:${getManatalPhoneScreenWidthCss('desktop')}`
 		: carouselCardFrame
-			? `--manatal-phone-aspect:${resolvedAspectRatio}`
+			? `--manatal-phone-aspect:${resolvedAspectRatio};--manatal-phone-width:${getManatalPhoneScreenMobileConstraintCss()};--manatal-phone-max-height:${MANATAL_PHONE_SCREEN_MAX_HEIGHT_MOBILE_CSS}`
 			: undefined;
 </script>
 
@@ -81,13 +83,14 @@
 <style>
 	:global(.manatal-carousel-phone-screen) {
 		aspect-ratio: var(--manatal-phone-aspect);
-		width: min(100%, 300px);
+		width: var(--manatal-phone-width);
+		max-height: var(--manatal-phone-max-height);
 	}
 
 	@media (min-width: 1024px) {
 		:global(.manatal-carousel-phone-screen) {
-			max-height: calc(min(88vw, 920px) * 10 / 16);
-			width: min(
+			--manatal-phone-max-height: calc(min(88vw, 920px) * 10 / 16);
+			--manatal-phone-width: min(
 				min(42vw, 280px),
 				calc(min(88vw, 920px) * 10 / 16 * 650 / 1459)
 			);
