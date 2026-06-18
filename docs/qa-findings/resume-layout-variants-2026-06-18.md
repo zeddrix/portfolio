@@ -2,7 +2,7 @@
 
 ## Scope
 
-Per-layout page budgets: refined-lorna and executive maximized at 2 pages (8+4 experience); portfolio-led compact at 1 page (6 roles + 4 projects). Default shipping PDF copies from refined-lorna.
+Per-layout page budgets: refined-lorna has all 12 jobs on page 1 and projects on page 2; executive maximized at 2 pages (8+4 experience); portfolio-led compact at 1 page (6 roles + 4 projects). Default shipping PDF copies from refined-lorna.
 
 ## Variant outputs
 
@@ -36,7 +36,7 @@ Default: `resume/Zeddrix-Fabian-Resume.pdf` (refined-lorna copy).
 | Severity | Finding                                                                                              | Status   |
 | -------- | ---------------------------------------------------------------------------------------------------- | -------- |
 | None     | Page counts: refined-lorna 2, executive 2, portfolio-led 1                                           | Done     |
-| None     | Refined Lorna: 8+4 split (page-2 compact), expanded selected (2 lines), languages footer             | Done     |
+| None     | Refined Lorna: all 12 jobs on page 1 (1 bullet each); page 2 projects only                           | Done     |
 | None     | Executive: compact skills band, 8 non-compact page-1 rows (2 bullets), page-2 compact + certs footer | Done     |
 | None     | Portfolio-led: 6 compact roles + 4 flagship projects on single page                                  | Done     |
 | Low      | Executive page 1 ~1in bottom whitespace (skills band trade-off on 2-page budget)                     | Accepted |

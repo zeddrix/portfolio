@@ -28,7 +28,7 @@ export const APPLICATION_RESUME_LAYOUT_CONFIG: Record<
 > = {
   "refined-lorna": {
     targetPageCount: 2,
-    firstPageExperienceCount: 8,
+    firstPageExperienceCount: 12,
     pageOneBulletCount: 1,
     skillsBandMode: "sidebar",
   },

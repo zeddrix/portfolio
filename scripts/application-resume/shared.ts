@@ -356,6 +356,30 @@ export const DENSITY_MAXIMIZED_CSS = `
       body.layout-executive .page-one .timeline-bullet {
         line-height: 1.32;
       }
+      body.layout-refined-lorna .page-one.page-with-rail {
+        padding-bottom: 0.22in;
+      }
+      body.layout-refined-lorna .page-one .resume-main {
+        gap: 5px;
+      }
+      body.layout-refined-lorna .page-one .summary {
+        margin-bottom: 2px;
+        line-height: 1.26;
+      }
+      body.layout-refined-lorna .page-one .header {
+        padding-bottom: 4px;
+        margin-bottom: 0;
+      }
+      body.layout-refined-lorna .page-one .main-section-ribbon {
+        margin-bottom: 4px;
+      }
+      body.layout-refined-lorna .page-one .timeline-row {
+        margin-bottom: 4px;
+      }
+      body.layout-refined-lorna .page-one .timeline-bullet {
+        line-height: 1.26;
+        margin-top: 1px;
+      }
       body.layout-refined-lorna .page-two .page-two-section {
         margin-bottom: 10px;
       }

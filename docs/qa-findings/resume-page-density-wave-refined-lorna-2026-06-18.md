@@ -2,7 +2,7 @@
 
 ## Scope
 
-2-page maximized layout: 8+4 experience split, expanded selected projects, richer more-projects grid, `density-maximized` CSS.
+2-page layout: all 12 Professional Experience jobs on page 1; page 2 is Selected + More Projects only.
 
 ## Visual checkpoints
 
@@ -13,19 +13,18 @@
 
 ## Findings
 
-| Severity | Finding                                                                                            | Status |
-| -------- | -------------------------------------------------------------------------------------------------- | ------ |
-| None     | PDF prints exactly 2 pages                                                                         | Done   |
-| None     | Page 1: sidebar ribbons legible; 8 experience rows with 1 bullet each; summary not orphaned        | Done   |
-| None     | Page 2: 4 compact continued roles; 3 expanded selected projects (2 detail lines each); 7-card grid | Done   |
-| None     | Page 2 languages footer anchors bottom; fill ~95% with ≤0.5in bottom gap                           | Done   |
+| Severity | Finding                                                                                         | Status   |
+| -------- | ----------------------------------------------------------------------------------------------- | -------- |
+| None     | PDF prints exactly 2 pages                                                                      | Done     |
+| None     | Page 1: all 12 jobs with 1 bullet each; sidebar ribbons legible; no experience on page 2        | Done     |
+| None     | Page 2: Selected Projects (3 expanded) + More Projects (7-card grid) only; no continued section | Done     |
+| Low      | Page 2 has moderate bottom whitespace without languages footer                                  | Accepted |
 
 ## Fixes applied
 
-- Restored page-2 compact timeline rows per plan
-- `buildProjectExpandedHtml` uses up to 2 `projectBullets` lines per project
-- Added `buildFooterLanguagesHtml` on page 2
-- `layout-refined-lorna` page-two spacing tuned
+- `firstPageExperienceCount: 12` for refined-lorna
+- Removed page-2 experience section and languages footer
+- Page-one CSS tuned to maximize vertical fill (tighter gaps, reduced padding)
 
 ## Verification
 

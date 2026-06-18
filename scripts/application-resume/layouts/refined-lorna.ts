@@ -9,7 +9,6 @@ import {
   buildMoreProjectsGridHtml,
   buildProjectExpandedHtml,
   buildTimelineHtml,
-  buildFooterLanguagesHtml,
   DENSITY_MAXIMIZED_CSS,
   wrapApplicationResumeHtml,
 } from "../shared.js";
@@ -24,7 +23,6 @@ export function buildRefinedLornaResumeHtml(
     config,
     summary,
     firstPageExperience,
-    secondPageExperience,
     selectedProjects,
     additionalProjects,
     fontCss,
@@ -69,11 +67,6 @@ export function buildRefinedLornaResumeHtml(
     </section>
 
     <section class="page page-full-width page-two" data-testid="resume-page-2">
-      <section class="page-two-section experience-section">
-        ${buildMainSectionRibbon("Professional Experience (continued)")}
-        ${buildTimelineHtml(secondPageExperience, { compact: true })}
-      </section>
-
       <section class="page-two-section">
         ${buildMainSectionRibbon("Selected Projects")}
         ${selectedProjects.map((project) => buildProjectExpandedHtml(project)).join("")}
@@ -83,8 +76,6 @@ export function buildRefinedLornaResumeHtml(
         ${buildMainSectionRibbon("More Projects")}
         ${buildMoreProjectsGridHtml(additionalProjects)}
       </section>
-
-      ${buildFooterLanguagesHtml()}
     </section>`;
 
   return wrapApplicationResumeHtml(profile, fontCss, body, {
