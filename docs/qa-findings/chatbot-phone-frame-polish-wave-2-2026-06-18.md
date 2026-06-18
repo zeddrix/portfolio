@@ -32,14 +32,14 @@ Capability band reused `PhoneDeviceFrame` with homepage carousel desktop sizing 
 
 ## Visual triage
 
-| Severity | Finding                                                     | Resolution                                           |
-| -------- | ----------------------------------------------------------- | ---------------------------------------------------- |
-| High     | Phone left-aligned with empty right gutter in gradient card | Fixed — flex centering + band layout context         |
-| High     | Image top-clipped / bottom black bars in phone screen       | Fixed — band sizing + carousel image mounting parity |
-| Medium   | E2E strict-mode violation on duplicate gradient testids     | Fixed — scope to `.opacity-100` active slide         |
+| Severity | Finding                                                     | Resolution                                                                   |
+| -------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| High     | Phone left-aligned with empty right gutter in gradient card | Fixed — flex centering + band layout context                                 |
+| High     | Image top-clipped / bottom black bars in phone screen       | Fixed — band sizing + carousel image mounting parity                         |
+| Medium   | E2E strict-mode violation on duplicate gradient testids     | Fixed — scope to `.opacity-100` active slide                                 |
 | —        | E2E viewport pollution after mobile/tablet chatbot tests    | Fixed — reset to 1280×900 in `beforeEach`; scope fill test to `.opacity-100` |
-| —        | Obsolete wave-1 screenshot filenames in reference dir       | Removed — canonical wave-2 capture names only                                 |
-| —        | `objectPosition` tweak for chatbot slide                    | Not needed — `50% 0%` looks correct after layout fix |
+| —        | Obsolete wave-1 screenshot filenames in reference dir       | Removed — canonical wave-2 capture names only                                |
+| —        | `objectPosition` tweak for chatbot slide                    | Not needed — `50% 0%` looks correct after layout fix                         |
 
 ## Static-source cleanup
 
