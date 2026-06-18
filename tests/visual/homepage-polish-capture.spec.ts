@@ -37,15 +37,47 @@ const manatalSlideCaptures = [
 
 type ManatalCaptureViewport = "desktop" | "tablet" | "mobile";
 
+async function ensureManatalCardActive(
+  page: import("@playwright/test").Page,
+  viewport: ManatalCaptureViewport,
+) {
+  await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
+  await page.getByTestId("highlight-card-3").evaluate((element) => {
+    element.scrollIntoView({ block: "center", inline: "nearest" });
+  });
+
+  if (viewport === "mobile" || viewport === "tablet") {
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+  }
+
+  await page
+    .getByTestId("highlight-card-3")
+    .getByTestId("carousel-device-frame-phone")
+    .waitFor({ state: "visible" });
+}
+
+async function waitForManatalSlideSrc(
+  page: import("@playwright/test").Page,
+  srcPattern: RegExp,
+) {
+  const manatalImage = page.getByTestId("carousel-project-image-manatal-coop");
+  const manatalImg = manatalImage.locator("img");
+
+  await expect
+    .poll(async () => manatalImg.getAttribute("src"), { timeout: 20_000 })
+    .toMatch(srcPattern);
+  await expect(manatalImage).toHaveAttribute("data-image-state", "loaded");
+}
+
 async function captureManatalPhoneSlide(
   page: import("@playwright/test").Page,
   slide: (typeof manatalSlideCaptures)[number],
   viewport: ManatalCaptureViewport,
 ) {
-  const manatalImage = page.getByTestId("carousel-project-image-manatal-coop");
-  const manatalImg = manatalImage.locator("img");
-  await expect(manatalImg).toHaveAttribute("src", slide.srcPattern);
-  await expect(manatalImage).toHaveAttribute("data-image-state", "loaded");
+  await waitForManatalSlideSrc(page, slide.srcPattern);
 
   const filename =
     viewport === "desktop"
@@ -79,22 +111,9 @@ async function captureManatalSlidesAtViewport(
   }
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
-  if (viewport === "mobile" || viewport === "tablet") {
-    await scrollCarouselCardIntoViewCenter(
-      page,
-      "highlight-card-column-manatal-coop",
-    );
-  }
-  await page
-    .getByTestId("highlight-card-3")
-    .getByTestId("carousel-device-frame-phone")
-    .waitFor({ state: "visible" });
+  await ensureManatalCardActive(page, viewport);
 
-  await captureManatalPhoneSlide(page, manatalSlideCaptures[0], viewport);
-
-  for (const slide of manatalSlideCaptures.slice(1)) {
-    await page.waitForTimeout(3500);
+  for (const slide of manatalSlideCaptures) {
     await captureManatalPhoneSlide(page, slide, viewport);
   }
 }
@@ -103,6 +122,7 @@ test.describe("homepage polish visual capture", () => {
   test("hero, carousel fold, and terminal bottom checkpoints", async ({
     page,
   }) => {
+    test.setTimeout(180_000);
     mkdirSync(outDir, { recursive: true });
 
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -128,19 +148,19 @@ test.describe("homepage polish visual capture", () => {
       fullPage: false,
     });
 
-    await page.locator("#about").scrollIntoViewIfNeeded();
-    await page.getByTestId("about-section").waitFor({ state: "visible" });
-    await page.screenshot({
-      path: path.join(outDir, "work-about-transition-1440.png"),
-      fullPage: false,
-    });
-
     await page.getByTestId("tools-strip-section").scrollIntoViewIfNeeded();
     await page
-      .getByTestId("tools-strip-footer-note")
+      .getByTestId("tool-group-ai-delivery")
       .waitFor({ state: "visible" });
     await page.screenshot({
       path: path.join(outDir, "tools-strip-1440.png"),
+      fullPage: false,
+    });
+
+    await page.locator("#about").scrollIntoViewIfNeeded();
+    await page.getByTestId("about-section").waitFor({ state: "visible" });
+    await page.screenshot({
+      path: path.join(outDir, "tools-about-transition-1440.png"),
       fullPage: false,
     });
 
@@ -161,7 +181,7 @@ test.describe("homepage polish visual capture", () => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("tools-strip-section").scrollIntoViewIfNeeded();
     await page
-      .getByTestId("tools-strip-footer-note")
+      .getByTestId("tool-group-ai-delivery")
       .waitFor({ state: "visible" });
     await page.screenshot({
       path: path.join(outDir, "tools-strip-390.png"),
