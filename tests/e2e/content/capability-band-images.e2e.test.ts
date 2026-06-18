@@ -8,6 +8,60 @@ import {
 } from "../fixtures/test-helpers";
 
 const manatalFillTolerancePx = 2;
+const chatbotPhoneCenterTolerancePx = 12;
+
+const chatbotPhoneViewports = [
+  {
+    name: "mobile",
+    width: 390,
+    height: 844,
+    maxPhoneWidth: 280,
+    minPhoneHeight: 300,
+  },
+  {
+    name: "tablet",
+    width: 768,
+    height: 1024,
+    maxPhoneWidth: 280,
+    minPhoneHeight: 300,
+  },
+  {
+    name: "desktop",
+    width: 1280,
+    height: 900,
+    maxPhoneWidth: 280,
+    minPhoneHeight: 300,
+  },
+] as const;
+
+async function scrollToChatbotBand(page: import("@playwright/test").Page) {
+  await scrollToTestId(page, selectors.sections.approach);
+  const chatbotBand = page.getByTestId("highlight-band-4");
+  await chatbotBand.scrollIntoViewIfNeeded();
+  return chatbotBand;
+}
+
+/** @param {import('@playwright/test').Locator} screen @param {import('@playwright/test').Locator} image */
+async function expectImageFillsPhoneScreenEdges(
+  screen: import("@playwright/test").Locator,
+  image: import("@playwright/test").Locator,
+  tolerancePx: number,
+) {
+  const screenBox = await screen.boundingBox();
+  const imageBox = await image.boundingBox();
+  if (!screenBox || !imageBox) {
+    throw new Error("Expected phone screen and image bounding boxes.");
+  }
+
+  expect(imageBox.x).toBeLessThanOrEqual(screenBox.x + tolerancePx);
+  expect(imageBox.y).toBeLessThanOrEqual(screenBox.y + tolerancePx);
+  expect(imageBox.x + imageBox.width).toBeGreaterThanOrEqual(
+    screenBox.x + screenBox.width - tolerancePx,
+  );
+  expect(imageBox.y + imageBox.height).toBeGreaterThanOrEqual(
+    screenBox.y + screenBox.height - tolerancePx,
+  );
+}
 
 function bandImage(
   page: import("@playwright/test").Page,
@@ -31,6 +85,7 @@ function bandTextColumn(
 
 test.describe("capability band images", () => {
   test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
     await page.addInitScript(
       ({ capabilityKey, mode }) => {
         localStorage.setItem(capabilityKey, mode);
@@ -257,36 +312,87 @@ test.describe("capability band images", () => {
     await expect(page.getByTestId("highlight-band-6")).toBeVisible();
   });
 
-  test("Given chatbot carousel in detailed layout, when slide loads, then image fills phone screen area", async ({
-    page,
-  }) => {
-    const chatbotBand = page.getByTestId("highlight-band-4");
-    const screen = chatbotBand.getByTestId("phone-device-screen");
-    const image = bandImage(page, 4, 0);
+  for (const viewport of chatbotPhoneViewports) {
+    test(`Given chatbot band at ${viewport.name}, when slide 1 loads, then image fills phone screen edges`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({
+        width: viewport.width,
+        height: viewport.height,
+      });
+      const chatbotBand = await scrollToChatbotBand(page);
+      const screen = chatbotBand
+        .locator(".opacity-100")
+        .getByTestId("phone-device-screen");
+      const image = chatbotBand
+        .locator(".opacity-100")
+        .getByTestId("capability-band-image-0")
+        .locator("img");
 
-    await expect(image).toHaveAttribute("src", /manatal-coop-chatbot.*\.webp/);
-    await expect(
-      chatbotBand.getByTestId("phone-device-frame-domain"),
-    ).toHaveText("manatalcoop.app");
-    await expect(
-      chatbotBand.getByTestId("capability-band-image-0"),
-    ).toHaveAttribute("data-image-state", /^(lqip|loaded)$/);
-
-    const screenBox = await screen.boundingBox();
-    const imageBox = await image.boundingBox();
-    if (!screenBox || !imageBox) {
-      throw new Error(
-        "Expected chatbot phone screen and image bounding boxes.",
+      await expect(image).toHaveAttribute(
+        "src",
+        /manatal-coop-chatbot.*\.webp/,
       );
-    }
+      await expect(
+        chatbotBand.getByTestId("capability-band-image-0"),
+      ).toHaveAttribute("data-image-state", /^(lqip|loaded)$/);
 
-    expect(imageBox.width).toBeGreaterThanOrEqual(
-      screenBox.width - manatalFillTolerancePx,
-    );
-    expect(imageBox.height).toBeGreaterThanOrEqual(
-      screenBox.height - manatalFillTolerancePx,
-    );
-  });
+      await expectImageFillsPhoneScreenEdges(
+        screen,
+        image,
+        manatalFillTolerancePx,
+      );
+    });
+
+    test(`Given chatbot band at ${viewport.name}, when slide 1 loads, then phone frame is centered in gradient stage`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({
+        width: viewport.width,
+        height: viewport.height,
+      });
+      const chatbotBand = await scrollToChatbotBand(page);
+      const activeSlide = chatbotBand.locator(".opacity-100");
+      const gradientStage = activeSlide.getByTestId(
+        "capability-band-gradient-stage",
+      );
+      const phone = activeSlide.getByTestId("carousel-device-frame-phone");
+
+      const gradientBox = await gradientStage.boundingBox();
+      const phoneBox = await phone.boundingBox();
+      if (!gradientBox || !phoneBox) {
+        throw new Error(
+          "Expected chatbot gradient stage and phone frame bounding boxes.",
+        );
+      }
+
+      const gradientCenterX = gradientBox.x + gradientBox.width / 2;
+      const phoneCenterX = phoneBox.x + phoneBox.width / 2;
+      expect(Math.abs(phoneCenterX - gradientCenterX)).toBeLessThanOrEqual(
+        chatbotPhoneCenterTolerancePx,
+      );
+    });
+
+    test(`Given chatbot band at ${viewport.name}, when slide 1 loads, then phone frame fits band column`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({
+        width: viewport.width,
+        height: viewport.height,
+      });
+      const chatbotBand = await scrollToChatbotBand(page);
+      const phone = chatbotBand
+        .locator(".opacity-100")
+        .getByTestId("carousel-device-frame-phone");
+      const phoneBox = await phone.boundingBox();
+      if (!phoneBox) {
+        throw new Error("Expected chatbot phone frame bounding box.");
+      }
+
+      expect(phoneBox.width).toBeLessThanOrEqual(viewport.maxPhoneWidth + 2);
+      expect(phoneBox.height).toBeGreaterThanOrEqual(viewport.minPhoneHeight);
+    });
+  }
 
   test("Given chatbot hybrid band, when user views band, then Shown in includes manatal-coop project link", async ({
     page,

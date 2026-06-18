@@ -5,9 +5,12 @@ import {
   CAROUSEL_PREVIEW_HEIGHT_CSS,
   getManatalCarouselSlideMeta,
   getManatalPhoneScreenAspectCss,
+  getManatalPhoneScreenBandConstraintCss,
   getManatalPhoneScreenWidthCss,
   getCarouselPreviewHeight,
   MANATAL_CAROUSEL_SLIDE_META,
+  MANATAL_PHONE_BAND_MAX_HEIGHT_CSS,
+  MANATAL_PHONE_BAND_MAX_WIDTH_CSS,
   MANATAL_PHONE_FRAME_MAX_WIDTH_MOBILE_CSS,
   MANATAL_PHONE_FRAME_WIDTH_CSS,
   MANATAL_PHONE_SCREEN_ASPECT_CSS,
@@ -38,6 +41,17 @@ describe("carousel preview height", () => {
     expect(getManatalPhoneScreenWidthCss("mobile")).toBe("min(100%, 300px)");
     expect(getManatalPhoneScreenWidthCss()).toBe(
       getManatalPhoneScreenWidthCss("desktop"),
+    );
+  });
+
+  it("uses band-specific phone constraints for capability band layout", () => {
+    expect(MANATAL_PHONE_BAND_MAX_WIDTH_CSS).toBe("min(100%, 280px)");
+    expect(MANATAL_PHONE_BAND_MAX_HEIGHT_CSS).toBe("min(50vh, 380px)");
+    expect(getManatalPhoneScreenBandConstraintCss()).toContain(
+      MANATAL_PHONE_BAND_MAX_WIDTH_CSS,
+    );
+    expect(getManatalPhoneScreenBandConstraintCss()).toContain(
+      MANATAL_PHONE_BAND_MAX_HEIGHT_CSS,
     );
   });
 

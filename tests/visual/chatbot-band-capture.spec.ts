@@ -21,6 +21,40 @@ const viewports = [
   { name: "desktop", width: 1280, height: 900 },
 ] as const;
 
+async function prepareChatbotBandSlide1(
+  page: import("@playwright/test").Page,
+  viewport: (typeof viewports)[number],
+) {
+  await page.setViewportSize({
+    width: viewport.width,
+    height: viewport.height,
+  });
+  await gotoHome(page);
+  await scrollToTestId(page, selectors.sections.approach);
+
+  const chatbotBand = page.getByTestId("highlight-band-4");
+  await chatbotBand.scrollIntoViewIfNeeded();
+
+  const phoneImage = chatbotBand
+    .locator(".opacity-100")
+    .getByTestId("capability-band-image-0")
+    .locator("img");
+  await expect(phoneImage).toHaveAttribute(
+    "src",
+    /manatal-coop-chatbot.*\.webp/,
+  );
+  await expect(
+    chatbotBand
+      .locator(".opacity-100")
+      .getByTestId("phone-device-frame-domain"),
+  ).toHaveText("manatalcoop.app");
+  await expect(
+    chatbotBand.locator(".opacity-100").getByTestId("capability-band-image-0"),
+  ).toHaveAttribute("data-image-state", "loaded");
+
+  return chatbotBand.locator(".opacity-100");
+}
+
 test.describe("chatbot band visual capture", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(
@@ -32,43 +66,61 @@ test.describe("chatbot band visual capture", () => {
   });
 
   for (const viewport of viewports) {
-    test(`captures chatbot band slide 1 phone at ${viewport.name}`, async ({
+    test(`captures chatbot phone frame at ${viewport.name}`, async ({
       page,
     }) => {
       mkdirSync(outDir, { recursive: true });
-      await page.setViewportSize({
-        width: viewport.width,
-        height: viewport.height,
-      });
-      await gotoHome(page);
-      await scrollToTestId(page, selectors.sections.approach);
+      const activeSlide = await prepareChatbotBandSlide1(page, viewport);
 
-      const chatbotBand = page.getByTestId("highlight-band-4");
-      await chatbotBand.scrollIntoViewIfNeeded();
-
-      const phoneImage = chatbotBand
-        .getByTestId("capability-band-image-0")
-        .locator("img");
-      await expect(phoneImage).toHaveAttribute(
-        "src",
-        /manatal-coop-chatbot.*\.webp/,
-      );
-      await expect(
-        chatbotBand.getByTestId("phone-device-frame-domain"),
-      ).toHaveText("manatalcoop.app");
-      await expect(
-        chatbotBand.getByTestId("capability-band-image-0"),
-      ).toHaveAttribute("data-image-state", "loaded");
-
-      await chatbotBand.screenshot({
+      await activeSlide.getByTestId("carousel-device-frame-phone").screenshot({
         path: path.join(
           outDir,
-          `chatbot-band-slide1-phone-${viewport.name}-${viewport.width}.png`,
+          `chatbot-phone-frame-${viewport.name}-${viewport.width}.png`,
         ),
       });
     });
 
-    test(`captures chatbot band slide 2 browser at ${viewport.name}`, async ({
+    test(`captures chatbot phone screen at ${viewport.name}`, async ({
+      page,
+    }) => {
+      mkdirSync(outDir, { recursive: true });
+      const activeSlide = await prepareChatbotBandSlide1(page, viewport);
+
+      await activeSlide.getByTestId("phone-device-screen").screenshot({
+        path: path.join(
+          outDir,
+          `chatbot-phone-screen-${viewport.name}-${viewport.width}.png`,
+        ),
+      });
+    });
+  }
+
+  test("captures full chatbot band context on desktop slide 1", async ({
+    page,
+  }) => {
+    mkdirSync(outDir, { recursive: true });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.sections.approach);
+
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    await chatbotBand.scrollIntoViewIfNeeded();
+    await expect(
+      chatbotBand
+        .locator(".opacity-100")
+        .getByTestId("capability-band-image-0"),
+    ).toHaveAttribute("data-image-state", "loaded");
+
+    await chatbotBand.screenshot({
+      path: path.join(outDir, "chatbot-band-slide1-full-desktop-1280.png"),
+    });
+  });
+
+  for (const viewport of [
+    { name: "mobile", width: 390, height: 844 },
+    { name: "desktop", width: 1280, height: 900 },
+  ] as const) {
+    test(`captures chatbot browser slide at ${viewport.name}`, async ({
       page,
     }) => {
       mkdirSync(outDir, { recursive: true });
@@ -94,12 +146,15 @@ test.describe("chatbot band visual capture", () => {
         chatbotBand.locator(".opacity-100").getByTestId("browser-device-frame"),
       ).toBeVisible();
 
-      await chatbotBand.screenshot({
-        path: path.join(
-          outDir,
-          `chatbot-band-slide2-browser-${viewport.name}-${viewport.width}.png`,
-        ),
-      });
+      await chatbotBand
+        .locator(".opacity-100")
+        .getByTestId("browser-device-frame")
+        .screenshot({
+          path: path.join(
+            outDir,
+            `chatbot-browser-slide-${viewport.name}-${viewport.width}.png`,
+          ),
+        });
     });
   }
 });
