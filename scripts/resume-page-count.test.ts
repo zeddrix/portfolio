@@ -1,5 +1,6 @@
 import { chromium } from "@playwright/test";
 import { describe, expect, it } from "vitest";
+import { APPLICATION_RESUME_LAYOUTS } from "./application-resume-config";
 import { buildPortfolioSnapshot } from "./export-portfolio-snapshot";
 import { buildApplicationResumeHtml } from "./generate-resume";
 
@@ -10,21 +11,25 @@ function countPdfPages(buffer: Buffer): number {
 }
 
 describe("application resume PDF page count", () => {
-  it("prints exactly two pages", async () => {
-    const snapshot = buildPortfolioSnapshot();
-    const html = await buildApplicationResumeHtml(snapshot as never);
+  it.each(APPLICATION_RESUME_LAYOUTS)(
+    "prints exactly two pages for %s layout",
+    async (layout) => {
+      const snapshot = buildPortfolioSnapshot();
+      const html = await buildApplicationResumeHtml(snapshot as never, layout);
 
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "load" });
-    const pdf = await page.pdf({
-      format: "Letter",
-      printBackground: true,
-      scale: 0.96,
-      margin: { top: "0", right: "0", bottom: "0", left: "0" },
-    });
-    await browser.close();
+      const browser = await chromium.launch();
+      const page = await browser.newPage();
+      await page.setContent(html, { waitUntil: "load" });
+      const pdf = await page.pdf({
+        format: "Letter",
+        printBackground: true,
+        scale: 0.96,
+        margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      });
+      await browser.close();
 
-    expect(countPdfPages(Buffer.from(pdf))).toBe(2);
-  }, 60_000);
+      expect(countPdfPages(Buffer.from(pdf))).toBe(2);
+    },
+    60_000,
+  );
 });
