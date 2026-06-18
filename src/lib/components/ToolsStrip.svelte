@@ -1,6 +1,6 @@
 <script>
 	import { pageShellClass } from '$lib/constants/layout';
-	import { toolStripFooterNote, toolStripGroups } from '$lib/data/portfolio';
+	import { toolStripGroups } from '$lib/data/portfolio';
 
 	const sectionHeadingClass =
 		'text-[clamp(2.6rem,calc(0.25rem+5vw),4.5rem)] font-bold leading-[1.15] tracking-[-0.04em] text-[#111111]';
@@ -34,14 +34,6 @@
 					</div>
 				</div>
 			{/each}
-		</div>
-		<div
-			data-testid="tools-strip-footer-note"
-			class="mt-10 border-t border-zinc-200 pt-8"
-		>
-			<p class="max-w-[52ch] text-base font-medium leading-relaxed text-zinc-600">
-				{toolStripFooterNote}
-			</p>
 		</div>
 	</div>
 </section>

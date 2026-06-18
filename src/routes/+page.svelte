@@ -132,10 +132,20 @@
 
 		<WorkSection />
 
+		<CapabilityBandsSection
+			{capabilityLayoutMode}
+			onCapabilityLayoutChange={(mode) =>
+				setCapabilityLayoutMode(/** @type {CapabilityBandLayoutMode} */ (mode))}
+		/>
+
+		{#if ToolsStrip}
+			<svelte:component this={ToolsStrip} />
+		{/if}
+
 		<section
 			id="about"
 			data-testid="about-section"
-			class="{pageContainerClass} pb-20 sm:pb-24 md:pb-32"
+			class="{pageContainerClass} pt-12 pb-16 sm:pt-16 sm:pb-20 md:pb-24"
 		>
 			<div class="min-w-0">
 				<h2 class={sectionHeadingClass}>About me</h2>
@@ -149,16 +159,6 @@
 				</div>
 			</div>
 		</section>
-
-		<CapabilityBandsSection
-			{capabilityLayoutMode}
-			onCapabilityLayoutChange={(mode) =>
-				setCapabilityLayoutMode(/** @type {CapabilityBandLayoutMode} */ (mode))}
-		/>
-
-		{#if ToolsStrip}
-			<svelte:component this={ToolsStrip} />
-		{/if}
 
 		<div class="h-12 shrink-0 sm:h-16" aria-hidden="true"></div>
 

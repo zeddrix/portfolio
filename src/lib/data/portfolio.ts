@@ -908,9 +908,6 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
   },
 ];
 
-export const toolStripFooterNote =
-  "Primary depth in the stacks above; comfortable ramping on new languages and frameworks with AI-accelerated workflows.";
-
 export const toolStripGroups: ToolStripGroup[] = [
   {
     id: "ai-delivery",
