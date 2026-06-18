@@ -50,6 +50,7 @@
 		domain={displayUrl}
 		screenAspectRatio={MANATAL_PHONE_SCREEN_ASPECT_CSS}
 		hideDomainOnMobile={true}
+		carouselMobileLayout={true}
 	>
 		{#key imagePath}
 			<OptimizedImage

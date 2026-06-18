@@ -1,6 +1,7 @@
 <script>
 	import {
 		getManatalPhoneScreenWidthCss,
+		MANATAL_PHONE_SCREEN_ASPECT_CSS,
 		MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS,
 	} from '$lib/constants/carousel';
 
@@ -10,15 +11,22 @@
 	export let showDomain = true;
 	/** @type {boolean} */
 	export let hideDomainOnMobile = false;
+	/** @type {boolean} */
+	export let carouselMobileLayout = false;
 	/** @type {'nested' | 'card'} */
 	export let fillMode = 'nested';
 	/** @type {string | undefined} */
 	export let screenAspectRatio = undefined;
 
 	$: contentSizedCard = fillMode === 'card' && Boolean(screenAspectRatio);
+	$: carouselCardFrame = contentSizedCard && carouselMobileLayout;
+	$: resolvedAspectRatio = screenAspectRatio ?? MANATAL_PHONE_SCREEN_ASPECT_CSS;
 
 	$: rootClass = contentSizedCard
-		? 'relative w-fit shrink-0 rounded-[2rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-white/10'
+		? 'relative shrink-0 rounded-[2rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-white/10 ' +
+			(carouselCardFrame
+				? 'w-full max-w-[300px] lg:w-fit'
+				: 'w-fit')
 		: fillMode === 'card'
 			? 'relative aspect-[9/19.5] w-auto shrink-0 rounded-[2.25rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-white/10'
 			: 'relative max-h-[min(72vw,640px)] w-[min(42vw,280px)] shrink-0 rounded-[2.25rem] border-[3px] border-zinc-800 bg-zinc-950 p-1.5 shadow-[0_24px_48px_-20px_rgba(0,0,0,0.65)] ring-1 ring-white/10';
@@ -28,12 +36,15 @@
 		: 'relative flex h-full w-full flex-col overflow-hidden rounded-[1.85rem] bg-black';
 
 	$: screenClass = contentSizedCard
-		? 'relative min-h-0 max-w-full overflow-hidden bg-black'
+		? 'relative min-h-0 max-w-full overflow-hidden bg-black' +
+			(carouselCardFrame ? ' manatal-carousel-phone-screen' : '')
 		: 'relative min-h-0 flex-1 overflow-hidden bg-black';
 
-	$: screenStyle = screenAspectRatio
-		? `aspect-ratio:${screenAspectRatio};max-height:${MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS};width:${getManatalPhoneScreenWidthCss()}`
-		: undefined;
+	$: screenStyle = screenAspectRatio && !carouselCardFrame
+		? `aspect-ratio:${screenAspectRatio};max-height:${MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS};width:${getManatalPhoneScreenWidthCss('desktop')}`
+		: carouselCardFrame
+			? `--manatal-phone-aspect:${resolvedAspectRatio}`
+			: undefined;
 </script>
 
 <div
@@ -66,3 +77,20 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	:global(.manatal-carousel-phone-screen) {
+		aspect-ratio: var(--manatal-phone-aspect);
+		width: min(100%, 300px);
+	}
+
+	@media (min-width: 1024px) {
+		:global(.manatal-carousel-phone-screen) {
+			max-height: calc(min(88vw, 920px) * 10 / 16);
+			width: min(
+				min(42vw, 280px),
+				calc(min(88vw, 920px) * 10 / 16 * 650 / 1459)
+			);
+		}
+	}
+</style>

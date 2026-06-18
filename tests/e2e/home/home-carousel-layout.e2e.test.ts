@@ -14,6 +14,8 @@ const manatalHeightCapTolerancePx = 4;
 const manatalPhoneFrameTolerancePx = 8;
 const manatalCenterTolerancePx = 12;
 const manatalArticleDimensionTolerancePx = 4;
+const manatalMobilePhoneMinWidthPx = 150;
+const manatalMobilePhoneMinArticleWidthRatio = 0.42;
 
 const manatalSlidePatterns = [
   /manatal-coop-homepage/,
@@ -99,7 +101,7 @@ async function expectManatalTextCenteredUnderPhone(page: Page) {
 }
 
 /** @param {Page} page */
-async function expectManatalInvisiblePreviewSlot(page: Page) {
+async function expectManatalPreviewSlotWidthParity(page: Page) {
   const manatalArticle = page.getByTestId("highlight-card-3");
   const usedelightArticle = page.getByTestId("highlight-card-0");
   const phone = manatalArticle.getByTestId("carousel-device-frame-phone");
@@ -114,9 +116,6 @@ async function expectManatalInvisiblePreviewSlot(page: Page) {
   expect(Math.abs(manatalBox.width - usedelightBox.width)).toBeLessThanOrEqual(
     manatalArticleDimensionTolerancePx,
   );
-  expect(
-    Math.abs(manatalBox.height - usedelightBox.height),
-  ).toBeLessThanOrEqual(manatalArticleDimensionTolerancePx);
 
   const articleCenterX = manatalBox.x + manatalBox.width / 2;
   const phoneCenterX = phoneBox.x + phoneBox.width / 2;
@@ -124,6 +123,52 @@ async function expectManatalInvisiblePreviewSlot(page: Page) {
   expect(Math.abs(phoneCenterX - articleCenterX)).toBeLessThanOrEqual(
     manatalCenterTolerancePx,
   );
+}
+
+/** @param {Page} page */
+async function expectManatalPreviewSlotHeightParity(page: Page) {
+  const manatalArticle = page.getByTestId("highlight-card-3");
+  const usedelightArticle = page.getByTestId("highlight-card-0");
+  const manatalBox = await manatalArticle.boundingBox();
+  const usedelightBox = await usedelightArticle.boundingBox();
+
+  if (!manatalBox || !usedelightBox) {
+    throw new Error("Expected Manatal and UseDelight article bounding boxes.");
+  }
+
+  expect(
+    Math.abs(manatalBox.height - usedelightBox.height),
+  ).toBeLessThanOrEqual(manatalArticleDimensionTolerancePx);
+}
+
+/** @param {Page} page */
+async function expectManatalPhoneFillsMobilePreviewSlot(page: Page) {
+  const manatalArticle = page.getByTestId("highlight-card-3");
+  const phone = manatalArticle.getByTestId("carousel-device-frame-phone");
+  const manatalBox = await manatalArticle.boundingBox();
+  const phoneBox = await phone.boundingBox();
+
+  if (!manatalBox || !phoneBox) {
+    throw new Error("Expected Manatal article and phone bounding boxes.");
+  }
+
+  expect(phoneBox.width).toBeGreaterThanOrEqual(manatalMobilePhoneMinWidthPx);
+  expect(phoneBox.width / manatalBox.width).toBeGreaterThanOrEqual(
+    manatalMobilePhoneMinArticleWidthRatio,
+  );
+
+  const articleCenterX = manatalBox.x + manatalBox.width / 2;
+  const phoneCenterX = phoneBox.x + phoneBox.width / 2;
+
+  expect(Math.abs(phoneCenterX - articleCenterX)).toBeLessThanOrEqual(
+    manatalCenterTolerancePx,
+  );
+}
+
+/** @param {Page} page */
+async function expectManatalInvisiblePreviewSlot(page: Page) {
+  await expectManatalPreviewSlotWidthParity(page);
+  await expectManatalPreviewSlotHeightParity(page);
 }
 
 /** @param {import('@playwright/test').Locator} manatalCard */
@@ -409,7 +454,7 @@ test.describe("homepage carousel layout", () => {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoHome(page);
-    await expectTightCarouselToAboutGap(page, 360);
+    await expectTightCarouselToAboutGap(page, 520);
   });
 
   test("Given homepage at desktop with Manatal carousel card, when user compares preview to UseDelight, then Manatal phone is narrower and shorter", async ({
@@ -533,8 +578,37 @@ test.describe("homepage carousel layout", () => {
     );
 
     await expectManatalPhoneCenteredInCarousel(page);
-    await expectManatalInvisiblePreviewSlot(page);
+    await expectManatalPreviewSlotWidthParity(page);
+    await expectManatalPhoneFillsMobilePreviewSlot(page);
     await assertNoHorizontalOverflow(page);
+  });
+
+  test("Given Manatal carousel on mobile, when user scrolls card into center, then phone uses substantial preview article width", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await expectManatalPhoneFillsMobilePreviewSlot(page);
+  });
+
+  test("Given Manatal carousel on desktop, when user scrolls card into center, then preview slot matches browser card dimensions", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await expectManatalInvisiblePreviewSlot(page);
   });
 
   test("Given Manatal carousel on tablet, when user scrolls card into center, then phone is centered in carousel viewport", async ({
@@ -549,6 +623,7 @@ test.describe("homepage carousel layout", () => {
     );
 
     await expectManatalPhoneCenteredInCarousel(page);
+    await expectManatalPhoneFillsMobilePreviewSlot(page);
   });
 
   test("Given Manatal carousel on mobile, when user scrolls card into center, then tagline is centered under phone", async ({

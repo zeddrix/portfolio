@@ -16,10 +16,14 @@ export const CAROUSEL_PREVIEW_HEIGHT_CSS =
 
 export const MANATAL_PHONE_FRAME_WIDTH_CSS = "min(42vw, 280px)";
 
+export const MANATAL_PHONE_FRAME_MAX_WIDTH_MOBILE_CSS = "min(56vw, 300px)";
+
 export const MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS =
   "calc(min(88vw, 920px) * 10 / 16)";
 
 const MANATAL_REFERENCE_IMAGE_PATH = "/manatal-coop-homepage.webp";
+
+export type ManatalPhoneScreenLayout = "mobile" | "desktop";
 
 export function getManatalPhoneScreenAspectCss(): string {
   const dimensions = getImageDimensions(MANATAL_REFERENCE_IMAGE_PATH);
@@ -31,7 +35,13 @@ export function getManatalPhoneScreenAspectCss(): string {
 
 export const MANATAL_PHONE_SCREEN_ASPECT_CSS = getManatalPhoneScreenAspectCss();
 
-export function getManatalPhoneScreenWidthCss(): string {
+export function getManatalPhoneScreenWidthCss(
+  layout: ManatalPhoneScreenLayout = "desktop",
+): string {
+  if (layout === "mobile") {
+    return "min(100%, 300px)";
+  }
+
   const dimensions = getImageDimensions(MANATAL_REFERENCE_IMAGE_PATH);
   const width = dimensions?.width ?? 650;
   const height = dimensions?.height ?? 1459;

@@ -7,7 +7,6 @@
 	import { prefetchImageUrl, scheduleIdlePrefetch } from '$lib/utils/prefetch-images';
 	import { appPath } from '$lib/utils/app-path';
 	import { DEVICE_CARD_GRADIENT } from '$lib/constants/device-frame';
-	import { CAROUSEL_PREVIEW_HEIGHT_CSS } from '$lib/constants/carousel';
 
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
@@ -163,11 +162,10 @@
 					data-highlight-slug={project.slug}
 					bind:this={highlightSlideElements[project.slug]}
 					class={phoneOnlyCard
-						? 'group flex w-full items-center justify-center overflow-hidden bg-transparent shadow-none ring-0'
+						? 'group flex h-auto w-full items-center justify-center overflow-hidden bg-transparent shadow-none ring-0 lg:h-[calc(2.75rem+min(88vw,920px)*10/16)]'
 						: 'group overflow-hidden rounded-xl ' +
 							DEVICE_CARD_GRADIENT +
 							' shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10'}
-					style={phoneOnlyCard ? `height:${CAROUSEL_PREVIEW_HEIGHT_CSS}` : undefined}
 				>
 					{#if (highlightImageSets[project.slug] ?? []).length > 0}
 						<CarouselDevicePreview

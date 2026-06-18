@@ -8,6 +8,7 @@ import {
   getManatalPhoneScreenWidthCss,
   getCarouselPreviewHeight,
   MANATAL_CAROUSEL_SLIDE_META,
+  MANATAL_PHONE_FRAME_MAX_WIDTH_MOBILE_CSS,
   MANATAL_PHONE_FRAME_WIDTH_CSS,
   MANATAL_PHONE_SCREEN_ASPECT_CSS,
   MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS,
@@ -23,6 +24,7 @@ describe("carousel preview height", () => {
 
   it("uses fixed Manatal phone frame width, capped screen height, and cropped aspect from manifest", () => {
     expect(MANATAL_PHONE_FRAME_WIDTH_CSS).toBe("min(42vw, 280px)");
+    expect(MANATAL_PHONE_FRAME_MAX_WIDTH_MOBILE_CSS).toBe("min(56vw, 300px)");
     expect(MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS).toBe(
       "calc(min(88vw, 920px) * 10 / 16)",
     );
@@ -30,8 +32,12 @@ describe("carousel preview height", () => {
     expect(MANATAL_PHONE_SCREEN_ASPECT_CSS).toBe(
       getManatalPhoneScreenAspectCss(),
     );
-    expect(getManatalPhoneScreenWidthCss()).toContain(
+    expect(getManatalPhoneScreenWidthCss("desktop")).toContain(
       MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS,
+    );
+    expect(getManatalPhoneScreenWidthCss("mobile")).toBe("min(100%, 300px)");
+    expect(getManatalPhoneScreenWidthCss()).toBe(
+      getManatalPhoneScreenWidthCss("desktop"),
     );
   });
 
