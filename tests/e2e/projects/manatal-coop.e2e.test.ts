@@ -21,6 +21,53 @@ test.describe("manatal coop project", () => {
       "manatal-coop",
     );
 
+    await expect(
+      page
+        .getByTestId("highlight-card-9")
+        .getByTestId("carousel-device-frame-phone"),
+    ).toBeVisible();
+    await expect(
+      page
+        .getByTestId("highlight-card-9")
+        .getByTestId("carousel-device-frame-browser"),
+    ).toHaveCount(0);
+
+    const usedelightCard = page.getByTestId("highlight-card-0");
+    const manatalCard = page.getByTestId("highlight-card-9");
+    const manatalPhone = manatalCard.getByTestId("carousel-device-frame-phone");
+    const usedelightBox = await usedelightCard.boundingBox();
+    const manatalPhoneBox = await manatalPhone.boundingBox();
+    if (!usedelightBox || !manatalPhoneBox) {
+      throw new Error(
+        "Expected UseDelight and Manatal preview bounding boxes.",
+      );
+    }
+    expect(manatalPhoneBox.width).toBeLessThan(usedelightBox.width);
+
+    const manatalScreen = manatalCard.getByTestId("phone-device-screen");
+    const manatalImage = manatalCard.getByTestId(
+      "carousel-project-image-manatal-coop",
+    );
+    const screenBox = await manatalScreen.boundingBox();
+    const imageBox = await manatalImage.boundingBox();
+    if (!screenBox || !imageBox) {
+      throw new Error("Expected Manatal screen and image bounding boxes.");
+    }
+    expect(Math.abs(imageBox.width - screenBox.width)).toBeLessThanOrEqual(2);
+    expect(Math.abs(imageBox.height - screenBox.height)).toBeLessThanOrEqual(2);
+
+    const usedelightBrowser = usedelightCard.getByTestId(
+      "carousel-device-frame-browser",
+    );
+    const usedelightImageArea = usedelightBrowser.locator(
+      ".aspect-\\[16\\/10\\]",
+    );
+    const browserImageBox = await usedelightImageArea.boundingBox();
+    if (!browserImageBox) {
+      throw new Error("Expected UseDelight browser image area bounding box.");
+    }
+    expect(screenBox.height).toBeLessThanOrEqual(browserImageBox.height + 4);
+
     const manatalCarouselImage = page
       .getByTestId("carousel-project-image-manatal-coop")
       .first()

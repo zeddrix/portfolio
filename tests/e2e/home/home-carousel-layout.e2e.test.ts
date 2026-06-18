@@ -8,6 +8,96 @@ import {
 import { selectors } from "../fixtures/selectors";
 
 const alignmentTolerancePx = 4;
+const manatalFillTolerancePx = 2;
+const manatalHeightCapTolerancePx = 4;
+const manatalPhoneFrameTolerancePx = 8;
+
+const manatalSlidePatterns = [
+  /manatal-coop-homepage/,
+  /manatal-coop-signin/,
+  /manatal-coop-chatbot/,
+] as const;
+
+/** @param {import('@playwright/test').Locator} card */
+async function expectManatalImageFillsScreen(
+  card: import("@playwright/test").Locator,
+) {
+  const screen = card.getByTestId("phone-device-screen");
+  const image = card.getByTestId("carousel-project-image-manatal-coop");
+  const screenBox = await screen.boundingBox();
+  const imageBox = await image.boundingBox();
+
+  if (!screenBox || !imageBox) {
+    throw new Error("Expected Manatal screen and image bounding boxes.");
+  }
+
+  expect(Math.abs(imageBox.width - screenBox.width)).toBeLessThanOrEqual(
+    manatalFillTolerancePx,
+  );
+  expect(Math.abs(imageBox.height - screenBox.height)).toBeLessThanOrEqual(
+    manatalFillTolerancePx,
+  );
+}
+
+/** @param {Page} page @param {RegExp} srcPattern */
+async function waitForManatalSlide(page: Page, srcPattern: RegExp) {
+  const manatalCard = page.getByTestId("highlight-card-9");
+  const manatalImage = manatalCard.getByTestId(
+    "carousel-project-image-manatal-coop",
+  );
+  await expect(manatalImage.locator("img")).toHaveAttribute("src", srcPattern);
+  await expect(manatalImage).toHaveAttribute("data-image-state", "loaded");
+  return manatalCard;
+}
+
+/** @param {import('@playwright/test').Locator} manatalCard */
+async function expectManatalScreenHeightCapped(
+  manatalCard: import("@playwright/test").Locator,
+  usedelightCard: import("@playwright/test").Locator,
+) {
+  const manatalScreen = manatalCard.getByTestId("phone-device-screen");
+  const usedelightBrowser = usedelightCard.getByTestId(
+    "carousel-device-frame-browser",
+  );
+  const usedelightImageArea = usedelightBrowser.locator(
+    ".aspect-\\[16\\/10\\]",
+  );
+  const manatalScreenBox = await manatalScreen.boundingBox();
+  const browserImageBox = await usedelightImageArea.boundingBox();
+
+  if (!manatalScreenBox || !browserImageBox) {
+    throw new Error(
+      "Expected Manatal screen and UseDelight browser image bounding boxes.",
+    );
+  }
+
+  expect(manatalScreenBox.height).toBeLessThanOrEqual(
+    browserImageBox.height + manatalHeightCapTolerancePx,
+  );
+}
+
+/** @param {import('@playwright/test').Locator} manatalCard @param {import('@playwright/test').Locator} usedelightCard */
+async function expectManatalPhoneFrameHeightCapped(
+  manatalCard: import("@playwright/test").Locator,
+  usedelightCard: import("@playwright/test").Locator,
+) {
+  const manatalPhone = manatalCard.getByTestId("carousel-device-frame-phone");
+  const usedelightBrowser = usedelightCard.getByTestId(
+    "carousel-device-frame-browser",
+  );
+  const manatalPhoneBox = await manatalPhone.boundingBox();
+  const usedelightBrowserBox = await usedelightBrowser.boundingBox();
+
+  if (!manatalPhoneBox || !usedelightBrowserBox) {
+    throw new Error(
+      "Expected Manatal phone and UseDelight browser frame bounding boxes.",
+    );
+  }
+
+  expect(manatalPhoneBox.height).toBeLessThanOrEqual(
+    usedelightBrowserBox.height + manatalPhoneFrameTolerancePx,
+  );
+}
 
 /** @param {Page} page */
 async function getPageWidth(page: Page) {
@@ -32,6 +122,29 @@ async function expectUrlCenteredInCard(
   expect(Math.abs(urlCenterX - cardCenterX)).toBeLessThanOrEqual(
     alignmentTolerancePx,
   );
+}
+
+/** @param {Page} page @param {number} maxGapPx */
+async function expectTightCarouselToAboutGap(page: Page, maxGapPx: number) {
+  await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+  await scrollCarouselToPosition(page, 0);
+
+  const firstCardCta = page.getByTestId("showcase-project-link-usedelight");
+  const aboutSection = page.getByTestId(selectors.sections.about);
+
+  await expect(firstCardCta).toBeVisible();
+  await expect(aboutSection).toBeAttached();
+
+  const ctaBox = await firstCardCta.boundingBox();
+  const aboutBox = await aboutSection.boundingBox();
+
+  if (!ctaBox || !aboutBox) {
+    throw new Error("Expected carousel CTA and about section bounding boxes.");
+  }
+
+  const gapPx = aboutBox.y - (ctaBox.y + ctaBox.height);
+  expect(gapPx).toBeGreaterThanOrEqual(0);
+  expect(gapPx).toBeLessThanOrEqual(maxGapPx);
 }
 
 test.describe("homepage carousel layout", () => {
@@ -185,6 +298,118 @@ test.describe("homepage carousel layout", () => {
       alignmentTolerancePx,
     );
     expect(pageWidth).toBeGreaterThan(0);
+  });
+
+  test("Given homepage at desktop with carousel at start, when user inspects UseDelight preview, then browser device frame is shown", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselToPosition(page, 0);
+
+    const usedelightCard = page.getByTestId("highlight-card-0");
+    await expect(
+      usedelightCard.getByTestId("carousel-device-frame-browser"),
+    ).toBeVisible();
+    await expect(
+      usedelightCard.getByTestId("carousel-device-frame-phone"),
+    ).toHaveCount(0);
+    await expect(
+      page.getByTestId("carousel-project-url-usedelight"),
+    ).toBeVisible();
+  });
+
+  test("Given homepage at desktop with carousel at start, when user reads work then about, then spacing from first CTA to about is tight", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await expectTightCarouselToAboutGap(page, 136);
+  });
+
+  test("Given homepage on mobile with carousel at start, when user reads work then about, then spacing from first CTA to about is tight", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await expectTightCarouselToAboutGap(page, 96);
+  });
+
+  test("Given homepage at desktop with Manatal carousel card, when user compares preview to UseDelight, then Manatal phone is narrower and shorter", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselToPosition(page, 0);
+    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+
+    const usedelightCard = page.getByTestId("highlight-card-0");
+    const manatalCard = page.getByTestId("highlight-card-9");
+    const manatalPhone = manatalCard.getByTestId("carousel-device-frame-phone");
+    const usedelightBox = await usedelightCard.boundingBox();
+    const manatalPhoneBox = await manatalPhone.boundingBox();
+
+    if (!usedelightBox || !manatalPhoneBox) {
+      throw new Error(
+        "Expected UseDelight and Manatal preview bounding boxes.",
+      );
+    }
+
+    expect(manatalPhoneBox.width).toBeLessThan(usedelightBox.width);
+
+    await expectManatalImageFillsScreen(manatalCard);
+    await expectManatalScreenHeightCapped(manatalCard, usedelightCard);
+    await expectManatalPhoneFrameHeightCapped(manatalCard, usedelightCard);
+  });
+
+  test("Given homepage at desktop with Manatal visible, when user compares screen to UseDelight browser image, then Manatal screen height is capped", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+
+    const usedelightCard = page.getByTestId("highlight-card-0");
+    const manatalCard = page.getByTestId("highlight-card-9");
+    await expectManatalScreenHeightCapped(manatalCard, usedelightCard);
+    await expectManatalPhoneFrameHeightCapped(manatalCard, usedelightCard);
+  });
+
+  test("Given Manatal carousel at desktop, when each slide is visible, then image fills phone screen 1:1", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+
+    for (const [index, pattern] of manatalSlidePatterns.entries()) {
+      if (index > 0) {
+        await page.waitForTimeout(3500);
+      }
+      const card = await waitForManatalSlide(page, pattern);
+      await expectManatalImageFillsScreen(card);
+    }
+  });
+
+  test("Given Manatal carousel on mobile, when each slide is visible, then image fills phone screen 1:1", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+
+    for (const [index, pattern] of manatalSlidePatterns.entries()) {
+      if (index > 0) {
+        await page.waitForTimeout(3500);
+      }
+      const card = await waitForManatalSlide(page, pattern);
+      await expectManatalImageFillsScreen(card);
+    }
   });
 
   test("Given homepage carousel on mobile, when user scrolls to UseDelight card, then project URL is centered within card edges", async ({
