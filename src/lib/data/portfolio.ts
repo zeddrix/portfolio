@@ -195,16 +195,15 @@ export const projects: PortfolioProject[] = [
       "AWS EC2",
       "PM2",
     ],
-    primaryImage: "/answeriq-1-dashboard.webp",
+    primaryImage: "/answeriq-1-landingpage.webp",
     galleryImages: [
-      "/answeriq-2-articles.webp",
-      "/answeriq-3-profile.webp",
-      "/answeriq-4-settings.webp",
-      "/answeriq-5-admin-dashboard.webp",
-      "/answeriq-6-admin-users.webp",
-      "/answeriq-7-admin-subscriptions.webp",
+      "/answeriq-2-dashboard.webp",
+      "/answeriq-3-articles.webp",
+      "/answeriq-4-profile.webp",
+      "/answeriq-5-settings.webp",
+      "/answeriq-6-admin-dashboard.webp",
+      "/answeriq-7-admin-users.webp",
       "/answeriq-8-admin-workspaces.webp",
-      "/answeriq-9-admin-system-settings.webp",
     ],
     links: [
       {
@@ -708,7 +707,7 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "screenshot",
-      image: "/answeriq-5-admin-dashboard.webp",
+      image: "/answeriq-6-admin-dashboard.webp",
     },
   },
   {
@@ -833,7 +832,7 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
       type: "screenshot",
       images: [
         "/lemonsqueezy-dashboard.webp",
-        "/answeriq-5-admin-dashboard.webp",
+        "/answeriq-6-admin-dashboard.webp",
       ],
       imageLayout: "carousel",
       autoRotate: true,

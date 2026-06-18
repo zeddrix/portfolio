@@ -186,9 +186,17 @@ describe("portfolio data", () => {
     expect(project?.techStack).toContain("Stripe");
     expect(project?.techStack).toContain("OpenAI");
     expect(project?.techStack).toContain("Recharts");
-    expect(project?.primaryImage).toBe("/answeriq-1-dashboard.webp");
-    expect(project?.galleryImages).toContain("/answeriq-2-articles.webp");
-    expect(project?.galleryImages).toContain("/answeriq-6-admin-users.webp");
+    expect(project?.primaryImage).toBe("/answeriq-1-landingpage.webp");
+    expect(project?.galleryImages).toHaveLength(7);
+    expect(project?.galleryImages).toContain("/answeriq-2-dashboard.webp");
+    expect(project?.galleryImages).toContain("/answeriq-3-articles.webp");
+    expect(project?.galleryImages).toContain("/answeriq-7-admin-users.webp");
+    expect(project?.galleryImages).not.toContain(
+      "/answeriq-7-admin-subscriptions.webp",
+    );
+    expect(project?.galleryImages).not.toContain(
+      "/answeriq-9-admin-system-settings.webp",
+    );
     expect(project?.links).toEqual([
       expect.objectContaining({
         label: "Live demo",
