@@ -133,30 +133,30 @@
     "lqip": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABwBACdASogABMAPwF0r1IrJqQiqAqpYCAJZwAAj0/O7uigyPIGMFwASky8MAD+7oqlv3drufA9RMLYjuLFID6ZGhsXbZexSOyLBCaVgSfXVSKFnQ2yG5AeRbfSjgIA"
   },
   "/chatbot-placement-in-full-dashboard.webp": {
-    "width": 1024,
-    "height": 640,
+    "width": 640,
+    "height": 400,
     "variants": [
       {
         "width": 640,
         "path": "/chatbot-placement-in-full-dashboard-640w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAwCdASogABQAPvVmqU6qpaQiMAwBUB6JZQAAW+o3Khxu21DLYBwAAP7v0gEMxpgvSGs718ua06R8b6LtkYaa2wbwCLajgAA="
+    "lqip": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQBACdASogABQAPvVmqE6qpaOjMAwBUB6JZQAASoAgQKiK9GgM7lDCAAD+7WGpwqXbPHfi6q++mIvu4OJt9F42HhVPBjKlt0AAAA=="
   },
   "/chatbot-start.webp": {
-    "width": 630,
+    "width": 566,
     "height": 828,
     "variants": [
       {
-        "width": 630,
-        "path": "/chatbot-start-630w.webp"
+        "width": 566,
+        "path": "/chatbot-start-566w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAQBQCdASogACoAPwFqqE8rJiOiMBqqqWAgCWMAzuwWZ7w/oknPGNeZjulS8RJ/lZsAAP4AhI4UNesgwvW3nP2ZvswuameKkjEqOOOUrp7Olcu+0IXe4gxaf7oH8aHTIsMOplKJbkAAAA=="
+    "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAACwBACdASogAC8APv1osE6rJiUiMBqqqWAfiWMAxvQWZ7Uk7eWD4XB4DbLpL4WgAPyLXtxkHQYggh64KtIgF+vpy0wVy/BO5KcHM9PFaEC436vi1FxLLLGgmAXoz9fkl+Z6BQNyEmMUpoAA"
   },
   "/cloudflare-dashboard.webp": {
-    "width": 1840,
-    "height": 1150,
+    "width": 1280,
+    "height": 800,
     "variants": [
       {
         "width": 640,
@@ -171,11 +171,11 @@
         "path": "/cloudflare-dashboard-1280w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAgCdASogABQAPwF2s1OrJySsKAgBgCAJaQAAPaOgAP7wMgjym3PpnC1ZZl7C+yAAAA=="
+    "lqip": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADwAgCdASogABQAPwF2slQrJqQjKAgBYCAJaQAAPbVcAAD+8CwWFAhtTSrLLgWw/ZrshtAA"
   },
   "/cloudflare-deployments.webp": {
-    "width": 1840,
-    "height": 1150,
+    "width": 1280,
+    "height": 800,
     "variants": [
       {
         "width": 640,
@@ -190,7 +190,7 @@
         "path": "/cloudflare-deployments-1280w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAADQAgCdASogABQAPwF4s1OrJySkKAgBYCAJaQAAPaOgAP7wDl/xqUmQzpWAAA=="
+    "lqip": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADwAgCdASogABQAPwF4tFOrJyUoKAgBYCAJaQAAPaUIAAD+8A5f8alapmyHF0AA"
   },
   "/docker-desktop.webp": {
     "width": 1840,
@@ -250,8 +250,8 @@
     "lqip": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAABwAwCdASogABMAPwFsrU6rJiQiMAgBYCAJZwDKACHe1FjpdwAA/lv5lDoeqaSsASycVd52lPJBLIyeizzTKANYQgAAAA=="
   },
   "/lemonsqueezy-dashboard.webp": {
-    "width": 1840,
-    "height": 1150,
+    "width": 1280,
+    "height": 800,
     "variants": [
       {
         "width": 640,
@@ -266,7 +266,7 @@
         "path": "/lemonsqueezy-dashboard-1280w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADwAgCdASogABQAPwF4tVQrJyUkKAgBYCAJaQAAPaUIAAD+8ElqwsV41qEPigAA"
+    "lqip": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADwAgCdASogABQAPwF4tFQrJySjKAgBYCAJaQAAPaUIAAD+8ElqwLtdTolfFAAA"
   },
   "/merns-shop-1-homepage.webp": {
     "width": 1024,
@@ -336,17 +336,13 @@
       {
         "width": 920,
         "path": "/merns-shop-4-checkout-920w.webp"
-      },
-      {
-        "width": 1024,
-        "path": "/merns-shop-4-checkout-1024w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACQAwCdASogABQAPwFqrE6rJiQmMAgBYCAJaQAAW+jCK7tVfA1QAP7GBQlRsbgNWtHbMiDfTgAAAA=="
+    "lqip": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACQAwCdASogABQAPwFqrE8rJiQjMAgBYCAJaQAAW+n7xhEaiYsQAP7GBpdvhh8qmDALCnIeDcqAAA=="
   },
   "/namecheap-dashboard-domain.webp": {
-    "width": 1840,
-    "height": 1150,
+    "width": 1280,
+    "height": 800,
     "variants": [
       {
         "width": 640,
@@ -361,7 +357,7 @@
         "path": "/namecheap-dashboard-domain-1280w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAAAwAwCdASogABQAPwFqrE6rJiQiMAgBYCAJaQAAUchJN2wAAP7fhaw/uN9HwyHVQmwhKqFZKQZAAA=="
+    "lqip": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAwAwCdASogABQAPwFqrE6rJiQiMAgBYCAJaQAAUcjrfsqgAP7fhaxAd4TNqded6C0fL+zyeNPF0v/AAAA="
   },
   "/pwa-jwtabs-desktop.webp": {
     "width": 1840,
@@ -493,8 +489,8 @@
     "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwBACdASogABMAPwFurlArJqQiqA1RYCAJZwAAvetIhGLyCvPmzCdn6ISp1AhAAP6yKXoLKa7HwxJ1krR4KkCLPL//jwI7j4XuCmk8lI3chKHrIEUPXpE8xwAAAA=="
   },
   "/render-dashboard-merns-shop.webp": {
-    "width": 1840,
-    "height": 1150,
+    "width": 1280,
+    "height": 800,
     "variants": [
       {
         "width": 640,
@@ -509,7 +505,7 @@
         "path": "/render-dashboard-merns-shop-1280w.webp"
       }
     ],
-    "lqip": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAABQAwCdASogABQAPwFusFErJiSjsBgIAWAgCWkAADpwI2WQAAD+75xQoR3gkBb88LoAAA=="
+    "lqip": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAAAwAwCdASogABQAPwFssFErJaSqsBgIAWAgCWkAADpvbS1QAP7vnTjAYeLUywVSSrSTAAAA"
   },
   "/trulyhappy.webp": {
     "width": 1840,

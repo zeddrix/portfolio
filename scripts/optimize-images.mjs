@@ -27,6 +27,15 @@ const CERTIFICATE_PREFIX = "certificate-";
 /** @typedef {'strong' | 'mild' | 'none'} SharpenProfile */
 /** @typedef {{ variantWidths: number[]; quality: number; maxWidth: number }} OptimizationProfile */
 /** @typedef {{ top?: number; left?: number; right?: number; bottom?: number }} CropInsets */
+/** @typedef {{ type: 'insets'; insets: CropInsets } | { type: 'aspect'; ratio: number }} ImageCropConfig */
+
+export const CAPABILITY_BROWSER_ASPECT = 16 / 10;
+
+/** @type {CropInsets} */
+export const CHATBOT_START_GUTTER_CROP = {
+  left: 0.05,
+  right: 0.05,
+};
 
 /** @type {CropInsets} */
 export const MANATAL_GUTTER_CROP = {
@@ -73,12 +82,87 @@ export function resolveImageCropRect(sourceWidth, sourceHeight, cropInsets) {
 }
 
 /**
+ * @param {number} sourceWidth
+ * @param {number} sourceHeight
+ * @param {number} targetAspect
+ */
+export function resolveAspectCenterCropRect(
+  sourceWidth,
+  sourceHeight,
+  targetAspect,
+) {
+  const sourceAspect = sourceWidth / sourceHeight;
+  if (sourceAspect > targetAspect) {
+    const height = sourceHeight;
+    const width = Math.round(sourceHeight * targetAspect);
+    return {
+      left: Math.round((sourceWidth - width) / 2),
+      top: 0,
+      width,
+      height,
+    };
+  }
+
+  const width = sourceWidth;
+  const height = Math.round(sourceWidth / targetAspect);
+  return {
+    left: 0,
+    top: Math.round((sourceHeight - height) / 2),
+    width,
+    height,
+  };
+}
+
+/**
+ * @param {ImageCropConfig | CropInsets | undefined} cropConfig
+ * @param {number} sourceWidth
+ * @param {number} sourceHeight
+ */
+export function resolveCropExtractRect(cropConfig, sourceWidth, sourceHeight) {
+  if (!cropConfig) {
+    return {
+      left: 0,
+      top: 0,
+      width: sourceWidth,
+      height: sourceHeight,
+    };
+  }
+
+  if ("type" in cropConfig) {
+    if (cropConfig.type === "aspect") {
+      return resolveAspectCenterCropRect(
+        sourceWidth,
+        sourceHeight,
+        cropConfig.ratio,
+      );
+    }
+    return resolveImageCropRect(sourceWidth, sourceHeight, cropConfig.insets);
+  }
+
+  return resolveImageCropRect(sourceWidth, sourceHeight, cropConfig);
+}
+
+/**
  * @param {string} filename
- * @returns {CropInsets | undefined}
+ * @returns {ImageCropConfig | undefined}
  */
 export function getImageCropConfig(filename) {
   if (filename.startsWith("manatal-coop-")) {
-    return MANATAL_GUTTER_CROP;
+    return { type: "insets", insets: MANATAL_GUTTER_CROP };
+  }
+  if (filename.startsWith("chatbot-start")) {
+    return { type: "insets", insets: CHATBOT_START_GUTTER_CROP };
+  }
+  if (
+    filename.startsWith("chatbot-placement-in-full-dashboard") ||
+    filename.startsWith("lemonsqueezy-dashboard") ||
+    filename.startsWith("merns-shop-4-checkout") ||
+    filename.startsWith("namecheap-dashboard-domain") ||
+    filename.startsWith("cloudflare-dashboard") ||
+    filename.startsWith("cloudflare-deployments") ||
+    filename.startsWith("render-dashboard-merns-shop")
+  ) {
+    return { type: "aspect", ratio: CAPABILITY_BROWSER_ASPECT };
   }
   return undefined;
 }
@@ -181,14 +265,14 @@ async function generateLqipFromBuffer(inputBuffer, sharpenProfile) {
 
 /**
  * @param {string} inputPath
- * @param {CropInsets} [cropInsets]
+ * @param {ImageCropConfig | CropInsets | undefined} cropConfig
  * @returns {Promise<{ buffer: Buffer; width: number; height: number }>}
  */
-async function loadAndCropImage(inputPath, cropInsets) {
+async function loadAndCropImage(inputPath, cropConfig) {
   const rotated = await sharp(inputPath)
     .rotate()
     .toBuffer({ resolveWithObject: true });
-  if (!cropInsets) {
+  if (!cropConfig) {
     return {
       buffer: rotated.data,
       width: rotated.info.width,
@@ -196,10 +280,10 @@ async function loadAndCropImage(inputPath, cropInsets) {
     };
   }
 
-  const rect = resolveImageCropRect(
+  const rect = resolveCropExtractRect(
+    cropConfig,
     rotated.info.width,
     rotated.info.height,
-    cropInsets,
   );
   const cropped = await sharp(rotated.data).extract(rect).toBuffer({
     resolveWithObject: true,

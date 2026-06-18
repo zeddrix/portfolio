@@ -7,6 +7,7 @@ import {
   getSharpenProfile,
   MANATAL_GUTTER_CROP,
   mergeManifestEntry,
+  resolveAspectCenterCropRect,
   resolveImageCropRect,
 } from "./optimize-images.mjs";
 
@@ -93,15 +94,53 @@ describe("optimize-images crop rects", () => {
   });
 
   it("applies unified MANATAL_GUTTER_CROP to all Manatal screenshots", () => {
-    expect(getImageCropConfig("manatal-coop-homepage.png")).toEqual(
-      MANATAL_GUTTER_CROP,
-    );
-    expect(getImageCropConfig("manatal-coop-signin.png")).toEqual(
-      MANATAL_GUTTER_CROP,
-    );
-    expect(getImageCropConfig("manatal-coop-chatbot.png")).toEqual(
-      MANATAL_GUTTER_CROP,
-    );
+    expect(getImageCropConfig("manatal-coop-homepage.png")).toEqual({
+      type: "insets",
+      insets: MANATAL_GUTTER_CROP,
+    });
+    expect(getImageCropConfig("manatal-coop-signin.png")).toEqual({
+      type: "insets",
+      insets: MANATAL_GUTTER_CROP,
+    });
+    expect(getImageCropConfig("manatal-coop-chatbot.png")).toEqual({
+      type: "insets",
+      insets: MANATAL_GUTTER_CROP,
+    });
+  });
+
+  it("applies aspect center crop to capability band browser screenshots", () => {
+    expect(getImageCropConfig("lemonsqueezy-dashboard.png")).toEqual({
+      type: "aspect",
+      ratio: 16 / 10,
+    });
+    expect(
+      getImageCropConfig("chatbot-placement-in-full-dashboard.png"),
+    ).toEqual({
+      type: "aspect",
+      ratio: 16 / 10,
+    });
+  });
+
+  it("trims chatbot-start side gutters while keeping portrait aspect", () => {
+    expect(getImageCropConfig("chatbot-start.png")).toEqual({
+      type: "insets",
+      insets: { left: 0.05, right: 0.05 },
+    });
+  });
+
+  it("resolves 16:10 center crop from wider source", () => {
+    expect(resolveAspectCenterCropRect(1840, 1150, 16 / 10)).toEqual({
+      left: 0,
+      top: 0,
+      width: 1840,
+      height: 1150,
+    });
+    expect(resolveAspectCenterCropRect(1840, 1200, 16 / 10)).toEqual({
+      left: 0,
+      top: 25,
+      width: 1840,
+      height: 1150,
+    });
   });
 
   it("defines canonical Manatal crop size from reference viewport", () => {
