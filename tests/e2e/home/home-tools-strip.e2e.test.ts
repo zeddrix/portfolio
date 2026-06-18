@@ -8,7 +8,7 @@ import {
 } from "../fixtures/test-helpers";
 
 test.describe("homepage tools strip", () => {
-  test("Given homepage, when user opens preview settings and clicks ATDD band link, then MERN's Shop detail loads", async ({
+  test("Given homepage, when user scrolls to tools strip and clicks ATDD band link, then tool groups render without footer note and MERN's Shop detail loads", async ({
     page,
   }) => {
     await gotoHome(page);
@@ -18,11 +18,7 @@ test.describe("homepage tools strip", () => {
     await expect(page.getByTestId("tool-group-ai-delivery")).toBeVisible();
     await expect(toolsSection).toContainText("SvelteKit");
     await expect(toolsSection).toContainText("Playwright");
-
-    const footerNote = page.getByTestId("tools-strip-footer-note");
-    await expect(footerNote).toBeVisible();
-    await expect(footerNote).toContainText("Primary depth in the stacks above");
-    await expect(footerNote).toContainText("AI-accelerated workflows");
+    await expect(page.getByTestId("tools-strip-footer-note")).toHaveCount(0);
 
     await setCapabilityLayout(page, "sevenBands");
 

@@ -63,6 +63,7 @@ export async function gotoHomeWithCleanState(page: Page): Promise<void> {
   await resetPortfolioLocalStorage(page);
   await page.reload();
   await waitForPageLoad(page);
+  await waitForClientReady(page);
 }
 
 export async function setCapabilityLayout(
@@ -199,6 +200,39 @@ export async function assertSectionInViewport(
 }
 
 export type TouchPoint = { x: number; y: number };
+
+export async function getCarouselCardVisibleOverlapPx(
+  page: Page,
+  cardTestId: string,
+): Promise<number> {
+  return page.evaluate((testId) => {
+    const carousel = document.querySelector(
+      '[data-testid="highlights-carousel"]',
+    );
+    const card = document.querySelector(`[data-testid="${testId}"]`);
+    if (!(carousel instanceof HTMLElement) || !(card instanceof HTMLElement)) {
+      return 0;
+    }
+
+    const carouselRect = carousel.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+
+    return Math.max(
+      0,
+      Math.min(cardRect.right, carouselRect.right) -
+        Math.max(cardRect.left, carouselRect.left),
+    );
+  }, cardTestId);
+}
+
+export async function assertCarouselCardVisibleInTrack(
+  page: Page,
+  cardTestId: string,
+  minOverlapPx = 24,
+): Promise<void> {
+  const overlapPx = await getCarouselCardVisibleOverlapPx(page, cardTestId);
+  expect(overlapPx).toBeGreaterThanOrEqual(minOverlapPx);
+}
 
 export async function getWindowScrollY(page: Page): Promise<number> {
   return page.evaluate(() => window.scrollY);

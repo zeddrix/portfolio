@@ -253,24 +253,26 @@ async function expectUrlCenteredInCard(
 }
 
 /** @param {Page} page @param {number} maxGapPx */
-async function expectTightCarouselToAboutGap(page: Page, maxGapPx: number) {
+async function expectTightCarouselToApproachGap(page: Page, maxGapPx: number) {
   await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
   await scrollCarouselToPosition(page, 0);
 
   const firstCardCta = page.getByTestId("showcase-project-link-usedelight");
-  const aboutSection = page.getByTestId(selectors.sections.about);
+  const approachSection = page.getByTestId(selectors.sections.approach);
 
   await expect(firstCardCta).toBeVisible();
-  await expect(aboutSection).toBeAttached();
+  await expect(approachSection).toBeAttached();
 
   const ctaBox = await firstCardCta.boundingBox();
-  const aboutBox = await aboutSection.boundingBox();
+  const approachBox = await approachSection.boundingBox();
 
-  if (!ctaBox || !aboutBox) {
-    throw new Error("Expected carousel CTA and about section bounding boxes.");
+  if (!ctaBox || !approachBox) {
+    throw new Error(
+      "Expected carousel CTA and approach section bounding boxes.",
+    );
   }
 
-  const gapPx = aboutBox.y - (ctaBox.y + ctaBox.height);
+  const gapPx = approachBox.y - (ctaBox.y + ctaBox.height);
   expect(gapPx).toBeGreaterThanOrEqual(0);
   expect(gapPx).toBeLessThanOrEqual(maxGapPx);
 }
@@ -448,20 +450,20 @@ test.describe("homepage carousel layout", () => {
     ).toBeVisible();
   });
 
-  test("Given homepage at desktop with carousel at start, when user reads work then about, then spacing from first CTA to about is tight", async ({
+  test("Given homepage at desktop with carousel at start, when user reads work then approach, then spacing from first CTA to approach is tight", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await gotoHome(page);
-    await expectTightCarouselToAboutGap(page, 136);
+    await expectTightCarouselToApproachGap(page, 136);
   });
 
-  test("Given homepage on mobile with carousel at start, when user reads work then about, then spacing from first CTA to about is tight", async ({
+  test("Given homepage on mobile with carousel at start, when user reads work then approach, then spacing from first CTA to approach is tight", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoHome(page);
-    await expectTightCarouselToAboutGap(page, 360);
+    await expectTightCarouselToApproachGap(page, 360);
   });
 
   test("Given homepage at desktop with Manatal carousel card, when user compares preview to UseDelight, then Manatal phone is narrower and shorter", async ({

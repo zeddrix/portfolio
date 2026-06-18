@@ -7,7 +7,7 @@ import {
 } from "../fixtures/test-helpers";
 
 test.describe("homepage navigation", () => {
-  test("Given homepage, when user scrolls through main sections, then work about and approach appear in DOM order", async ({
+  test("Given homepage, when user scrolls through main sections, then work approach tools and about appear in DOM order", async ({
     page,
   }) => {
     await gotoHome(page);
@@ -21,24 +21,20 @@ test.describe("homepage navigation", () => {
     await scrollToTestId(page, selectors.work.section);
     await assertSectionInViewport(page, selectors.work.section);
 
-    await scrollToTestId(page, selectors.sections.about);
-    await assertSectionInViewport(page, selectors.sections.about);
-
     await scrollToTestId(page, selectors.sections.approach);
     await assertSectionInViewport(page, selectors.sections.approach);
+
+    await scrollToTestId(page, selectors.sections.tools);
+    await assertSectionInViewport(page, selectors.sections.tools);
+
+    await scrollToTestId(page, selectors.sections.about);
+    await assertSectionInViewport(page, selectors.sections.about);
 
     await scrollToTestId(page, selectors.sections.contact);
     await assertSectionInViewport(page, selectors.sections.contact);
 
     const workIndex = await page
       .getByTestId(selectors.work.section)
-      .evaluate((element) =>
-        Array.from(document.querySelectorAll("main [data-testid]")).indexOf(
-          element,
-        ),
-      );
-    const aboutIndex = await page
-      .getByTestId(selectors.sections.about)
       .evaluate((element) =>
         Array.from(document.querySelectorAll("main [data-testid]")).indexOf(
           element,
@@ -51,10 +47,25 @@ test.describe("homepage navigation", () => {
           element,
         ),
       );
+    const toolsIndex = await page
+      .getByTestId(selectors.sections.tools)
+      .evaluate((element) =>
+        Array.from(document.querySelectorAll("main [data-testid]")).indexOf(
+          element,
+        ),
+      );
+    const aboutIndex = await page
+      .getByTestId(selectors.sections.about)
+      .evaluate((element) =>
+        Array.from(document.querySelectorAll("main [data-testid]")).indexOf(
+          element,
+        ),
+      );
 
     expect(workIndex).toBeGreaterThan(-1);
-    expect(aboutIndex).toBeGreaterThan(workIndex);
-    expect(approachIndex).toBeGreaterThan(aboutIndex);
+    expect(approachIndex).toBeGreaterThan(workIndex);
+    expect(toolsIndex).toBeGreaterThan(approachIndex);
+    expect(aboutIndex).toBeGreaterThan(toolsIndex);
   });
 
   test("Given homepage scrolled to contact, when user returns to top, then hero title is in view without header name link", async ({

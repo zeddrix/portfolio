@@ -1,5 +1,6 @@
 import { devices, expect, test, type Page } from "@playwright/test";
 import {
+  getCarouselCardVisibleOverlapPx,
   getCarouselCenter,
   getWindowScrollY,
   gotoHomeWithCleanState,
@@ -12,9 +13,11 @@ import { selectors } from "../fixtures/selectors";
 test.use({ ...devices["Pixel 5"] });
 
 const verticalDragDistancePx = 180;
-const horizontalDragDistancePx = 280;
+const horizontalDragDistancePx = 360;
 const minVerticalScrollDeltaPx = 80;
-const minHorizontalScrollDeltaPx = 40;
+const minHorizontalScrollDeltaPx = 80;
+const minCarouselCardOverlapPx = 32;
+const maxHorizontalSwipeAttempts = 3;
 
 /** @param {Page} page */
 async function centerCarouselInViewport(page: Page) {
@@ -33,7 +36,7 @@ test.describe("homepage carousel touch scroll", () => {
     await gotoHomeWithCleanState(page);
   });
 
-  test("Given homepage on mobile, when user swipes vertically on carousel center, then page scrolls down and about section enters viewport", async ({
+  test("Given homepage on mobile, when user swipes vertically on carousel center, then page scrolls down and approach section enters viewport", async ({
     page,
   }) => {
     await centerCarouselInViewport(page);
@@ -48,7 +51,9 @@ test.describe("homepage carousel touch scroll", () => {
     await expect
       .poll(async () => getWindowScrollY(page))
       .toBeGreaterThan(startScrollY + minVerticalScrollDeltaPx);
-    await expect(page.getByTestId(selectors.sections.about)).toBeInViewport();
+    await expect(
+      page.getByTestId(selectors.sections.approach),
+    ).toBeInViewport();
   });
 
   test("Given homepage on mobile, when user swipes vertically on highlight card image, then page scroll is not trapped", async ({
@@ -78,36 +83,59 @@ test.describe("homepage carousel touch scroll", () => {
       .poll(async () => getWindowScrollY(page))
       .toBeGreaterThan(startScrollY + minVerticalScrollDeltaPx);
 
-    const aboutSection = page.getByTestId(selectors.sections.about);
+    const approachSection = page.getByTestId(selectors.sections.approach);
     await expect(async () => {
-      await expect(aboutSection).toBeVisible();
-      await expect(aboutSection).toBeInViewport();
+      await expect(approachSection).toBeVisible();
+      await expect(approachSection).toBeInViewport();
     }).toPass();
   });
 
   test("Given homepage on mobile, when user swipes horizontally on carousel, then carousel advances", async ({
     page,
   }) => {
-    await scrollToTestId(page, selectors.work.carousel);
+    await centerCarouselInViewport(page);
     await scrollCarouselToPosition(page, 0);
 
     const carousel = page.getByTestId(selectors.work.carousel);
-    const center = await getCarouselCenter(page);
-    const secondCard = page.getByTestId("highlight-card-1");
-
     const startScrollLeft = await carousel.evaluate(
       (element) => element.scrollLeft,
     );
 
-    await touchDrag(page, center, {
-      x: center.x - horizontalDragDistancePx,
-      y: center.y,
-    });
+    const highlightCard = page.getByTestId("highlight-card-0");
+    const cardBox = await highlightCard.boundingBox();
+    if (!cardBox) {
+      throw new Error("Expected highlight card bounding box.");
+    }
 
-    await expect
-      .poll(async () => carousel.evaluate((element) => element.scrollLeft))
-      .toBeGreaterThan(startScrollLeft + minHorizontalScrollDeltaPx);
+    const swipeY = cardBox.y + cardBox.height * 0.35;
 
-    await expect(secondCard).toBeInViewport();
+    let advanced = false;
+    for (let attempt = 0; attempt < maxHorizontalSwipeAttempts; attempt += 1) {
+      const startX = cardBox.x + cardBox.width * (0.8 - attempt * 0.05);
+      await touchDrag(
+        page,
+        { x: startX, y: swipeY },
+        { x: startX - horizontalDragDistancePx, y: swipeY },
+        20,
+      );
+
+      const scrollLeft = await carousel.evaluate(
+        (element) => element.scrollLeft,
+      );
+      const overlapPx = await getCarouselCardVisibleOverlapPx(
+        page,
+        "highlight-card-1",
+      );
+
+      if (
+        scrollLeft > startScrollLeft + minHorizontalScrollDeltaPx &&
+        overlapPx >= minCarouselCardOverlapPx
+      ) {
+        advanced = true;
+        break;
+      }
+    }
+
+    expect(advanced).toBe(true);
   });
 });
