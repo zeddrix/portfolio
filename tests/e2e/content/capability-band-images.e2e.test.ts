@@ -18,6 +18,15 @@ function bandImage(
     .locator("img");
 }
 
+function bandTextColumn(
+  page: import("@playwright/test").Page,
+  bandIndex: number,
+) {
+  return page
+    .getByTestId(`highlight-band-${bandIndex}`)
+    .getByTestId("capability-band-text-column");
+}
+
 test.describe("capability band images", () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(
@@ -60,8 +69,8 @@ test.describe("capability band images", () => {
     ).toBeVisible();
     const chatbotImage = bandImage(page, 4, 0);
     await expect(chatbotImage).toHaveAttribute("src", /chatbot-start.*\.webp/);
-    await expect(chatbotBand).toContainText("Groq");
-    await expect(chatbotBand).toContainText("Anthropic Claude");
+    await expect(bandTextColumn(page, 4)).toContainText("Groq");
+    await expect(bandTextColumn(page, 4)).toContainText("Anthropic Claude");
 
     const imageUrls = [
       await dockerImage.getAttribute("src"),
@@ -212,9 +221,10 @@ test.describe("capability band images", () => {
 
     const monetizationBand = page.getByTestId("highlight-band-1");
     await monetizationBand.scrollIntoViewIfNeeded();
-    const activeImage = monetizationBand.locator(
-      '[data-testid="capability-band-visual-carousel"] .opacity-100 img',
-    );
+    const activeImage = monetizationBand
+      .locator('[data-testid="capability-band-visual-carousel"] .opacity-100')
+      .locator('[data-testid^="capability-band-image-"]')
+      .locator("img");
     await expect(activeImage).toHaveAttribute(
       "src",
       /lemonsqueezy-dashboard.*\.webp/,
@@ -239,11 +249,11 @@ test.describe("capability band images", () => {
     await expect(page.getByTestId("highlight-band-6")).toBeVisible();
   });
 
-  test("Given chatbot carousel in detailed layout, when slide loads, then image fills most of visual frame", async ({
+  test("Given chatbot carousel in detailed layout, when slide loads, then image fills phone screen area", async ({
     page,
   }) => {
     const chatbotBand = page.getByTestId("highlight-band-4");
-    const stage = chatbotBand.getByTestId("capability-band-stage");
+    const screen = chatbotBand.getByTestId("phone-device-screen");
     const image = bandImage(page, 4, 0);
 
     await expect(image).toHaveAttribute("src", /chatbot-start.*\.webp/);
@@ -251,20 +261,24 @@ test.describe("capability band images", () => {
       chatbotBand.getByTestId("capability-band-image-0"),
     ).toHaveAttribute("data-image-state", /^(lqip|loaded)$/);
 
-    const stageBox = await stage.boundingBox();
+    const screenBox = await screen.boundingBox();
     const imageBox = await image.boundingBox();
-    if (!stageBox || !imageBox) {
-      throw new Error("Expected chatbot stage and image bounding boxes.");
+    if (!screenBox || !imageBox) {
+      throw new Error(
+        "Expected chatbot phone screen and image bounding boxes.",
+      );
     }
 
-    expect(imageBox.height / stageBox.height).toBeGreaterThan(0.4);
+    expect(imageBox.height / screenBox.height).toBeGreaterThan(0.4);
   });
 
-  test("Given deployment carousel in detailed layout, when slide loads, then image fills most of visual frame", async ({
+  test("Given deployment carousel in detailed layout, when slide loads, then image fills browser screen area", async ({
     page,
   }) => {
     const deploymentBand = page.getByTestId("highlight-band-6");
-    const stage = deploymentBand.getByTestId("capability-band-stage");
+    const browserScreen = deploymentBand
+      .locator(".opacity-100")
+      .getByTestId("browser-device-screen");
     const image = bandImage(page, 6, 0);
 
     await expect(image).toHaveAttribute(
@@ -272,115 +286,129 @@ test.describe("capability band images", () => {
       /namecheap-dashboard-domain.*\.webp/,
     );
 
-    const stageBox = await stage.boundingBox();
+    const screenBox = await browserScreen.boundingBox();
     const imageBox = await image.boundingBox();
-    if (!stageBox || !imageBox) {
-      throw new Error("Expected deployment stage and image bounding boxes.");
+    if (!screenBox || !imageBox) {
+      throw new Error(
+        "Expected deployment browser screen and image bounding boxes.",
+      );
     }
 
-    expect(imageBox.height / stageBox.height).toBeGreaterThan(0.4);
+    expect(imageBox.height / screenBox.height).toBeGreaterThan(0.4);
   });
 
-  test("Given billing hybrid footer, when user views band, then badges render without slide dots", async ({
+  test("Given billing hybrid band, when user views band, then badges render in text column without slide dots", async ({
     page,
   }) => {
     const billingBand = page.getByTestId("highlight-band-2");
     await billingBand.scrollIntoViewIfNeeded();
-    const footer = billingBand.getByTestId("capability-band-footer");
-    const badges = billingBand.getByTestId("capability-band-badges");
+    const textColumn = bandTextColumn(page, 2);
+    const badges = textColumn.getByTestId("capability-band-badges");
 
-    await expect(footer).toBeVisible();
+    await expect(billingBand.getByTestId("capability-band-footer")).toHaveCount(
+      0,
+    );
     await expect(badges).toContainText("Stripe");
     await expect(badges).toContainText("PayPal");
     await expect(billingBand.getByRole("tab")).toHaveCount(0);
     await expect(
-      billingBand.getByTestId("capability-band-slide-counter"),
+      textColumn.getByTestId("capability-band-slide-counter"),
     ).toHaveCount(0);
   });
 
-  test("Given chatbot hybrid footer, when user views band, then badges render without slide dots", async ({
+  test("Given chatbot hybrid band, when user views band, then badges render in text column without slide dots", async ({
     page,
   }) => {
     const chatbotBand = page.getByTestId("highlight-band-4");
     await chatbotBand.scrollIntoViewIfNeeded();
-    const badges = chatbotBand.getByTestId("capability-band-badges");
+    const textColumn = bandTextColumn(page, 4);
+    const badges = textColumn.getByTestId("capability-band-badges");
 
-    await expect(
-      chatbotBand.getByTestId("capability-band-footer"),
-    ).toBeVisible();
+    await expect(chatbotBand.getByTestId("capability-band-footer")).toHaveCount(
+      0,
+    );
     await expect(badges).toContainText("Groq");
     await expect(badges).toContainText("Anthropic Claude");
     await expect(chatbotBand.getByRole("tab")).toHaveCount(0);
   });
 
-  test("Given deployment hybrid footer, when user advances slide, then slide counter updates", async ({
+  test("Given deployment hybrid band, when user advances slide, then slide counter in text column updates", async ({
     page,
   }) => {
     const deploymentBand = page.getByTestId("highlight-band-6");
     await deploymentBand.scrollIntoViewIfNeeded();
-    const counter = deploymentBand.getByTestId("capability-band-slide-counter");
+    const counter = bandTextColumn(page, 6).getByTestId(
+      "capability-band-slide-counter",
+    );
 
     await expect(counter).toHaveText("1 / 4");
     await deploymentBand.getByTestId("capability-carousel-next").click();
     await expect(counter).toHaveText("2 / 4");
   });
 
-  test("Given ATDD hybrid single image, when user views band, then footer badges render below screenshot", async ({
+  test("Given ATDD hybrid single image, when user views band, then badges render in text column", async ({
     page,
   }) => {
     const atddBand = page.getByTestId("highlight-band-7");
     await atddBand.scrollIntoViewIfNeeded();
-    const badges = atddBand.getByTestId("capability-band-badges");
-    const image = bandImage(page, 7, 0);
+    const textColumn = bandTextColumn(page, 7);
+    const badges = textColumn.getByTestId("capability-band-badges");
 
-    await expect(atddBand.getByTestId("capability-band-footer")).toBeVisible();
+    await expect(atddBand.getByTestId("capability-band-footer")).toHaveCount(0);
     await expect(badges).toContainText("Playwright");
     await expect(badges).toContainText("Vitest");
-
-    const imageBox = await image.boundingBox();
-    const badgesBox = await badges.boundingBox();
-    if (!imageBox || !badgesBox) {
-      throw new Error("Expected ATDD image and badge bounding boxes.");
-    }
-
-    expect(badgesBox.y).toBeGreaterThanOrEqual(
-      imageBox.y + imageBox.height - 4,
-    );
+    await expect(textColumn).toBeVisible();
   });
 
-  test("Given chatbot carousel chevrons, when controls render, then nav buttons anchor to stage edges", async ({
+  test("Given chatbot carousel, when user views slide one then advances, then phone frame then browser frame render", async ({
     page,
   }) => {
     const chatbotBand = page.getByTestId("highlight-band-4");
-    const stage = chatbotBand.getByTestId("capability-band-stage");
+    await chatbotBand.scrollIntoViewIfNeeded();
+
+    await expect(
+      chatbotBand
+        .locator(".opacity-100")
+        .getByTestId("carousel-device-frame-phone"),
+    ).toBeVisible();
+    await chatbotBand.getByTestId("capability-carousel-next").click();
+    await expect(
+      chatbotBand.locator(".opacity-100").getByTestId("browser-device-frame"),
+    ).toBeVisible();
+  });
+
+  test("Given billing carousel, when user advances slide, then both slides use browser frame", async ({
+    page,
+  }) => {
+    const billingBand = page.getByTestId("highlight-band-2");
+    await billingBand.scrollIntoViewIfNeeded();
+
+    await expect(
+      billingBand.locator(".opacity-100").getByTestId("browser-device-frame"),
+    ).toBeVisible();
+    await billingBand.getByTestId("capability-carousel-next").click();
+    await expect(
+      billingBand.locator(".opacity-100").getByTestId("browser-device-frame"),
+    ).toBeVisible();
+  });
+
+  test("Given chatbot carousel chevrons, when controls render, then nav buttons sit outside device frame", async ({
+    page,
+  }) => {
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    const carouselRow = chatbotBand.getByTestId("capability-band-carousel-row");
     const prevButton = chatbotBand.getByTestId("capability-carousel-prev");
     const nextButton = chatbotBand.getByTestId("capability-carousel-next");
 
+    await expect(carouselRow).toBeVisible();
     await expect(prevButton).toBeVisible();
     await expect(nextButton).toBeVisible();
     await expect(chatbotBand.getByText("Prev")).toHaveCount(0);
     await expect(chatbotBand.getByText("Next")).toHaveCount(0);
 
-    const stageBox = await stage.boundingBox();
-    const prevBox = await prevButton.boundingBox();
-    const nextBox = await nextButton.boundingBox();
-    if (!stageBox || !prevBox || !nextBox) {
-      throw new Error("Expected chatbot carousel bounding boxes.");
-    }
-
-    expect(prevBox.x).toBeGreaterThanOrEqual(stageBox.x - 4);
-    expect(prevBox.x + prevBox.width).toBeLessThanOrEqual(
-      stageBox.x + stageBox.width / 2 + 4,
+    await expect(chatbotBand.getByTestId("capability-band-stage")).toHaveCount(
+      0,
     );
-    expect(nextBox.x).toBeGreaterThanOrEqual(
-      stageBox.x + stageBox.width / 2 - 4,
-    );
-    expect(nextBox.x + nextBox.width).toBeLessThanOrEqual(
-      stageBox.x + stageBox.width + 4,
-    );
-
-    const prevCenterY = prevBox.y + prevBox.height / 2;
-    const stageCenterY = stageBox.y + stageBox.height / 2;
-    expect(Math.abs(prevCenterY - stageCenterY)).toBeLessThanOrEqual(12);
+    await expect(prevButton).not.toHaveClass(/absolute/);
   });
 });
