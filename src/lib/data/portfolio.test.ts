@@ -63,11 +63,13 @@ describe("portfolio data", () => {
     expect(chatbotBand?.visual.type).toBe("hybrid");
     expect(chatbotBand?.visual.imageLayout).toBe("carousel");
     expect(chatbotBand?.visual.slides?.map((slide) => slide.src)).toEqual([
-      "/chatbot-start.webp",
+      "/manatal-coop-chatbot.webp",
       "/chatbot-placement-in-full-dashboard.webp",
     ]);
     expect(chatbotBand?.visual.slides?.[0]?.frame).toBe("phone");
+    expect(chatbotBand?.visual.slides?.[0]?.domain).toBe("manatalcoop.app");
     expect(chatbotBand?.visual.slides?.[1]?.frame).toBe("browser");
+    expect(chatbotBand?.relatedProjectSlugs).toContain("manatal-coop");
     expect(chatbotBand?.visual.badges).toEqual(["Groq", "Anthropic Claude"]);
   });
 

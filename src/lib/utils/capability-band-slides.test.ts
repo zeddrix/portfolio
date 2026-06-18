@@ -30,7 +30,8 @@ describe("normalizeBandSlides", () => {
 
     const slides = normalizeBandSlides(chatbot!.visual);
     expect(slides[0]?.frame).toBe("phone");
-    expect(slides[0]?.domain).toBe("queue.place");
+    expect(slides[0]?.domain).toBe("manatalcoop.app");
+    expect(slides[0]?.src).toBe("/manatal-coop-chatbot.webp");
     expect(slides[1]?.frame).toBe("browser");
   });
 

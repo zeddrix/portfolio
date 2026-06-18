@@ -7,6 +7,8 @@ import {
   setCapabilityLayout,
 } from "../fixtures/test-helpers";
 
+const manatalFillTolerancePx = 2;
+
 function bandImage(
   page: import("@playwright/test").Page,
   bandIndex: number,
@@ -68,7 +70,13 @@ test.describe("capability band images", () => {
       chatbotBand.getByTestId("capability-band-visual-carousel"),
     ).toBeVisible();
     const chatbotImage = bandImage(page, 4, 0);
-    await expect(chatbotImage).toHaveAttribute("src", /chatbot-start.*\.webp/);
+    await expect(chatbotImage).toHaveAttribute(
+      "src",
+      /manatal-coop-chatbot.*\.webp/,
+    );
+    await expect(
+      chatbotBand.getByTestId("phone-device-frame-domain"),
+    ).toHaveText("manatalcoop.app");
     await expect(bandTextColumn(page, 4)).toContainText("Groq");
     await expect(bandTextColumn(page, 4)).toContainText("Anthropic Claude");
 
@@ -109,7 +117,7 @@ test.describe("capability band images", () => {
     const chatbotBand = page.getByTestId("highlight-band-4");
     await expect(bandImage(page, 4, 0)).toHaveAttribute(
       "src",
-      /chatbot-start.*\.webp/,
+      /manatal-coop-chatbot.*\.webp/,
     );
 
     await chatbotBand.getByTestId("capability-carousel-next").click();
@@ -256,7 +264,10 @@ test.describe("capability band images", () => {
     const screen = chatbotBand.getByTestId("phone-device-screen");
     const image = bandImage(page, 4, 0);
 
-    await expect(image).toHaveAttribute("src", /chatbot-start.*\.webp/);
+    await expect(image).toHaveAttribute("src", /manatal-coop-chatbot.*\.webp/);
+    await expect(
+      chatbotBand.getByTestId("phone-device-frame-domain"),
+    ).toHaveText("manatalcoop.app");
     await expect(
       chatbotBand.getByTestId("capability-band-image-0"),
     ).toHaveAttribute("data-image-state", /^(lqip|loaded)$/);
@@ -269,7 +280,29 @@ test.describe("capability band images", () => {
       );
     }
 
-    expect(imageBox.height / screenBox.height).toBeGreaterThan(0.4);
+    expect(imageBox.width).toBeGreaterThanOrEqual(
+      screenBox.width - manatalFillTolerancePx,
+    );
+    expect(imageBox.height).toBeGreaterThanOrEqual(
+      screenBox.height - manatalFillTolerancePx,
+    );
+  });
+
+  test("Given chatbot hybrid band, when user views band, then Shown in includes manatal-coop project link", async ({
+    page,
+  }) => {
+    const chatbotBand = page.getByTestId("highlight-band-4");
+    await chatbotBand.scrollIntoViewIfNeeded();
+
+    await expect(
+      chatbotBand.getByTestId("band-project-link-chatbot-manatal-coop"),
+    ).toBeVisible();
+    await expect(
+      chatbotBand.getByTestId("band-project-link-chatbot-manatal-coop"),
+    ).toHaveText("manatal-coop");
+    await expect(
+      chatbotBand.getByTestId("band-project-link-chatbot-manatal-coop"),
+    ).toHaveAttribute("href", /\/projects\/manatal-coop$/);
   });
 
   test("Given deployment carousel in detailed layout, when slide loads, then image fills browser screen area", async ({
