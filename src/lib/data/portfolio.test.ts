@@ -85,8 +85,9 @@ describe("portfolio data", () => {
       "usedelight",
       "adverio-tools",
       "queue",
-      "jw-tabs",
+      "manatal-coop",
       "merns-shop",
+      "jw-tabs",
       "answeriq",
     ]);
   });
@@ -209,13 +210,13 @@ describe("portfolio data", () => {
       "usedelight",
       "adverio-tools",
       "queue",
-      "jw-tabs",
+      "manatal-coop",
       "merns-shop",
+      "jw-tabs",
       "answeriq",
       "trulyhappy",
       "articulearn",
       "bolt-to-github",
-      "manatal-coop",
     ]);
     expect(carouselProjects.every(isPortfolioProjectVisible)).toBe(true);
   });

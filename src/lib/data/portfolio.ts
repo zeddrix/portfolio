@@ -978,8 +978,9 @@ export const highlightProjectSlugs = [
   "usedelight",
   "adverio-tools",
   "queue",
-  "jw-tabs",
+  "manatal-coop",
   "merns-shop",
+  "jw-tabs",
   "answeriq",
 ] as const;
 
