@@ -62,10 +62,12 @@ describe("portfolio data", () => {
 
     expect(chatbotBand?.visual.type).toBe("hybrid");
     expect(chatbotBand?.visual.imageLayout).toBe("carousel");
-    expect(chatbotBand?.visual.images).toEqual([
+    expect(chatbotBand?.visual.slides?.map((slide) => slide.src)).toEqual([
       "/chatbot-start.webp",
       "/chatbot-placement-in-full-dashboard.webp",
     ]);
+    expect(chatbotBand?.visual.slides?.[0]?.frame).toBe("phone");
+    expect(chatbotBand?.visual.slides?.[1]?.frame).toBe("browser");
     expect(chatbotBand?.visual.badges).toEqual(["Groq", "Anthropic Claude"]);
   });
 
@@ -78,10 +80,13 @@ describe("portfolio data", () => {
     expect(billingBand?.highlights).toContain("MERN's Shop");
     expect(billingBand?.visual.type).toBe("hybrid");
     expect(billingBand?.visual.imageLayout).toBe("carousel");
-    expect(billingBand?.visual.images).toEqual([
+    expect(billingBand?.visual.slides?.map((slide) => slide.src)).toEqual([
       "/lemonsqueezy-dashboard.webp",
       "/merns-shop-4-checkout.webp",
     ]);
+    expect(
+      billingBand?.visual.slides?.every((slide) => slide.frame === "browser"),
+    ).toBe(true);
     expect(billingBand?.visual.badges).toEqual([
       "Stripe",
       "Lemon Squeezy",

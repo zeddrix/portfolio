@@ -680,10 +680,21 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "hybrid",
-      images: ["/lemonsqueezy-dashboard.webp", "/merns-shop-4-checkout.webp"],
       imageLayout: "carousel",
       icons: ["billing"],
       badges: ["Stripe", "Lemon Squeezy", "PayPal"],
+      slides: [
+        {
+          src: "/lemonsqueezy-dashboard.webp",
+          frame: "browser",
+          domain: "lemonsqueezy.com",
+        },
+        {
+          src: "/merns-shop-4-checkout.webp",
+          frame: "browser",
+          domain: "merns-shop.onrender.com",
+        },
+      ],
     },
   },
   {
@@ -719,13 +730,21 @@ export const capabilityBands: CapabilityBand[] = [
     relatedProjectSlugs: ["queue", "jw-tabs", "iaso", "trulyhappy"],
     visual: {
       type: "hybrid",
-      images: [
-        "/chatbot-start.webp",
-        "/chatbot-placement-in-full-dashboard.webp",
-      ],
       imageLayout: "carousel",
       icons: ["chatbot"],
       badges: ["Groq", "Anthropic Claude"],
+      slides: [
+        {
+          src: "/chatbot-start.webp",
+          frame: "phone",
+          domain: "queue.place",
+        },
+        {
+          src: "/chatbot-placement-in-full-dashboard.webp",
+          frame: "browser",
+          domain: "queue.place",
+        },
+      ],
     },
   },
   {
@@ -775,15 +794,31 @@ export const capabilityBands: CapabilityBand[] = [
     ],
     visual: {
       type: "hybrid",
-      images: [
-        "/namecheap-dashboard-domain.webp",
-        "/cloudflare-dashboard.webp",
-        "/cloudflare-deployments.webp",
-        "/render-dashboard-merns-shop.webp",
-      ],
       imageLayout: "carousel",
       icons: ["deployment"],
       badges: ["Namecheap", "Cloudflare", "Render"],
+      slides: [
+        {
+          src: "/namecheap-dashboard-domain.webp",
+          frame: "browser",
+          domain: "namecheap.com",
+        },
+        {
+          src: "/cloudflare-dashboard.webp",
+          frame: "browser",
+          domain: "cloudflare.com",
+        },
+        {
+          src: "/cloudflare-deployments.webp",
+          frame: "browser",
+          domain: "cloudflare.com",
+        },
+        {
+          src: "/render-dashboard-merns-shop.webp",
+          frame: "browser",
+          domain: "render.com",
+        },
+      ],
     },
   },
   {
@@ -830,12 +865,20 @@ export const capabilityBandGroups: CapabilityBandGroup[] = [
       "Billing, admin control, and AI-assisted support built into shipped products.",
     visual: {
       type: "screenshot",
-      images: [
-        "/lemonsqueezy-dashboard.webp",
-        "/answeriq-6-admin-dashboard.webp",
-      ],
       imageLayout: "carousel",
       autoRotate: true,
+      slides: [
+        {
+          src: "/lemonsqueezy-dashboard.webp",
+          frame: "browser",
+          domain: "lemonsqueezy.com",
+        },
+        {
+          src: "/answeriq-6-admin-dashboard.webp",
+          frame: "browser",
+          domain: "answeriq.io",
+        },
+      ],
     },
     bands: capabilityBands.filter((band) =>
       ["billing", "admin-dashboard", "chatbot"].includes(band.id),

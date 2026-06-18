@@ -93,6 +93,14 @@ export type CapabilityBandVisualType = "screenshot" | "iconPanel" | "hybrid";
 
 export type CapabilityBandImageLayout = "single" | "split" | "carousel";
 
+export type CapabilitySlideFrame = "phone" | "browser" | "wide";
+
+export interface CapabilityBandSlide {
+  src: string;
+  frame?: CapabilitySlideFrame;
+  domain?: string;
+}
+
 export type CapabilityBandLayoutMode =
   | "sevenBands"
   | "groupedBands"
@@ -102,6 +110,7 @@ export interface CapabilityBandVisual {
   type: CapabilityBandVisualType;
   image?: string;
   images?: string[];
+  slides?: CapabilityBandSlide[];
   imageLayout?: CapabilityBandImageLayout;
   autoRotate?: boolean;
   icons?: string[];
