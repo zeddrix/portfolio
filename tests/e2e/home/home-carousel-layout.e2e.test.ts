@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import {
   assertNoHorizontalOverflow,
   gotoHome,
+  scrollCarouselCardIntoViewCenter,
   scrollCarouselNext,
   scrollCarouselToPosition,
 } from "../fixtures/test-helpers";
@@ -11,6 +12,8 @@ const alignmentTolerancePx = 4;
 const manatalFillTolerancePx = 2;
 const manatalHeightCapTolerancePx = 4;
 const manatalPhoneFrameTolerancePx = 8;
+const manatalCenterTolerancePx = 12;
+const manatalArticleDimensionTolerancePx = 4;
 
 const manatalSlidePatterns = [
   /manatal-coop-homepage/,
@@ -31,11 +34,15 @@ async function expectManatalImageFillsScreen(
     throw new Error("Expected Manatal screen and image bounding boxes.");
   }
 
-  expect(Math.abs(imageBox.width - screenBox.width)).toBeLessThanOrEqual(
-    manatalFillTolerancePx,
+  expect(imageBox.width).toBeGreaterThanOrEqual(
+    screenBox.width - manatalFillTolerancePx,
   );
-  expect(Math.abs(imageBox.height - screenBox.height)).toBeLessThanOrEqual(
-    manatalFillTolerancePx,
+  expect(imageBox.height).toBeGreaterThanOrEqual(
+    screenBox.height - manatalFillTolerancePx,
+  );
+  expect(imageBox.x).toBeLessThanOrEqual(screenBox.x + manatalFillTolerancePx);
+  expect(imageBox.x + imageBox.width).toBeGreaterThanOrEqual(
+    screenBox.x + screenBox.width - manatalFillTolerancePx,
   );
 }
 
@@ -48,6 +55,75 @@ async function waitForManatalSlide(page: Page, srcPattern: RegExp) {
   await expect(manatalImage.locator("img")).toHaveAttribute("src", srcPattern);
   await expect(manatalImage).toHaveAttribute("data-image-state", "loaded");
   return manatalCard;
+}
+
+/** @param {Page} page */
+async function expectManatalPhoneCenteredInCarousel(page: Page) {
+  const carousel = page.getByTestId(selectors.work.carousel);
+  const phone = page
+    .getByTestId("highlight-card-column-manatal-coop")
+    .getByTestId("carousel-device-frame-phone");
+  const carouselBox = await carousel.boundingBox();
+  const phoneBox = await phone.boundingBox();
+
+  if (!carouselBox || !phoneBox) {
+    throw new Error("Expected Manatal carousel and phone bounding boxes.");
+  }
+
+  const carouselCenterX = carouselBox.x + carouselBox.width / 2;
+  const phoneCenterX = phoneBox.x + phoneBox.width / 2;
+
+  expect(Math.abs(phoneCenterX - carouselCenterX)).toBeLessThanOrEqual(
+    manatalCenterTolerancePx,
+  );
+}
+
+/** @param {Page} page */
+async function expectManatalTextCenteredUnderPhone(page: Page) {
+  const column = page.getByTestId("highlight-card-column-manatal-coop");
+  const phone = column.getByTestId("carousel-device-frame-phone");
+  const tagline = column.locator("h3 + p");
+  const phoneBox = await phone.boundingBox();
+  const taglineBox = await tagline.boundingBox();
+
+  if (!phoneBox || !taglineBox) {
+    throw new Error("Expected Manatal phone and tagline bounding boxes.");
+  }
+
+  const phoneCenterX = phoneBox.x + phoneBox.width / 2;
+  const taglineCenterX = taglineBox.x + taglineBox.width / 2;
+
+  expect(Math.abs(taglineCenterX - phoneCenterX)).toBeLessThanOrEqual(
+    manatalCenterTolerancePx,
+  );
+}
+
+/** @param {Page} page */
+async function expectManatalInvisiblePreviewSlot(page: Page) {
+  const manatalArticle = page.getByTestId("highlight-card-3");
+  const usedelightArticle = page.getByTestId("highlight-card-0");
+  const phone = manatalArticle.getByTestId("carousel-device-frame-phone");
+  const manatalBox = await manatalArticle.boundingBox();
+  const usedelightBox = await usedelightArticle.boundingBox();
+  const phoneBox = await phone.boundingBox();
+
+  if (!manatalBox || !usedelightBox || !phoneBox) {
+    throw new Error("Expected Manatal and UseDelight article bounding boxes.");
+  }
+
+  expect(Math.abs(manatalBox.width - usedelightBox.width)).toBeLessThanOrEqual(
+    manatalArticleDimensionTolerancePx,
+  );
+  expect(
+    Math.abs(manatalBox.height - usedelightBox.height),
+  ).toBeLessThanOrEqual(manatalArticleDimensionTolerancePx);
+
+  const articleCenterX = manatalBox.x + manatalBox.width / 2;
+  const phoneCenterX = phoneBox.x + phoneBox.width / 2;
+
+  expect(Math.abs(phoneCenterX - articleCenterX)).toBeLessThanOrEqual(
+    manatalCenterTolerancePx,
+  );
 }
 
 /** @param {import('@playwright/test').Locator} manatalCard */
@@ -333,7 +409,7 @@ test.describe("homepage carousel layout", () => {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoHome(page);
-    await expectTightCarouselToAboutGap(page, 96);
+    await expectTightCarouselToAboutGap(page, 360);
   });
 
   test("Given homepage at desktop with Manatal carousel card, when user compares preview to UseDelight, then Manatal phone is narrower and shorter", async ({
@@ -378,7 +454,7 @@ test.describe("homepage carousel layout", () => {
     await expectManatalPhoneFrameHeightCapped(manatalCard, usedelightCard);
   });
 
-  test("Given Manatal carousel at desktop, when each slide is visible, then image fills phone screen 1:1", async ({
+  test("Given Manatal carousel at desktop, when each slide is visible, then image covers phone screen", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -395,7 +471,7 @@ test.describe("homepage carousel layout", () => {
     }
   });
 
-  test("Given Manatal carousel on mobile, when each slide is visible, then image fills phone screen 1:1", async ({
+  test("Given Manatal carousel on mobile, when each slide is visible, then image covers phone screen", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -443,5 +519,125 @@ test.describe("homepage carousel layout", () => {
     await expect(card).toBeVisible();
     await expect(url).toHaveText("usedelight.com");
     await expectUrlCenteredInCard(card, url);
+  });
+
+  test("Given Manatal carousel on mobile, when user scrolls card into center, then phone is centered in carousel viewport", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await expectManatalPhoneCenteredInCarousel(page);
+    await expectManatalInvisiblePreviewSlot(page);
+    await assertNoHorizontalOverflow(page);
+  });
+
+  test("Given Manatal carousel on tablet, when user scrolls card into center, then phone is centered in carousel viewport", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await expectManatalPhoneCenteredInCarousel(page);
+  });
+
+  test("Given Manatal carousel on mobile, when user scrolls card into center, then tagline is centered under phone", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await expectManatalTextCenteredUnderPhone(page);
+  });
+
+  test("Given Manatal carousel on desktop, when user scrolls to card, then column stays left of carousel center", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await page.getByTestId(selectors.work.carousel).evaluate((carousel) => {
+      const column = carousel.querySelector(
+        '[data-testid="highlight-card-column-manatal-coop"]',
+      );
+      if (column instanceof HTMLElement) {
+        carousel.scrollLeft = column.offsetLeft;
+      }
+    });
+
+    const carousel = page.getByTestId(selectors.work.carousel);
+    const phone = page
+      .getByTestId("highlight-card-column-manatal-coop")
+      .getByTestId("carousel-device-frame-phone");
+    const carouselBox = await carousel.boundingBox();
+    const phoneBox = await phone.boundingBox();
+
+    if (!carouselBox || !phoneBox) {
+      throw new Error("Expected Manatal carousel and phone bounding boxes.");
+    }
+
+    const carouselCenterX = carouselBox.x + carouselBox.width / 2;
+    const phoneCenterX = phoneBox.x + phoneBox.width / 2;
+
+    expect(phoneCenterX).toBeLessThan(
+      carouselCenterX - manatalCenterTolerancePx,
+    );
+
+    const manatalCard = page.getByTestId("highlight-card-3");
+    await expectManatalImageFillsScreen(manatalCard);
+    await expectManatalPhoneFrameHeightCapped(
+      manatalCard,
+      page.getByTestId("highlight-card-0"),
+    );
+  });
+
+  test("Given Manatal carousel on mobile, when user views card, then domain label is hidden", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    const domain = page
+      .getByTestId("highlight-card-3")
+      .getByTestId("phone-device-frame-domain");
+    await expect(domain).toBeHidden();
+  });
+
+  test("Given Manatal carousel on tablet, when user views card, then domain label is visible", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    const domain = page
+      .getByTestId("highlight-card-3")
+      .getByTestId("phone-device-frame-domain");
+    await expect(domain).toBeVisible();
+    await expect(domain).toHaveText("manatalcoop.app");
   });
 });

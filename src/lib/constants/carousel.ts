@@ -37,3 +37,22 @@ export function getManatalPhoneScreenWidthCss(): string {
   const height = dimensions?.height ?? 1459;
   return `min(${MANATAL_PHONE_FRAME_WIDTH_CSS}, calc(${MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS} * ${width} / ${height}))`;
 }
+
+export interface ManatalCarouselSlideMeta {
+  objectPosition: string;
+}
+
+export const MANATAL_CAROUSEL_SLIDE_META: Record<
+  string,
+  ManatalCarouselSlideMeta
+> = {
+  "/manatal-coop-homepage.webp": { objectPosition: "50% 0%" },
+  "/manatal-coop-signin.webp": { objectPosition: "50% 0%" },
+  "/manatal-coop-chatbot.webp": { objectPosition: "50% 0%" },
+};
+
+export function getManatalCarouselSlideMeta(
+  imagePath: string,
+): ManatalCarouselSlideMeta {
+  return MANATAL_CAROUSEL_SLIDE_META[imagePath] ?? { objectPosition: "50% 0%" };
+}

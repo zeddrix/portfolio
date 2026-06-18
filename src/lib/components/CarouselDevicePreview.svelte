@@ -2,7 +2,7 @@
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import PhoneDeviceFrame from '$lib/components/PhoneDeviceFrame.svelte';
 	import BrowserDeviceFrame from '$lib/components/BrowserDeviceFrame.svelte';
-	import { MANATAL_PHONE_SCREEN_ASPECT_CSS } from '$lib/constants/carousel';
+	import { MANATAL_PHONE_SCREEN_ASPECT_CSS, getManatalCarouselSlideMeta } from '$lib/constants/carousel';
 	import { getProjectDisplayUrl } from '$lib/utils/portfolio-display';
 	import { isPortraitImage } from '$lib/utils/optimized-image';
 	import { DEVICE_CARD_GRADIENT } from '$lib/constants/device-frame';
@@ -39,6 +39,9 @@
 	$: imageClassName = phoneOnlyCard
 		? 'absolute inset-0 h-full w-full'
 		: `h-full w-full ${hoverZoomClass}`;
+	$: manatalSlideMeta = phoneOnlyCard
+		? getManatalCarouselSlideMeta(imagePath)
+		: { objectPosition: '50% 50%' };
 </script>
 
 {#if phoneOnlyCard}
@@ -46,6 +49,7 @@
 		fillMode="card"
 		domain={displayUrl}
 		screenAspectRatio={MANATAL_PHONE_SCREEN_ASPECT_CSS}
+		hideDomainOnMobile={true}
 	>
 		{#key imagePath}
 			<OptimizedImage
@@ -55,7 +59,8 @@
 				loading={getCardLoading(cardIndex)}
 				fetchpriority={getCardFetchPriority(cardIndex)}
 				sizes={carouselSizes}
-				fit="fill"
+				fit="cover"
+				objectPosition={manatalSlideMeta.objectPosition}
 				{fadeOnMount}
 				className={imageClassName}
 			/>

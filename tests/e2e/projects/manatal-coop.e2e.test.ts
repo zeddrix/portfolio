@@ -53,8 +53,12 @@ test.describe("manatal coop project", () => {
     if (!screenBox || !imageBox) {
       throw new Error("Expected Manatal screen and image bounding boxes.");
     }
-    expect(Math.abs(imageBox.width - screenBox.width)).toBeLessThanOrEqual(2);
-    expect(Math.abs(imageBox.height - screenBox.height)).toBeLessThanOrEqual(2);
+    expect(imageBox.width).toBeGreaterThanOrEqual(screenBox.width - 2);
+    expect(imageBox.height).toBeGreaterThanOrEqual(screenBox.height - 2);
+    expect(imageBox.x).toBeLessThanOrEqual(screenBox.x + 2);
+    expect(imageBox.x + imageBox.width).toBeGreaterThanOrEqual(
+      screenBox.x + screenBox.width - 2,
+    );
 
     const usedelightBrowser = usedelightCard.getByTestId(
       "carousel-device-frame-browser",

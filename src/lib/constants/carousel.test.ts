@@ -3,9 +3,11 @@ import {
   CAROUSEL_BROWSER_CHROME_PX,
   CAROUSEL_MAX_CARD_WIDTH_PX,
   CAROUSEL_PREVIEW_HEIGHT_CSS,
+  getManatalCarouselSlideMeta,
   getManatalPhoneScreenAspectCss,
   getManatalPhoneScreenWidthCss,
   getCarouselPreviewHeight,
+  MANATAL_CAROUSEL_SLIDE_META,
   MANATAL_PHONE_FRAME_WIDTH_CSS,
   MANATAL_PHONE_SCREEN_ASPECT_CSS,
   MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS,
@@ -31,5 +33,20 @@ describe("carousel preview height", () => {
     expect(getManatalPhoneScreenWidthCss()).toContain(
       MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS,
     );
+  });
+
+  it("defines object position metadata for all Manatal carousel slides", () => {
+    expect(MANATAL_CAROUSEL_SLIDE_META["/manatal-coop-homepage.webp"]).toEqual({
+      objectPosition: "50% 0%",
+    });
+    expect(MANATAL_CAROUSEL_SLIDE_META["/manatal-coop-signin.webp"]).toEqual({
+      objectPosition: "50% 0%",
+    });
+    expect(MANATAL_CAROUSEL_SLIDE_META["/manatal-coop-chatbot.webp"]).toEqual({
+      objectPosition: "50% 0%",
+    });
+    expect(getManatalCarouselSlideMeta("/unknown.webp")).toEqual({
+      objectPosition: "50% 0%",
+    });
   });
 });

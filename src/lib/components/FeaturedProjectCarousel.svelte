@@ -7,6 +7,7 @@
 	import { prefetchImageUrl, scheduleIdlePrefetch } from '$lib/utils/prefetch-images';
 	import { appPath } from '$lib/utils/app-path';
 	import { DEVICE_CARD_GRADIENT } from '$lib/constants/device-frame';
+	import { CAROUSEL_PREVIEW_HEIGHT_CSS } from '$lib/constants/carousel';
 
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
@@ -152,8 +153,9 @@
 		{#each carouselProjects as project, index (project.slug)}
 			{@const phoneOnlyCard = project.slug === 'manatal-coop'}
 			<div
+				data-testid={phoneOnlyCard ? 'highlight-card-column-manatal-coop' : undefined}
 				class="{phoneOnlyCard
-					? 'w-fit shrink-0 snap-start space-y-4'
+					? 'w-[min(88vw,920px)] shrink-0 space-y-4 sm:w-[min(90vw,920px)] max-lg:snap-center lg:snap-start'
 					: 'w-[min(88vw,920px)] shrink-0 snap-start space-y-4 sm:w-[min(90vw,920px)]'}"
 			>
 				<article
@@ -161,10 +163,11 @@
 					data-highlight-slug={project.slug}
 					bind:this={highlightSlideElements[project.slug]}
 					class={phoneOnlyCard
-						? 'group overflow-hidden rounded-xl bg-transparent shadow-none ring-0'
+						? 'group flex w-full items-center justify-center overflow-hidden bg-transparent shadow-none ring-0'
 						: 'group overflow-hidden rounded-xl ' +
 							DEVICE_CARD_GRADIENT +
 							' shadow-[0_32px_64px_-28px_rgba(0,0,0,0.45)] ring-1 ring-black/10'}
+					style={phoneOnlyCard ? `height:${CAROUSEL_PREVIEW_HEIGHT_CSS}` : undefined}
 				>
 					{#if (highlightImageSets[project.slug] ?? []).length > 0}
 						<CarouselDevicePreview
@@ -182,7 +185,11 @@
 						</div>
 					{/if}
 				</article>
-				<div class="space-y-3 px-2">
+				<div
+					class={phoneOnlyCard
+						? 'space-y-3 px-2 max-lg:flex max-lg:flex-col max-lg:items-center max-lg:text-center lg:text-left'
+						: 'space-y-3 px-2'}
+				>
 					<p
 						data-testid={'carousel-project-type-label-' + project.slug}
 						class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500"
@@ -190,7 +197,11 @@
 						{getProjectTypeLabel(project)}
 					</p>
 					<h3 class="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">{project.name}</h3>
-					<p class="max-w-[34ch] text-lg font-medium leading-relaxed text-zinc-600">{project.tagline}</p>
+					<p
+						class="{phoneOnlyCard
+							? 'max-lg:max-w-full lg:max-w-[34ch]'
+							: 'max-w-[34ch]'} text-lg font-medium leading-relaxed text-zinc-600"
+					>{project.tagline}</p>
 					<a
 						data-testid={'showcase-project-link-' + project.slug}
 						href={appPath('/projects/' + project.slug)}

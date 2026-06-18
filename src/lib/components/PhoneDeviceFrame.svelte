@@ -6,6 +6,10 @@
 
 	/** @type {string} */
 	export let domain = '';
+	/** @type {boolean} */
+	export let showDomain = true;
+	/** @type {boolean} */
+	export let hideDomainOnMobile = false;
 	/** @type {'nested' | 'card'} */
 	export let fillMode = 'nested';
 	/** @type {string | undefined} */
@@ -24,7 +28,7 @@
 		: 'relative flex h-full w-full flex-col overflow-hidden rounded-[1.85rem] bg-black';
 
 	$: screenClass = contentSizedCard
-		? 'relative max-w-full overflow-hidden bg-black'
+		? 'relative min-h-0 max-w-full overflow-hidden bg-black'
 		: 'relative min-h-0 flex-1 overflow-hidden bg-black';
 
 	$: screenStyle = screenAspectRatio
@@ -37,16 +41,18 @@
 	class={rootClass}
 >
 	<div class={innerClass}>
-		<div class="relative z-10 flex shrink-0 items-center justify-center px-4 pb-1 pt-2.5">
+		<div class="relative z-10 flex shrink-0 items-center justify-center px-4 pb-1 pt-2 sm:pt-2.5">
 			<div
 				class="h-[18px] w-[72px] rounded-full bg-black/85 ring-1 ring-white/10"
 				aria-hidden="true"
 			></div>
 		</div>
-		{#if domain}
+		{#if domain && showDomain}
 			<p
 				data-testid="phone-device-frame-domain"
-				class="pointer-events-none absolute left-0 right-0 top-2 z-20 text-center text-[10px] font-medium tracking-wide text-zinc-400"
+				class="pointer-events-none absolute left-0 right-0 top-2 z-20 text-center text-[10px] font-medium tracking-wide text-zinc-400 {hideDomainOnMobile
+					? 'hidden sm:block'
+					: ''}"
 			>
 				{domain}
 			</p>

@@ -168,6 +168,29 @@ export async function scrollCarouselToPosition(
   }, scrollLeft);
 }
 
+export async function scrollCarouselCardIntoViewCenter(
+  page: Page,
+  columnTestId: string,
+): Promise<void> {
+  await page
+    .getByTestId(selectors.work.carousel)
+    .evaluate((carouselEl, testId) => {
+      const columnEl = carouselEl.querySelector(`[data-testid="${testId}"]`);
+      if (
+        !(columnEl instanceof HTMLElement) ||
+        !(carouselEl instanceof HTMLElement)
+      ) {
+        throw new Error(`Expected carousel column ${testId}`);
+      }
+
+      const targetScrollLeft =
+        columnEl.offsetLeft -
+        (carouselEl.clientWidth - columnEl.offsetWidth) / 2;
+
+      carouselEl.scrollLeft = Math.max(0, targetScrollLeft);
+    }, columnTestId);
+}
+
 export async function assertSectionInViewport(
   page: Page,
   testId: string,
