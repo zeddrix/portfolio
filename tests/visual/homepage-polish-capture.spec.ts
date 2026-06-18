@@ -45,7 +45,7 @@ async function captureManatalPhoneSlide(
     viewport === "desktop" ? slide.filenames.desktop : slide.filenames.mobile;
 
   await page
-    .getByTestId("highlight-card-9")
+    .getByTestId("highlight-card-3")
     .getByTestId("carousel-device-frame-phone")
     .screenshot({
       path: path.join(outDir, filename),
@@ -63,9 +63,9 @@ async function captureManatalSlidesAtViewport(
   }
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+  await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
   await page
-    .getByTestId("highlight-card-9")
+    .getByTestId("highlight-card-3")
     .getByTestId("carousel-device-frame-phone")
     .waitFor({ state: "visible" });
 
@@ -98,7 +98,7 @@ test.describe("homepage polish visual capture", () => {
       fullPage: false,
     });
 
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
     await captureManatalSlidesAtViewport(page, "desktop");
 
     await page.screenshot({

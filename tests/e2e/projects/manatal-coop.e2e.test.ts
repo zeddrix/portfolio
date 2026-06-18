@@ -15,25 +15,25 @@ test.describe("manatal coop project", () => {
     page,
   }) => {
     await scrollToTestId(page, selectors.work.carousel);
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("highlight-card-9")).toHaveAttribute(
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("highlight-card-3")).toHaveAttribute(
       "data-highlight-slug",
       "manatal-coop",
     );
 
     await expect(
       page
-        .getByTestId("highlight-card-9")
+        .getByTestId("highlight-card-3")
         .getByTestId("carousel-device-frame-phone"),
     ).toBeVisible();
     await expect(
       page
-        .getByTestId("highlight-card-9")
+        .getByTestId("highlight-card-3")
         .getByTestId("carousel-device-frame-browser"),
     ).toHaveCount(0);
 
     const usedelightCard = page.getByTestId("highlight-card-0");
-    const manatalCard = page.getByTestId("highlight-card-9");
+    const manatalCard = page.getByTestId("highlight-card-3");
     const manatalPhone = manatalCard.getByTestId("carousel-device-frame-phone");
     const usedelightBox = await usedelightCard.boundingBox();
     const manatalPhoneBox = await manatalPhone.boundingBox();

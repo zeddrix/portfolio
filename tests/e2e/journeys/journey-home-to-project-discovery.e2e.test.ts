@@ -47,7 +47,7 @@ test.describe.serial("Journey: home to project discovery", () => {
   }) => {
     await gotoHome(page);
     await scrollToTestId(page, selectors.work.carousel);
-    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-6").scrollIntoViewIfNeeded();
 
     await Promise.all([
       page.waitForURL(`**${PAGES_BASE_PATH}/projects/answeriq`),

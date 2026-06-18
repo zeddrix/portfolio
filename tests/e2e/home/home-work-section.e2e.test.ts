@@ -31,8 +31,8 @@ test.describe("homepage work section", () => {
     page,
   }) => {
     await scrollToTestId(page, selectors.work.carousel);
-    await page.getByTestId("highlight-card-6").scrollIntoViewIfNeeded();
-    await expect(page.getByTestId("highlight-card-6")).toHaveAttribute(
+    await page.getByTestId("highlight-card-7").scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("highlight-card-7")).toHaveAttribute(
       "data-highlight-slug",
       "trulyhappy",
     );
@@ -81,9 +81,9 @@ test.describe("homepage work section", () => {
     const carousel = page.getByTestId(selectors.work.carousel);
     await scrollToTestId(page, selectors.work.section);
     await carousel.scrollIntoViewIfNeeded();
-    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-6").scrollIntoViewIfNeeded();
 
-    await expect(page.getByTestId("highlight-card-5")).toHaveAttribute(
+    await expect(page.getByTestId("highlight-card-6")).toHaveAttribute(
       "data-highlight-slug",
       "answeriq",
     );
@@ -96,7 +96,7 @@ test.describe("homepage work section", () => {
     page,
   }) => {
     await scrollToTestId(page, selectors.work.carousel);
-    await page.getByTestId("highlight-card-8").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
 
     await Promise.all([
       page.waitForURL(`**${PAGES_BASE_PATH}/projects/bolt-to-github`),

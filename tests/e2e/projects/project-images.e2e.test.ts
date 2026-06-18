@@ -201,7 +201,7 @@ test.describe("project image mapping", () => {
     page,
   }) => {
     await gotoHome(page);
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
 
     const manatalCarouselImage = carouselImage(page, "manatal-coop");
     await expect(manatalCarouselImage).toHaveAttribute(
@@ -233,7 +233,7 @@ test.describe("project image mapping", () => {
     page,
   }) => {
     await gotoHome(page);
-    await page.getByTestId("highlight-card-5").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-6").scrollIntoViewIfNeeded();
 
     const answeriqCarouselImage = carouselImage(page, "answeriq");
     await expect(answeriqCarouselImage).toHaveAttribute(

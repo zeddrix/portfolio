@@ -18,7 +18,7 @@ test.describe("manatal coop visual capture", () => {
 
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(PAGES_BASE_PATH, { waitUntil: "domcontentloaded" });
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
     await page.screenshot({
       path: path.join(outDir, "carousel-mobile-390.png"),
     });

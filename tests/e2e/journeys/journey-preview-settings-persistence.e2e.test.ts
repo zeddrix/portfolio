@@ -57,6 +57,6 @@ test.describe.serial("Journey: preview settings persistence", () => {
     await expect(page.getByTestId("highlight-band-0")).toBeVisible();
     await expect(page.getByTestId("highlight-band-6")).toHaveCount(0);
     await scrollToTestId(page, selectors.work.section);
-    await expect(page.getByTestId("highlight-card-8")).toBeVisible();
+    await expect(page.getByTestId("highlight-card-9")).toBeVisible();
   });
 });

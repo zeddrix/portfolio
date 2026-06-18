@@ -41,7 +41,7 @@ async function expectManatalImageFillsScreen(
 
 /** @param {Page} page @param {RegExp} srcPattern */
 async function waitForManatalSlide(page: Page, srcPattern: RegExp) {
-  const manatalCard = page.getByTestId("highlight-card-9");
+  const manatalCard = page.getByTestId("highlight-card-3");
   const manatalImage = manatalCard.getByTestId(
     "carousel-project-image-manatal-coop",
   );
@@ -343,10 +343,10 @@ test.describe("homepage carousel layout", () => {
     await gotoHome(page);
     await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
     await scrollCarouselToPosition(page, 0);
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
 
     const usedelightCard = page.getByTestId("highlight-card-0");
-    const manatalCard = page.getByTestId("highlight-card-9");
+    const manatalCard = page.getByTestId("highlight-card-3");
     const manatalPhone = manatalCard.getByTestId("carousel-device-frame-phone");
     const usedelightBox = await usedelightCard.boundingBox();
     const manatalPhoneBox = await manatalPhone.boundingBox();
@@ -370,10 +370,10 @@ test.describe("homepage carousel layout", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await gotoHome(page);
     await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
 
     const usedelightCard = page.getByTestId("highlight-card-0");
-    const manatalCard = page.getByTestId("highlight-card-9");
+    const manatalCard = page.getByTestId("highlight-card-3");
     await expectManatalScreenHeightCapped(manatalCard, usedelightCard);
     await expectManatalPhoneFrameHeightCapped(manatalCard, usedelightCard);
   });
@@ -384,7 +384,7 @@ test.describe("homepage carousel layout", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await gotoHome(page);
     await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
 
     for (const [index, pattern] of manatalSlidePatterns.entries()) {
       if (index > 0) {
@@ -401,7 +401,7 @@ test.describe("homepage carousel layout", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoHome(page);
     await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
-    await page.getByTestId("highlight-card-9").scrollIntoViewIfNeeded();
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
 
     for (const [index, pattern] of manatalSlidePatterns.entries()) {
       if (index > 0) {
