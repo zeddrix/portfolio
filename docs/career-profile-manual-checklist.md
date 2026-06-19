@@ -41,9 +41,9 @@ Review parsed Experience, Projects, and Skills manually — LinkedIn’s parser 
 
 The `zeddrix/zeddrix` repo README was updated with a certifications table linking to the portfolio. Commit and push that repo after deploy.
 
-## 7. WordPress legacy cert redirects (optional)
+## 7. WordPress legacy cert redirects
 
-When ready to retire WordPress, redirect legacy cert paths to portfolio URLs. Legacy paths are stored in `src/lib/data/certificates.ts` as `legacyZeddrixPath`.
+After deploy, legacy certificate URLs redirect automatically (see [`docs/seo-offsite-checklist.md`](seo-offsite-checklist.md) §5 and §10). Legacy paths are defined in `src/lib/data/certificates.ts` as `legacyZeddrixPath`.
 
 ## 8. Job applications
 
