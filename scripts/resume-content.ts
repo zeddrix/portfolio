@@ -14,9 +14,12 @@ export interface DetailSection {
   body: string;
 }
 
+export type ProjectCategory = "client" | "personal";
+
 export interface ProjectSnapshot {
   slug: string;
   name: string;
+  category?: ProjectCategory;
   role: string;
   outcome: string;
   tagline: string;
@@ -165,6 +168,23 @@ export function partitionProjects(snapshot: ProfileSnapshot): {
   }
 
   return { selectedProjects, additionalProjects };
+}
+
+export function partitionResumeProjectsByCategory(snapshot: ProfileSnapshot): {
+  clientProjects: ProjectSnapshot[];
+  personalProjects: ProjectSnapshot[];
+} {
+  const { selectedProjects, additionalProjects } = partitionProjects(snapshot);
+  const resumeOrder = [...selectedProjects, ...additionalProjects];
+
+  return {
+    clientProjects: resumeOrder.filter(
+      (project) => project.category === "client",
+    ),
+    personalProjects: resumeOrder.filter(
+      (project) => project.category === "personal",
+    ),
+  };
 }
 
 export function buildSkillsText(

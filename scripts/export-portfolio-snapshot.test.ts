@@ -50,6 +50,7 @@ describe("export-portfolio-snapshot output", () => {
     ]) {
       expect(project.resumeContext).toBeDefined();
       expect(project.displayPeriod).toBeTruthy();
+      expect(project.category).toMatch(/^(client|personal)$/);
     }
     expect(
       snapshot.moreProjects.find((project) => project.slug === "manatal-coop")

@@ -5,6 +5,7 @@ import {
   buildEngagementExperienceBlocks,
   buildSelectedProjectsBlocks,
   partitionProjects,
+  partitionResumeProjectsByCategory,
   splitExperienceForApplicationResume,
 } from "./resume-content";
 
@@ -45,6 +46,26 @@ describe("resume-content builders", () => {
     for (const project of selectedProjects) {
       expect(additional.some((item) => item.slug === project.slug)).toBe(false);
     }
+  });
+
+  it("partitions application resume projects into client and personal sections", () => {
+    const { clientProjects, personalProjects } =
+      partitionResumeProjectsByCategory(snapshot);
+
+    expect(clientProjects.map((project) => project.slug)).toEqual([
+      "adverio-tools",
+      "usedelight",
+      "answeriq",
+      "manatal-coop",
+      "trulyhappy",
+      "articulearn",
+      "bolt-to-github",
+    ]);
+    expect(personalProjects.map((project) => project.slug)).toEqual([
+      "merns-shop",
+      "queue",
+      "jw-tabs",
+    ]);
   });
 
   it("splits experience into eight rows for page one and four for page two", () => {

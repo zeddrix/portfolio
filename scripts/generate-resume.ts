@@ -3,11 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
-import {
-  APPLICATION_RESUME_LAYOUTS,
-  buildApplicationResumeHtml,
-  DEFAULT_APPLICATION_RESUME_LAYOUT,
-} from "./application-resume/build-application-resume.js";
+import { buildApplicationResumeHtml } from "./application-resume/build-application-resume.js";
 import { buildLinkedInDocxBuffer } from "./build-linkedin-docx.js";
 import {
   buildAdditionalProjectsBlocks,
@@ -31,7 +27,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
 const snapshotPath = join(__dirname, "profile-snapshot.json");
 const resumeDir = join(rootDir, "resume");
-const variantsDir = join(resumeDir, "variants");
 
 function buildExperienceHtmlLinkedIn(experience: ExperienceSnapshot[]): string {
   return experience
@@ -293,7 +288,6 @@ async function main() {
   const linkedInDocx = await buildLinkedInDocxBuffer(snapshot);
 
   await mkdir(resumeDir, { recursive: true });
-  await mkdir(variantsDir, { recursive: true });
 
   const linkedInHtmlPath = join(resumeDir, "resume-linkedin.html");
   const applicationHtmlPath = join(resumeDir, "resume-application.html");
@@ -305,34 +299,15 @@ async function main() {
     "Zeddrix-Fabian-Resume-LinkedIn.docx",
   );
 
-  let defaultApplicationHtml = "";
-
-  for (const layout of APPLICATION_RESUME_LAYOUTS) {
-    const layoutHtml = await buildApplicationResumeHtml(snapshot, layout);
-    const layoutDir = join(variantsDir, layout);
-    await mkdir(layoutDir, { recursive: true });
-
-    const layoutHtmlPath = join(layoutDir, "resume-application.html");
-    const layoutPdfPath = join(layoutDir, "Zeddrix-Fabian-Resume.pdf");
-
-    await writeFile(layoutHtmlPath, layoutHtml);
-    await writePdf(layoutHtml, layoutPdfPath, "0");
-
-    if (layout === DEFAULT_APPLICATION_RESUME_LAYOUT) {
-      defaultApplicationHtml = layoutHtml;
-    }
-
-    console.log(`Wrote ${layoutHtmlPath}`);
-    console.log(`Wrote ${layoutPdfPath}`);
-  }
+  const applicationHtml = await buildApplicationResumeHtml(snapshot);
 
   await writeFile(linkedInHtmlPath, linkedInHtml);
-  await writeFile(applicationHtmlPath, defaultApplicationHtml);
+  await writeFile(applicationHtmlPath, applicationHtml);
   await writeFile(markdownPath, markdown);
   await writeFile(linkedInDocxPath, linkedInDocx);
 
   await writePdf(linkedInHtml, linkedInPdfPath, "0.55in");
-  await writePdf(defaultApplicationHtml, applicationPdfPath, "0");
+  await writePdf(applicationHtml, applicationPdfPath, "0");
 
   console.log(`Wrote ${linkedInHtmlPath}`);
   console.log(`Wrote ${applicationHtmlPath}`);

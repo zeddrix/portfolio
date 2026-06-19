@@ -1,19 +1,18 @@
 import { escapeHtml } from "../../resume-content.js";
 import type { ApplicationResumeBuildContext } from "../types.js";
 import {
+  buildExpandedProjectsGridHtml,
   buildMainSectionRibbon,
   buildSidebarCertsHtml,
   buildSidebarContactHtml,
   buildSidebarRibbon,
   buildSidebarSkillsHtml,
-  buildMoreProjectsGridHtml,
-  buildProjectExpandedHtml,
   buildTimelineHtml,
   DENSITY_MAXIMIZED_CSS,
   wrapApplicationResumeHtml,
 } from "../shared.js";
 
-export function buildRefinedLornaResumeHtml(
+export function buildApplicationResumeLayoutHtml(
   context: ApplicationResumeBuildContext,
 ): string {
   const {
@@ -23,8 +22,8 @@ export function buildRefinedLornaResumeHtml(
     config,
     summary,
     firstPageExperience,
-    selectedProjects,
-    additionalProjects,
+    clientProjects,
+    personalProjects,
     fontCss,
   } = context;
 
@@ -68,18 +67,18 @@ export function buildRefinedLornaResumeHtml(
 
     <section class="page page-full-width page-two" data-testid="resume-page-2">
       <section class="page-two-section">
-        ${buildMainSectionRibbon("Selected Projects")}
-        ${selectedProjects.map((project) => buildProjectExpandedHtml(project)).join("")}
+        ${buildMainSectionRibbon("Client Work")}
+        ${buildExpandedProjectsGridHtml(clientProjects, "resume-client-projects")}
       </section>
 
       <section class="page-two-section">
-        ${buildMainSectionRibbon("More Projects")}
-        ${buildMoreProjectsGridHtml(additionalProjects)}
+        ${buildMainSectionRibbon("Personal Projects")}
+        ${buildExpandedProjectsGridHtml(personalProjects, "resume-personal-projects")}
       </section>
     </section>`;
 
   return wrapApplicationResumeHtml(profile, fontCss, body, {
-    bodyClass: "density-maximized layout-refined-lorna",
+    bodyClass: "density-maximized layout-application-resume",
     extraCss: DENSITY_MAXIMIZED_CSS,
   });
 }
