@@ -37,7 +37,7 @@ describe("certificates data", () => {
       "/certificates/reactjs-front-to-back",
     );
     expect(buildCertificatePublicUrl("reactjs-front-to-back")).toBe(
-      "https://zeddrix.github.io/portfolio/certificates/reactjs-front-to-back",
+      "https://zeddrix.com/certificates/reactjs-front-to-back",
     );
   });
 });

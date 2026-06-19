@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const siteUrl = "https://zeddrix.github.io/portfolio";
+const siteUrl = "https://zeddrix.com";
 
 vi.mock("$env/static/public", () => ({
   PUBLIC_SITE_URL: siteUrl,

@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { PORTFOLIO_PUBLIC_SITE_URL } from "../../../src/lib/data/site";
 import { selectors } from "../fixtures/selectors";
 import {
   assertSectionInViewport,
@@ -47,7 +48,7 @@ test.describe("contact and footer", () => {
     ).toHaveAttribute("href", "mailto:zeddrix.fabian@gmail.com");
     await expect(
       page.getByTestId(selectors.contact.footerWebsite),
-    ).toHaveAttribute("href", "https://zeddrix.github.io/portfolio");
+    ).toHaveAttribute("href", PORTFOLIO_PUBLIC_SITE_URL);
     await expect(page.getByTestId("footer-certificates-link")).toHaveAttribute(
       "href",
       expect.stringContaining("/certificates"),
