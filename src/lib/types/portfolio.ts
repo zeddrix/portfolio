@@ -146,6 +146,7 @@ export interface PortfolioProfile {
   contactEmail: string;
   websiteUrl: string;
   githubUrl: string;
+  linkedinUrl: string;
 }
 
 export interface Certificate {

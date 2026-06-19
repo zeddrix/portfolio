@@ -34,22 +34,30 @@ describe("seo URL helpers", () => {
     );
   });
 
-  it("getDefaultOgImageUrl returns absolute path to default image", async () => {
-    const { getDefaultOgImageUrl } = await import("./seo");
-    expect(getDefaultOgImageUrl()).toBe(`${siteUrl}/me.png`);
+  it("getDefaultOgImageUrl returns absolute path to default OG image", async () => {
+    const { getDefaultOgImageUrl, DEFAULT_OG_IMAGE_PATH } =
+      await import("./seo");
+    expect(getDefaultOgImageUrl()).toBe(`${siteUrl}${DEFAULT_OG_IMAGE_PATH}`);
   });
 
-  it("buildPersonJsonLd includes site URL and Person type fields", async () => {
-    const { buildPersonJsonLd, serializeJsonLd, homeSeo, getSiteUrl } =
-      await import("./seo");
+  it("buildPersonJsonLd includes LinkedIn in sameAs and ContactPoint instead of email", async () => {
+    const { buildPersonJsonLd, getSiteUrl } = await import("./seo");
     const jsonLd = buildPersonJsonLd();
-    const serialized = serializeJsonLd(jsonLd);
 
     expect(jsonLd["@type"]).toBe("Person");
-    expect(serialized).toContain(getSiteUrl());
-    expect(jsonLd.name).toBeTruthy();
-    expect(homeSeo.title).toMatch(/Zeddrix Fabian/i);
-    expect(homeSeo.description).toMatch(/full-stack web app developer/i);
+    expect(jsonLd.url).toBe(getSiteUrl());
+    expect(jsonLd.email).toBeUndefined();
+    expect(jsonLd.sameAs).toEqual(
+      expect.arrayContaining([
+        siteUrl,
+        "https://github.com/zeddrix",
+        "https://www.linkedin.com/in/zeddrix-fabian-30a18029a/",
+      ]),
+    );
+    expect(jsonLd.contactPoint).toMatchObject({
+      "@type": "ContactPoint",
+      contactType: "professional",
+    });
   });
 
   it("buildProjectMeta produces canonical project paths and titles", async () => {
@@ -99,10 +107,92 @@ describe("seo URL helpers", () => {
     expect(jsonLd.url).toBe(getSiteUrl());
   });
 
+  it("buildProjectJsonLd uses SoftwareApplication when live demo links exist", async () => {
+    const { buildProjectJsonLd } = await import("./seo");
+    const { getProjectBySlug } = await import("./portfolio");
+    const answeriq = getProjectBySlug("answeriq");
+    expect(answeriq).toBeDefined();
+    if (!answeriq) return;
+
+    const jsonLd = buildProjectJsonLd(answeriq);
+    expect(jsonLd["@type"]).toBe("SoftwareApplication");
+    expect(jsonLd.url).toBe(`${siteUrl}/projects/answeriq`);
+  });
+
+  it("buildCertificateJsonLd includes EducationalOccupationalCredential fields", async () => {
+    const { buildCertificateJsonLd, buildAbsoluteUrl } = await import("./seo");
+    const { getCertificateBySlug } = await import("./certificates");
+    const certificate = getCertificateBySlug("mern-ecommerce-from-scratch");
+    expect(certificate).toBeDefined();
+    if (!certificate) return;
+
+    const jsonLd = buildCertificateJsonLd(certificate);
+    expect(jsonLd["@type"]).toBe("EducationalOccupationalCredential");
+    expect(jsonLd.url).toBe(
+      `${siteUrl}/certificates/mern-ecommerce-from-scratch`,
+    );
+    expect(jsonLd.image).toBe(buildAbsoluteUrl(certificate.imagePath));
+  });
+
+  it("buildBreadcrumbJsonLd emits ordered ListItem entries", async () => {
+    const { buildBreadcrumbJsonLd } = await import("./seo");
+    const jsonLd = buildBreadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Queue", path: "/projects/queue" },
+    ]);
+
+    expect(jsonLd["@type"]).toBe("BreadcrumbList");
+    expect(jsonLd.itemListElement).toEqual([
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${siteUrl}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Queue",
+        item: `${siteUrl}/projects/queue`,
+      },
+    ]);
+  });
+
+  it("buildCertificatesIndexJsonLd lists certificate URLs", async () => {
+    const { buildCertificatesIndexJsonLd } = await import("./seo");
+    const { certificates } = await import("./certificates");
+    const jsonLd = buildCertificatesIndexJsonLd();
+
+    expect(jsonLd["@type"]).toBe("ItemList");
+    expect(jsonLd.itemListElement).toHaveLength(certificates.length);
+  });
+
+  it("getProjectLastMod prefers resume end date when present", async () => {
+    const { getProjectLastMod } = await import("./seo");
+    const { getProjectBySlug } = await import("./portfolio");
+    const answeriq = getProjectBySlug("answeriq");
+    expect(answeriq).toBeDefined();
+    if (!answeriq) return;
+
+    expect(getProjectLastMod(answeriq)).toBe("2025-10-01");
+  });
+
+  it("getCertificateLastMod returns issuedAt", async () => {
+    const { getCertificateLastMod } = await import("./seo");
+    const { getCertificateBySlug } = await import("./certificates");
+    const certificate = getCertificateBySlug("mern-ecommerce-from-scratch");
+    expect(certificate).toBeDefined();
+    if (!certificate) return;
+
+    expect(getCertificateLastMod(certificate)).toBe("2021-04-06");
+  });
+
   it("homeSeo path builds canonical home URL", async () => {
     const { homeSeo, buildAbsoluteUrl } = await import("./seo");
     expect(buildAbsoluteUrl(homeSeo.path)).toBe(`${siteUrl}/`);
     expect(homeSeo.path).toBe("/");
+    expect(homeSeo.title).toMatch(/Zeddrix Fabian/i);
+    expect(homeSeo.description).toMatch(/full-stack web app developer/i);
   });
 
   it("getSiteUrl falls back to dev URL when PUBLIC_SITE_URL is empty", async () => {
@@ -111,5 +201,22 @@ describe("seo URL helpers", () => {
     }));
     const { getSiteUrl } = await import("./seo");
     expect(getSiteUrl()).toBe("http://127.0.0.1:7212");
+  });
+});
+
+describe("legacy redirects", () => {
+  it("maps certificate legacy paths to portfolio certificate routes", async () => {
+    const { getLegacyRedirectEntries } = await import("./legacy-redirects");
+    const entries = getLegacyRedirectEntries(siteUrl);
+    const mernRedirect = entries.find(
+      (entry) =>
+        entry.sourcePath === "/mern-ecommerce-from-scratch-certificate",
+    );
+
+    expect(mernRedirect).toEqual({
+      sourcePath: "/mern-ecommerce-from-scratch-certificate",
+      targetPath: "/certificates/mern-ecommerce-from-scratch",
+      targetUrl: `${siteUrl}/certificates/mern-ecommerce-from-scratch`,
+    });
   });
 });

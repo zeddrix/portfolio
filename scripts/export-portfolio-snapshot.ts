@@ -19,7 +19,7 @@ const outputPath = join(__dirname, "profile-snapshot.json");
 
 const PORTFOLIO_URL = profile.websiteUrl;
 const GITHUB_URL = profile.githubUrl;
-const LINKEDIN_URL = "https://www.linkedin.com/in/zeddrix-fabian-30a18029a/";
+const LINKEDIN_URL = profile.linkedinUrl;
 
 export const resumeSelectedProjectSlugs = [
   "adverio-tools",

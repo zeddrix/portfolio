@@ -18,4 +18,5 @@ export const profile: PortfolioProfile = {
   contactEmail: "zeddrix.fabian@gmail.com",
   websiteUrl: PORTFOLIO_PUBLIC_SITE_URL,
   githubUrl: "https://github.com/zeddrix",
+  linkedinUrl: "https://www.linkedin.com/in/zeddrix-fabian-30a18029a/",
 };
