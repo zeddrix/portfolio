@@ -5,7 +5,7 @@
 
 ## Summary
 
-Polished `highlight-card-3` (Manatal Coop) for mobile and tablet. On `max-lg`, the phone uses width-first container sizing (`min(100%, 300px)`) inside a full-width transparent article with `h-auto` (no tall empty slot). Desktop keeps fixed preview height and height-capped phone vs browser cards. How I deliver now defaults to **Detailed** (`sevenBands`) for fresh visits.
+Polished `highlight-card-3` (Manatal Coop) for mobile and tablet. **Superseded (2026-06-18 MCPS):** mobile `h-auto` article + width-first `min(100%, 300px)` fill — see `manatal-carousel-text-alignment-2026-06-18.md`. Current `max-lg` model: fixed browser-matching preview row + centered portrait phone (`w-fit`).
 
 ## Verified
 
@@ -45,8 +45,9 @@ None (high/medium).
 
 ## Notes
 
-- Mobile article is `h-auto`; desktop (`lg+`) uses fixed `CAROUSEL_PREVIEW_HEIGHT_CSS`.
-- `carouselMobileLayout` on `PhoneDeviceFrame` enables width-first `min(100%, 300px)` below `lg`.
+- **Superseded:** Mobile article `h-auto` and `min(100%, 300px)` width fill replaced by fixed preview row + portrait phone — see `manatal-carousel-text-alignment-2026-06-18.md`.
+- Desktop (`lg+`) uses fixed `CAROUSEL_PREVIEW_HEIGHT_CSS`.
+- `carouselMobileLayout` on `PhoneDeviceFrame` enables portrait carousel sizing below `lg`.
 - Taller Manatal column on mobile increases carousel track height; work→about CTA gap tolerance raised to 520px.
 - Returning visitors with `localStorage` `groupedBands` keep Grouped until they toggle or clear site data.
 - Per-slide crop tuning: `MANATAL_CAROUSEL_SLIDE_META` in `src/lib/constants/carousel.ts`.

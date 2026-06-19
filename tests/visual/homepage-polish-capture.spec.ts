@@ -197,4 +197,57 @@ test.describe("homepage polish visual capture", () => {
       fullPage: false,
     });
   });
+
+  test("captures carousel text alignment on mobile", async ({ page }) => {
+    test.setTimeout(120_000);
+    mkdirSync(outDir, { recursive: true });
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.getByTestId("highlight-card-3").scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await page.getByTestId("highlight-card-3").waitFor({ state: "visible" });
+    await page
+      .getByTestId("carousel-project-type-label-manatal-coop")
+      .waitFor({ state: "visible" });
+    await page
+      .getByTestId("carousel-device-frame-phone")
+      .waitFor({ state: "visible" });
+
+    const manatalColumn = page.getByTestId(
+      "highlight-card-column-manatal-coop",
+    );
+    const approachHeading = page.getByTestId("approach-section-heading");
+
+    await expect(manatalColumn).toBeVisible();
+    await expect(approachHeading).toBeAttached();
+
+    const columnBox = await manatalColumn.boundingBox();
+    const approachBox = await approachHeading.boundingBox();
+
+    if (!columnBox || !approachBox) {
+      throw new Error(
+        "Expected Manatal column and approach heading bounding boxes.",
+      );
+    }
+
+    const clipHeight = Math.min(
+      approachBox.y + approachBox.height - columnBox.y + 8,
+      844,
+    );
+
+    await page.screenshot({
+      path: path.join(outDir, "carousel-text-alignment-mobile-390.png"),
+      clip: {
+        x: 0,
+        y: Math.max(0, columnBox.y - 8),
+        width: 390,
+        height: Math.max(clipHeight, columnBox.height + 48),
+      },
+    });
+  });
 });

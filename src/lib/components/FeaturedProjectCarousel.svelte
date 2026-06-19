@@ -12,7 +12,7 @@
 	/** @typedef {{ current: number }} SlideState */
 
 	const carouselScrollClass =
-		'highlights-carousel-scroll snap-x overflow-x-auto scroll-pb-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
+		'highlights-carousel-scroll snap-x overflow-x-auto scroll-pb-2 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
 
 	const carouselSizes = '(max-width: 640px) 88vw, 920px';
 	const carouselImageWidth = 920;
@@ -147,7 +147,7 @@
 <div bind:this={carouselElement} data-testid="highlights-carousel" class={carouselScrollClass}>
 	<div
 		data-testid="highlights-carousel-track"
-		class="highlights-carousel-track flex w-max items-start gap-4 md:gap-5"
+		class="highlights-carousel-track flex w-max items-center gap-4 md:gap-5"
 	>
 		{#each carouselProjects as project, index (project.slug)}
 			{@const phoneOnlyCard = project.slug === 'manatal-coop'}
@@ -184,6 +184,7 @@
 					{/if}
 				</article>
 				<div
+					data-testid={'carousel-card-text-' + project.slug}
 					class={phoneOnlyCard
 						? 'space-y-3 px-2 max-lg:flex max-lg:flex-col max-lg:items-center max-lg:text-center lg:text-left'
 						: 'space-y-3 px-2'}
@@ -196,9 +197,10 @@
 					</p>
 					<h3 class="text-3xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">{project.name}</h3>
 					<p
+						data-testid={'carousel-project-tagline-' + project.slug}
 						class="{phoneOnlyCard
 							? 'max-lg:max-w-full lg:max-w-[34ch]'
-							: 'max-w-[34ch]'} text-lg font-medium leading-relaxed text-zinc-600"
+							: 'max-w-[34ch] min-h-[3.75rem]'} text-lg font-medium leading-relaxed text-zinc-600"
 					>{project.tagline}</p>
 					<a
 						data-testid={'showcase-project-link-' + project.slug}

@@ -291,6 +291,7 @@ export async function emulateSlow3G(page: Page): Promise<void> {
   });
 }
 
+/** Portrait phone frame keeps full height during LQIP on mobile/tablet carousel. */
 export const manatalCarouselPhoneMinHeightPx = 400;
 
 export async function delayManatalCarouselAsset(

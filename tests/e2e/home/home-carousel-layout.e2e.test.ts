@@ -252,6 +252,65 @@ async function expectUrlCenteredInCard(
   );
 }
 
+/** @param {Page} page */
+async function expectManatalPhoneTallerThanBrowserPreview(page: Page) {
+  const manatalArticle = page.getByTestId("highlight-card-3");
+  const usedelightArticle = page.getByTestId("highlight-card-0");
+  const manatalBox = await manatalArticle.boundingBox();
+  const usedelightBox = await usedelightArticle.boundingBox();
+
+  if (!manatalBox || !usedelightBox) {
+    throw new Error("Expected Manatal and UseDelight article bounding boxes.");
+  }
+
+  expect(manatalBox.height).toBeGreaterThan(
+    usedelightBox.height + manatalPhoneFrameTolerancePx,
+  );
+}
+
+/** @param {Page} page */
+async function expectManatalColumnVerticallyCenteredInTrack(page: Page) {
+  const track = page.getByTestId("highlights-carousel-track");
+  const column = page.getByTestId("highlight-card-column-manatal-coop");
+  const trackBox = await track.boundingBox();
+  const columnBox = await column.boundingBox();
+
+  if (!trackBox || !columnBox) {
+    throw new Error(
+      "Expected carousel track and Manatal column bounding boxes.",
+    );
+  }
+
+  const trackCenterY = trackBox.y + trackBox.height / 2;
+  const columnCenterY = columnBox.y + columnBox.height / 2;
+
+  expect(Math.abs(columnCenterY - trackCenterY)).toBeLessThanOrEqual(
+    manatalCenterTolerancePx,
+  );
+}
+
+/** @param {Page} page @param {string} slugA @param {string} slugB */
+async function expectCarouselTextBlockTopAlignment(
+  page: Page,
+  slugA: string,
+  slugB: string,
+) {
+  const labelA = page.getByTestId("carousel-project-type-label-" + slugA);
+  const labelB = page.getByTestId("carousel-project-type-label-" + slugB);
+
+  await expect(labelA).toBeAttached();
+  await expect(labelB).toBeAttached();
+
+  const boxA = await labelA.boundingBox();
+  const boxB = await labelB.boundingBox();
+
+  if (!boxA || !boxB) {
+    throw new Error("Expected carousel text label bounding boxes.");
+  }
+
+  expect(Math.abs(boxA.y - boxB.y)).toBeLessThanOrEqual(alignmentTolerancePx);
+}
+
 /** @param {Page} page @param {number} maxGapPx */
 async function expectTightCarouselToApproachGap(page: Page, maxGapPx: number) {
   await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
@@ -455,7 +514,7 @@ test.describe("homepage carousel layout", () => {
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await gotoHome(page);
-    await expectTightCarouselToApproachGap(page, 136);
+    await expectTightCarouselToApproachGap(page, 96);
   });
 
   test("Given homepage on mobile with carousel at start, when user reads work then approach, then spacing from first CTA to approach is tight", async ({
@@ -463,7 +522,55 @@ test.describe("homepage carousel layout", () => {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoHome(page);
-    await expectTightCarouselToApproachGap(page, 360);
+    await expectTightCarouselToApproachGap(page, 200);
+  });
+
+  test("Given homepage on mobile with carousel at start, when user compares browser cards, then text blocks align across columns", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselToPosition(page, 0);
+    await expectCarouselTextBlockTopAlignment(
+      page,
+      "usedelight",
+      "adverio-tools",
+    );
+    await expectCarouselTextBlockTopAlignment(page, "adverio-tools", "queue");
+  });
+
+  test("Given Manatal carousel on mobile, when user scrolls card into center, then phone is taller than browser preview and column is vertically centered", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await expectManatalPhoneTallerThanBrowserPreview(page);
+    await expectManatalColumnVerticallyCenteredInTrack(page);
+    await expectManatalPhoneCenteredInCarousel(page);
+    await expectManatalPhoneFillsMobilePreviewSlot(page);
+  });
+
+  test("Given Manatal carousel on tablet, when user scrolls card into center, then phone is taller than browser preview and column is vertically centered", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await gotoHome(page);
+    await page.getByTestId(selectors.work.carousel).scrollIntoViewIfNeeded();
+    await scrollCarouselCardIntoViewCenter(
+      page,
+      "highlight-card-column-manatal-coop",
+    );
+
+    await expectManatalPhoneTallerThanBrowserPreview(page);
+    await expectManatalColumnVerticallyCenteredInTrack(page);
+    await expectManatalPhoneCenteredInCarousel(page);
   });
 
   test("Given homepage at desktop with Manatal carousel card, when user compares preview to UseDelight, then Manatal phone is narrower and shorter", async ({
