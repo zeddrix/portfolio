@@ -1,0 +1,14 @@
+# Generated / build output
+build/
+.svelte-kit/
+resume/
+exports/
+scripts/profile-snapshot.json
+
+# Generated SEO assets
+static/og-default.png
+static/og-default*.webp
+static/home/
+static/about/
+static/about-zeddrix-fabian/
+static/*-certificate/
