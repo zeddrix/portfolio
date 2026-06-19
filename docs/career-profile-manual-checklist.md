@@ -6,7 +6,7 @@ Tasks the agent cannot complete — do these yourself after deploying the portfo
 
 Certificate verify URLs only work after GitHub Pages deploy:
 
-`https://zeddrix.github.io/portfolio/certificates/{slug}`
+`https://zeddrix.com/certificates/{slug}`
 
 ## 2. LinkedIn — fix Education
 
@@ -18,7 +18,7 @@ Use **Licenses & Certifications** only (see step 3).
 
 After deploy, open `exports/linkedin-certificates.md` (run `pnpm generate:resume` locally) and for each cert set:
 
-- **Credential URL** → `https://zeddrix.github.io/portfolio/certificates/{slug}`
+- **Credential URL** → `https://zeddrix.com/certificates/{slug}`
 - Skills from the export block
 
 ## 4. LinkedIn — upload resume
@@ -41,7 +41,7 @@ Review parsed Experience, Projects, and Skills manually — LinkedIn’s parser 
 
 The `zeddrix/zeddrix` repo README was updated with a certifications table linking to the portfolio. Commit and push that repo after deploy.
 
-## 7. zeddrix.com migration (future)
+## 7. WordPress legacy cert redirects (optional)
 
 When ready to retire WordPress, redirect legacy cert paths to portfolio URLs. Legacy paths are stored in `src/lib/data/certificates.ts` as `legacyZeddrixPath`.
 

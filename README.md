@@ -41,26 +41,26 @@ You can preview the production build with `pnpm preview`.
 
 ### Local GitHub Pages parity
 
-Match Project Pages base path and public URL locally:
+Match custom-domain base path and public URL locally:
 
 ```sh
-BASE_PATH=/portfolio \
-PUBLIC_SITE_URL=http://127.0.0.1:4173/portfolio \
+PUBLIC_SITE_URL=https://zeddrix.com \
+BASE_PATH= \
 pnpm build && pnpm preview
 ```
 
-Open `http://127.0.0.1:4173/portfolio/`.
+Open `http://127.0.0.1:4173/`.
 
 ## Deploy to GitHub Pages
 
 This site uses `@sveltejs/adapter-static` and deploys automatically on push to `main` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
 
-**Live URL (Project Pages):** `https://<github-username>.github.io/portfolio/`
+**Live URL:** `https://zeddrix.com`
 
 CI sets:
 
-- `BASE_PATH=/<repository-name>`
-- `PUBLIC_SITE_URL=https://<owner>.github.io/<repository-name>`
+- `BASE_PATH=` (empty — custom domain serves at site root)
+- `PUBLIC_SITE_URL=https://zeddrix.com`
 
 The workflow writes these into a temporary `.env` on the runner before `pnpm quality` and `pnpm build` (SvelteKit needs them at typegen/check time).
 
@@ -72,11 +72,12 @@ The workflow writes these into a temporary `.env` on the runner before `pnpm qua
 4. Push to `main` or run the **Deploy to GitHub Pages** workflow manually.
 5. Confirm the workflow succeeds and open the published URL from the **github-pages** environment.
 
-### Custom domain (optional, later)
+### Custom domain
 
-1. Add DNS records for your domain per GitHub Pages docs.
-2. Set **Settings → Pages → Custom domain**.
-3. Set `PUBLIC_SITE_URL` in the workflow env to your custom domain (no trailing slash).
+1. DNS A records + `www` CNAME point to GitHub Pages (see GitHub Pages docs).
+2. **Settings → Pages → Custom domain:** `zeddrix.com`
+3. Enable **Enforce HTTPS** once the certificate is ready.
+4. Workflow env uses `PUBLIC_SITE_URL=https://zeddrix.com` and empty `BASE_PATH`.
 
 ## Quality and tests
 
@@ -86,7 +87,7 @@ pnpm test:unit
 pnpm test:e2e
 ```
 
-E2E runs the dev server with `BASE_PATH=/portfolio` for deployment parity (see `playwright.config.ts`).
+E2E runs the dev server at site root for deployment parity (see `playwright.config.ts`).
 
 ## Visual screenshots (Playwright)
 
