@@ -22,7 +22,7 @@ export const MANATAL_PHONE_SCREEN_MAX_HEIGHT_CSS =
   "calc(min(88vw, 920px) * 10 / 16)";
 
 /** Caps portrait phone screen height on carousel mobile/tablet; width shrinks via aspect ratio. */
-export const MANATAL_PHONE_SCREEN_MAX_HEIGHT_MOBILE_CSS = "min(55vh, 420px)";
+export const MANATAL_PHONE_SCREEN_MAX_HEIGHT_MOBILE_CSS = "min(55vh, 460px)";
 
 /** Capability band phone frame max width inside gradient card. */
 export const MANATAL_PHONE_BAND_MAX_WIDTH_CSS = "min(100%, 280px)";

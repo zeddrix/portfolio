@@ -32,9 +32,13 @@ export async function gotoHome(
   page: Page,
   options?: { readyTimeout?: number },
 ): Promise<void> {
-  await page.goto(PAGES_HOME_PATH);
+  const readyTimeout = options?.readyTimeout ?? 60_000;
+  await page.goto(PAGES_HOME_PATH, { waitUntil: "domcontentloaded" });
+  await expect(page.getByTestId("hero-title")).toBeVisible({
+    timeout: readyTimeout,
+  });
   await waitForPageLoad(page);
-  await waitForClientReady(page, options?.readyTimeout);
+  await waitForClientReady(page, readyTimeout);
 }
 
 export async function scrollToTestId(
