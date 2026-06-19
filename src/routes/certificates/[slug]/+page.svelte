@@ -2,18 +2,43 @@
 	import SeoHead from '$lib/components/SeoHead.svelte';
 	import OptimizedImage from '$lib/components/OptimizedImage.svelte';
 	import { formatCertificateDate } from '$lib/data/certificates';
-	import { buildCertificateMeta, certificatesIndexSeo } from '$lib/data/seo';
+	import {
+		buildBreadcrumbJsonLd,
+		buildCertificateJsonLd,
+		buildCertificateMeta,
+		certificatesIndexSeo,
+		serializeJsonLd
+	} from '$lib/data/seo';
 	import { appPath } from '$lib/utils/app-path';
 
 	export let data;
 
+	$: missingSlug = data.slug && !data.certificate;
 	$: pageSeo = data.certificate
 		? buildCertificateMeta(data.certificate)
 		: {
 				title: `Certificate Not Found | Zeddrix Fabian Portfolio`,
 				description: certificatesIndexSeo.description,
-				path: '/certificates'
+				path: missingSlug ? `/certificates/${data.slug}` : '/certificates'
 			};
+	$: pageRobots = data.certificate ? 'index, follow' : 'noindex, follow';
+	$: certificateJsonLd =
+		data.certificate != null
+			? serializeJsonLd(buildCertificateJsonLd(data.certificate))
+			: null;
+	$: breadcrumbJsonLd =
+		data.certificate != null
+			? serializeJsonLd(
+					buildBreadcrumbJsonLd([
+						{ name: 'Home', path: '/' },
+						{ name: 'Certifications', path: '/certificates' },
+						{
+							name: data.certificate.title,
+							path: `/certificates/${data.certificate.slug}`
+						}
+					])
+				)
+			: null;
 </script>
 
 <SeoHead
@@ -21,10 +46,20 @@
 	description={pageSeo.description}
 	path={pageSeo.path}
 	ogImage={pageSeo.ogImage}
+	robots={pageRobots}
 />
 
+<svelte:head>
+	{#if certificateJsonLd}
+		{@html `<script type="application/ld+json">${certificateJsonLd}</script>`}
+	{/if}
+	{#if breadcrumbJsonLd}
+		{@html `<script type="application/ld+json">${breadcrumbJsonLd}</script>`}
+	{/if}
+</svelte:head>
+
 <div class="min-h-screen bg-[#f5f5f5] text-zinc-950">
-	<main class="mx-auto w-[90%] max-w-[1100px] py-8 sm:py-10 md:py-14">
+	<main id="main" class="mx-auto w-[90%] max-w-[1100px] py-8 sm:py-10 md:py-14">
 		{#if !data.certificate}
 			<section
 				data-testid="certificate-not-found"

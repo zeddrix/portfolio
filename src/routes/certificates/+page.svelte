@@ -5,8 +5,14 @@
 		formatCertificateDate,
 		buildCertificatePath
 	} from '$lib/data/certificates';
-	import { certificatesIndexSeo } from '$lib/data/seo';
+	import {
+		buildCertificatesIndexJsonLd,
+		certificatesIndexSeo,
+		serializeJsonLd
+	} from '$lib/data/seo';
 	import { appPath } from '$lib/utils/app-path';
+
+	const certificatesIndexJsonLd = serializeJsonLd(buildCertificatesIndexJsonLd());
 </script>
 
 <SeoHead
@@ -15,8 +21,13 @@
 	path={certificatesIndexSeo.path}
 />
 
+<svelte:head>
+	{@html `<script type="application/ld+json">${certificatesIndexJsonLd}</script>`}
+</svelte:head>
+
 <div class="min-h-screen bg-[#f5f5f5] text-zinc-950">
 	<main
+		id="main"
 		data-testid="certificates-index"
 		class="mx-auto w-[90%] max-w-[1400px] py-8 sm:py-10 md:py-14"
 	>

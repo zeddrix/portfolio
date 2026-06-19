@@ -9,5 +9,5 @@ export function entries() {
 
 export const load: PageLoad = ({ params }) => {
   const certificate = certificates.find((item) => item.slug === params.slug);
-  return { certificate };
+  return { certificate, slug: params.slug };
 };

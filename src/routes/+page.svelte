@@ -69,7 +69,7 @@
 	{/if}
 	<SiteHeader />
 
-	<main>
+	<main id="main">
 		<section
 			data-testid="hero-section"
 			class="{pageContainerClass} pb-16 pt-2 sm:pb-20 sm:pt-3 md:pb-24 md:pt-4 lg:min-h-0 lg:pb-28 lg:pt-6"

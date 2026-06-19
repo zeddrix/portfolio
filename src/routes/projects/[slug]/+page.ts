@@ -9,5 +9,5 @@ export function entries() {
 
 export const load: PageLoad = ({ params }) => {
   const project = getProjectBySlug(params.slug);
-  return { project };
+  return { project, slug: params.slug };
 };
