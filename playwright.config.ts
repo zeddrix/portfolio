@@ -6,7 +6,7 @@ import {
 
 const e2ePort = 7212;
 const e2eHost = `http://127.0.0.1:${e2ePort}`;
-const e2eAppURL = `${e2eHost}${PAGES_BASE_PATH}`;
+const e2eAppURL = `${e2eHost}/`;
 
 function readEnvInt(name: string, fallback: number): number {
   const raw = process.env[name];
@@ -31,11 +31,11 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   webServer: {
-    command: `pnpm dev --host 127.0.0.1 --port ${e2ePort}`,
+    command: `node scripts/generate-og-image.mjs && tsx scripts/generate-legacy-redirects.ts && pnpm dev --host 127.0.0.1 --port ${e2ePort}`,
     url: e2eAppURL,
     reuseExistingServer:
       !process.env.CI && !process.env.PW_DISABLE_REUSE_SERVER,
-    timeout: 120_000,
+    timeout: 180_000,
     env: {
       BASE_PATH: PAGES_BASE_PATH,
       PUBLIC_SITE_URL: PAGES_SITE_URL,

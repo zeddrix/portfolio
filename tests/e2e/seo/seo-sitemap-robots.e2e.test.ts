@@ -5,7 +5,7 @@ import { PAGES_SITE_URL, pagesPath } from "../fixtures/pages-env";
 import { selectors } from "../fixtures/selectors";
 
 test.describe("seo sitemap and robots", () => {
-  test("Given sitemap, when user fetches XML, then all project slugs are listed with absolute URLs", async ({
+  test("Given sitemap, when user fetches XML, then all project slugs are listed with absolute URLs and lastmod", async ({
     request,
   }) => {
     const sitemapResponse = await request.get(pagesPath("/sitemap.xml"));
@@ -14,6 +14,7 @@ test.describe("seo sitemap and robots", () => {
     const body = await sitemapResponse.text();
     expect(body).toContain(`<loc>${PAGES_SITE_URL}/</loc>`);
     expect(body).toContain(`<loc>${PAGES_SITE_URL}/certificates</loc>`);
+    expect(body).toMatch(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
 
     for (const project of projects) {
       expect(body).toContain(
@@ -43,6 +44,36 @@ test.describe("seo sitemap and robots", () => {
     );
   });
 
+  test("Given missing project slug, when user opens detail route, then not-found UI is noindex", async ({
+    page,
+  }) => {
+    await page.goto(pagesPath("/projects/missing-slug"));
+    await expect(page.getByTestId(selectors.project.notFound)).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      /noindex/i,
+    );
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/projects/missing-slug`,
+    );
+  });
+
+  test("Given missing certificate slug, when user opens detail route, then not-found UI is noindex", async ({
+    page,
+  }) => {
+    await page.goto(pagesPath("/certificates/missing-slug"));
+    await expect(page.getByTestId("certificate-not-found")).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      /noindex/i,
+    );
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/certificates/missing-slug`,
+    );
+  });
+
   test("Given 404 project route, when user returns home via not-found link, then homepage loads", async ({
     page,
   }) => {
@@ -53,5 +84,31 @@ test.describe("seo sitemap and robots", () => {
       new RegExp(`${PAGES_SITE_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/?$`),
     );
     await expect(page.getByTestId(selectors.hero.title)).toBeVisible();
+  });
+
+  test("Given legacy WordPress cert path, when user fetches redirect page, then target certificate URL is referenced", async ({
+    request,
+  }) => {
+    const response = await request.get(
+      pagesPath("/mern-ecommerce-from-scratch-certificate/"),
+      { maxRedirects: 0 },
+    );
+    expect(response.status()).toBe(301);
+    expect(response.headers().location).toBe(
+      "/certificates/mern-ecommerce-from-scratch",
+    );
+  });
+});
+
+test.describe("seo accessibility landmarks", () => {
+  test("Given homepage, when user tabs from top, then skip link targets main content", async ({
+    page,
+  }) => {
+    await page.goto(pagesPath("/"));
+    await page.keyboard.press("Tab");
+    const skipLink = page.getByRole("link", { name: "Skip to main content" });
+    await expect(skipLink).toBeFocused();
+    await skipLink.click();
+    await expect(page.locator("#main")).toBeVisible();
   });
 });

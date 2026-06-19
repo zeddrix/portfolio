@@ -13,6 +13,10 @@ test.describe("seo navigation metadata", () => {
     page,
   }) => {
     await gotoHome(page);
+    await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute(
+      "content",
+      "Zeddrix Fabian Portfolio",
+    );
     await navigateToProjectViaCarousel(page, "queue");
 
     await expect(page).toHaveTitle(/Queue.*Zeddrix Fabian/i);
