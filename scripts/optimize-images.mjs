@@ -14,6 +14,7 @@ const MAX_WIDTH = 1840;
 const DEFAULT_VARIANT_WIDTHS = [640, 920, 1280];
 const SKIP_FILES = new Set([
   "me.png",
+  "og-default.png",
   "favicon.ico",
   "favicon-16.png",
   "favicon-32.png",

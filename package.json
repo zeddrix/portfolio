@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite dev",
     "optimize:images": "node scripts/optimize-images.mjs",
-    "assets:prepare": "node scripts/copy-fonts.mjs && node scripts/copy-certificate-sources.mjs && node scripts/optimize-images.mjs",
+    "assets:prepare": "node scripts/copy-fonts.mjs && node scripts/copy-certificate-sources.mjs && node scripts/optimize-images.mjs && node scripts/generate-og-image.mjs && tsx scripts/generate-legacy-redirects.ts",
     "assets:certificates-source": "node scripts/copy-certificate-sources.mjs",
     "generate:favicon": "node scripts/generate-favicon.mjs",
+    "generate:og-image": "node scripts/generate-og-image.mjs",
+    "generate:legacy-redirects": "tsx scripts/generate-legacy-redirects.ts",
     "generate:snapshot": "tsx scripts/export-portfolio-snapshot.ts",
     "generate:exports": "tsx scripts/generate-exports.ts",
     "generate:resume": "pnpm generate:snapshot && pnpm generate:exports && tsx scripts/generate-resume.ts",
