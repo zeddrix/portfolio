@@ -20,9 +20,10 @@ Restyle application resume (`buildApplicationResumeHtml`) to Lorna light templat
 | None     | Contact moved to sidebar; main header is name + title + summary only                                        | Done     |
 | None     | Timeline experience: dates left, vertical rule, role·company + bullet on page 1; compact rows on page 2     | Done     |
 | None     | Page 2 full width — no sidebar ghost column                                                                 | Done     |
-| None     | Selected Projects / More Projects use line layout without card chrome                                       | Done     |
+| None     | Page 2: Client Work + Personal Projects expanded grids (no Selected/More split)                             | Done     |
+| None     | Page 1: all 12 experience rows with one bullet each                                                         | Done     |
 | None     | PDF remains exactly 2 pages (`resume-page-count.test.ts`)                                                   | Done     |
-| Low      | Page 1 main column is dense with 8 timeline rows; acceptable for 2-page target                              | Accepted |
+| Low      | Page 1 main column is dense with 12 timeline rows; acceptable for 2-page target                             | Accepted |
 
 ## Verification
 

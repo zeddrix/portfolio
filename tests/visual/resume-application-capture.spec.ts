@@ -35,5 +35,13 @@ test.describe("application resume visual capture", () => {
     await page.getByTestId("resume-page-2").screenshot({
       path: path.join(outDir, "application-page-2.png"),
     });
+
+    await page.getByTestId("resume-client-projects").screenshot({
+      path: path.join(outDir, "application-page-2-client.png"),
+    });
+
+    await page.getByTestId("resume-personal-projects").screenshot({
+      path: path.join(outDir, "application-page-2-personal.png"),
+    });
   });
 });
