@@ -13,17 +13,17 @@ Restyle application resume (`buildApplicationResumeHtml`) to Lorna light templat
 
 ## Findings
 
-| Severity | Finding                                                                                                     | Status   |
-| -------- | ----------------------------------------------------------------------------------------------------------- | -------- |
-| None     | Light gray sidebar with charcoal ribbon headers (Contact, Core Skills, Professional Development, Languages) | Done     |
-| None     | Ribbon fold (`::after` triangle) renders in capture; no clipping                                            | Done     |
-| None     | Contact moved to sidebar; main header is name + title + summary only                                        | Done     |
-| None     | Timeline experience: dates left, vertical rule, role·company + bullet on page 1; compact rows on page 2     | Done     |
-| None     | Page 2 full width — no sidebar ghost column                                                                 | Done     |
-| None     | Page 2: Client Work + Personal Projects expanded grids (no Selected/More split)                             | Done     |
-| None     | Page 1: all 12 experience rows with one bullet each                                                         | Done     |
-| None     | PDF remains exactly 2 pages (`resume-page-count.test.ts`)                                                   | Done     |
-| Low      | Page 1 main column is dense with 12 timeline rows; acceptable for 2-page target                             | Accepted |
+| Severity | Finding                                                                                                                                                              | Status   |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| None     | Light gray sidebar with charcoal ribbon headers (Contact, Core Skills, Professional Development, Languages)                                                          | Done     |
+| None     | Ribbon fold (`::after` chevron) renders full-height on multi-line labels; see [resume-sidebar-ribbon-fold-2026-06-19.md](./resume-sidebar-ribbon-fold-2026-06-19.md) | Done     |
+| None     | Contact moved to sidebar; main header is name + title + summary only                                                                                                 | Done     |
+| None     | Timeline experience: dates left, vertical rule, role·company + bullet on page 1; compact rows on page 2                                                              | Done     |
+| None     | Page 2 full width — no sidebar ghost column                                                                                                                          | Done     |
+| None     | Page 2: Client Work + Personal Projects expanded grids (no Selected/More split)                                                                                      | Done     |
+| None     | Page 1: all 12 experience rows with one bullet each                                                                                                                  | Done     |
+| None     | PDF remains exactly 2 pages (`resume-page-count.test.ts`)                                                                                                            | Done     |
+| Low      | Page 1 main column is dense with 12 timeline rows; acceptable for 2-page target                                                                                      | Accepted |
 
 ## Verification
 

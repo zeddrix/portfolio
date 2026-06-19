@@ -11,7 +11,10 @@ import {
 } from "../resume-content.js";
 
 export function buildSidebarRibbon(title: string): string {
-  return `<h2 class="sidebar-ribbon">${escapeHtml(title)}</h2>`;
+  const testId = `resume-sidebar-ribbon-${title
+    .toLowerCase()
+    .replace(/\s+/g, "-")}`;
+  return `<h2 class="sidebar-ribbon" data-testid="${testId}">${escapeHtml(title)}</h2>`;
 }
 
 export function buildMainSectionRibbon(title: string): string {
@@ -294,21 +297,21 @@ export const SHARED_APPLICATION_RESUME_CSS = `
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        padding: 4px 8px 4px 10px;
+        padding: 4px 14px 4px 10px;
         margin: 0 0 5px 0;
         position: relative;
+        overflow: visible;
       }
       .sidebar-ribbon::after,
       .main-section-ribbon::after {
         content: "";
         position: absolute;
-        right: -5px;
         top: 0;
-        width: 0;
-        height: 0;
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        border-left: 5px solid var(--ribbon-bg);
+        right: -6px;
+        bottom: 0;
+        width: 6px;
+        background: var(--ribbon-bg);
+        clip-path: polygon(0 0, 100% 50%, 0 100%);
       }
       .sidebar-section {
         margin-bottom: 7px;

@@ -28,6 +28,15 @@ test.describe("application resume visual capture", () => {
       path: path.join(outDir, "application-page-1-rail.png"),
     });
 
+    await page
+      .getByTestId("resume-sidebar-ribbon-professional-development")
+      .screenshot({
+        path: path.join(
+          outDir,
+          "application-sidebar-ribbon-professional-development.png",
+        ),
+      });
+
     await page.getByTestId("resume-main").screenshot({
       path: path.join(outDir, "application-page-1-main.png"),
     });
