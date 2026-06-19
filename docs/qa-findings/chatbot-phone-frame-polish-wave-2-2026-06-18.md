@@ -18,17 +18,17 @@ Capability band reused `PhoneDeviceFrame` with homepage carousel desktop sizing 
 
 ## Verification
 
-| Surface                     | Check                                                 | Result     |
-| --------------------------- | ----------------------------------------------------- | ---------- |
-| Phone fill                  | Four-edge tolerance on active slide at 390/768/1280   | Pass — E2E |
-| Phone centering             | Frame center within 12px of gradient stage            | Pass — E2E |
-| Band sizing                 | Width ≤ 280px, height ≥ 300px                         | Pass — E2E |
-| Capability band regression  | 26/26 `capability-band-images` tests                  | Pass       |
-| Manatal carousel regression | 15/15 `home-carousel-layout` Manatal tests            | Pass       |
-| Project images regression   | 11/11 `project-images` tests                          | Pass       |
-| Unit                        | `carousel.test.ts` band constraints                   | Pass       |
-| Quality                     | `pnpm quality`                                        | Pass       |
-| Visual capture              | `reference/screenshots/chatbot-band/` (9 checkpoints) | Pass       |
+| Surface                     | Check                                                  | Result     |
+| --------------------------- | ------------------------------------------------------ | ---------- |
+| Phone fill                  | Four-edge tolerance on active slide at 390/768/1280    | Pass — E2E |
+| Phone centering             | Frame center within 12px of gradient stage             | Pass — E2E |
+| Band sizing                 | Width ≤ 280px, height ≥ 300px                          | Pass — E2E |
+| Capability band regression  | 26/26 `capability-band-images` tests                   | Pass       |
+| Manatal carousel regression | 15/15 `home-carousel-layout` Manatal tests             | Pass       |
+| Project images regression   | 11/11 `project-images` tests                           | Pass       |
+| Unit                        | `carousel.test.ts` band constraints                    | Pass       |
+| Quality                     | `pnpm quality`                                         | Pass       |
+| Visual capture              | `reference/screenshots/chatbot-band/` (10 checkpoints) | Pass       |
 
 ## Visual triage
 

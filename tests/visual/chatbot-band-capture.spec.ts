@@ -116,10 +116,7 @@ test.describe("chatbot band visual capture", () => {
     });
   });
 
-  for (const viewport of [
-    { name: "mobile", width: 390, height: 844 },
-    { name: "desktop", width: 1280, height: 900 },
-  ] as const) {
+  for (const viewport of viewports) {
     test(`captures chatbot browser slide at ${viewport.name}`, async ({
       page,
     }) => {
