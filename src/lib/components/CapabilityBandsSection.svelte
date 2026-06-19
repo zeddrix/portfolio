@@ -60,12 +60,17 @@
 <section
 	id="approach"
 	data-testid="capability-bands-section"
-	class="bg-[#f5f5f5] py-20 sm:py-28 md:py-32"
+	class="bg-[#f5f5f5] pt-8 pb-20 sm:pt-10 sm:pb-28 md:pt-12 md:pb-32"
 >
 	<div class={pageShellClass}>
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
-				<h2 class="{sectionHeadingClass} min-w-0 max-w-[20ch]">How I deliver</h2>
+				<h2
+					data-testid="approach-section-heading"
+					class="{sectionHeadingClass} min-w-0 max-w-[20ch]"
+				>
+					How I deliver
+				</h2>
 				<CapabilityLayoutToggle
 					{capabilityLayoutMode}
 					{onCapabilityLayoutChange}

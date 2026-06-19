@@ -38,7 +38,7 @@
 <section
 	id="work"
 	data-testid="work-section"
-	class="pt-4 pb-16 sm:pt-6 sm:pb-24 md:pb-28"
+	class="pt-4 pb-8 sm:pt-6 sm:pb-10 md:pb-12"
 >
 	<FeaturedProjectCarousel />
 </section>
