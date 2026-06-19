@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { formatCertificateDate } from "../src/lib/data/certificates.js";
+import { PORTFOLIO_PUBLIC_SITE_URL } from "../src/lib/data/site.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
@@ -67,7 +68,7 @@ function buildGithubReadmeTable(certificates: CertificateExport[]): string {
 |--------|--------|-----------|--------|
 ${rows}
 
-All certifications: [portfolio certificates](https://zeddrix.github.io/portfolio/certificates)`;
+All certifications: [portfolio certificates](${PORTFOLIO_PUBLIC_SITE_URL}/certificates)`;
 }
 
 function buildGithubReadmeProjectsTable(projects: ProjectExport[]): string {
@@ -76,7 +77,7 @@ function buildGithubReadmeProjectsTable(projects: ProjectExport[]): string {
       const period = project.displayPeriod ?? "—";
       const link =
         project.links[0]?.url ??
-        `https://zeddrix.github.io/portfolio/projects/${project.slug}`;
+        `${PORTFOLIO_PUBLIC_SITE_URL}/projects/${project.slug}`;
       return `| ${project.name} | ${period} | [View](${link}) |`;
     })
     .join("\n");
@@ -89,7 +90,7 @@ ${rows}`;
 }
 
 function buildGithubReadmeManatalCoop(): string {
-  return `### [Manatal Coop](https://zeddrix.github.io/portfolio/projects/manatal-coop)
+  return `### [Manatal Coop](${PORTFOLIO_PUBLIC_SITE_URL}/projects/manatal-coop)
 
 <p align="left">
   <img src="./manatal-coop-homepage.png" width="220" alt="Manatal Cooperative member home screen" />
@@ -101,7 +102,7 @@ function buildGithubReadmeManatalCoop(): string {
 
 Member banking PWA for a Philippine credit union
 
-[Portfolio case study](https://zeddrix.github.io/portfolio/projects/manatal-coop) · [Member app](https://manatalcoop.app/)`;
+[Portfolio case study](${PORTFOLIO_PUBLIC_SITE_URL}/projects/manatal-coop) · [Member app](https://manatalcoop.app/)`;
 }
 
 async function main() {

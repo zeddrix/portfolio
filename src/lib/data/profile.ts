@@ -1,4 +1,5 @@
 import type { PortfolioProfile } from "$lib/types/portfolio";
+import { PORTFOLIO_PUBLIC_SITE_URL } from "$lib/data/site";
 
 export const profile: PortfolioProfile = {
   name: "Zeddrix Fabian",
@@ -15,6 +16,6 @@ export const profile: PortfolioProfile = {
   experienceSince: "2018",
   specialization: "SvelteKit, React, Angular",
   contactEmail: "zeddrix.fabian@gmail.com",
-  websiteUrl: "https://zeddrix.github.io/portfolio",
+  websiteUrl: PORTFOLIO_PUBLIC_SITE_URL,
   githubUrl: "https://github.com/zeddrix",
 };

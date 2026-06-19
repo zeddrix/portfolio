@@ -1,4 +1,5 @@
 import type { Certificate } from "$lib/types/portfolio";
+import { PORTFOLIO_PUBLIC_SITE_URL } from "$lib/data/site";
 
 export const certificates: Certificate[] = [
   {
@@ -127,8 +128,6 @@ export function buildCertificatePath(slug: string): string {
   return `/certificates/${slug}`;
 }
 
-const PORTFOLIO_PUBLIC_URL = "https://zeddrix.github.io/portfolio";
-
 export function buildCertificatePublicUrl(slug: string): string {
-  return `${PORTFOLIO_PUBLIC_URL}${buildCertificatePath(slug)}`;
+  return `${PORTFOLIO_PUBLIC_SITE_URL}${buildCertificatePath(slug)}`;
 }
