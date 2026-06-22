@@ -21,21 +21,17 @@ After deploy, open `exports/linkedin-certificates.md` (run `pnpm generate:resume
 - **Credential URL** → `https://zeddrix.com/certificates/{slug}`
 - Skills from the export block
 
-## 4. LinkedIn — upload resume
+## 4. LinkedIn — manual profile build
 
-Upload `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf` first.
+**Full copy-paste guide:** [`docs/linkedin-profile-manual.md`](linkedin-profile-manual.md) — headline, About, all 12 experience entries, 10 projects, 5 certs, skills, languages, Featured, and QA.
 
-If LinkedIn’s parser misses Experience or Projects, upload `resume/Zeddrix-Fabian-Resume-LinkedIn.docx` instead (same content, Word-friendly).
+LinkedIn **does not** bulk-import profile sections from a resume upload. Copy all section content manually from the guide or `resume/resume.md`.
 
-Review parsed Experience, Projects, and Skills manually — LinkedIn’s parser is imperfect.
+## 5. LinkedIn — Featured + resume file
 
-**There is no JSON/CSV import** for LinkedIn profile sections.
-
-## 5. LinkedIn — refresh profile content
-
-- Rewrite **About** to match portfolio (2018+, ATDD, AI-accelerated delivery)
-- Add/update **Projects** from portfolio case studies
-- Pin top skills: SvelteKit, TypeScript, React (or your target stack)
+- **Featured:** portfolio link (`https://zeddrix.com`) + `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf`
+- **Easy Apply:** same PDF under Jobs → Application settings
+- Pin top skills: **About** → SvelteKit, TypeScript, React, Angular, Full-Stack Development; **Skills card** → SvelteKit, TypeScript, React (see [`linkedin-profile-manual.md`](linkedin-profile-manual.md) §3.2 and §9)
 
 ## 6. Push Zeddrix GitHub profile README
 
@@ -71,6 +67,6 @@ When you change **projects, experience, skills, profile copy, certificates, or c
 
 1. Run `pnpm generate:resume`
 2. Update `~/Documents/zeddrix/README.md` (paste from `exports/github-readme-*.md` where applicable)
-3. Re-upload LinkedIn resume if PDF content changed (steps 4–5 above)
+3. Update LinkedIn sections per [`docs/linkedin-profile-manual.md`](linkedin-profile-manual.md); re-upload Featured / Application-settings PDF if resume content changed
 
 **UI-only or refactor changes** do not require README/resume updates. See `.cursor/rules/career-surface-sync.mdc` for the full mandatory vs optional decision guide.
