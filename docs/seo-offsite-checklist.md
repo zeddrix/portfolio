@@ -22,13 +22,11 @@ You already have a Search Console property for `zeddrix.com` with history (e.g. 
 
 ### What the numbers mean (your Overview)
 
-
 | GSC stat                         | Typical cause after migration                                                          |
 | -------------------------------- | -------------------------------------------------------------------------------------- |
 | **Many not indexed** (e.g. 300+) | Old WordPress paths (`/home/page/N/`, archives, tags) that no longer exist or redirect |
 | **Few indexed** (e.g. ~26)       | Mix of old pages still in the index and new portfolio pages Google has crawled         |
 | **Performance graph**            | Historical clicks from the old site; new portfolio traffic will lag until re-crawl     |
-
 
 Do **not** try to “fix” every not-indexed URL. Focus on the new sitemap URLs and a handful of removals for the worst stale results (see §5).
 
@@ -36,7 +34,9 @@ Do **not** try to “fix” every not-indexed URL. Focus on the new sitemap URLs
 
 1. GSC → **Indexing** → **Sitemaps**.
 2. Check **Submitted sitemaps** for WordPress leftovers, for example:
-  - `sitemap_index.xml`, `wp-sitemap.xml`, `post-sitemap.xml`, or plugin paths from Yoast/Rank Math.
+
+- `sitemap_index.xml`, `wp-sitemap.xml`, `post-sitemap.xml`, or plugin paths from Yoast/Rank Math.
+
 3. If an old sitemap still shows **Success** with hundreds of URLs, open it and note the path, then **remove** that submitted sitemap (⋮ menu → **Remove sitemap**). WordPress is gone; keeping its sitemap confuses crawl budget.
 4. If no old sitemaps are listed, skip to Step B.
 
@@ -75,8 +75,10 @@ Google limits how many manual requests you can make per day. The sitemap (Step B
 
 1. URL inspection → paste an old indexed URL from search results (e.g. a `/home/…` or old cert path).
 2. **Test live URL** should show either:
-  - **Redirect** to a portfolio page (legacy cert paths, `/home/`), or
-  - **404** / not found (old blog pagination you did not redirect).
+
+- **Redirect** to a portfolio page (legacy cert paths, `/home/`), or
+- **404** / not found (old blog pagination you did not redirect).
+
 3. If an important old URL still returns WordPress content, DNS or deploy is wrong — fix hosting before requesting indexing.
 
 ### What you should expect
@@ -95,6 +97,8 @@ After Step B + C, continue with §4 (monitor) and §5 (removals for the worst st
 
 ## 5. Retired WordPress on `zeddrix.com`
 
+**Manual follow-up:** post-deploy GSC checks and items the code cannot handle → [seo-deindex-manual.md](seo-deindex-manual.md).
+
 **Current state:** Namecheap DNS points to GitHub Pages. The old WordPress site on Hostinger is **not** serving `zeddrix.com` anymore. Google still shows old BeAmaZedd snippets because it has not fully re-crawled.
 
 **What the portfolio deploy does:**
@@ -106,10 +110,10 @@ After Step B + C, continue with §4 (monitor) and §5 (removals for the worst st
 
 Use **Indexing** → **Removals** → **New request** → **Temporarily remove URL**.
 
-| Goal | What to enter | Option to select |
-|------|----------------|------------------|
-| Hide one page from search | Full URL, e.g. `https://zeddrix.com/author/zedd/` | **Remove this URL only** |
-| Hide all author archives | `https://zeddrix.com/author/` | **Remove all URLs with this prefix** |
+| Goal                      | What to enter                                            | Option to select                                                                              |
+| ------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Hide one page from search | Full URL, e.g. `https://zeddrix.com/author/zedd/`        | **Remove this URL only**                                                                      |
+| Hide all author archives  | `https://zeddrix.com/author/`                            | **Remove all URLs with this prefix**                                                          |
 | Hide old guitar-tab posts | `https://zeddrix.com/song-` (if many share that pattern) | **Remove all URLs with this prefix** — only if they still appear in Google **search results** |
 
 Then click **Next** → confirm. The URL is hidden from Google Search for **about six months**.
@@ -135,7 +139,7 @@ You do **not** need zero “not indexed” pages. Many of those are old guitar-t
 
 **Usually no.**
 
-That report means: Google found URLs that **redirect**, so it **correctly does not index them**. The caption says *“These pages aren't indexed or served on Google”* — that is the desired outcome for old WordPress content you no longer want ranked.
+That report means: Google found URLs that **redirect**, so it **correctly does not index them**. The caption says _“These pages aren't indexed or served on Google”_ — that is the desired outcome for old WordPress content you no longer want ranked.
 
 - **Validate fix** is for when you **fixed a problem** Google flagged (e.g. you removed broken redirects, fixed mobile usability). It asks Google to re-crawl and confirm the issue is gone.
 - For old guitar-tab URLs (`/song-…-guitar-tabs/`) you want **gone from search**, not re-indexed. If they now 404 on the live site, Google will update that status on its own when it recrawls — no validation needed.
@@ -182,12 +186,10 @@ The repo was deleted ~2 weeks ago; the URL 404s (correct). Google may still show
 
 Test in a browser:
 
-
 | Old WordPress path                                   | Should land on                                       |
 | ---------------------------------------------------- | ---------------------------------------------------- |
 | `/mern-ecommerce-from-scratch-certificate/`          | `/certificates/mern-ecommerce-from-scratch`          |
 | `/modern-javascript-from-the-beginning-certificate/` | `/certificates/modern-javascript-from-the-beginning` |
-
 
 Full mapping lives in `[src/lib/data/legacy-redirects.ts](../src/lib/data/legacy-redirects.ts)` and `[src/lib/data/certificates.ts](../src/lib/data/certificates.ts)` (`legacyZeddrixPath`).
 

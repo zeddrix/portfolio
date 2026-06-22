@@ -1,4 +1,7 @@
+import { isLegacyGonePath } from "$lib/data/legacy-gone-paths";
 import { legacyRedirectTargets } from "$lib/data/legacy-redirects";
+import { getSiteUrl } from "$lib/data/seo";
+import { buildStaticNotFoundHtml } from "$lib/seo/static-not-found-html";
 import type { Handle } from "@sveltejs/kit";
 
 function normalizePathname(pathname: string): string {
@@ -15,6 +18,15 @@ export const handle: Handle = async ({ event, resolve }) => {
       status: 301,
       headers: {
         Location: targetPath,
+      },
+    });
+  }
+
+  if (isLegacyGonePath(normalizedPath)) {
+    return new Response(buildStaticNotFoundHtml(getSiteUrl()), {
+      status: 404,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
       },
     });
   }

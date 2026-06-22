@@ -219,4 +219,33 @@ describe("legacy redirects", () => {
       targetUrl: `${siteUrl}/certificates/mern-ecommerce-from-scratch`,
     });
   });
+
+  it("maps indexed WordPress cert alias paths to portfolio certificate routes", async () => {
+    const { getLegacyRedirectEntries } = await import("./legacy-redirects");
+    const entries = getLegacyRedirectEntries(siteUrl);
+
+    expect(
+      entries.find(
+        (entry) =>
+          entry.sourcePath ===
+          "/css-the-complete-guide-2021-incl-flexbox-grid-sass",
+      ),
+    ).toEqual({
+      sourcePath: "/css-the-complete-guide-2021-incl-flexbox-grid-sass",
+      targetPath: "/certificates/css-complete-guide-2021",
+      targetUrl: `${siteUrl}/certificates/css-complete-guide-2021`,
+    });
+
+    expect(
+      entries.find(
+        (entry) =>
+          entry.sourcePath ===
+          "/node-js-api-masterclass-with-express-mongodb-certificate",
+      ),
+    ).toEqual({
+      sourcePath: "/node-js-api-masterclass-with-express-mongodb-certificate",
+      targetPath: "/certificates/nodejs-api-masterclass",
+      targetUrl: `${siteUrl}/certificates/nodejs-api-masterclass`,
+    });
+  });
 });

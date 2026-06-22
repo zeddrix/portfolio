@@ -1,5 +1,13 @@
 import { buildCertificatePath, certificates } from "$lib/data/certificates";
 
+/** Alternate WordPress URLs indexed by Google that differ from legacyZeddrixPath. */
+export const legacyRedirectAliases: Readonly<Record<string, string>> = {
+  "/css-the-complete-guide-2021-incl-flexbox-grid-sass":
+    "/certificates/css-complete-guide-2021",
+  "/node-js-api-masterclass-with-express-mongodb-certificate":
+    "/certificates/nodejs-api-masterclass",
+};
+
 /** WordPress and legacy paths → portfolio paths (no trailing slash). */
 export const legacyRedirectTargets: Readonly<Record<string, string>> = {
   ...Object.fromEntries(
@@ -8,6 +16,7 @@ export const legacyRedirectTargets: Readonly<Record<string, string>> = {
       buildCertificatePath(certificate.slug),
     ]),
   ),
+  ...legacyRedirectAliases,
   "/home": "/",
   "/home/archives": "/",
   "/about-zeddrix-fabian": "/",

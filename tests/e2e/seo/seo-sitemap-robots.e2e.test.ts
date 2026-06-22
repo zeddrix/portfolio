@@ -98,6 +98,67 @@ test.describe("seo sitemap and robots", () => {
       "/certificates/mern-ecommerce-from-scratch",
     );
   });
+
+  test("Given legacy WordPress author URL, when user fetches page, then response is 404 with noindex", async ({
+    request,
+  }) => {
+    const response = await request.get(pagesPath("/author/zedd/page/4/"));
+    expect(response.status()).toBe(404);
+    const body = await response.text();
+    expect(body).toMatch(/noindex/i);
+    expect(body).toContain("Page not found");
+  });
+
+  test("Given legacy WordPress category URL, when user fetches page, then response is 404", async ({
+    request,
+  }) => {
+    const response = await request.get(pagesPath("/category/coding-projects/"));
+    expect(response.status()).toBe(404);
+  });
+
+  test("Given legacy WordPress author URL, when user opens page and returns home, then not-found UI loads homepage", async ({
+    page,
+  }) => {
+    await page.goto(pagesPath("/author/zedd/"));
+    await expect(page.getByTestId("error-page")).toBeVisible();
+    await expect(page.getByTestId("error-page")).toContainText(
+      "Page not found",
+    );
+    await expect(page.getByTestId("error-page")).not.toContainText(
+      "Something went wrong",
+    );
+    await page.getByTestId("error-home-link").click();
+    await page.waitForURL(
+      new RegExp(`${PAGES_SITE_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/?$`),
+    );
+    await expect(page.getByTestId(selectors.hero.title)).toBeVisible();
+  });
+
+  test("Given legacy CSS cert alias path, when user fetches redirect, then target certificate route is returned", async ({
+    request,
+  }) => {
+    const response = await request.get(
+      pagesPath("/css-the-complete-guide-2021-incl-flexbox-grid-sass/"),
+      { maxRedirects: 0 },
+    );
+    expect(response.status()).toBe(301);
+    expect(response.headers().location).toBe(
+      "/certificates/css-complete-guide-2021",
+    );
+  });
+
+  test("Given legacy Node cert alias path, when user fetches redirect, then target certificate route is returned", async ({
+    request,
+  }) => {
+    const response = await request.get(
+      pagesPath("/node-js-api-masterclass-with-express-mongodb-certificate/"),
+      { maxRedirects: 0 },
+    );
+    expect(response.status()).toBe(301);
+    expect(response.headers().location).toBe(
+      "/certificates/nodejs-api-masterclass",
+    );
+  });
 });
 
 test.describe("seo accessibility landmarks", () => {

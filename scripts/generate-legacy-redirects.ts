@@ -9,17 +9,21 @@ const rootDir = join(__dirname, "..");
 const staticDir = join(rootDir, "static");
 
 function buildRedirectHtml(targetUrl: string, targetPath: string): string {
+  const safeTargetUrl = targetUrl.replace(/"/g, "&quot;");
+  const safeTargetPath = targetPath.replace(/</g, "&lt;");
+
   return `<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Redirecting…</title>
-    <link rel="canonical" href="${targetUrl}" />
-    <meta http-equiv="refresh" content="0;url=${targetUrl}" />
+    <link rel="canonical" href="${safeTargetUrl}" />
+    <meta http-equiv="refresh" content="0;url=${safeTargetUrl}" />
     <meta name="robots" content="noindex, follow" />
+    <script>window.location.replace("${safeTargetUrl}");</script>
   </head>
   <body>
-    <p>This page has moved. <a href="${targetUrl}">Continue to ${targetPath}</a>.</p>
+    <p>This page has moved. <a href="${safeTargetUrl}">Continue to ${safeTargetPath}</a>.</p>
   </body>
 </html>
 `;
