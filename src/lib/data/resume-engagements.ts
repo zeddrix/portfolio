@@ -90,7 +90,7 @@ export const resumeEngagements: ResumeEngagement[] = [
     endDate: "2025-07",
     kind: "client",
     bullets: [
-      "Shipped SvelteKit and Django features for UseDelight client PWA flows with Stripe billing integration.",
+      "Delivered SvelteKit extension and account flows with Stripe billing, plus Express API work for subscription reliability, admin stats, and content collections.",
     ],
   },
   {

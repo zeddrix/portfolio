@@ -61,4 +61,14 @@ describe("resume-engagements", () => {
     expect(chronologicallyFirstPostGap?.id).toBe("codefrost-trulyhappy");
     expect(chronologicallyFirstPostGap?.startDate).toBe("2024-01");
   });
+
+  it("omits Django and PWA from UseDelight engagement bullet", () => {
+    const usedelight = resumeEngagements.find(
+      (engagement) => engagement.id === "codefrost-usedelight",
+    );
+
+    expect(usedelight?.bullets[0]).not.toMatch(/Django/i);
+    expect(usedelight?.bullets[0]).not.toMatch(/PWA/i);
+    expect(usedelight?.bullets[0]).toContain("Express");
+  });
 });

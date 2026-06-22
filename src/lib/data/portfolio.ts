@@ -272,13 +272,13 @@ export const projects: PortfolioProject[] = [
     status: "live",
     role: "Full-stack contributor",
     outcome:
-      "Consistent web and Chrome extension experiences with subscription flows and content discovery.",
+      "Subscription billing and content discovery across Chrome extensions, account portal, and admin surfaces.",
     displayDomain: "usedelight.com",
-    tagline: "Landing site and browser extension ecosystem",
+    tagline: "New-tab browser extension ecosystem",
     imageFocus: "top",
     description:
-      "Live tab page experience with nature media, weather, games, and more, delivered through website and Chrome extension surfaces.",
-    techStack: ["SvelteKit", "Node.js", "Django", "Stripe"],
+      "Nature-video new-tab extensions (Chrome and Edge) with weather, games, and 1500+ backgrounds, plus marketing site, Stripe account portal, and admin analytics — powered by a shared SvelteKit monorepo and Express API.",
+    techStack: ["SvelteKit", "Express", "MongoDB", "Stripe", "Playwright"],
     primaryImage: "/usedelight-1-new-tab.webp",
     galleryImages: [
       "/usedelight-2-new-tab.webp",
@@ -297,11 +297,11 @@ export const projects: PortfolioProject[] = [
     detailSections: [
       {
         title: "Problem",
-        body: "The product needed consistent UX across web and extension contexts while supporting monetization and content discovery.",
+        body: "The product needed consistent subscription state and UX across browser extensions, the account portal, and backend APIs.",
       },
       {
         title: "Approach",
-        body: "I delivered reusable UI patterns and backend-friendly integration points to keep the ecosystem maintainable.",
+        body: "I shipped shared SvelteKit UI patterns, subscription sync and Stripe checkout hardening on the frontend, and Express API work for billing, collections, and admin stats.",
       },
     ],
     resumeContext: {
@@ -619,6 +619,7 @@ export const capabilityBands: CapabilityBand[] = [
       "queue",
       "merns-shop",
       "answeriq",
+      "usedelight",
       "adverio-tools",
       "trulyhappy",
       "articulearn",

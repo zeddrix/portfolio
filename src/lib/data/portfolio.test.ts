@@ -44,6 +44,9 @@ describe("portfolio data", () => {
     expect(usedelight?.galleryImages).toContain(
       "/usedelight-5-subscription.webp",
     );
+    expect(usedelight?.techStack).not.toContain("Django");
+    expect(usedelight?.techStack).toContain("Express");
+    expect(usedelight?.techStack).toContain("MongoDB");
     expect(queue?.primaryImage).toBe("/queue-1-dashboard.webp");
     expect(queue?.galleryImages).toEqual([
       "/queue-2-analytics.webp",
@@ -55,6 +58,14 @@ describe("portfolio data", () => {
       "/chatbot-placement-in-full-dashboard.webp",
     );
     expect(jwTabs?.primaryImage).toBe("/jw-tabs-1-homepage.webp");
+  });
+
+  it("lists usedelight in fullstack capability band", () => {
+    const fullstackBand = capabilityBands.find(
+      (band) => band.id === "fullstack",
+    );
+
+    expect(fullstackBand?.relatedProjectSlugs).toContain("usedelight");
   });
 
   it("maps chatbot capability band to hybrid carousel visuals", () => {

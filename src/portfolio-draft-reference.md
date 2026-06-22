@@ -12,8 +12,8 @@ Client's projects
 UseDelight
 Website: https://usedelight.com/
 Chrome Extension: https://chromewebstore.google.com/detail/Nature%20Wallpapers%20HD%20video%20New%20Tab%20background/hehbgjdnbibkndghdlilefececadokpb
-What: Live tab page with ocean, mountain, Earth, weather, games, and more! Landing Page and Browser Extensions
-Tech stack: SvelteKit, NodeJS, Django, Stripe Billing Integration
+What: Nature-video new-tab extensions (Chrome and Edge) with weather, games, and 1500+ backgrounds, plus marketing site, Stripe account portal, and admin analytics
+Tech stack: SvelteKit, Express, MongoDB, Stripe, Playwright
 Adverio Tools
 Website: https://tools.adverio.io/
 What: ASIN Scraper, Listing and Image Analyzer with AI Analysis, Proposal Generator, Forecasting for brands in Amazon, and so much more
