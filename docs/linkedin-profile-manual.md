@@ -10,7 +10,7 @@ Complete copy-paste guide for building your LinkedIn profile from portfolio sour
 pnpm generate:resume
 ```
 
-That produces `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf`, `exports/linkedin-certificates.md`, and `resume/resume.md` (markdown mirror of the LinkedIn resume).
+That produces `resume/Zeddrix-Fabian-Resume.pdf` (optimized), `resume/Zeddrix-Fabian-Resume-Complete.pdf` (complete), `exports/linkedin-certificates.md`, and `resume/resume.md`.
 
 **Related docs:** `[career-profile-manual-checklist.md](career-profile-manual-checklist.md)` (deploy, GitHub README, job-application PDF).
 
@@ -22,7 +22,6 @@ LinkedIn’s **Add to profile** screen may show **“Upload a recent resume… w
 
 Manual paths that always work:
 
-
 | What you want             | Where in LinkedIn                                          |
 | ------------------------- | ---------------------------------------------------------- |
 | **Jobs / engagements**    | **Add to profile** → **Core** → **Add position**           |
@@ -31,7 +30,6 @@ Manual paths that always work:
 | **Resume PDF on profile** | **Recommended** → **Add featured** → Add media             |
 | **Skills list**           | **Core** → **Add skills**, or pencil on **Skills** section |
 | **Languages**             | **Additional** → **Add languages**                         |
-
 
 Uploading a resume PDF (without the AI flow) only stores it for **Easy Apply** or **Featured** — it does not reliably fill Experience or Projects.
 
@@ -43,14 +41,12 @@ Everything below is **manual copy-paste**. Plan 2–4 hours for a first pass, pl
 
 Before adding new content, remove or fix stale items on your current profile.
 
-
 | Action     | Details                                                                                                                                             |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Delete** | **Udemy Alumni / MCA** under Education — it reads like a formal degree. Use Licenses & Certifications instead (see §8).                             |
 | **Delete** | Duplicate experience entries (same role/company/dates listed twice).                                                                                |
 | **Delete** | Outdated **Projects** with wrong dates or marketing fluff (e.g. ArticuLearn / TrulyHappy showing “Present” with old product copy — replace per §7). |
 | **Verify** | Portfolio is live at `https://zeddrix.com` so certificate verify URLs work.                                                                         |
-
 
 ---
 
@@ -78,17 +74,15 @@ Work top-to-bottom on LinkedIn. Check off each section as you go.
 
 **Where:** Profile → edit pencil on intro card, or **Enhance profile**.
 
-
 | Field                | Value                                                                                           |
 | -------------------- | ----------------------------------------------------------------------------------------------- |
 | **First name**       | Zeddrix                                                                                         |
 | **Last name**        | Fabian                                                                                          |
-| **Pronouns**         | *(optional — your choice)*                                                                      |
+| **Pronouns**         | _(optional — your choice)_                                                                      |
 | **Current position** | Full-Stack Web App Developer                                                                    |
-| **Industry**         | Computer Software *(or Information Technology & Services)*                                      |
+| **Industry**         | Computer Software _(or Information Technology & Services)_                                      |
 | **Location**         | Philippines                                                                                     |
-| **Custom URL**       | `linkedin.com/in/zeddrix-fabian-30a18029a` *(already set — keep or shorten if LinkedIn allows)* |
-
+| **Custom URL**       | `linkedin.com/in/zeddrix-fabian-30a18029a` _(already set — keep or shorten if LinkedIn allows)_ |
 
 **Photo & banner:** Use a clear headshot and a simple banner (portfolio brand colors or a clean tech background). No copy required — visual only.
 
@@ -137,7 +131,6 @@ GitHub: https://github.com/zeddrix
 
 In the same **Edit about** modal, under **Skills**, remove your current five and add these **in this order** (max 5):
 
-
 | #   | Skill                      | Why                                                                           |
 | --- | -------------------------- | ----------------------------------------------------------------------------- |
 | 1   | **SvelteKit**              | Primary stack; matches headline and portfolio                                 |
@@ -146,8 +139,7 @@ In the same **Edit about** modal, under **Skills**, remove your current five and
 | 4   | **Angular**                | Third specialization framework                                                |
 | 5   | **Full-Stack Development** | Recruiter filter; covers front + back without duplicating two generic entries |
 
-
-**Remove from About top 5:** MERN Stack, Front-End Development, Back-End Web Development *(too narrow or redundant — keep MERN in the main Skills list if LinkedIn has it, not in the top 5 spotlight)*.
+**Remove from About top 5:** MERN Stack, Front-End Development, Back-End Web Development _(too narrow or redundant — keep MERN in the main Skills list if LinkedIn has it, not in the top 5 spotlight)_.
 
 These five also surface in your **Skills** section. They are separate from the **pin top 3** on the main Skills card (§9.1).
 
@@ -159,17 +151,15 @@ These five also surface in your **Skills** section. They are separate from the *
 
 Add these items (order: portfolio link first, then resume):
 
-
-| #   | Type        | Title                      | URL / file                                         |
-| --- | ----------- | -------------------------- | -------------------------------------------------- |
-| 1   | Link        | Portfolio — Zeddrix Fabian | `https://zeddrix.com`                              |
-| 2   | Media (PDF) | Resume — Zeddrix Fabian    | Upload `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf` |
-| 3   | Link        | GitHub                     | `https://github.com/zeddrix`                       |
-
+| #   | Type        | Title                      | URL / file                                |
+| --- | ----------- | -------------------------- | ----------------------------------------- |
+| 1   | Link        | Portfolio — Zeddrix Fabian | `https://zeddrix.com`                     |
+| 2   | Media (PDF) | Resume — Zeddrix Fabian    | Upload `resume/Zeddrix-Fabian-Resume.pdf` |
+| 3   | Link        | GitHub                     | `https://github.com/zeddrix`              |
 
 **Optional fourth item:** link to a flagship case study, e.g. `https://zeddrix.com/projects/merns-shop`.
 
-**Also (for Easy Apply, not Featured):** Jobs → **Application settings** → **Upload resume** → same LinkedIn PDF. Keeps the file ready when applying; recruiters still search profile fields, not the PDF.
+**Also (for Easy Apply, not Featured):** Jobs → **Application settings** → **Upload resume** → `resume/Zeddrix-Fabian-Resume.pdf` (optimized). Keeps the file ready when applying; recruiters still search profile fields, not the PDF.
 
 ---
 
@@ -177,13 +167,11 @@ Add these items (order: portfolio link first, then resume):
 
 **Where:** Intro card → **Contact info** (or Me → Settings → Visibility).
 
-
 | Field        | Value                                                   | Visibility                              |
 | ------------ | ------------------------------------------------------- | --------------------------------------- |
-| **Email**    | `zeddrix.fabian@gmail.com`                              | Connections or Everyone *(your choice)* |
+| **Email**    | `zeddrix.fabian@gmail.com`                              | Connections or Everyone _(your choice)_ |
 | **Website**  | `https://zeddrix.com` — label: **Portfolio**            | Everyone                                |
 | **LinkedIn** | `https://www.linkedin.com/in/zeddrix-fabian-30a18029a/` | —                                       |
-
 
 ---
 
@@ -193,12 +181,10 @@ Add these items (order: portfolio link first, then resume):
 
 **Experience vs Projects — you need both:**
 
-
 | Section        | What it is                                                    | Where to add                            |
 | -------------- | ------------------------------------------------------------- | --------------------------------------- |
 | **Experience** | Jobs and engagements (who you worked for, when, what you did) | **Core** → **Add position**             |
 | **Projects**   | Portfolio products with URLs and screenshots                  | **Recommended** → **Add projects** (§7) |
-
 
 Do **not** put job history only under Projects. Recruiters scan **Experience** first.
 
@@ -207,7 +193,6 @@ These **12 entries** mirror `resume/resume.md`. Enter **newest first** (LinkedIn
 ### 6.0 “Let’s start with the basics” — field mapping
 
 LinkedIn’s **Add a role** wizard uses different labels than this doc. Map like this:
-
 
 | LinkedIn field               | Maps to in this doc                                                       |
 | ---------------------------- | ------------------------------------------------------------------------- |
@@ -220,18 +205,15 @@ LinkedIn’s **Add a role** wizard uses different labels than this doc. Map like
 | **Start month / Start year** | **Start** column                                                          |
 | **End month / End year**     | **End** column (when not current)                                         |
 
-
 On later steps (**Add a few highlights**), paste **Description** into **Highlights**, add **Skills**, and add **Media** (portfolio case study URL — required). Each §6.x block is self-contained — no scrolling needed.
 
 ### 6.0b “Add a few highlights” — quick rules
-
 
 | Do                                                                                | Don’t                                                |
 | --------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | Add the **Skills** listed in each role block below (3–5 per role)                 | Add every skill you know on every role               |
 | Use LinkedIn’s official skill names when offered                                  | Accept vague suggestions like “Visual Web Developer” |
 | **Media** is required — use `https://zeddrix.com/projects/{slug}` from each block | Duplicate your About top 5 on every entry            |
-
 
 Your main **Skills** section (§9) and **About top 5** (§3.2) are separate — still do those after all roles are entered.
 
@@ -241,7 +223,6 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 
 ### 6.1 Sole builder — Queue
 
-
 | Field               | Value                                                                                                                           |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | **Title**           | Sole builder — Queue                                                                                                            |
@@ -250,16 +231,14 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Location**        | Philippines · Remote                                                                                                            |
 | **Location type**   | Remote                                                                                                                          |
 | **Start**           | January 2026                                                                                                                    |
-| **End**             | Present *(check “I currently work here”)*                                                                                       |
+| **End**             | Present _(check “I currently work here”)_                                                                                       |
 | **Description**     | Shipped queue.place MVP+ PWA for walk-ins, bookings, operations, billing, and owner/admin tooling with Supabase and Cloudflare. |
 | **Skills**          | SvelteKit, TypeScript, Supabase, Cloudflare, Progressive Web Applications                                                       |
 | **Media**           | `https://zeddrix.com/projects/queue`                                                                                            |
 
-
 ---
 
 ### 6.2 Full-stack contributor — Manatal Cooperative (2026)
-
 
 | Field               | Value                                                                                                                                                  |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -269,16 +248,14 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Location**        | Philippines · Remote                                                                                                                                   |
 | **Location type**   | Remote                                                                                                                                                 |
 | **Start**           | June 2026                                                                                                                                              |
-| **End**             | Present *(check “I currently work here”)*                                                                                                              |
-| **Description**     | Returned to extend Manatal Cooperative member PWA and Django API delivery flows for production cooperative operations. *(Client: Manatal Cooperative)* |
+| **End**             | Present _(check “I currently work here”)_                                                                                                              |
+| **Description**     | Returned to extend Manatal Cooperative member PWA and Django API delivery flows for production cooperative operations. _(Client: Manatal Cooperative)_ |
 | **Skills**          | Svelte, Django, PostgreSQL, Progressive Web Applications, Django REST Framework                                                                        |
 | **Media**           |                                                                                                                                                        |
-
 
 ---
 
 ### 6.3 Sole builder — MERN's Shop (modernization)
-
 
 | Field               | Value                                                                                                                                                                               |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -288,16 +265,14 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Location**        | Philippines · Remote                                                                                                                                                                |
 | **Location type**   | Remote                                                                                                                                                                              |
 | **Start**           | June 2026                                                                                                                                                                           |
-| **End**             | Present *(check “I currently work here”)*                                                                                                                                           |
+| **End**             | Present _(check “I currently work here”)_                                                                                                                                           |
 | **Description**     | Modernized the 2021 Udemy storefront with TypeScript, Express 5, React 19, PayPal checkout, guest/registered order flows, ATDD (Playwright/Vitest), PWA, CI, and Render deployment. |
 | **Skills**          | React, TypeScript, MongoDB, Playwright, PayPal                                                                                                                                      |
 | **Media**           | `https://zeddrix.com/projects/merns-shop`                                                                                                                                           |
 
-
 ---
 
 ### 6.4 Full-stack contributor — Adverio Tools
-
 
 | Field               | Value                                                                                                                                     |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
@@ -308,15 +283,13 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Location type**   | Remote                                                                                                                                    |
 | **Start**           | August 2025                                                                                                                               |
 | **End**             | May 2026                                                                                                                                  |
-| **Description**     | Delivered Angular and Django tooling for Adverio client workflows with Docker, Stripe, and Redis-backed integrations. *(Client: Adverio)* |
+| **Description**     | Delivered Angular and Django tooling for Adverio client workflows with Docker, Stripe, and Redis-backed integrations. _(Client: Adverio)_ |
 | **Skills**          | Angular, Django, Docker, Stripe, Redis                                                                                                    |
 | **Media**           | `https://zeddrix.com/projects/adverio-tools`                                                                                              |
-
 
 ---
 
 ### 6.5 Full-stack contributor — Bolt to GitHub
-
 
 | Field               | Value                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -331,11 +304,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Skills**          | Svelte, TypeScript, GitHub, Chrome Extensions                                                         |
 | **Media**           | `https://zeddrix.com/projects/bolt-to-github`                                                         |
 
-
 ---
 
 ### 6.6 Full-stack contributor — AnswerIQ
-
 
 | Field               | Value                                                                                                                                                 |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -346,15 +317,13 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Location type**   | Remote                                                                                                                                                |
 | **Start**           | September 2025                                                                                                                                        |
 | **End**             | October 2025                                                                                                                                          |
-| **Description**     | Contributed to AnswerIQ multi-tenant SaaS: Shopify FAQ pipeline, Stripe billing, workspace RBAC, and admin audit console. *(Personal client project)* |
+| **Description**     | Contributed to AnswerIQ multi-tenant SaaS: Shopify FAQ pipeline, Stripe billing, workspace RBAC, and admin audit console. _(Personal client project)_ |
 | **Skills**          | React, TypeScript, PostgreSQL, Stripe, Shopify                                                                                                        |
 | **Media**           | `https://zeddrix.com/projects/answeriq`                                                                                                               |
-
 
 ---
 
 ### 6.7 Full-stack contributor — UseDelight
-
 
 | Field               | Value                                                                                                                                                                                 |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -365,15 +334,13 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Location type**   | Remote                                                                                                                                                                                |
 | **Start**           | January 2025                                                                                                                                                                          |
 | **End**             | July 2025                                                                                                                                                                             |
-| **Description**     | Delivered SvelteKit extension and account flows with Stripe billing, plus Express API work for subscription reliability, admin stats, and content collections. *(Client: UseDelight)* |
+| **Description**     | Delivered SvelteKit extension and account flows with Stripe billing, plus Express API work for subscription reliability, admin stats, and content collections. _(Client: UseDelight)_ |
 | **Skills**          | SvelteKit, Express, MongoDB, Stripe                                                                                                                                                   |
 | **Media**           | `https://zeddrix.com/projects/usedelight`                                                                                                                                             |
-
 
 ---
 
 ### 6.8 Full-stack contributor — ArticuLearn
-
 
 | Field               | Value                                                                                                     |
 | ------------------- | --------------------------------------------------------------------------------------------------------- |
@@ -388,11 +355,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Skills**          | Angular, NestJS, Django, PostgreSQL, Progressive Web Applications                                         |
 | **Media**           | `https://zeddrix.com/projects/articulearn`                                                                |
 
-
 ---
 
 ### 6.9 Full-stack contributor — TrulyHappy
-
 
 | Field               | Value                                                                                               |
 | ------------------- | --------------------------------------------------------------------------------------------------- |
@@ -407,11 +372,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Skills**          | Angular, NestJS, Django, PostgreSQL, Progressive Web Applications                                   |
 | **Media**           | `https://zeddrix.com/projects/trulyhappy`                                                           |
 
-
 ---
 
 ### 6.10 Sole builder — JW Tabs
-
 
 | Field               | Value                                                                                                            |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -426,11 +389,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Skills**          | SvelteKit, TypeScript, Supabase, Progressive Web Applications                                                    |
 | **Media**           | `https://zeddrix.com/projects/jw-tabs`                                                                           |
 
-
 ---
 
 ### 6.11 Full-stack contributor — Manatal Cooperative (2021)
-
 
 | Field               | Value                                                                                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -441,15 +402,13 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Location type**   | Remote                                                                                                                                           |
 | **Start**           | November 2021                                                                                                                                    |
 | **End**             | December 2021                                                                                                                                    |
-| **Description**     | Delivered Manatal Cooperative member PWA and Django API financial request flows as first production client work. *(Client: Manatal Cooperative)* |
+| **Description**     | Delivered Manatal Cooperative member PWA and Django API financial request flows as first production client work. _(Client: Manatal Cooperative)_ |
 | **Skills**          | Svelte, Django, PostgreSQL, Progressive Web Applications                                                                                         |
 | **Media**           | `https://zeddrix.com/projects/manatal-coop`                                                                                                      |
-
 
 ---
 
 ### 6.12 Student Web Developer
-
 
 | Field               | Value                                                                                                                   |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -461,9 +420,8 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Start**           | March 2018                                                                                                              |
 | **End**             | December 2021                                                                                                           |
 | **Description**     | Grew from internship into sustained production web development across Codefrost company products and client deliveries. |
-| **Skills**          | JavaScript, Web Development, Front-End Development *(or skip skills for this entry)*                                    |
-| **Media**           | `https://zeddrix.com/projects` *(no single project — internship spans multiple Codefrost products)*                     |
-
+| **Skills**          | JavaScript, Web Development, Front-End Development _(or skip skills for this entry)_                                    |
+| **Media**           | `https://zeddrix.com/projects` _(no single project — internship spans multiple Codefrost products)_                     |
 
 ---
 
@@ -479,7 +437,6 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 
 ### 7.1 Queue
 
-
 | Field             | Value                                                                                                                                                                                 |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Name**          | Queue                                                                                                                                                                                 |
@@ -488,25 +445,21 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Description**   | PWA for walk-ins, bookings, and operations — unified queueing, reservations, pre-orders, event handling, billing, owner/admin dashboards, and Groq-backed support chat. Sole builder. |
 | **Skills to tag** | SvelteKit, TypeScript, Supabase, Cloudflare                                                                                                                                           |
 
-
 ---
 
 ### 7.2 MERN's Shop
 
-
 | Field             | Value                                                                                                                                                                                                                                                |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Name**          | MERN's Shop                                                                                                                                                                                                                                          |
-| **Dates**         | Jun 2026 – present *(modernization; original course build Apr 2021)*                                                                                                                                                                                 |
+| **Dates**         | Jun 2026 – present _(modernization; original course build Apr 2021)_                                                                                                                                                                                 |
 | **URL**           | `https://zeddrix.com/projects/merns-shop`                                                                                                                                                                                                            |
 | **Description**   | Live electronics e-commerce with ~170 products, PayPal checkout, admin ops, installable PWA, and 100+ automated tests. Modernized from 2021 Udemy exercise with TypeScript, Express 5, React 19, ATDD (Playwright/Vitest), CI, Render. Sole builder. |
 | **Skills to tag** | React, TypeScript, MongoDB, Playwright                                                                                                                                                                                                               |
 
-
 ---
 
 ### 7.3 Adverio Tools
-
 
 | Field             | Value                                                                                                                                                                              |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -516,11 +469,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Description**   | AI-assisted Amazon seller toolkit — ASIN scraper, listing/image analyzer, proposal generation, forecasting, and brand operations. Full-stack contributor at Codefrost for Adverio. |
 | **Skills to tag** | Angular, Django, Stripe, Docker                                                                                                                                                    |
 
-
 ---
 
 ### 7.4 UseDelight
-
 
 | Field             | Value                                                                                                                                                                                                                                                                       |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -530,11 +481,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Description**   | Nature-video new-tab extensions (Chrome and Edge) with weather, games, and 1500+ backgrounds, plus marketing site, Stripe account portal, and admin analytics — powered by a shared SvelteKit monorepo and Express API. Full-stack contributor at Codefrost for UseDelight. |
 | **Skills to tag** | SvelteKit, Express, MongoDB, Stripe                                                                                                                                                                                                                                         |
 
-
 ---
 
 ### 7.5 AnswerIQ
-
 
 | Field             | Value                                                                                                                                                                                           |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -544,11 +493,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Description**   | Multi-tenant SaaS for Shopify merchants — SerpAPI PAA queries → GPT-generated FAQ articles → Shopify publish, Stripe billing, workspace RBAC, admin audit console. Playwright/Jest/Vitest ATDD. |
 | **Skills to tag** | React, TypeScript, PostgreSQL, Stripe                                                                                                                                                           |
 
-
 ---
 
 ### 7.6 Manatal Coop
-
 
 | Field             | Value                                                                                                                                                                                        |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -558,25 +505,21 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Description**   | Cooperative member banking PWA for a Philippine credit union — account dashboards, financial requests, loan applications, offline caching, push notifications. Django REST API + Svelte PWA. |
 | **Skills to tag** | Svelte, Django, PostgreSQL, PWA                                                                                                                                                              |
 
-
 ---
 
 ### 7.7 JW Tabs
 
-
 | Field             | Value                                                                                                                          |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | **Name**          | JW Tabs                                                                                                                        |
-| **Dates**         | May 2021 – present *(MVP Oct 2021)*                                                                                            |
+| **Dates**         | May 2021 – present _(MVP Oct 2021)_                                                                                            |
 | **URL**           | `https://zeddrix.com/projects/jw-tabs`                                                                                         |
 | **Description**   | Tablature platform for guitar and ukulele — rendering, community workflows, billing, moderation, admin controls. Sole builder. |
 | **Skills to tag** | SvelteKit, TypeScript, Supabase                                                                                                |
 
-
 ---
 
 ### 7.8 TrulyHappy
-
 
 | Field             | Value                                                                                                                                       |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -586,11 +529,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Description**   | Mental wellbeing PWA — mood tracking, guided habits, missions, Lemon Squeezy billing. Angular SSR + NestJS BFF + Django API in Nx monorepo. |
 | **Skills to tag** | Angular, NestJS, Django                                                                                                                     |
 
-
 ---
 
 ### 7.9 Articulearn
-
 
 | Field             | Value                                                                                                                                        |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -600,11 +541,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Description**   | Language speaking practice PWA — audio shadowing, segmented sessions, library filters, Lemon Squeezy subscriptions. WaveSurfer.js waveforms. |
 | **Skills to tag** | Angular, NestJS, Django                                                                                                                      |
 
-
 ---
 
 ### 7.10 Bolt to Github
-
 
 | Field             | Value                                                                                                                                                                                   |
 | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -613,7 +552,6 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **URL**           | `https://zeddrix.com/projects/bolt-to-github`                                                                                                                                           |
 | **Description**   | Manifest V3 Chrome extension — intercepts Bolt.new ZIP exports, pushes to GitHub via PAT or GitHub App auth, diff preview, Supabase-backed premium tier. Published on Chrome Web Store. |
 | **Skills to tag** | Svelte, TypeScript, Chrome Extension                                                                                                                                                    |
-
 
 ---
 
@@ -627,7 +565,6 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 
 ### 8.1 Modern JavaScript From The Beginning
 
-
 | Field                    | Value                                                                   |
 | ------------------------ | ----------------------------------------------------------------------- |
 | **Name**                 | Modern JavaScript From The Beginning                                    |
@@ -636,11 +573,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Credential URL**       | `https://zeddrix.com/certificates/modern-javascript-from-the-beginning` |
 | **Skills**               | JavaScript, ES6+, DOM, OOP, Async JavaScript, Fetch API                 |
 
-
 ---
 
 ### 8.2 ReactJS Front to Back
-
 
 | Field                    | Value                                                         |
 | ------------------------ | ------------------------------------------------------------- |
@@ -650,11 +585,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Credential URL**       | `https://zeddrix.com/certificates/reactjs-front-to-back`      |
 | **Skills**               | React.js, Redux, Context API, React Hooks, REST APIs, Node.js |
 
-
 ---
 
 ### 8.3 CSS – The Complete Guide 2021 (incl. Flexbox, Grid & Sass)
-
 
 | Field                    | Value                                                       |
 | ------------------------ | ----------------------------------------------------------- |
@@ -664,11 +597,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Credential URL**       | `https://zeddrix.com/certificates/css-complete-guide-2021`  |
 | **Skills**               | CSS, Flexbox, CSS Grid, SASS, Responsive Design, Animations |
 
-
 ---
 
 ### 8.4 Node.js API Masterclass With Express & MongoDB
-
 
 | Field                    | Value                                                     |
 | ------------------------ | --------------------------------------------------------- |
@@ -678,11 +609,9 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Credential URL**       | `https://zeddrix.com/certificates/nodejs-api-masterclass` |
 | **Skills**               | Node.js, Express.js, MongoDB, REST APIs, JWT, Mongoose    |
 
-
 ---
 
 ### 8.5 MERN eCommerce From Scratch
-
 
 | Field                    | Value                                                          |
 | ------------------------ | -------------------------------------------------------------- |
@@ -693,7 +622,6 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 | **Credential ID**        | `UC-f4253a2d-75ed-4a33-a0e1-d9c273890c15`                      |
 | **Skills**               | MERN Stack, React, Node.js, Express.js, MongoDB, Redux         |
 
-
 ---
 
 ## 9. Skills
@@ -702,12 +630,10 @@ For each entry: fill **basics** (title, company, dates, location) → **Highligh
 
 **Two skill spotlights (different places):**
 
-
 | Place                   | How many | Which skills                                                         |
 | ----------------------- | -------- | -------------------------------------------------------------------- |
 | **About** → “known for” | 5 max    | §3.2 — SvelteKit, TypeScript, React, Angular, Full-Stack Development |
 | **Skills** section pin  | 3 max    | §9.1 — SvelteKit, TypeScript, React                                  |
-
 
 ### 9.1 Pin these three (Skills section card)
 
@@ -737,7 +663,7 @@ LinkedIn may suggest matches — pick the closest official skill name. Add in ba
 
 **DevOps, platforms & workflow:** Cloudflare, Docker, Git, GitHub, GitHub Actions, Nx, DigitalOcean, Render, Stripe, PayPal, Amazon EC2, Lemon Squeezy, Yarn, WordPress, Namecheap
 
-**Also add from project/certificate context:** REST APIs, GraphQL *(if used)*, Shopify, OpenAI, PayPal, MERN Stack, BFF, OAuth, Celery, Chrome Extensions
+**Also add from project/certificate context:** REST APIs, GraphQL _(if used)_, Shopify, OpenAI, PayPal, MERN Stack, BFF, OAuth, Celery, Chrome Extensions
 
 After adding, **remove** outdated skills that no longer match your stack (legacy tools you don't use).
 
@@ -747,12 +673,10 @@ After adding, **remove** outdated skills that no longer match your stack (legacy
 
 **Where:** **Add profile section** → **Recommended** → **Add languages**.
 
-
 | Language    | Proficiency                      |
 | ----------- | -------------------------------- |
 | **Tagalog** | Native or bilingual proficiency  |
 | **English** | Professional working proficiency |
-
 
 ---
 
@@ -760,12 +684,10 @@ After adding, **remove** outdated skills that no longer match your stack (legacy
 
 **Where:** Education section.
 
-
 | Action                | Details                                                                                                             |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **Remove**            | Udemy Alumni / MCA *(if present)*                                                                                   |
+| **Remove**            | Udemy Alumni / MCA _(if present)_                                                                                   |
 | **Add formal degree** | Only if you have one not already in portfolio data — this repo does not define a degree; add manually if applicable |
-
 
 Udemy courses belong in **§8 Licenses & certifications**, not Education.
 
@@ -780,13 +702,13 @@ Udemy courses belong in **§8 Licenses & certifications**, not Education.
 - **Looking for:** Full-time, Contract, or both — your choice
 - **Job titles:** Full-Stack Developer, Web Developer, Software Engineer
 - **Locations:** Remote, Philippines
-- **Visibility:** Recruiters only *(recommended if employed)* or All LinkedIn members
+- **Visibility:** Recruiters only _(recommended if employed)_ or All LinkedIn members
 
 ### Application settings
 
-- Upload `resume/Zeddrix-Fabian-Resume-LinkedIn.pdf` under **Resume**
+- Upload `resume/Zeddrix-Fabian-Resume.pdf` under **Resume**
 - Toggle **Share resume data with recruiters** on or off per your preference
-- For job applications elsewhere, use `resume/Zeddrix-Fabian-Resume.pdf` (styled two-page version), not the LinkedIn variant
+- For longer-form applications, use `resume/Zeddrix-Fabian-Resume-Complete.pdf` when you want the full complete version
 
 ---
 
@@ -819,7 +741,6 @@ When you change projects, experience, skills, profile copy, or certificates in t
 
 ## Optional sections (skip unless you have content)
 
-
 | Section             | Guidance                                                           |
 | ------------------- | ------------------------------------------------------------------ |
 | **Volunteering**    | Add only if relevant                                               |
@@ -828,5 +749,3 @@ When you change projects, experience, skills, profile copy, or certificates in t
 | **Courses**         | Skip — certs are in §8                                             |
 | **Recommendations** | Request from Codefrost colleagues or clients when ready            |
 | **Services**        | Optional for freelancers — Web Development, Full-Stack Development |
-
-

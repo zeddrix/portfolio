@@ -4,23 +4,18 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 import { buildApplicationResumeHtml } from "./application-resume/build-application-resume.js";
-import { buildLinkedInDocxBuffer } from "./build-linkedin-docx.js";
+import { buildOptimizedResumeSnapshot } from "./resume-optimized-snapshot.js";
 import {
   buildAdditionalProjectsBlocks,
-  buildCertificatesText,
   buildEngagementExperienceBlocks,
   buildSelectedProjectsBlocks,
   buildSummary,
-  escapeHtml,
   formatCertificateMonthYear,
   formatExperienceRange,
-  formatLinks,
   formatResumeProjectHeader,
   projectBullets,
   buildSkillsText,
-  type ExperienceSnapshot,
   type ProfileSnapshot,
-  type ProjectSnapshot,
 } from "./resume-content.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -28,150 +23,10 @@ const rootDir = join(__dirname, "..");
 const snapshotPath = join(__dirname, "profile-snapshot.json");
 const resumeDir = join(rootDir, "resume");
 
-function buildExperienceHtmlLinkedIn(experience: ExperienceSnapshot[]): string {
-  return experience
-    .map((role) => {
-      const titleLine = role.employmentType
-        ? `${role.title} (${role.employmentType})`
-        : role.title;
-      const bullets = role.bullets
-        .map((bullet) => `<li>${escapeHtml(bullet)}</li>`)
-        .join("");
-
-      return `
-      <article class="role">
-        <h3>${escapeHtml(titleLine)} — ${escapeHtml(role.company)}</h3>
-        <p class="meta">${escapeHtml(formatExperienceRange(role))} · ${escapeHtml(role.location)}</p>
-        <ul>${bullets}</ul>
-      </article>`;
-    })
-    .join("");
-}
-
-function buildProjectHtmlLinkedIn(
-  project: ProjectSnapshot,
-  compact = false,
-): string {
-  const bullets = projectBullets(project, compact ? 1 : 2);
-  const links = formatLinks(project);
-  const tech = project.techStack.slice(0, compact ? 6 : 8).join(" · ");
-
-  if (compact) {
-    return `
-      <article class="project compact">
-        <h3>${escapeHtml(formatResumeProjectHeader(project))}</h3>
-        <p>${escapeHtml(project.outcome || project.tagline)}</p>
-        <p class="tech">${escapeHtml(tech)}</p>
-      </article>`;
-  }
-
-  return `
-    <article class="project">
-      <h3>${escapeHtml(formatResumeProjectHeader(project))}</h3>
-      <ul>
-        ${bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}
-      </ul>
-      <p class="tech">Stack: ${escapeHtml(tech)}</p>
-      ${links ? `<p class="links">${escapeHtml(links)}</p>` : ""}
-    </article>`;
-}
-
-export function buildLinkedInResumeHtml(snapshot: ProfileSnapshot): string {
-  const { profile, certificates, toolStripGroups } = snapshot;
-  const experience = buildEngagementExperienceBlocks(snapshot);
-  const selectedProjects = buildSelectedProjectsBlocks(snapshot);
-  const additionalProjects = buildAdditionalProjectsBlocks(snapshot);
-  const summary = buildSummary(snapshot);
-  const skillsText = buildSkillsText(toolStripGroups);
-  const certsText = buildCertificatesText(certificates);
-
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>${escapeHtml(profile.name)} — Resume (LinkedIn)</title>
-    <style>
-      @page { size: letter; margin: 0.55in 0.6in; }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        font-family: Arial, Calibri, "Segoe UI", sans-serif;
-        font-size: 11pt;
-        line-height: 1.35;
-        color: #111111;
-      }
-      h1, h2, h3, p, ul { margin: 0; }
-      .header { margin-bottom: 14px; }
-      h1 { font-size: 20pt; }
-      .title { margin-top: 4px; font-size: 12pt; font-weight: 700; }
-      .contact { margin-top: 8px; font-size: 10.5pt; }
-      h2 {
-        font-size: 11pt;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        margin: 14px 0 6px;
-        border-bottom: 1px solid #cccccc;
-        padding-bottom: 2px;
-      }
-      .role, .project { margin-bottom: 10px; }
-      .role h3, .project h3 { font-size: 11pt; font-weight: 700; }
-      .meta { margin-top: 2px; font-size: 10.5pt; color: #333333; }
-      ul { margin: 4px 0 0 18px; padding: 0; }
-      li { margin-bottom: 2px; }
-      .tech, .links { margin-top: 3px; font-size: 10.5pt; color: #333333; }
-      .plain-block { white-space: pre-wrap; font-size: 10.5pt; }
-      .page-break { break-before: page; padding-top: 2px; }
-    </style>
-  </head>
-  <body data-testid="resume-linkedin-body">
-    <header class="header">
-      <h1>${escapeHtml(profile.name)}</h1>
-      <p class="title">${escapeHtml(profile.jobTitle)}</p>
-      <p class="contact">
-        ${escapeHtml(profile.contactEmail)} |
-        ${escapeHtml(profile.websiteUrl)} |
-        ${escapeHtml(profile.githubUrl)} |
-        ${escapeHtml(profile.linkedinUrl)}
-      </p>
-    </header>
-
-    <section>
-      <h2>Summary</h2>
-      <p>${escapeHtml(summary)}</p>
-    </section>
-
-    <section data-testid="resume-linkedin-experience">
-      <h2>Experience</h2>
-      ${buildExperienceHtmlLinkedIn(experience)}
-    </section>
-
-    <section>
-      <h2>Selected Projects</h2>
-      ${selectedProjects.map((project) => buildProjectHtmlLinkedIn(project)).join("")}
-    </section>
-
-    <section>
-      <h2>Additional Projects</h2>
-      ${additionalProjects.map((project) => buildProjectHtmlLinkedIn(project, true)).join("")}
-    </section>
-
-    <section class="page-break" data-testid="resume-linkedin-skills">
-      <h2>Skills</h2>
-      <p class="plain-block">${escapeHtml(skillsText)}</p>
-    </section>
-
-    <section>
-      <h2>Professional Development</h2>
-      <p class="plain-block">${escapeHtml(certsText)}</p>
-    </section>
-
-    <section>
-      <h2>Languages</h2>
-      <p>Tagalog (Native), English (Professional Working Proficiency)</p>
-    </section>
-  </body>
-</html>`;
-}
+export const COMPLETE_RESUME_HTML_FILE = "resume-complete.html";
+export const OPTIMIZED_RESUME_HTML_FILE = "resume-optimized.html";
+export const COMPLETE_RESUME_PDF_FILE = "Zeddrix-Fabian-Resume-Complete.pdf";
+export const OPTIMIZED_RESUME_PDF_FILE = "Zeddrix-Fabian-Resume.pdf";
 
 export { buildApplicationResumeHtml } from "./application-resume/build-application-resume.js";
 
@@ -281,40 +136,33 @@ async function writePdf(
 
 async function main() {
   const snapshotRaw = await readFile(snapshotPath, "utf8");
-  const snapshot = JSON.parse(snapshotRaw) as ProfileSnapshot;
+  const completeSnapshot = JSON.parse(snapshotRaw) as ProfileSnapshot;
+  const optimizedSnapshot = buildOptimizedResumeSnapshot(completeSnapshot);
 
-  const linkedInHtml = buildLinkedInResumeHtml(snapshot);
-  const markdown = buildResumeMarkdown(snapshot);
-  const linkedInDocx = await buildLinkedInDocxBuffer(snapshot);
+  const markdown = buildResumeMarkdown(optimizedSnapshot);
+  const completeHtml = await buildApplicationResumeHtml(completeSnapshot);
+  const optimizedHtml = await buildApplicationResumeHtml(optimizedSnapshot);
 
   await mkdir(resumeDir, { recursive: true });
 
-  const linkedInHtmlPath = join(resumeDir, "resume-linkedin.html");
-  const applicationHtmlPath = join(resumeDir, "resume-application.html");
+  const completeHtmlPath = join(resumeDir, COMPLETE_RESUME_HTML_FILE);
+  const optimizedHtmlPath = join(resumeDir, OPTIMIZED_RESUME_HTML_FILE);
   const markdownPath = join(resumeDir, "resume.md");
-  const linkedInPdfPath = join(resumeDir, "Zeddrix-Fabian-Resume-LinkedIn.pdf");
-  const applicationPdfPath = join(resumeDir, "Zeddrix-Fabian-Resume.pdf");
-  const linkedInDocxPath = join(
-    resumeDir,
-    "Zeddrix-Fabian-Resume-LinkedIn.docx",
-  );
+  const completePdfPath = join(resumeDir, COMPLETE_RESUME_PDF_FILE);
+  const optimizedPdfPath = join(resumeDir, OPTIMIZED_RESUME_PDF_FILE);
 
-  const applicationHtml = await buildApplicationResumeHtml(snapshot);
-
-  await writeFile(linkedInHtmlPath, linkedInHtml);
-  await writeFile(applicationHtmlPath, applicationHtml);
+  await writeFile(completeHtmlPath, completeHtml);
+  await writeFile(optimizedHtmlPath, optimizedHtml);
   await writeFile(markdownPath, markdown);
-  await writeFile(linkedInDocxPath, linkedInDocx);
 
-  await writePdf(linkedInHtml, linkedInPdfPath, "0.55in");
-  await writePdf(applicationHtml, applicationPdfPath, "0");
+  await writePdf(completeHtml, completePdfPath, "0");
+  await writePdf(optimizedHtml, optimizedPdfPath, "0");
 
-  console.log(`Wrote ${linkedInHtmlPath}`);
-  console.log(`Wrote ${applicationHtmlPath}`);
+  console.log(`Wrote ${completeHtmlPath}`);
+  console.log(`Wrote ${optimizedHtmlPath}`);
   console.log(`Wrote ${markdownPath}`);
-  console.log(`Wrote ${linkedInPdfPath}`);
-  console.log(`Wrote ${applicationPdfPath}`);
-  console.log(`Wrote ${linkedInDocxPath}`);
+  console.log(`Wrote ${completePdfPath}`);
+  console.log(`Wrote ${optimizedPdfPath}`);
 }
 
 const isCli =

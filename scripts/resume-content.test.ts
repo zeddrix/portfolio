@@ -8,6 +8,7 @@ import {
   partitionResumeProjectsByCategory,
   splitExperienceForApplicationResume,
 } from "./resume-content";
+import { buildOptimizedResumeSnapshot } from "./resume-optimized-snapshot";
 
 describe("resume-content builders", () => {
   const snapshot = buildPortfolioSnapshot() as never;
@@ -89,5 +90,31 @@ describe("resume-content builders", () => {
     expect(devopsGroup?.items).toContain("PayPal");
     expect(devopsGroup?.items).toContain("Stripe");
     expect(devopsGroup?.items).toContain("Lemon Squeezy");
+  });
+
+  it("builds a curated optimized snapshot with dedicated slugs and reduced experience", () => {
+    const optimized = buildOptimizedResumeSnapshot(snapshot);
+
+    expect(optimized.experience).toHaveLength(8);
+    expect(optimized.resumeSelectedProjectSlugs).toEqual([
+      "queue",
+      "merns-shop",
+      "usedelight",
+    ]);
+    expect(optimized.resumeMoreProjectSlugs).toEqual([
+      "adverio-tools",
+      "answeriq",
+      "jw-tabs",
+    ]);
+    expect(optimized.selectedProjects.map((project) => project.slug)).toEqual([
+      "queue",
+      "merns-shop",
+      "usedelight",
+    ]);
+    expect(optimized.moreProjects.map((project) => project.slug)).toEqual([
+      "adverio-tools",
+      "answeriq",
+      "jw-tabs",
+    ]);
   });
 });
