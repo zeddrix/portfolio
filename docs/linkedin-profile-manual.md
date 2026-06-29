@@ -10,7 +10,7 @@ Complete copy-paste guide for building your LinkedIn profile from portfolio sour
 pnpm generate:resume
 ```
 
-That produces `resume/Zeddrix-Fabian-Resume.pdf` (optimized), `resume/Zeddrix-Fabian-Resume-Complete.pdf` (complete), `exports/linkedin-certificates.md`, and `resume/resume.md`.
+That produces `resume/complete/Zeddrix-Fabian-Resume.pdf`, `resume/optimized/Zeddrix-Fabian-Resume.pdf`, `exports/linkedin-certificates.md`, and `resume/resume.md`.
 
 **Related docs:** `[career-profile-manual-checklist.md](career-profile-manual-checklist.md)` (deploy, GitHub README, job-application PDF).
 
@@ -151,15 +151,15 @@ These five also surface in your **Skills** section. They are separate from the *
 
 Add these items (order: portfolio link first, then resume):
 
-| #   | Type        | Title                      | URL / file                                |
-| --- | ----------- | -------------------------- | ----------------------------------------- |
-| 1   | Link        | Portfolio — Zeddrix Fabian | `https://zeddrix.com`                     |
-| 2   | Media (PDF) | Resume — Zeddrix Fabian    | Upload `resume/Zeddrix-Fabian-Resume.pdf` |
-| 3   | Link        | GitHub                     | `https://github.com/zeddrix`              |
+| #   | Type        | Title                      | URL / file                                         |
+| --- | ----------- | -------------------------- | -------------------------------------------------- |
+| 1   | Link        | Portfolio — Zeddrix Fabian | `https://zeddrix.com`                              |
+| 2   | Media (PDF) | Resume — Zeddrix Fabian    | Upload `resume/complete/Zeddrix-Fabian-Resume.pdf` |
+| 3   | Link        | GitHub                     | `https://github.com/zeddrix`                       |
 
 **Optional fourth item:** link to a flagship case study, e.g. `https://zeddrix.com/projects/merns-shop`.
 
-**Also (for Easy Apply, not Featured):** Jobs → **Application settings** → **Upload resume** → `resume/Zeddrix-Fabian-Resume.pdf` (optimized). Keeps the file ready when applying; recruiters still search profile fields, not the PDF.
+**Also (for Easy Apply, not Featured):** Jobs → **Application settings** → **Upload resume** → `resume/complete/Zeddrix-Fabian-Resume.pdf`. Keeps the file ready when applying; recruiters still search profile fields, not the PDF.
 
 ---
 
@@ -706,9 +706,9 @@ Udemy courses belong in **§8 Licenses & certifications**, not Education.
 
 ### Application settings
 
-- Upload `resume/Zeddrix-Fabian-Resume.pdf` under **Resume**
+- Upload `resume/complete/Zeddrix-Fabian-Resume.pdf` under **Resume**
 - Toggle **Share resume data with recruiters** on or off per your preference
-- For longer-form applications, use `resume/Zeddrix-Fabian-Resume-Complete.pdf` when you want the full complete version
+- Keep `resume/optimized/Zeddrix-Fabian-Resume.pdf` available when a platform requests a shorter alternative upload
 
 ---
 

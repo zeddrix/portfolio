@@ -40,7 +40,7 @@ test.describe("contact and footer", () => {
     );
     await expect(page.getByTestId(selectors.contact.resume)).toHaveAttribute(
       "href",
-      expect.stringMatching(/\/resume\/Zeddrix-Fabian-Resume\.pdf$/),
+      expect.stringMatching(/\/resume\/complete\/Zeddrix-Fabian-Resume\.pdf$/),
     );
     await expect(page.getByTestId(selectors.contact.resume)).toHaveAttribute(
       "download",
@@ -65,7 +65,7 @@ test.describe("contact and footer", () => {
       page.getByTestId(selectors.contact.footerResume),
     ).toHaveAttribute(
       "href",
-      expect.stringMatching(/\/resume\/Zeddrix-Fabian-Resume\.pdf$/),
+      expect.stringMatching(/\/resume\/complete\/Zeddrix-Fabian-Resume\.pdf$/),
     );
     await expect(
       page.getByTestId(selectors.contact.footerResume),

@@ -43,7 +43,7 @@ test.describe("homepage shell", () => {
     await expect(resumeLink).toBeVisible();
     await expect(resumeLink).toHaveAttribute(
       "href",
-      /\/resume\/Zeddrix-Fabian-Resume\.pdf$/,
+      /\/resume\/complete\/Zeddrix-Fabian-Resume\.pdf$/,
     );
     await expect(resumeLink).toHaveAttribute("download", "");
 

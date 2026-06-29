@@ -5,18 +5,18 @@
 
 ## Summary
 
-Wave 1 complete. Resume download links are now present in the homepage header, contact section, and footer, all pointing to the optimized PDF static path.
+Wave 1 complete. Resume download links are now present in the homepage header, contact section, and footer, all pointing to the complete PDF static path.
 
 ## Verified
 
-| Check                                                                 | Result     |
-| --------------------------------------------------------------------- | ---------- |
-| Header includes visible resume download link                          | Pass       |
-| Contact section includes resume download link                         | Pass       |
-| Footer includes resume download link                                  | Pass       |
-| All links resolve to `/resume/Zeddrix-Fabian-Resume.pdf` path pattern | Pass (E2E) |
-| Existing GitHub, mailto, and certifications links remain intact       | Pass (E2E) |
-| Desktop + mobile terminal/contact layout remains fully visible        | Pass (E2E) |
+| Check                                                                          | Result     |
+| ------------------------------------------------------------------------------ | ---------- |
+| Header includes visible resume download link                                   | Pass       |
+| Contact section includes resume download link                                  | Pass       |
+| Footer includes resume download link                                           | Pass       |
+| All links resolve to `/resume/complete/Zeddrix-Fabian-Resume.pdf` path pattern | Pass (E2E) |
+| Existing GitHub, mailto, and certifications links remain intact                | Pass (E2E) |
+| Desktop + mobile terminal/contact layout remains fully visible                 | Pass (E2E) |
 
 ## Commands
 

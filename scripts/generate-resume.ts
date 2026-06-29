@@ -23,10 +23,26 @@ const rootDir = join(__dirname, "..");
 const snapshotPath = join(__dirname, "profile-snapshot.json");
 const resumeDir = join(rootDir, "resume");
 
-export const COMPLETE_RESUME_HTML_FILE = "resume-complete.html";
-export const OPTIMIZED_RESUME_HTML_FILE = "resume-optimized.html";
-export const COMPLETE_RESUME_PDF_FILE = "Zeddrix-Fabian-Resume-Complete.pdf";
-export const OPTIMIZED_RESUME_PDF_FILE = "Zeddrix-Fabian-Resume.pdf";
+export const COMPLETE_RESUME_DIR = "complete";
+export const OPTIMIZED_RESUME_DIR = "optimized";
+export const RESUME_HTML_FILE = "resume.html";
+export const RESUME_PDF_FILE = "Zeddrix-Fabian-Resume.pdf";
+export const COMPLETE_RESUME_HTML_FILE = join(
+  COMPLETE_RESUME_DIR,
+  RESUME_HTML_FILE,
+);
+export const OPTIMIZED_RESUME_HTML_FILE = join(
+  OPTIMIZED_RESUME_DIR,
+  RESUME_HTML_FILE,
+);
+export const COMPLETE_RESUME_PDF_FILE = join(
+  COMPLETE_RESUME_DIR,
+  RESUME_PDF_FILE,
+);
+export const OPTIMIZED_RESUME_PDF_FILE = join(
+  OPTIMIZED_RESUME_DIR,
+  RESUME_PDF_FILE,
+);
 
 export { buildApplicationResumeHtml } from "./application-resume/build-application-resume.js";
 
@@ -144,6 +160,8 @@ async function main() {
   const optimizedHtml = await buildApplicationResumeHtml(optimizedSnapshot);
 
   await mkdir(resumeDir, { recursive: true });
+  await mkdir(join(resumeDir, COMPLETE_RESUME_DIR), { recursive: true });
+  await mkdir(join(resumeDir, OPTIMIZED_RESUME_DIR), { recursive: true });
 
   const completeHtmlPath = join(resumeDir, COMPLETE_RESUME_HTML_FILE);
   const optimizedHtmlPath = join(resumeDir, OPTIMIZED_RESUME_HTML_FILE);

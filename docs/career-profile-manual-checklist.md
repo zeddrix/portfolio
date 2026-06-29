@@ -29,8 +29,8 @@ LinkedIn **does not** bulk-import profile sections from a resume upload. Copy al
 
 ## 5. LinkedIn — Featured + resume files
 
-- **Featured:** portfolio link (`https://zeddrix.com`) + `resume/Zeddrix-Fabian-Resume.pdf` (optimized)
-- **Easy Apply:** same optimized PDF under Jobs → Application settings
+- **Featured:** portfolio link (`https://zeddrix.com`) + `resume/complete/Zeddrix-Fabian-Resume.pdf`
+- **Easy Apply:** same complete PDF under Jobs → Application settings
 - Pin top skills: **About** → SvelteKit, TypeScript, React, Angular, Full-Stack Development; **Skills card** → SvelteKit, TypeScript, React (see [`linkedin-profile-manual.md`](linkedin-profile-manual.md) §3.2 and §9)
 
 ## 6. Push Zeddrix GitHub profile README
@@ -43,7 +43,7 @@ After deploy, legacy certificate URLs redirect automatically (see [`docs/seo-off
 
 ## 8. Job applications
 
-Use `resume/Zeddrix-Fabian-Resume.pdf` (optimized version) for quick applications and `resume/Zeddrix-Fabian-Resume-Complete.pdf` when you need the full two-page complete version.
+Use `resume/complete/Zeddrix-Fabian-Resume.pdf` as the primary resume upload and keep `resume/optimized/Zeddrix-Fabian-Resume.pdf` for shorter application contexts.
 
 ## Regenerating local exports
 
@@ -53,8 +53,8 @@ pnpm generate:resume
 
 Outputs:
 
-- `resume/Zeddrix-Fabian-Resume.pdf` — job applications
-- `resume/Zeddrix-Fabian-Resume-Complete.pdf` — complete two-page baseline
+- `resume/complete/Zeddrix-Fabian-Resume.pdf` — complete two-page baseline
+- `resume/optimized/Zeddrix-Fabian-Resume.pdf` — optimized variant
 - `exports/linkedin-certificates.md` — copy-paste aid for LinkedIn certs
 - `exports/github-readme-projects.md` — project periods for GitHub README paste
 - `exports/github-readme-manatal-coop.md` — Manatal Coop screenshot block for profile README paste
