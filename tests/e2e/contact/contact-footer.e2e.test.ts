@@ -38,6 +38,14 @@ test.describe("contact and footer", () => {
       "href",
       "mailto:zeddrix.fabian@gmail.com",
     );
+    await expect(page.getByTestId(selectors.contact.resume)).toHaveAttribute(
+      "href",
+      expect.stringMatching(/\/resume\/Zeddrix-Fabian-Resume\.pdf$/),
+    );
+    await expect(page.getByTestId(selectors.contact.resume)).toHaveAttribute(
+      "download",
+      "",
+    );
 
     await scrollToTestId(page, selectors.sections.footer);
     await expect(page.getByTestId(selectors.sections.footer)).toContainText(
@@ -53,6 +61,15 @@ test.describe("contact and footer", () => {
       "href",
       expect.stringContaining("/certificates"),
     );
+    await expect(
+      page.getByTestId(selectors.contact.footerResume),
+    ).toHaveAttribute(
+      "href",
+      expect.stringMatching(/\/resume\/Zeddrix-Fabian-Resume\.pdf$/),
+    );
+    await expect(
+      page.getByTestId(selectors.contact.footerResume),
+    ).toHaveAttribute("download", "");
   });
 
   test("Given approach section, when user uses contact path from approach, then contact section is reachable", async ({

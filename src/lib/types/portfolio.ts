@@ -147,6 +147,7 @@ export interface PortfolioProfile {
   websiteUrl: string;
   githubUrl: string;
   linkedinUrl: string;
+  resumeDownloadPath: string;
 }
 
 export interface Certificate {

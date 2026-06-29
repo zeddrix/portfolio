@@ -128,9 +128,13 @@ test.describe("homepage polish visual capture", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "domcontentloaded" });
     await page.getByTestId("hero-cta").waitFor({ state: "visible" });
+    await page.getByTestId("header-resume-link").waitFor({ state: "visible" });
     await page.screenshot({
       path: path.join(outDir, "hero-cta-1440.png"),
       fullPage: false,
+    });
+    await page.getByRole("banner").screenshot({
+      path: path.join(outDir, "header-links-1440.png"),
     });
 
     await page.locator("#work").scrollIntoViewIfNeeded();
@@ -168,6 +172,10 @@ test.describe("homepage polish visual capture", () => {
       window.scrollTo(0, document.documentElement.scrollHeight);
     });
     await page.getByTestId("contact-section").waitFor({ state: "visible" });
+    await page.getByTestId("contact-resume-link").waitFor({ state: "visible" });
+    await page.getByTestId("contact-section-card").screenshot({
+      path: path.join(outDir, "contact-card-resume-link-1440.png"),
+    });
     await page.screenshot({
       path: path.join(outDir, "terminal-bottom-1440.png"),
       fullPage: false,
@@ -192,6 +200,7 @@ test.describe("homepage polish visual capture", () => {
       window.scrollTo(0, document.documentElement.scrollHeight);
     });
     await page.getByTestId("footer-section").waitFor({ state: "visible" });
+    await page.getByTestId("footer-resume-link").waitFor({ state: "visible" });
     await page.screenshot({
       path: path.join(outDir, "terminal-bottom-390.png"),
       fullPage: false,
@@ -215,6 +224,7 @@ test.describe("homepage polish visual capture", () => {
       .getByTestId("carousel-project-type-label-manatal-coop")
       .waitFor({ state: "visible" });
     await page
+      .getByTestId("highlight-card-3")
       .getByTestId("carousel-device-frame-phone")
       .waitFor({ state: "visible" });
 

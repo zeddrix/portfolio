@@ -1,10 +1,19 @@
 <script>
 	import { pageShellClass } from '$lib/constants/layout';
 	import { profile } from '$lib/data/profile';
+	import { resolveStaticAsset } from '$lib/utils/static-asset';
 </script>
 
 <header class="{pageShellClass} pt-3 sm:pt-4 md:pt-5">
 	<div class="flex items-center justify-end gap-4">
+		<a
+			data-testid="header-resume-link"
+			href={resolveStaticAsset(profile.resumeDownloadPath)}
+			download
+			class="inline-flex items-center gap-2 text-[15px] font-semibold text-[#8E8E93] transition-colors hover:text-zinc-700"
+		>
+			<span>Resume</span>
+		</a>
 		<a
 			data-testid="header-github-link"
 			href={profile.githubUrl}

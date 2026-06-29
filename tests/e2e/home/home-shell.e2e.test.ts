@@ -7,7 +7,7 @@ import {
 } from "../fixtures/test-helpers";
 
 test.describe("homepage shell", () => {
-  test("Given homepage, when user uses hero CTA and inspects github link, then work section and identity links resolve", async ({
+  test("Given homepage, when user uses hero CTA and inspects header links, then work section and identity links resolve", async ({
     page,
   }) => {
     await gotoHome(page);
@@ -38,6 +38,14 @@ test.describe("homepage shell", () => {
       "https://github.com/zeddrix",
     );
     await expect(githubLink).toHaveAttribute("target", "_blank");
+
+    const resumeLink = page.getByTestId(selectors.nav.resume);
+    await expect(resumeLink).toBeVisible();
+    await expect(resumeLink).toHaveAttribute(
+      "href",
+      /\/resume\/Zeddrix-Fabian-Resume\.pdf$/,
+    );
+    await expect(resumeLink).toHaveAttribute("download", "");
 
     await scrollToTestId(page, selectors.work.section);
     await assertSectionInViewport(page, selectors.work.section);

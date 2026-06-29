@@ -68,7 +68,7 @@ test.describe("homepage navigation", () => {
     expect(aboutIndex).toBeGreaterThan(toolsIndex);
   });
 
-  test("Given homepage scrolled to contact, when user returns to top, then hero title is in view without header name link", async ({
+  test("Given homepage scrolled to contact, when user returns to top, then hero title is in view with github and resume header links", async ({
     page,
   }) => {
     await gotoHome(page);
@@ -76,8 +76,9 @@ test.describe("homepage navigation", () => {
     await scrollToTestId(page, selectors.sections.contact);
     await assertSectionInViewport(page, selectors.sections.contact);
 
-    await expect(page.getByRole("banner").getByRole("link")).toHaveCount(1);
+    await expect(page.getByRole("banner").getByRole("link")).toHaveCount(2);
     await expect(page.getByTestId(selectors.nav.github)).toBeVisible();
+    await expect(page.getByTestId(selectors.nav.resume)).toBeVisible();
 
     await page.evaluate(() => {
       window.scrollTo(0, 0);

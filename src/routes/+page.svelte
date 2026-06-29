@@ -13,6 +13,7 @@
 	} from '$lib/data/portfolio';
 	import { pageShellClass } from '$lib/constants/layout';
 	import { appPath } from '$lib/utils/app-path';
+import { resolveStaticAsset } from '$lib/utils/static-asset';
 
 	/** @typedef {import('$lib/types/portfolio').CapabilityBandLayoutMode} CapabilityBandLayoutMode */
 	/** @type {typeof import('$lib/components/ToolsStrip.svelte').default | null} */
@@ -28,7 +29,11 @@
 	let capabilityLayoutMode = defaultCapabilityBandLayoutMode;
 	const clientReady = typeof window !== 'undefined';
 
-	if (typeof localStorage !== 'undefined') {
+if (
+	typeof window !== 'undefined' &&
+	typeof window.localStorage?.getItem === 'function' &&
+	typeof window.localStorage?.setItem === 'function'
+) {
 		const storedCapabilityMode = localStorage.getItem(capabilityBandLayoutStorageKey);
 		if (storedCapabilityMode === 'singleStack') {
 			capabilityLayoutMode = 'sevenBands';
@@ -190,6 +195,16 @@
 								href={'mailto:' + profile.contactEmail}
 							>
 								{profile.contactEmail}
+							</a>
+						</p>
+						<p>
+							<a
+								data-testid="footer-resume-link"
+								class="break-words transition-colors hover:text-zinc-900"
+								href={resolveStaticAsset(profile.resumeDownloadPath)}
+								download
+							>
+								Resume (PDF)
 							</a>
 						</p>
 						<p>

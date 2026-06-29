@@ -9,6 +9,7 @@ export const selectors = {
   },
   nav: {
     github: "header-github-link",
+    resume: "header-resume-link",
   },
   work: {
     section: "work-section",
@@ -40,9 +41,11 @@ export const selectors = {
   },
   contact: {
     cta: "contact-cta",
+    resume: "contact-resume-link",
     approachCta: "approach-contact-cta",
     footerEmail: "footer-email",
     footerWebsite: "footer-website-link",
+    footerResume: "footer-resume-link",
   },
 } as const;
 
