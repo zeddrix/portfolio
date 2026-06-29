@@ -54,6 +54,9 @@ jobs:
       - name: Build static site
         run: pnpm build
 
+      - name: Verify resume download asset
+        run: test -f build/resume/Zeddrix-Fabian-Resume.pdf
+
       - name: Verify static 404 page
         run: grep -q 'noindex, nofollow' build/404.html && ! grep -q '__sveltekit' build/404.html
 

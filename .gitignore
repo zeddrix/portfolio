@@ -49,6 +49,7 @@ static/nodejs-api-masterclass-with-express-mongodb-certificate/
 static/mern-ecommerce-from-scratch-certificate/
 static/css-the-complete-guide-2021-incl-flexbox-grid-sass/
 static/node-js-api-masterclass-with-express-mongodb-certificate/
+static/resume/
 
 # Generated resume exports (regenerate with pnpm generate:resume)
 scripts/profile-snapshot.json

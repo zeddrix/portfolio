@@ -14,7 +14,8 @@
     "generate:snapshot": "tsx scripts/export-portfolio-snapshot.ts",
     "generate:exports": "tsx scripts/generate-exports.ts",
     "generate:resume": "pnpm generate:snapshot && pnpm generate:exports && tsx scripts/generate-resume.ts",
-    "prebuild": "pnpm assets:prepare",
+    "publish:resume-download": "tsx scripts/publish-resume-download.ts",
+    "prebuild": "pnpm assets:prepare && pnpm generate:resume && pnpm publish:resume-download",
     "build": "vite build",
     "postbuild": "tsx scripts/replace-spa-404.ts",
     "preview": "vite preview",
@@ -39,7 +40,7 @@
     "screenshots:cta-hover": "playwright test tests/visual/hero-cta-hover-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:polish": "playwright test tests/visual/homepage-polish-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:certificates": "playwright test tests/visual/certificates-capture.spec.ts --config playwright.visual.config.ts",
-    "screenshots:resume": "playwright test tests/visual/resume-application-capture.spec.ts tests/visual/resume-linkedin-capture.spec.ts --config playwright.visual.config.ts",
+    "screenshots:resume": "playwright test tests/visual/resume-application-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:project-periods": "playwright test tests/visual/project-period-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:manatal": "playwright test tests/visual/manatal-coop-capture.spec.ts --config playwright.visual.config.ts",
     "screenshots:chatbot-band": "playwright test tests/visual/chatbot-band-capture.spec.ts --config playwright.visual.config.ts"
