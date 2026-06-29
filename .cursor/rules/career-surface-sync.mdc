@@ -33,7 +33,7 @@ Applies when you add or change any of:
 2. Run `pnpm generate:resume` (snapshot + resumes + `exports/`).
 3. Mirror README changes in `zeddrix/README.md` — use `exports/github-readme-*.md` when available.
 4. Run related tests (`scripts/resume-*.test.ts`, affected E2E) and resume page-count if application layout touched.
-5. Tell the user if LinkedIn profile or README push is still manual (`docs/career-profile-manual-checklist.md`).
+5. Tell the user if LinkedIn profile or README push is still manual (`docs/linkedin-profile-manual.md`, `docs/seo-offsite-checklist.md`).
 
 **Do not** leave portfolio updated while resumes or README still show stale copy.
 

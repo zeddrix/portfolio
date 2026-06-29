@@ -12,7 +12,7 @@ pnpm generate:resume
 
 That produces `resume/complete/Zeddrix-Fabian-Resume.pdf`, `resume/optimized/Zeddrix-Fabian-Resume.pdf`, `exports/linkedin-certificates.md`, and `resume/resume.md`.
 
-**Related docs:** `[career-profile-manual-checklist.md](career-profile-manual-checklist.md)` (deploy, GitHub README, job-application PDF).
+**Related docs:** [`seo-offsite-checklist.md`](seo-offsite-checklist.md) (deploy, GSC, backlinks).
 
 ---
 
@@ -735,7 +735,7 @@ When you change projects, experience, skills, profile copy, or certificates in t
 1. Run `pnpm generate:resume`
 2. Update affected LinkedIn sections using this doc (or diff against `resume/resume.md`)
 3. Re-upload Featured / Application-settings resume PDF if content changed
-4. See `[career-profile-manual-checklist.md](career-profile-manual-checklist.md)` §9 for full career-surface sync
+4. See `.cursor/rules/career-surface-sync.mdc` for full career-surface sync
 
 ---
 

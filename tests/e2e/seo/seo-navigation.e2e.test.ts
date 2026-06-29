@@ -9,6 +9,38 @@ import {
 } from "../fixtures/test-helpers";
 
 test.describe("seo navigation metadata", () => {
+  test("Given homepage, when user opens Queue then returns home, then homepage meta description reflects positioning copy", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await navigateToProjectViaCarousel(page, "queue");
+    await expect(page.getByTestId("project-detail-title")).toContainText(
+      "Queue",
+    );
+    await page.getByTestId("project-detail-back-link").click();
+    await page.waitForURL(new RegExp(`${PAGES_BASE_PATH}/?$`));
+
+    const homeDescription = page.locator('meta[name="description"]');
+    await expect(homeDescription).toHaveAttribute(
+      "content",
+      /production|SvelteKit|React|Angular/i,
+    );
+    await expect(homeDescription).toHaveAttribute(
+      "content",
+      /case studies|PWAs|SaaS|e-commerce/i,
+    );
+    await expect(
+      page.locator('meta[property="og:description"]'),
+    ).toHaveAttribute("content", /production|SvelteKit|React|Angular/i);
+    await expect(
+      page.locator('meta[name="twitter:description"]'),
+    ).toHaveAttribute("content", /production|SvelteKit|React|Angular/i);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      `${PAGES_SITE_URL}/`,
+    );
+  });
+
   test("Given homepage, when user navigates to Queue project, then canonical and title update", async ({
     page,
   }) => {

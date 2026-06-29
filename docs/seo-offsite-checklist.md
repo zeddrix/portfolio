@@ -179,7 +179,7 @@ The repo was deleted ~2 weeks ago; the URL 404s (correct). Google may still show
 
 - [ ] GitHub profile README → `https://zeddrix.com`
 - [ ] LinkedIn **Website** → `https://zeddrix.com`
-- [ ] LinkedIn About mentions portfolio once (see [career-profile-manual-checklist.md](career-profile-manual-checklist.md))
+- [ ] LinkedIn About mentions portfolio once (see [linkedin-profile-manual.md](linkedin-profile-manual.md))
 - [ ] Update `zeddrix.com` links on Stack Exchange / other profiles when you edit them
 
 ## 10. Legacy certificate redirects (verify after deploy)
@@ -195,4 +195,4 @@ Full mapping lives in `[src/lib/data/legacy-redirects.ts](../src/lib/data/legacy
 
 ---
 
-Related: [career-profile-manual-checklist.md](career-profile-manual-checklist.md) for LinkedIn and resume sync.
+Related: [linkedin-profile-manual.md](linkedin-profile-manual.md) for LinkedIn and resume sync.

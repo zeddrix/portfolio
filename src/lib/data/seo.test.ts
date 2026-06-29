@@ -192,7 +192,10 @@ describe("seo URL helpers", () => {
     expect(buildAbsoluteUrl(homeSeo.path)).toBe(`${siteUrl}/`);
     expect(homeSeo.path).toBe("/");
     expect(homeSeo.title).toMatch(/Zeddrix Fabian/i);
-    expect(homeSeo.description).toMatch(/full-stack web app developer/i);
+    expect(homeSeo.description).toMatch(/full-stack developer/i);
+    expect(homeSeo.description).toMatch(/production PWAs|SaaS|e-commerce/i);
+    expect(homeSeo.description).toMatch(/SvelteKit, React, and Angular/i);
+    expect(homeSeo.description.length).toBeLessThanOrEqual(160);
   });
 
   it("getSiteUrl falls back to dev URL when PUBLIC_SITE_URL is empty", async () => {

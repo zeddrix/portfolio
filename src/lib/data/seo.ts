@@ -15,7 +15,7 @@ export const homeSeo = {
   title:
     "Zeddrix Fabian | Full-Stack Web App Developer (SvelteKit, React, Angular)",
   description:
-    "Portfolio of Zeddrix Fabian — full-stack web app developer shipping live products with AI-accelerated workflows. Case studies in SvelteKit, React, Angular, and client SaaS.",
+    "Full-stack developer shipping production PWAs, SaaS, and e-commerce. SvelteKit, React, and Angular case studies—billing, admin dashboards, and ATDD delivery.",
   path: "/",
 } as const;
 
