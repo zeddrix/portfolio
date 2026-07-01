@@ -40,7 +40,9 @@ export const projects: PortfolioProject[] = [
       "/queue-3-events.webp",
       "/queue-4-listings.webp",
     ],
-    links: [],
+    links: [
+      { label: "Website", url: "https://queue.place/", external: true },
+    ],
     detailSections: [
       {
         title: "Problem",
@@ -80,7 +82,9 @@ export const projects: PortfolioProject[] = [
     ],
     primaryImage: "/jw-tabs-1-homepage.webp",
     galleryImages: ["/jw-tabs-2-tabspage.webp"],
-    links: [],
+    links: [
+      { label: "Website", url: "https://jwtabs.app/", external: true },
+    ],
     detailSections: [
       {
         title: "Problem",
