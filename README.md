@@ -87,6 +87,8 @@ pnpm test:unit
 pnpm test:e2e
 ```
 
+Every `git commit` runs `pnpm quality` via Husky (Prettier check, ESLint, svelte-check) — the same gate as CI. Use `git commit --no-verify` only when you intentionally need to skip it.
+
 E2E runs the dev server at site root for deployment parity (see `playwright.config.ts`).
 
 ## Visual screenshots (Playwright)
