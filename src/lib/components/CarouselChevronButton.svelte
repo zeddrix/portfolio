@@ -12,13 +12,17 @@
 	export let testId;
 	/** @type {'inside' | 'outside'} */
 	export let variant = 'inside';
+	/** @type {boolean} */
+	export let disabled = false;
+	/** @type {boolean} */
+	export let alwaysVisible = false;
 	/** @type {'left-1 sm:left-2' | 'right-1 sm:right-2'} */
 	export let positionClass = 'left-1 sm:left-2';
 
 	$: pathD = direction === 'prev' ? 'M15 6l-6 6 6 6' : 'M9 6l6 6-6 6';
 	$: buttonClass =
 		variant === 'outside'
-			? DEVICE_CAROUSEL_OUTSIDE_CHEVRON
+			? DEVICE_CAROUSEL_OUTSIDE_CHEVRON + (alwaysVisible ? ' !opacity-100' : '')
 			: DEVICE_CAROUSEL_CHEVRON_BUTTON + ' ' + positionClass;
 </script>
 
@@ -26,6 +30,7 @@
 	type="button"
 	class={buttonClass}
 	aria-label={ariaLabel}
+	disabled={disabled}
 	data-testid={testId}
 	on:click
 >

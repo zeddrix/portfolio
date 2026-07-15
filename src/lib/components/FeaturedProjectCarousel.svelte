@@ -7,6 +7,7 @@
 	import { prefetchImageUrl, scheduleIdlePrefetch } from '$lib/utils/prefetch-images';
 	import { appPath } from '$lib/utils/app-path';
 	import { DEVICE_CARD_GRADIENT } from '$lib/constants/device-frame';
+	import CarouselChevronButton from '$lib/components/CarouselChevronButton.svelte';
 
 	/** @typedef {import('$lib/types/portfolio').PortfolioProject} PortfolioProject */
 	/** @typedef {{ current: number }} SlideState */
@@ -132,6 +133,7 @@
 			.flatMap((project) => (project.primaryImage ? [project.primaryImage] : []))
 			.map((path) => getDefaultImageSrc(path, carouselImageWidth));
 		scheduleIdlePrefetch(prefetchPaths);
+		updateCarouselControls();
 	});
 
 	onDestroy(() => {
@@ -142,9 +144,63 @@
 
 	/** @type {HTMLElement | null} */
 	let carouselElement = null;
+	/** @type {boolean} */
+	let canScrollPrev = false;
+	/** @type {boolean} */
+	let canScrollNext = true;
+
+	function updateCarouselControls() {
+		if (!carouselElement) return;
+		const maxScrollLeft = Math.max(0, carouselElement.scrollWidth - carouselElement.clientWidth);
+		canScrollPrev = carouselElement.scrollLeft > 1;
+		canScrollNext = carouselElement.scrollLeft < maxScrollLeft - 1;
+	}
+
+	/** @param {'prev' | 'next'} direction */
+	function scrollCarousel(direction) {
+		if (!carouselElement) return;
+		const firstCard = carouselElement.querySelector('[data-testid^="highlight-card-column-"]');
+		const track = carouselElement.querySelector('[data-testid="highlights-carousel-track"]');
+		const gapValue = track instanceof HTMLElement
+			? getComputedStyle(track).columnGap || getComputedStyle(track).gap
+			: '16px';
+		const gap = Number.parseFloat(gapValue) || 16;
+		const cardWidth = firstCard instanceof HTMLElement
+			? firstCard.getBoundingClientRect().width
+			: carouselElement.clientWidth * 0.72;
+		const amount = cardWidth + gap;
+		carouselElement.scrollBy({ left: direction === 'next' ? amount : -amount, behavior: 'smooth' });
+	}
 </script>
 
-<div bind:this={carouselElement} data-testid="highlights-carousel" class={carouselScrollClass}>
+
+<div class="relative">
+	<div class="absolute right-4 top-0 z-10 hidden gap-2 lg:right-10 lg:flex">
+		<CarouselChevronButton
+			direction="prev"
+			ariaLabel="Previous featured project"
+			testId="highlights-carousel-prev"
+			variant="outside"
+			alwaysVisible
+			disabled={!canScrollPrev}
+			on:click={() => scrollCarousel('prev')}
+		/>
+		<CarouselChevronButton
+			direction="next"
+			ariaLabel="Next featured project"
+			testId="highlights-carousel-next"
+			variant="outside"
+			alwaysVisible
+			disabled={!canScrollNext}
+			on:click={() => scrollCarousel('next')}
+		/>
+	</div>
+	<div
+		bind:this={carouselElement}
+		data-testid="highlights-carousel"
+		class={carouselScrollClass + ' lg:pt-12'}
+		on:scroll={updateCarouselControls}
+	>
 	<div
 		data-testid="highlights-carousel-track"
 		class="highlights-carousel-track flex w-max items-center gap-4 md:gap-5"
@@ -212,5 +268,6 @@
 				</div>
 			</div>
 		{/each}
+		</div>
 	</div>
 </div>

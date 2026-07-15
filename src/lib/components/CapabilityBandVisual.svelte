@@ -186,6 +186,7 @@
 						direction="prev"
 						ariaLabel={'Previous ' + title + ' screenshot'}
 						testId="capability-carousel-prev"
+						alwaysVisible
 						on:click={showPreviousSlide}
 					/>
 				{/if}
@@ -216,6 +217,7 @@
 						direction="next"
 						ariaLabel={'Next ' + title + ' screenshot'}
 						testId="capability-carousel-next"
+						alwaysVisible
 						on:click={showNextSlide}
 					/>
 				{/if}
