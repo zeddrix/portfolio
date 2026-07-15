@@ -542,6 +542,8 @@ test.describe("capability band images", () => {
     await expect(carouselRow).toBeVisible();
     await expect(prevButton).toBeVisible();
     await expect(nextButton).toBeVisible();
+    await expect(prevButton).toHaveCSS("opacity", "1");
+    await expect(nextButton).toHaveCSS("opacity", "1");
     await expect(chatbotBand.getByText("Prev")).toHaveCount(0);
     await expect(chatbotBand.getByText("Next")).toHaveCount(0);
 

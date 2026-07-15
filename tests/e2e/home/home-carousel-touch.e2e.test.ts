@@ -137,5 +137,7 @@ test.describe("homepage carousel touch scroll", () => {
     }
 
     expect(advanced).toBe(true);
+    await expect(page.getByTestId("highlights-carousel-prev")).toBeHidden();
+    await expect(page.getByTestId("highlights-carousel-next")).toBeHidden();
   });
 });

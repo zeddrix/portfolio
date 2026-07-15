@@ -1,20 +1,20 @@
 # E2E Flow Coverage Matrix
 
-Generated: 2026-06-18
+Generated: 2026-07-14
 
 | Spec file                                                             | Domain   | MinActions | BranchesCovered                    | JourneyTier |
 | --------------------------------------------------------------------- | -------- | ---------- | ---------------------------------- | ----------- |
 | `tests/e2e/certificates/certificate-routes.e2e.test.ts`               | other    | 2          | —                                  | focused     |
-| `tests/e2e/contact/contact-footer.e2e.test.ts`                        | contact  | 2          | contact,nav,resume-download        | focused     |
+| `tests/e2e/contact/contact-footer.e2e.test.ts`                        | contact  | 2          | contact,nav                        | focused     |
 | `tests/e2e/content/capability-band-images.e2e.test.ts`                | content  | 2          | capability-layouts                 | focused     |
 | `tests/e2e/content/content-integrity.e2e.test.ts`                     | content  | 2          | content                            | focused     |
 | `tests/e2e/home/home-carousel-layout.e2e.test.ts`                     | home     | 2          | carousel                           | focused     |
 | `tests/e2e/home/home-carousel-touch.e2e.test.ts`                      | home     | 2          | carousel-touch                     | focused     |
 | `tests/e2e/home/home-hero-about.e2e.test.ts`                          | home     | 2          | —                                  | focused     |
-| `tests/e2e/home/home-navigation.e2e.test.ts`                          | home     | 2          | nav,resume-download                | focused     |
+| `tests/e2e/home/home-navigation.e2e.test.ts`                          | home     | 2          | nav                                | focused     |
 | `tests/e2e/home/home-performance.e2e.test.ts`                         | home     | 2          | —                                  | focused     |
 | `tests/e2e/home/home-preview-settings.e2e.test.ts`                    | home     | 2          | work-layouts,capability-layouts    | focused     |
-| `tests/e2e/home/home-shell.e2e.test.ts`                               | home     | 2          | resume-download                    | focused     |
+| `tests/e2e/home/home-shell.e2e.test.ts`                               | home     | 2          | —                                  | focused     |
 | `tests/e2e/home/home-tools-strip.e2e.test.ts`                         | home     | 2          | —                                  | focused     |
 | `tests/e2e/home/home-work-section.e2e.test.ts`                        | home     | 2          | work-filters,work-layouts,carousel | focused     |
 | `tests/e2e/journeys/journey-home-to-project-discovery.e2e.test.ts`    | journeys | 3          | journey                            | golden-path |

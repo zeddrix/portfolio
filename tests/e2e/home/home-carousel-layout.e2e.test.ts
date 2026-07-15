@@ -10,9 +10,53 @@ import {
   scrollCarouselCardIntoViewCenter,
   scrollCarouselNext,
   scrollCarouselToPosition,
+  scrollToTestId,
   waitForCarouselImageChange,
 } from "../fixtures/test-helpers";
 import { selectors } from "../fixtures/selectors";
+
+test.describe("homepage carousel desktop controls", () => {
+  test.use({ viewport: { width: 1280, height: 900 } });
+
+  test("Given desktop homepage at the first card, when the user advances then reverses, then controls move one project without wrapping", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.work.carousel);
+    const carousel = page.getByTestId(selectors.work.carousel);
+    const next = page.getByTestId(selectors.work.carouselNext);
+    const previous = page.getByTestId(selectors.work.carouselPrev);
+
+    await expect(next).toBeVisible();
+    await expect(previous).toBeDisabled();
+    await expect(next).toHaveCSS("opacity", "1");
+    await expect(previous).toHaveCSS("opacity", "1");
+    const start = await carousel.evaluate((element) => element.scrollLeft);
+    await next.click();
+    await expect
+      .poll(async () => carousel.evaluate((element) => element.scrollLeft))
+      .toBeGreaterThan(start);
+    await expect(previous).toBeEnabled();
+    await previous.click();
+    await expect
+      .poll(async () => carousel.evaluate((element) => element.scrollLeft))
+      .toBeLessThanOrEqual(start);
+    await expect(previous).toBeDisabled();
+  });
+
+  test("Given desktop homepage at the final card, when the user advances, then next is disabled at the boundary", async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    await scrollToTestId(page, selectors.work.carousel);
+    const carousel = page.getByTestId(selectors.work.carousel);
+    const next = page.getByTestId(selectors.work.carouselNext);
+    await carousel.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+    });
+    await expect.poll(async () => next.isDisabled()).toBe(true);
+  });
+});
 
 const alignmentTolerancePx = 4;
 const manatalFillTolerancePx = 2;
